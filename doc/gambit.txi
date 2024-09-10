@@ -435,7 +435,8 @@ are requested using the @code{##demand-module} special form (this form
 is explained in @ref{Modules}, but essentially it causes that module
 to be searched in the module search order and executed once).  The @samp{-e}
 option uses the @code{eval} procedure to evaluate expressions in the
-global interaction environment.  After this processing the interpreter
+global interaction environment.  Upon encountering the @samp{-} option,
+the interpreter starts an interactive REPL.  After this processing the interpreter
 exits.
 
 The ports associated with @samp{(current-input-port)},
