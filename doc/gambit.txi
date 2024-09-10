@@ -6258,8 +6258,8 @@ then in @code{@b{M}@var{.ext}}, where @var{.ext} is one of the
 acceptable Scheme source code file extensions (@code{.sld},
 @code{.scm}, @code{.six}, etc).  The list of module search order
 directories can be extended with the @code{-:search=}@var{DIR} runtime
-option or by a command line argument to @code{gsi} and @code{gsc} that
-ends with a path separator or a @samp{.}.
+option, a non-option command line argument to @code{gsi} or @code{gsc} that
+ends with a path separator, or the non-option argument @samp{.}.
 
 With @code{##demand-module} and @code{##supply-module} the previous
 example can be rewritten like this:
