@@ -12910,7 +12910,7 @@ operating systems supported by Gambit (e.g. MSDOS).
 * Measuring time::                          Measuring time
 * File information::                        File information
 * Group information::                       Group information
-* User information::                        User information   .
+* User information::                        User information
 * Host information::                        Host information
 * Service information::                     Service information
 * Protocol information::                    Protocol information
