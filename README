@@ -81,7 +81,7 @@ standards including:
 The user manual for the Gambit system is available in PDF format
 (the file "doc/gambit.pdf"), in HTML format (the file
 "doc/gambit.html"), in text format (the file "doc/gambit.txt") and
-in "info" format (the files "doc/gambit.info*").
+in "info" format (the file "doc/gambit.info").
 
 The Gambit mailing list (gambit-list@iro.umontreal.ca) is a good
 place to ask questions about Gambit.
