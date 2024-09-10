@@ -1205,7 +1205,7 @@ If the @samp{-link} or @samp{-exe} options appear on the command line,
 the Gambit linker is invoked to generate the link file from the set of
 files specified on the command line or produced by the Gambit
 compiler.  By default the link file is named after the last file on
-the compiler's command line.  If the last file stripped of it's
+the compiler's command line.  If the last file stripped of its
 extension is @samp{@var{last}} then the link file is
 @samp{@var{last}_.c} for the @code{C} target and @samp{@var{last}_.js}
 for the @code{js} target.  When the @samp{-c} option is specified, the
@@ -7322,7 +7322,7 @@ used) the compiler will compile for the selected target the main
 source code file to a target file and a dynamically loadable object
 file with a @samp{.o1} extension.  These files will be created in a
 directory next to the module's main source code file, with the same
-name stripped of it's extension and suffixed with the Gambit version
+name stripped of its extension and suffixed with the Gambit version
 and the target name.  This naming strategy aims to avoid loading the
 compiled file in an inappropriate context.  The module loading
 algorithm knows it should check this directory to find a compiled
