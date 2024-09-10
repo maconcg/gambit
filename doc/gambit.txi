@@ -19426,7 +19426,7 @@ For example:
 (define fgetc (c-lambda (FILE*) int "fgetc"))
 @end smallexample
 
-Note that identifiers are not case-sensitive in standard Scheme but it
+Note that it
 is good programming practice to use a @i{name} with the same case as
 in C.
 
