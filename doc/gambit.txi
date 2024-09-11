@@ -579,11 +579,11 @@ messages from being output.
 @section Scheme scripts
 
 The @code{load} procedure treats specially files that begin with the
-two characters @samp{#!} and @samp{@@;}.  Such files are called
+two characters @samp{#!} (on UNIX) or @samp{@@;} (on Microsoft Windows).  Such files are called
 @dfn{script files} and the first line is called the @dfn{script line}.
 In addition to indicating that the file is a script, the script line
 provides information about the source code language to be used by the
-@code{load} procedure.  After the two characters @samp{#!} and
+@code{load} procedure.  After the two characters @samp{#!} or
 @samp{@@;} the system will search for the first substring matching one
 of the following language specifying tokens:
 
