@@ -1,0 +1,6 @@
+@set EDITION revised
+@set UPDATED September 20, 2024
+@set VERSION 4.9.5
+
+@set HOMEPAGE-URL https://gambitscheme.org
+@set GITHUB-URL https://github.com/gambit/gambit

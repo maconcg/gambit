@@ -1,0 +1,3 @@
+@include toolshed/flags.txi
+@include toolshed/macros.txi
+@include toolshed/preamble.txi

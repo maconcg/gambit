@@ -1,0 +1,33 @@
+@node Introduction
+@chapter Introduction
+
+The Gambit programming system is a complete implementation of the Scheme
+language aimed at portability, speed, and power.  It comprises two main
+programs: @dfn{@command{gsi}}, the Gambit Scheme interpreter, and
+@dfn{@command{gsc}}, the Gambit Scheme compiler.
+
+In its default configuration, Gambit provides a superset of the language
+described by @cite{The Revised@sup{7} Report on the Algorithmic Language
+Scheme}, also known as @acronym{R7RS}.  Gambit may be configured to
+conform to the @acronym{R4RS}, @acronym{R5RS}, @acronym{R7RS}, or
+@acronym{IEEE 1178-1990} Scheme standards.
+
+@command{gsi} provides a subset of @command{gsc}'s functionality.  The
+only difference between these programs is that @command{gsc} also
+provides certain procedures and invocation options specific to
+compilation.
+
+@command{gsc} compiles programs by @dfn{transpiling} Scheme source code
+to source code for a target language, then optionally passing that
+transpiled code to tools like @command{gcc} for further processing
+(@pxref{Top,,,gcc, Using the GNU Compiler Collection}).  Supported
+target languages include C and JavaScript.
+
+The C target is the most mature, generating efficient C code that lets
+Gambit run on any platform for which a C compiler is available.  With
+appropriate declarations in the Scheme source code (@pxref{gsc
+declarations}), the resulting programs run roughly as fast as
+functionally equivalent programs built from hand-written C.
+
+Most of the Gambit system, including @command{gsi} and @command{gsc}
+itself, is written in Scheme and compiled using @command{gsc}.

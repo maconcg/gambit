@@ -1,0 +1,34 @@
+\input texinfo
+
+@include toolshed/include.txi
+
+@contents
+
+@node Top
+@top Gambit
+
+Gambit is a complete implementation of the Scheme language aimed at
+portability, speed, and power.
+
+For the most up-to-date information on Gambit and related resources,
+visit the @url{@value{HOMEPAGE-URL},Gambit home page}.  Please report
+issues via @url{@value{GITHUB-URL},the Gambit repository on GitHub}.
+
+@insertcopying
+
+@include body/include.txi
+
+@node GNU Lesser General Public License
+@appendix GNU Lesser General Public License
+@include toolshed/lgpl-2.1.texi
+
+@node Apache License
+@appendix Apache License
+@verbatiminclude toolshed/LICENSE-2.0.txt
+
+@node Index
+@unnumbered Index
+
+@printindex cp
+
+@bye

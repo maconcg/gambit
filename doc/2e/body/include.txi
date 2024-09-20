@@ -1,0 +1,13 @@
+@include body/intro.txi
+
+@node The Gambit system
+@chapter The Gambit system
+This chapter desrcibes the Gambit system, including installation,
+program invocation, and filesystem usage.
+
+@lowersections
+@include body/invoking.txi
+@include body/gsc.txi
+@raisesections
+
+@include body/debugging.txi
