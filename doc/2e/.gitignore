@@ -1,1 +1,5 @@
-gambit_html/**
+**/.stamp
+html/**.html
+*.html
+*.info
+*.txt
