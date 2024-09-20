@@ -18,6 +18,10 @@ issues via @url{@value{GITHUB-URL},the Gambit repository on GitHub}.
 
 @include body/include.txi
 
+@node Procedures
+@chapter Procedures 
+@include procedures/include.txi
+
 @node GNU Lesser General Public License
 @appendix GNU Lesser General Public License
 @include toolshed/lgpl-2.1.texi

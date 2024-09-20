@@ -1,4 +1,5 @@
 @settitle Gambit Scheme, @value{EDITION} edition
+@clear txicodevaristt
 @syncodeindex pg cp
 @copying
 This is the Gambit Scheme manual, @value{EDITION} edition.  It documents
