@@ -4,7 +4,7 @@ css-arg := --css-include=toolshed/gambit.css
 
 default: html info txt
 
-.PHONY: clean default html html-monolith info txt
+.PHONY: clean default html html-modules html-monolith info txt
 
 clean:
 	rm -fr ${html-modules-dir}/ gambit.html gambit.info gambit.txt
