@@ -1,6 +1,6 @@
-texinfo-sources := gambit.txi body/* procedures/* toolshed/*.t*
-html-sources := ${texinfo-sources} toolshed/*.css
+html-sources := gambit.txi toolshed/gambit.css
 html-modules-dir := gambit-html
+css-arg := --css-include=toolshed/gambit.css
 
 default: html info txt
 
@@ -8,6 +8,9 @@ default: html info txt
 
 clean:
 	rm -fr ${html-modules-dir}/ gambit.html gambit.info gambit.txt
+
+gambit.txi: body/* procedures/* toolshed/*.t*
+	touch $@
 
 html: html-modules html-monolith
 
@@ -20,13 +23,14 @@ info: gambit.info
 txt: gambit.txt
 
 ${html-modules-dir}/.stamp: ${html-sources}
-	texi2any -o ${html-modules-dir}/ --html gambit.txi && touch $@
+	texi2any -o ${html-modules-dir}/ --html ${css-arg} gambit.txi
+	touch $@
 
 gambit.html: ${html-sources}
-	texi2any -o $@ --html --no-split gambit.txi
+	texi2any -o $@ --html ${css-arg} --no-split gambit.txi
 
-gambit.info: ${texinfo-sources}
+gambit.info: gambit.txi
 	texi2any -o $@ --info --no-split gambit.txi
 
-gambit.txt: ${texinfo-sources}
+gambit.txt: gambit.txi
 	texi2any --plaintext -o $@ gambit.txi
