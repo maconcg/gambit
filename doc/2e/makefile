@@ -33,4 +33,4 @@ gambit.info: gambit.txi
 	texi2any -o $@ --info --no-split gambit.txi
 
 gambit.txt: gambit.txi
-	texi2any --plaintext -o $@ gambit.txi
+	texi2any -o $@ --plaintext gambit.txi
