@@ -166,13 +166,19 @@ of the characters in the given @var{string}s.
 @end deftypefn
 
 @deftypefn @t{(scheme base)} @/ string->list string [start [end]]
-The @code{string->list} procedure returns a newly allocated list of the
-characters of @var{string} between @var{start} and @var{end}.  Order is
-preserved.  @code{string->list} and @code{list->string} are inverses so
-far as @code{equal?} is concerned.
+Returns a newly allocated list of characters in @var{string}.  In the
+one-argument form, the returned list comprises all characters of
+@var{string}.  In the two-argument form, the returned list comprises
+characters from index @var{start} (inclusive) through the end of
+@var{string}.  In the three-argument form, the returned list comprises
+characters from index @var{start} (inclusive) through index @var{end}
+(exclusive).
 
-It is an error either @var{start} or @var{end} is not a valid index of
-@var{string}.
+Order is preserved.  @code{string->list} and @code{list->string} are
+inverses so far as @code{equal?} is concerned.
+
+It is an error if either @var{start} or @var{end} is not a valid index
+of @var{string}.
 
 @lisp
 (string->list "scheme")     @result{} (#\s #\c #\h #\e #\m #\e)
@@ -182,10 +188,10 @@ It is an error either @var{start} or @var{end} is not a valid index of
 @end deftypefn
 
 @deftypefn @t{(scheme base)} @/ list->string list
-@code{list->string} returns a newly allocated string formed from the
-elements in the list @var{list}.  Order is preserved.
-@code{list->string} and @code{string->list} and are inverses so far as
-@code{equal?} is concerned.
+Returns a newly allocated string formed from the elements in the list
+@var{list}.  Order is preserved.  @code{list->string} and
+@code{string->list} and are inverses so far as @code{equal?} is
+concerned.
 
 It is an error if any element of @var{list} is not a character.
 
@@ -199,10 +205,10 @@ It is an error if any element of @var{list} is not a character.
 Returns a newly allocated string whose value is a portion of
 @var{string}.  In the one-argument form, the returned portion is all of
 @var{string}.  In the two-argument form, the returned string is a copy
-of @var{string} from index @var{start} (inclusive) through
-@var{string}'s end.  In the three-argument form, the returned string is
-a copy of @var{string} from index @var{start} (inclusive) to index
-@var{end} (exclusive).
+of @var{string} from index @var{start} (inclusive) through the end of
+@var{string}.  In the three-argument form, the returned string is a copy
+of @var{string} from index @var{start} (inclusive) to index @var{end}
+(exclusive).
 
 It is an error either @var{start} or @var{end} is not a valid index of
 @var{string}.
@@ -213,7 +219,7 @@ It is an error either @var{start} or @var{end} is not a valid index of
 (string-copy s 1)                                @result{} "wim"
 (string-copy s 1 1)                              @result{} ""
 (string-copy s 0 (string-length s))              @result{} "dwim"
-(eq? s (string-copy s 0 (string-length s)))      @result{} #f
+(eq?      s (string-copy s 0 (string-length s))) @result{} #f
 (string=? s (string-copy s 0 (string-length s))) @result{} #t
 @end lisp
 @end deftypefn
@@ -227,9 +233,9 @@ is copied.  In the five-argument form, the value of @samp{(string-copy
 @slanted{from} @slanted{start} @slanted{end})} is copied.
 
 It is an error if @var{at} is less than zero or greater than the length
-of @var{to}.  It is also an error if @code{(- (string-length
-}@var{to}@code{) }@var{at}@code{)} is less than @code{(- }@var{end}
-@var{start}@code{)}.  In other words: the copied substring must not
+of @var{to}.  It is also an error if @samp{(- (string-length
+@slanted{to}) @slanted{at})} is less than @samp{(- @slanted{end}
+@slanted{start})}.  In other words: the copied substring must not
 overflow beyond the end of @var{to}.
 
 @lisp
@@ -245,7 +251,7 @@ Mutates @var{string} by overwriting some or all of its elements with
 @var{char}.  In the two-argument form, each element is overwritten.  In
 the three-argument form, the elements from index @var{start} (inclusive)
 through the end of @var{string} are overwritten.  In the four-argument
-form, the elements from index @var{start} (inclusive) to @var{end}
+form, the elements from index @var{start} (inclusive) to index @var{end}
 (exclusive) are overwritten.
 
 @lisp
