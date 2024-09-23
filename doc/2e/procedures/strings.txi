@@ -1,134 +1,159 @@
 @node String procedures
 @chapter String procedures
 
-@deffn procedure string? obj
-
+@deftypefn @t{(scheme base)} {} string? obj
 Returns @code{#t} if @var{obj} is a string, otherwise returns @code{#f}.
 
 @lisp
-(string? "") @result{} #t
+(string? "")  @result{} #t
 (string? #\a) @result{} #f
 (string? "a") @result{} #t
 @end lisp
-@end deffn
+@end deftypefn
 
-@deffn  procedure make-string k
-@deffnx procedure make-string k char
-
+@deftypefn @t{(scheme base)} {} make-string k [char]
 The @code{make-string} procedure returns a newly allocated string of
-length @var{k}. If @var{char} is given, then all the characters of the
+length @var{k}.  If @var{char} is given, then all the characters of the
 string are initialized to @var{char}, otherwise the contents of the
 string are unspecified.
 
 @lisp
-(make-string 4) @result{} "\x0;\x0;\x0;\x0;"
+(make-string 4)     @result{} "\x0;\x0;\x0;\x0;"
 (make-string 4 #\g) @result{} "gggg"
 @end lisp
-@end deffn
+@end deftypefn
 
-@deffn procedure string char @dots{}
-
-Returns a newly allocated string composed of the arguments. It is
+@deftypefn @t{(scheme base)} {} string [char@dots{}]
+Returns a newly allocated string composed of the arguments.  It is
 analogous to @code{list}.
 
-@end deffn
+@lisp
+(string #\G #\a #\m #\b #\i #\t) @result{} "Gambit"
+(string (string->list "Gambit")) @result{} "Gambit"
+@end lisp
+@end deftypefn
 
-@deffn procedure string-length string
-
+@deftypefn @t{(scheme base)} {} string-length [string]
 Returns the number of characters in the given @var{string}.
+@lisp
+(string-length (make-string 5)) @result{} 5
+(string-length "")              @result{} 0
+(string-length "lambda")        @result{} 6
+@end lisp
+@end deftypefn
 
-@end deffn
-
-@deffn procedure string-ref string k
-
+@deftypefn @t{(scheme base)} {} string-ref string k
 It is an error if @var{k} is not a valid index of @var{string}.
 
 The @code{string-ref} procedure returns character @var{k} of
 @var{string} using zero-origin indexing.
 
-There is no requirement for this procedure to execute in constant time.
+@lisp
+(define s "off by one")
+(string-ref "zero-origin indexing" 0)   @result{} #\z
+(string-ref s (- (string-length s) 1))) @result{} #\e
+@end lisp
+@end deftypefn
 
-@end deffn
-
-@deffn procedure string-set! string k char
-
+@deftypefn @t{(scheme base)} {} string-set! string k char
 It is an error if @var{k} is not a valid index of @var{string}.
 
 The @code{string-set!} procedure stores @var{char} in element @var{k}
-of @var{string}. There is no requirement for this procedure to execute
-in constant time.
+of @var{string}.
 
 @lisp
 (define (f) (make-string 3 #\*))
 (define (g) "***")
-(string-set! (f) 0 #\?) @result{} @r{unspecified}
-(string-set! (g) 0 #\?) @result{} @r{error}
+(string-set! (f) 0 #\?) @result{} @r{@i{unspecified}}
+(string-set! (g) 0 #\?) @result{} @r{@i{error}}
 (string-set! (symbol->string 'immutable)
              0
-             #\?) @result{} @r{error}
+             #\?) @result{} @r{@i{error}}
 @end lisp
+@end deftypefn
 
-@end deffn
-
-@deffn procedure string=? @var{string} @dots{}
-
+@deftypefn @t{(scheme base)} {} string=? [string@dots{}]
 Returns @code{#t} if all the @var{string}s are the same length and
 contain exactly the same characters in the same positions, otherwise
 returns @code{#f}.
 
-@end deffn
+Gambit's implementation of @code{string=?} extends the R7RS standard to
+accept any number of arguments.
 
-@deffn {char library procedure} string-ci=? @var{string} @dots{}
+@lisp
+(string=? "abcd" (string #\a #\b #\c #\d)) @result{} #t
+(string=? "abcd" "Abcd") @result{} #f
+(string=?) @result{} #t
+(string=? "a" "a" "a") @result{} #t
+(string=? "a" #\a) @result{} @r{@i{error}}
+@end lisp
+@end deftypefn
 
-Returns @code{#t} if, after case-folding, all the @var{string}s are the
-same length and contain the same characters in the same positions,
-otherwise returns @code{#f}. Specifically, these procedures behave as
-if @code{string-foldcase} were applied to their arguments before
-comparing them.
-
-@end deffn
-
-@deffn  procedure string<? @var{string} @dots{}
-@deffnx {char library procedure} string-ci<? @var{string} @dots{}
-@deffnx procedure string>? @var{string} @dots{}
-@deffnx {char library procedure} string-ci>? @var{string} @dots{}
-@deffnx procedure string<=? @var{string} @dots{}
-@deffnx {char library procedure} string-ci<=? @var{string} @dots{}
-@deffnx procedure string>=? @var{string} @dots{}
-@deffnx {char library procedure} string-ci>=? @var{string} @dots{}
-
-These procedures return @code{#t} if their arguments are (respectively):
+@deftypefn @t{(scheme base)} {} string<? [string@dots{}]
+@deftypefnx @t{(scheme base)} {} string>? [string@dots{}]
+@deftypefnx @t{(scheme base)} {} string<=? [string@dots{}]
+@deftypefnx @t{(scheme base)} {} string>=? [string@dots{}]
+These predicates return @code{#t} if their arguments are (respectively):
 monotonically increasing, monotonically decreasing, monotonically
-non-decreasing, or monotonically non-increasing.
+non-decreasing, or monotonically non-increasing.  They are transitive.
 
-These predicates are required to be transitive.
+A pair of strings satisfies exactly one of @code{string<?},
+@code{string=?}, and @code{string>?}.  They may satisfy @code{string<=?}
+if and only if they do not satisfy @code{string>?}.  They may satisfy
+@code{string>=?} if and only if they do not satisfy @code{string<?}.
 
-These procedures compare strings in an implementation-defined way.
-One approach is to make them the lexicographic extensions to strings of
-the corresponding orderings on characters.  In that case, @code{string<?}
-would be the lexicographic ordering on strings induced by the ordering
-@code{char<?} on characters, and if the two strings differ in length but
-are the same up to the length of the shorter string, the shorter string
-would be considered to be lexicographically less than the longer string.
-However, it is also permitted to use the natural ordering imposed by the
-implementation's internal representation of strings, or a more complex
-locale-specific ordering.
+@c These procedures compare strings in an implementation-defined way.
+@c One approach is to make them the lexicographic extensions to strings of
+@c the corresponding orderings on characters.  In that case, @code{string<?}
+@c would be the lexicographic ordering on strings induced by the ordering
+@c @code{char<?} on characters, and if the two strings differ in length but
+@c are the same up to the length of the shorter string, the shorter string
+@c would be considered to be lexicographically less than the longer string.
+@c However, it is also permitted to use the natural ordering imposed by the
+@c implementation's internal representation of strings, or a more complex
+@c locale-specific ordering.
 
-In all cases, a pair of strings must satisfy exactly one of
-@code{string<?}, @code{string=?}, and @code{string>?}, and must satisfy
-@code{string<=?} if and only if they do not satisfy @code{string>?}
-and @code{string>=?} if and only if they do not satisfy @code{string<?}.
+Gambit's implementations of these procedures extend the R7RS standard to
+accept any number of arguments.
 
-The @samp{-ci} procedures behave as if they applied @code{string-foldcase}
-to their arguments before invoking the corresponding procedures without
-@samp{-ci}.
+@lisp
+(string<=? "g" "g") @result{} #f
+(string>=? "g" "g") @result{} #f
+(string<?  "g" "g") @result{} #f
+(string>?  "g" "g") @result{} #f
 
-@end deffn
+(string<? "G" "g")  @result{} #t
+(string>? "G" "g")  @result{} #f
 
-@deffn  {char library procedure} string-upcase string
-@deffnx {char library procedure} string-downcase string
-@deffnx {char library procedure} string-foldcase string
+(string<? "gg" "g") @result{} #f
+(string>? "gg" "g") @result{} #t
+@end lisp
+@end deftypefn
 
+@deftypefn @t{(scheme char)} {} string-ci=? [string@dots{}]
+@deftypefnx @t{(scheme char)} {} string-ci<? [string@dots{}]
+@deftypefnx @t{(scheme char)} {} string-ci>? [string@dots{}]
+@deftypefnx @t{(scheme char)} {} string-ci<=? [string@dots{}]
+@deftypefnx @t{(scheme char)} {} string-ci>=? [string@dots{}]
+Each of these predicates behaves as if @code{string-foldcase} were
+applied to each of its arguments, and then that predicate's
+non-@samp{-ci} counterpart were applied to those case-folded arguments.
+
+@lisp
+(string-ci=?  "G" "g")  @result{} #t
+(string-ci<=? "G" "g")  @result{} #f
+
+(string-ci<?  "G" "g")  @result{} #f
+(string-ci>?  "G" "g")  @result{} #f
+
+(string-ci<?  "gg" "g") @result{} #f
+(string-ci>?  "gg" "g") @result{} #t
+@end lisp
+@end deftypefn
+
+@deftypefn @t{(scheme char)} {} string-upcase string
+@deftypefnx @t{(scheme char)} {} string-downcase string
+@deftypefnx @t{(scheme char)} {} string-foldcase string
 These procedures apply the Unicode full string uppercasing, lowercasing,
 and case-folding algorithms to their arguments and return the result.
 In certain cases, the result differs in length from the argument.
@@ -136,89 +161,106 @@ If the result is equal to the argument in the sense of @code{string=?},
 the argument may be returned.  Note that language-sensitive mappings
 and foldings are not used.
 
-The Unicode Standard prescribes special treatment of the Greek letter
-@U{03A3}, whose normal lower-case form is @U{03C3} but which becomes
-@U{03C2} at the end of a word.  See UAX #44 (part of the Unicode
-Standard) for details.  However, implementations of
-@code{string-downcase} are not required to provide this behavior, and
-may choose to change @U{03A3} to @U{03C3} in all cases.
+@lisp
+@set Etoc @U{0388}@U{03C4}@U{03BF}@U{03C2}
+@set etoc @U{03AD}@U{03C4}@U{03BF}@U{03C2}
+@set etoo @U{03AD}@U{03C4}@U{03BF}@U{03C3}
+@set ETOS @U{0388}@U{03A4}@U{039F}@U{03A3}
 
-@end deffn
+(string-downcase "@value{Etoc}") @result{} "@value{etoc}"
+(string-foldcase "@value{Etoc}") @result{} "@value{etoo}"
+(string-upcase   "@value{Etoc}") @result{} "@value{ETOS}"
 
-@deffn procedure substring string start end
+(string-downcase "@value{ETOS}") @result{} "@value{etoo}"
+(string-foldcase "@value{ETOS}") @result{} "@value{etoo}"
+@end lisp
+@end deftypefn
 
-The @code{substring} procedure returns a newly allocated string formed
-from the characters of @var{string} beginning with index @var{start}
-and ending with index @var{end}. This is equivalent to calling
-@code{string-copy} with the same arguments, but is provided for
-backward compatibility and stylistic flexibility.
-
-@end deffn
-
-@deffn procedure string-append string @dots{}
+@deftypefn @t{(scheme base)} {} string-append string@dots{}
 
 Returns a newly allocated string whose characters are the concatenation
 of the characters in the given @var{string}s.
 
-@end deffn
+@lisp
+(string-append)                     @result{} ""
+(string-append "")                  @result{} ""
+(string-append "hello" "world")     @result{} "helloworld"
+(string-append "hello" "" "world")  @result{} "helloworld"
+(string-append "hello " " world")   @result{} "hello  world"
+(string-append "hello" " " "world") @result{} "hello world"
+@end lisp
+@end deftypefn
 
-@deffn  procedure string->list string
-@deffnx procedure string->list string start
-@deffnx procedure string->list string start end
-@deffnx procedure list->string list
+@deftypefn @t{(scheme base)} {} string->list string [start [end]]
+The @code{string->list} procedure returns a newly allocated list of the
+characters of @var{string} between @var{start} and @var{end}.  Order is
+preserved.  @code{string->list} and @code{list->string} are inverses so
+far as @code{equal?} is concerned.
 
-It is an error if any element of @var{list} is not a character.
+@lisp
+(string->list "scheme")     @result{} (#\s #\c #\h #\e #\m #\e)
+(string->list "scheme" 1)   @result{} (#\c #\h #\e #\m #\e)
+(string->list "scheme" 1 5) @result{} (#\c #\h #\e #\m)
+@end lisp
+@end deftypefn
 
-The @code{string->list} procedure returns a newly allocated list of
-the characters of @var{string} between @var{start} and @var{end}.
+@deftypefn @t{(scheme base)} {} list->string list
 @code{list->string} returns a newly allocated string formed from the
-elements in the list @var{list}.  In both procedures, order is preserved.
+elements in the list @var{list}.  Order is preserved.
+@code{list->string} and @code{string->list} and are inverses so far as
+@code{equal?} is concerned.
+
 @code{string->list} and @code{list->string} are inverses so far as
 @code{equal?} is concerned.
 
-@end deffn
-
-@deffn  procedure string-copy string
-@deffnx procedure string-copy string start
-@deffnx procedure string-copy string start end
-
-Returns a newly allocated copy of the part of the given @var{string}
-between @var{start} and @var{end}.
-
-@end deffn
-
-@deffn  procedure string-copy! to at from
-@deffnx procedure string-copy! to at from start
-@deffnx procedure string-copy! to at from start end
-
-It is an error if @var{at} is less than zero or greater than the length of
-@var{to}.  It is also an error if @code{(- (string-length }@var{to}@code{)
-}@var{at}@code{)} is less than @code{(- }@var{end} @var{start}@code{)}.
-
-Copies the characters of string @var{from} between @var{start} and
-@var{end} to string @var{to}, starting at @var{at}.  The order in
-which characters are copied is unspecified, except that if the source
-and destination overlap, copying takes place as if the source is first
-copied into a temporary string and then into the destination.  This can
-be achieved without allocating storage by making sure to copy in the
-correct direction in such circumstances.
+It is an error if any element of @var{list} is not a character.
 
 @lisp
-(define a "12345")
-(define b (string-copy "abcde"))
-(string-copy! b 1 a 0 2)
-b @result{} "a12de"
+(list->string (list #\s #\c #\h #\e #\m #\e)) @result{} "scheme"
 @end lisp
+@end deftypefn
 
-@end deffn
+@c @deffn  procedure string-copy string
+@c @deffnx procedure string-copy string start
+@c @deffnx procedure string-copy string start end
 
-@deffn  procedure string-fill! string fill
-@deffnx procedure string-fill! string fill start
-@deffnx procedure string-fill! string fill start end
+@c Returns a newly allocated copy of the part of the given @var{string}
+@c between @var{start} and @var{end}.
 
-It is an error if @var{fill} is not a character.
+@c @end deffn
 
-The @code{string-fill!} procedure stores @var{fill} in the elements of
-@var{string} between @var{start} and @var{end}.
+@c @deffn  procedure string-copy! to at from
+@c @deffnx procedure string-copy! to at from start
+@c @deffnx procedure string-copy! to at from start end
 
-@end deffn
+@c It is an error if @var{at} is less than zero or greater than the length of
+@c @var{to}.  It is also an error if @code{(- (string-length }@var{to}@code{)
+@c }@var{at}@code{)} is less than @code{(- }@var{end} @var{start}@code{)}.
+
+@c Copies the characters of string @var{from} between @var{start} and
+@c @var{end} to string @var{to}, starting at @var{at}.  The order in
+@c which characters are copied is unspecified, except that if the source
+@c and destination overlap, copying takes place as if the source is first
+@c copied into a temporary string and then into the destination.  This can
+@c be achieved without allocating storage by making sure to copy in the
+@c correct direction in such circumstances.
+
+@c @lisp
+@c (define a "12345")
+@c (define b (string-copy "abcde"))
+@c (string-copy! b 1 a 0 2)
+@c b @result{} "a12de"
+@c @end lisp
+
+@c @end deffn
+
+@c @deffn  procedure string-fill! string fill
+@c @deffnx procedure string-fill! string fill start
+@c @deffnx procedure string-fill! string fill start end
+
+@c It is an error if @var{fill} is not a character.
+
+@c The @code{string-fill!} procedure stores @var{fill} in the elements of
+@c @var{string} between @var{start} and @var{end}.
+
+@c @end deffn
