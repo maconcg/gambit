@@ -3,13 +3,13 @@
 
 The Gambit programming system is a complete implementation of the Scheme
 language aimed at portability, speed, and power.  It comprises two main
-programs: @dfn{@command{gsi}}, the Gambit Scheme interpreter, and
-@dfn{@command{gsc}}, the Gambit Scheme compiler.
+programs: @slanted{@command{gsi}}, the Gambit Scheme interpreter, and
+@slanted{@command{gsc}}, the Gambit Scheme compiler.
 
 In its default configuration, Gambit provides a superset of the language
 described by @cite{The Revised@sup{7} Report on the Algorithmic Language
 Scheme}, also known as @acronym{R7RS}.  Gambit may be configured to
-conform to the @acronym{R4RS}, @acronym{R5RS}, @acronym{R7RS}, or
+conform to the @value{R4RS}, @value{R5RS}, @value{R7RS}, or
 @acronym{IEEE 1178-1990} Scheme standards.
 
 @command{gsi} provides a subset of @command{gsc}'s functionality.  The

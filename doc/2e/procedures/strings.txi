@@ -1,266 +1,244 @@
-@node String procedures
-@chapter String procedures
+@
+@deffn  procedure caar pair
+@deffnx procedure cadr pair
+@deffnx procedure cdar pair
+@deffnx procedure cddr pair
 
-@deftypefn @t{(scheme base)} {} string? obj
-Returns @code{#t} if @var{obj} is a string, otherwise returns @code{#f}.
-
-@lisp
-(string? "")  @result{} #t
-(string? #\a) @result{} #f
-(string? "a") @result{} #t
-@end lisp
-@end deftypefn
-
-@deftypefn @t{(scheme base)} {} make-string k [char]
-The @code{make-string} procedure returns a newly allocated string of
-length @var{k}.  If @var{char} is given, then all the characters of the
-string are initialized to @var{char}, otherwise the contents of the
-string are unspecified.
+These procedures are compositions of @code{car} and @code{cdr} as
+follows:
 
 @lisp
-(make-string 4)     @result{} "\x0;\x0;\x0;\x0;"
-(make-string 4 #\g) @result{} "gggg"
+(define (caar x) (car (car x)))
+(define (cadr x) (car (cdr x)))
+(define (cdar x) (cdr (car x)))
+(define (cddr x) (cdr (cdr x)))
 @end lisp
-@end deftypefn
 
-@deftypefn @t{(scheme base)} {} string [char@dots{}]
-Returns a newly allocated string composed of the arguments.  It is
-analogous to @code{list}.
+@end deffn
+@deffn  {cxr library procedure} caaar @var{pair}
+@deffnx {cxr library procedure} caadr @var{pair}
+@end deffn
+@deffn  {cxr library procedure} cdddar @var{pair}
+@deffnx {cxr library procedure} cddddr @var{pair}
+
+These twenty-four procedures are further compositions of @code{car} and
+@code{cdr} on the same principles. For example, @code{caddr} could be
+defined by
 
 @lisp
-(string #\G #\a #\m #\b #\i #\t) @result{} "Gambit"
-(string (string->list "Gambit")) @result{} "Gambit"
+(define caddr (lambda (x) (car (cdr (cdr x))))).
 @end lisp
-@end deftypefn
 
-@deftypefn @t{(scheme base)} {} string-length [string]
-Returns the number of characters in the given @var{string}.
-@lisp
-(string-length (make-string 5)) @result{} 5
-(string-length "")              @result{} 0
-(string-length "lambda")        @result{} 6
-@end lisp
-@end deftypefn
+Arbitrary compositions up to four deep are provided.
 
-@deftypefn @t{(scheme base)} {} string-ref string k
-It is an error if @var{k} is not a valid index of @var{string}.
+@end deffn
+@deffn procedure null? obj
 
-The @code{string-ref} procedure returns character @var{k} of
-@var{string} using zero-origin indexing.
+@cindex empty list
 
-@lisp
-(define s "off by one")
-(string-ref "zero-origin indexing" 0)   @result{} #\z
-(string-ref s (- (string-length s) 1))) @result{} #\e
-@end lisp
-@end deftypefn
+Returns @code{#t} if @var{obj} is the empty list,
+otherwise returns @code{#f}.
 
-@deftypefn @t{(scheme base)} {} string-set! string k char
-It is an error if @var{k} is not a valid index of @var{string}.
+@end deffn
+@deffn procedure list? obj
 
-The @code{string-set!} procedure stores @var{char} in element @var{k}
-of @var{string}.
+Returns @code{#t} if @var{obj} is a list. Otherwise, it returns
+@code{#f}. By definition, all lists have finite length and are
+terminated by the empty list.
 
 @lisp
-(define (f) (make-string 3 #\*))
-(define (g) "***")
-(string-set! (f) 0 #\?) @result{} @r{@i{unspecified}}
-(string-set! (g) 0 #\?) @result{} @r{@i{error}}
-(string-set! (symbol->string 'immutable)
-             0
-             #\?) @result{} @r{@i{error}}
+(list? '(a b c))     @result{} #t
+(list? '())          @result{} #t
+(list? '(a . b))     @result{} #f
+(let ((x (list 'a)))
+  (set-cdr! x x)
+  (list? x))         @result{} #f
 @end lisp
-@end deftypefn
 
-@deftypefn @t{(scheme base)} {} string=? [string@dots{}]
-Returns @code{#t} if all the @var{string}s are the same length and
-contain exactly the same characters in the same positions, otherwise
-returns @code{#f}.
+@end deffn
+@deffn  procedure make-list k
+@deffnx procedure make-list k fill
 
-Gambit's implementation of @code{string=?} extends the R7RS standard to
-accept any number of arguments.
+Returns a newly allocated list of @var{k} elements. If a second
+argument is given, then each element is initialized to @var{fill}.
+Otherwise the initial contents of each element is unspecified.
 
 @lisp
-(string=? "abcd" (string #\a #\b #\c #\d)) @result{} #t
-(string=? "abcd" "Abcd") @result{} #f
-(string=?) @result{} #t
-(string=? "a" "a" "a") @result{} #t
-(string=? "a" #\a) @result{} @r{@i{error}}
+(make-list 2 3) @result{} (3 3)
 @end lisp
-@end deftypefn
 
-@deftypefn @t{(scheme base)} {} string<? [string@dots{}]
-@deftypefnx @t{(scheme base)} {} string>? [string@dots{}]
-@deftypefnx @t{(scheme base)} {} string<=? [string@dots{}]
-@deftypefnx @t{(scheme base)} {} string>=? [string@dots{}]
-These predicates return @code{#t} if their arguments are (respectively):
-monotonically increasing, monotonically decreasing, monotonically
-non-decreasing, or monotonically non-increasing.  They are transitive.
+@end deffn
+@deffn procedure list obj @dots{}
 
-A pair of strings satisfies exactly one of @code{string<?},
-@code{string=?}, and @code{string>?}.  They may satisfy @code{string<=?}
-if and only if they do not satisfy @code{string>?}.  They may satisfy
-@code{string>=?} if and only if they do not satisfy @code{string<?}.
-
-@c These procedures compare strings in an implementation-defined way.
-@c One approach is to make them the lexicographic extensions to strings of
-@c the corresponding orderings on characters.  In that case, @code{string<?}
-@c would be the lexicographic ordering on strings induced by the ordering
-@c @code{char<?} on characters, and if the two strings differ in length but
-@c are the same up to the length of the shorter string, the shorter string
-@c would be considered to be lexicographically less than the longer string.
-@c However, it is also permitted to use the natural ordering imposed by the
-@c implementation's internal representation of strings, or a more complex
-@c locale-specific ordering.
-
-Gambit's implementations of these procedures extend the R7RS standard to
-accept any number of arguments.
+Returns a newly allocated list of its arguments.
 
 @lisp
-(string<=? "g" "g") @result{} #f
-(string>=? "g" "g") @result{} #f
-(string<?  "g" "g") @result{} #f
-(string>?  "g" "g") @result{} #f
-
-(string<? "G" "g")  @result{} #t
-(string>? "G" "g")  @result{} #f
-
-(string<? "gg" "g") @result{} #f
-(string>? "gg" "g") @result{} #t
+(list 'a (+ 3 4) 'c) @result{} (a 7 c)
+(list)               @result{} ()
 @end lisp
-@end deftypefn
 
-@deftypefn @t{(scheme char)} {} string-ci=? [string@dots{}]
-@deftypefnx @t{(scheme char)} {} string-ci<? [string@dots{}]
-@deftypefnx @t{(scheme char)} {} string-ci>? [string@dots{}]
-@deftypefnx @t{(scheme char)} {} string-ci<=? [string@dots{}]
-@deftypefnx @t{(scheme char)} {} string-ci>=? [string@dots{}]
-Each of these predicates behaves as if @code{string-foldcase} were
-applied to each of its arguments, and then that predicate's
-non-@samp{-ci} counterpart were applied to those case-folded arguments.
+@end deffn
+@deffn procedure length list
+
+Returns the length of @var{list}.
 
 @lisp
-(string-ci=?  "G" "g")  @result{} #t
-(string-ci<=? "G" "g")  @result{} #f
-
-(string-ci<?  "G" "g")  @result{} #f
-(string-ci>?  "G" "g")  @result{} #f
-
-(string-ci<?  "gg" "g") @result{} #f
-(string-ci>?  "gg" "g") @result{} #t
+(length '(a b c))         @result{} 3
+(length '(a (b) (c d e))) @result{} 3
+(length '())              @result{} 0
 @end lisp
-@end deftypefn
 
-@deftypefn @t{(scheme char)} {} string-upcase string
-@deftypefnx @t{(scheme char)} {} string-downcase string
-@deftypefnx @t{(scheme char)} {} string-foldcase string
-These procedures apply the Unicode full string uppercasing, lowercasing,
-and case-folding algorithms to their arguments and return the result.
-In certain cases, the result differs in length from the argument.
-If the result is equal to the argument in the sense of @code{string=?},
-the argument may be returned.  Note that language-sensitive mappings
-and foldings are not used.
+@end deffn
+@deffn procedure append list@dots{}
+
+The last argument, if there is one, can be of any type.
+
+Returns a list consisting of the elements of the first @var{list}
+followed by the elements of the other @var{lists}. If there are no
+arguments, the empty list is returned. If there is exactly one
+argument, it is returned. Otherwise the resulting list is always newly
+allocated, except that it shares structure with the last argument. An
+improper list results if the last argument is not a proper list.
 
 @lisp
-@set Etoc @U{0388}@U{03C4}@U{03BF}@U{03C2}
-@set etoc @U{03AD}@U{03C4}@U{03BF}@U{03C2}
-@set etoo @U{03AD}@U{03C4}@U{03BF}@U{03C3}
-@set ETOS @U{0388}@U{03A4}@U{039F}@U{03A3}
+(append '(x) '(y))       @result{} (x y)
+(append '(a) '(b c d))   @result{} (a b c d)
+(append '(a (b)) '((c))) @result{} (a (b) (c))
 
-(string-downcase "@value{Etoc}") @result{} "@value{etoc}"
-(string-foldcase "@value{Etoc}") @result{} "@value{etoo}"
-(string-upcase   "@value{Etoc}") @result{} "@value{ETOS}"
-
-(string-downcase "@value{ETOS}") @result{} "@value{etoo}"
-(string-foldcase "@value{ETOS}") @result{} "@value{etoo}"
+(append '(a b) '(c . d)) @result{} (a b c . d)
+(append '() 'a)          @result{} a
 @end lisp
-@end deftypefn
 
-@deftypefn @t{(scheme base)} {} string-append string@dots{}
+@end deffn
+@deffn procedure reverse list
 
-Returns a newly allocated string whose characters are the concatenation
-of the characters in the given @var{string}s.
+Returns a newly allocated list consisting of the elements of @var{list}
+in reverse order.
 
 @lisp
-(string-append)                     @result{} ""
-(string-append "")                  @result{} ""
-(string-append "hello" "world")     @result{} "helloworld"
-(string-append "hello" "" "world")  @result{} "helloworld"
-(string-append "hello " " world")   @result{} "hello  world"
-(string-append "hello" " " "world") @result{} "hello world"
+(reverse '(a b c))             @result{} (c b a)
+(reverse '(a (b c) d (e (f)))) @result{} ((e (f)) d (b c) a)
 @end lisp
-@end deftypefn
 
-@deftypefn @t{(scheme base)} {} string->list string [start [end]]
-The @code{string->list} procedure returns a newly allocated list of the
-characters of @var{string} between @var{start} and @var{end}.  Order is
-preserved.  @code{string->list} and @code{list->string} are inverses so
-far as @code{equal?} is concerned.
+@end deffn
+@deffn procedure list-tail list k
+
+It is an error if @var{list} has fewer than @var{k} elements.
+
+Returns the sublist of @var{list} obtained by omitting the first
+@var{k} elements. The @code{list-tail} procedure could be defined by
 
 @lisp
-(string->list "scheme")     @result{} (#\s #\c #\h #\e #\m #\e)
-(string->list "scheme" 1)   @result{} (#\c #\h #\e #\m #\e)
-(string->list "scheme" 1 5) @result{} (#\c #\h #\e #\m)
+(define list-tail
+  (lambda (x k)
+    (if (zero? k)
+        x
+        (list-tail (cdr x) (- k 1)))))
 @end lisp
-@end deftypefn
 
-@deftypefn @t{(scheme base)} {} list->string list
-@code{list->string} returns a newly allocated string formed from the
-elements in the list @var{list}.  Order is preserved.
-@code{list->string} and @code{string->list} and are inverses so far as
-@code{equal?} is concerned.
+@end deffn
+@deffn procedure list-ref list k
 
-@code{string->list} and @code{list->string} are inverses so far as
-@code{equal?} is concerned.
+The @var{list} argument can be circular, but it is an error if @var{list}
+has @var{k} or fewer elements.
 
-It is an error if any element of @var{list} is not a character.
+Returns the @var{k}th element of @var{list}. (This is the same as the
+car of @code{(list-tail }@var{list} @var{k}@code{)}.)
 
 @lisp
-(list->string (list #\s #\c #\h #\e #\m #\e)) @result{} "scheme"
+(list-ref '(a b c d) 2)                   @result{} c
+(list-ref '(a b c d) (exact (round 1.8))) @result{} c
 @end lisp
-@end deftypefn
 
-@c @deffn  procedure string-copy string
-@c @deffnx procedure string-copy string start
-@c @deffnx procedure string-copy string start end
+@end deffn
+@deffn procedure list-set! list k obj
 
-@c Returns a newly allocated copy of the part of the given @var{string}
-@c between @var{start} and @var{end}.
+It is an error if @var{k} is not a valid index of @var{list}.
 
-@c @end deffn
+The @code{list-set!} procedure stores @var{obj} in element @var{k} of
+@var{list}.
 
-@c @deffn  procedure string-copy! to at from
-@c @deffnx procedure string-copy! to at from start
-@c @deffnx procedure string-copy! to at from start end
+@lisp
+(let ((ls (list 'one 'two 'five!)))
+  (list-set! ls 2 'three)
+  ls) @result{} (one two three)
 
-@c It is an error if @var{at} is less than zero or greater than the length of
-@c @var{to}.  It is also an error if @code{(- (string-length }@var{to}@code{)
-@c }@var{at}@code{)} is less than @code{(- }@var{end} @var{start}@code{)}.
+(list-set! '(0 1 2) 1 "oops") @result{} @r{error}  ; constant list
+@end lisp
+@end deffn
+@deffn  procedure memq obj list
+@deffnx procedure memv obj list
+@deffnx procedure member obj list
+@deffnx procedure member obj list compare
 
-@c Copies the characters of string @var{from} between @var{start} and
-@c @var{end} to string @var{to}, starting at @var{at}.  The order in
-@c which characters are copied is unspecified, except that if the source
-@c and destination overlap, copying takes place as if the source is first
-@c copied into a temporary string and then into the destination.  This can
-@c be achieved without allocating storage by making sure to copy in the
-@c correct direction in such circumstances.
+These procedures return the first sublist of @var{list} whose car is
+@var{obj}, where the sublists of @var{list} are the non-empty lists
+returned by @code{(list-tail }@var{list} @var{k}@code{)} for @var{k}
+less than the length of @var{list}. If @var{obj} does not occur in
+@var{list}, then @code{#f} (not the empty list) is returned. The
+@code{memq} procedure uses @code{eq?} to compare @var{obj} with the
+elements of @var{list}, while @code{memv} uses @code{eqv?} and
+@code{member} uses @var{compare}, if given, and @code{equal?}
+otherwise.
 
-@c @lisp
-@c (define a "12345")
-@c (define b (string-copy "abcde"))
-@c (string-copy! b 1 a 0 2)
-@c b @result{} "a12de"
-@c @end lisp
+@lisp
+(memq 'a '(a b c))          @result{} (a b c)
+(memq 'b '(a b c))          @result{} (b c)
+(memq 'a '(b c d))          @result{} #f
+(memq (list 'a) '(b (a) c)) @result{} #f
+(member (list 'a)
+        '(b (a) c))         @result{} ((a) c)
+(member "B"
+        '("a" "b" "c")
+        string-ci=?)        @result{} ("b" "c")
+(memq 101 '(100 101 102))   @result{} @r{unspecified}
+(memv 101 '(100 101 102))   @result{} (101 102)
+@end lisp
 
-@c @end deffn
+@end deffn
+@deffn  procedure assq obj alist
+@deffnx procedure assv obj alist
+@deffnx procedure assoc obj alist
+@deffnx procedure assoc obj alist compare
 
-@c @deffn  procedure string-fill! string fill
-@c @deffnx procedure string-fill! string fill start
-@c @deffnx procedure string-fill! string fill start end
+It is an error if @var{alist} (for ``association list'') is not a list
+of pairs.
 
-@c It is an error if @var{fill} is not a character.
+These procedures find the first pair in @var{alist} whose car field
+is @var{obj}, and returns that pair.  If no pair in @var{alist} has
+@var{obj} as its car, then @code{#f} (not the empty list) is returned.
+The @code{assq} procedure uses @code{eq?} to compare @var{obj} with the
+car fields of the pairs in @var{alist}, while @code{assv} uses @code{eqv?}
+and @code{assoc} uses @var{compare} if given and @code{equal?} otherwise.
 
-@c The @code{string-fill!} procedure stores @var{fill} in the elements of
-@c @var{string} between @var{start} and @var{end}.
+@lisp
+(define e '((a 1) (b 2) (c 3)))
+(assq 'a e)                            @result{} (a 1)
+(assq 'b e)                            @result{} (b 2)
+(assq 'd e)                            @result{} #f
+(assq (list 'a) '(((a)) ((b)) ((c))))  @result{} #f
+(assoc (list 'a) '(((a)) ((b)) ((c)))) @result{} ((a))
+(assoc 2.0 '((1 1) (2 4) (3 9)) =)     @result{} (2 4)
+(assq 5 '((2 3) (5 7) (11 13)))        @result{} @r{unspecified}
+(assv 5 '((2 3) (5 7) (11 13)))        @result{} (5 7)
+@end lisp
 
-@c @end deffn
+@end deffn
+@deffn procedure list-copy obj
+
+Returns a newly allocated copy of the given @var{obj} if it is a list.
+Only the pairs themselves are copied; the cars of the result are the same
+(in the sense of @code{eqv?}) as the cars of @var{list}.  If @var{obj}
+is an improper list, so is the result, and the final cdrs are the same in
+the sense of @code{eqv?}.  An @var{obj} which is not a list is returned
+unchanged.  It is an error if @var{obj} is a circular list.
+
+@lisp
+(define a '(1 8 2 8)) ; a may be immutable
+(define b (list-copy a))
+(set-car! b 3)        ; b is mutable
+b @result{} (3 8 2 8)
+a @result{} (1 8 2 8)
+@end lisp
+
+@end deffn
