@@ -8,8 +8,8 @@ and @slanted{@command{gsc}}, the Gambit Scheme compiler.
 
 In its default configuration, Gambit provides a superset of the language
 described by @cite{The Revised@sup{7} Report on the Algorithmic Language
-Scheme}, also known as @slanted{@value{R7RS}}.  Gambit may be configured to
-conform to the @value{R4RS}, @value{R5RS}, @value{R7RS}, or
+Scheme}, also known as @slanted{@value{R7RS}}.  Gambit may be configured
+to conform to the @value{R4RS}, @value{R5RS}, @value{R7RS}, or
 @acronym{IEEE 1178-1990} Scheme standards.
 
 @command{gsi} provides a subset of @command{gsc}'s functionality.  The
@@ -20,8 +20,8 @@ compilation.
 @command{gsc} compiles programs by @dfn{transpiling} Scheme source code
 to source code for a target language, then optionally passing that
 transpiled code to tools like @command{gcc} for further processing
-(@pxref{,,,gcc, Using the GNU Compiler Collection}).  Supported
-target languages include C and JavaScript.
+(@pxref{,,,gcc, Using the GNU Compiler Collection}).  Supported target
+languages include C and JavaScript.
 
 The C target is the most mature, generating efficient C code that lets
 Gambit run on any platform for which a C compiler is available.  With

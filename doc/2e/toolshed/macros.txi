@@ -13,3 +13,11 @@
 @macro variv {name}
 @inlinefmtifelse{info,@var{\name\4},@inlinefmtifelse{plaintext,@var{\name\4},@var{\name\@sub{4}}}}
 @end macro
+
+@macro exception {kind}
+@arrow{} @r{@i{\kind\ exception}}
+@end macro
+
+@macro void
+@r{@i{void}}
+@end macro

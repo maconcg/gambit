@@ -43,14 +43,16 @@ Returns the number of characters in @var{string}.
 @end deftypefn
 
 @deftypefn @t{(scheme base)} @/ string-ref string k
-Returns the character at index @var{k} of @var{string}.
-
-It is an error if @var{k} is not a valid index of @var{string}.
+Returns the character at index @var{k} of @var{string}.  If @var{k} is
+not a valid index of @var{string}, an exception that satisfies
+@code{range-exception?} is raised.
 
 @lisp
 (define s "off by one")
+
 (string-ref "zero-origin indexing" 0)   @result{} #\z
-(string-ref s (- (string-length s) 1))) @result{} #\e
+(string-ref s (- (string-length s) 1))  @result{} #\e
+(string-ref s (string-length s))        @exception{range}
 @end lisp
 @end deftypefn
 
@@ -178,29 +180,33 @@ characters from index @var{start} (inclusive) through index @var{end}
 (exclusive).
 
 Order is preserved.  @code{string->list} and @code{list->string} are
-inverses so far as @code{equal?} is concerned.
-
-It is an error if either @var{start} or @var{end} is not a valid index
-of @var{string}.
+inverses so far as @code{equal?} is concerned.  If either @var{start} or
+@var{end} is not a valid index of @var{string}, an exception that
+satisfies @code{range-exception?} is raised.
 
 @lisp
 (string->list "scheme")     @result{} (#\s #\c #\h #\e #\m #\e)
 (string->list "scheme" 1)   @result{} (#\c #\h #\e #\m #\e)
+(string->list "scheme" 6)   @result{} ()
 (string->list "scheme" 1 5) @result{} (#\c #\h #\e #\m)
+(string->list "scheme" 1 5) @result{} (#\c #\h #\e #\m)
+(string->list "scheme" 7)   @exception{range}
+(string->list "scheme" 3 7) @exception{range}
 @end lisp
 @end deftypefn
 
 @deftypefn @t{(scheme base)} @/ list->string list
-Returns a newly allocated string formed from the elements in the list
-@var{list}.  Order is preserved.  @code{list->string} and
-@code{string->list} and are inverses so far as @code{equal?} is
-concerned.
+Returns a newly allocated string formed from the elements in @var{list}.
 
-It is an error if any element of @var{list} is not a character.
+Order is preserved.  @code{list->string} and @code{string->list} and are
+inverses so far as @code{equal?} is concerned.  If any element of
+@var{list} is not a character, an exception that satisfies @code{type?}
+is raised.
 
 @lisp
-(list->string (list #\s #\c #\h #\e #\m #\e)) @result{} "scheme"
-(list->string (list))                         @result{} ""
+(list->string (list))                       @result{} ""
+(list->string '(#\s #\c #\h #\e #\m #\e))   @result{} "scheme"
+(list->string '(#\s #\c #\h #\e #\m #\e 2)) @exception{type}
 @end lisp
 @end deftypefn
 
@@ -213,17 +219,23 @@ of @var{string} from index @var{start} (inclusive) through the end of
 of @var{string} from index @var{start} (inclusive) to index @var{end}
 (exclusive).
 
-It is an error either @var{start} or @var{end} is not a valid index of
-@var{string}.
+Order is preserved.  @code{string->list} and @code{list->string} and are
+inverses so far as @code{equal?} is concerned.  If either @var{start} or
+@var{end} is not a valid index of @var{string}, an exception that
+satisfies @code{range-exception?} is raised.
 
 @lisp
 (define s "dwim")
-(string-copy s)                                  @result{} "dwim"
-(string-copy s 1)                                @result{} "wim"
-(string-copy s 1 1)                              @result{} ""
-(string-copy s 0 (string-length s))              @result{} "dwim"
-(eq?      s (string-copy s 0 (string-length s))) @result{} #f
-(string=? s (string-copy s 0 (string-length s))) @result{} #t
+
+(string-copy s)                     @result{} "dwim"
+(string-copy s 1)                   @result{} "wim"
+(string-copy s 1 1)                 @result{} ""
+(string-copy s 0 (string-length s)) @result{} "dwim"
+(eqv?     s (string-copy s))        @result{} #f
+(string=? s (string-copy s))        @result{} #t
+(string-copy s 6)                   @exception{range}
+(string-copy s -1 3)                @exception{range}
+(string-copy s 2 5)                 @exception{range}
 @end lisp
 @end deftypefn
 
@@ -235,15 +247,17 @@ form, the value of @samp{(string-copy @slanted{from} @slanted{start})}
 is copied.  In the five-argument form, the value of @samp{(string-copy
 @slanted{from} @slanted{start} @slanted{end})} is copied.
 
-It is an error if @var{at} is less than zero or greater than the length
-of @var{to}.  It is also an error if @samp{(- (string-length
+If @var{at} is not a valid index of @var{to}, an exception that
+satisfies @code{range-exception?} is raised.  If @samp{(- (string-length
 @slanted{to}) @slanted{at})} is less than @samp{(- @slanted{end}
-@slanted{start})}.  In other words: the copied substring must not
-overflow beyond the end of @var{to}.
+@slanted{start})}, an exception that satisfies @code{range-exception?}
+is raised (in other words, the copied substring must not overflow beyond
+the end of @var{to}).
 
 @lisp
 (define a "12345")
 (define b (string-copy "abcde"))
+
 (string-copy! b 1 a 0 2)
 b @result{} "a12de"
 @end lisp
@@ -261,6 +275,7 @@ form, the elements from index @var{start} (inclusive) to index @var{end}
 (define a (string-copy "abcde"))
 (define b (string-copy a))
 (define c (string-copy b))
+
 (string-fill! a #\0)
 (string-fill! b #\0 3)
 (string-fill! c #\0 3 4)
@@ -274,15 +289,18 @@ c @result{} "abc0e"
 Mutates @var{string} by storing @var{char} in element @var{k} of
 @var{string}.
 
-It is an error if @var{k} is not a valid index of @var{string}.
+If @var{string} is not a mutable string, an exception that satisfies
+@code{type-exception?} is raised.  If @var{k} is not a valid index of
+@var{string}, an exception that satisfies @code{range-exception?} is
+raised.
 
 @lisp
 (define (f) (make-string 3 #\*))
 (define (g) "***")
-(string-set! (f) 0 #\?) @result{} @r{@i{unspecified}}
-(string-set! (g) 0 #\?) @result{} @r{@i{error}}
-(string-set! (symbol->string 'immutable)
-             0
-             #\?) @result{} @r{@i{error}}
+
+(string-set! (f) 0 #\?) @slanted{;; legal, but useless}
+(string-set! (g) 0 #\?) @slanted{;; r7rs says this is an error}
+(string-set! (f) 5 #\?)                         @exception{range}
+(string-set! (symbol->string 'immutable) 0 #\?) @exception{type}
 @end lisp
 @end deftypefn

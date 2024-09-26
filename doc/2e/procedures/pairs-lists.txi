@@ -19,54 +19,70 @@ Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
 @code{eqv?}) from every existing object.
 
 @lisp
-(cons 'a '())        @result{} (a)
-(cons '(a) '(b c d)) @result{} ((a) b c d)
-(cons "a" '(b c))    @result{} ("a" b c)
-(cons 'a 3)          @result{} (a . 3)
-(cons '(a b) 'c)     @result{} ((a b) . c)
+(cons 'a '())                      @result{} (a)
+(cons '(a) '(b c d))               @result{} ((a) b c d)
+(cons "a" '(b c))                  @result{} ("a" b c)
+(cons 'a 3)                        @result{} (a . 3)
+(cons '(a b) 'c)                   @result{} ((a b) . c)
+(eq? cons (cdr (cons cons cons)))  @result{} #t
+(eqv?   (cons + car) (cons + car)) @result{} #f
+(equal? (cons + car) (cons + car)) @result{} #t
 @end lisp
 @end deftypefn
 
 @deftypefn @t{(scheme base)} @/ car pair
 @tindex empty list
-Returns the contents of the car field of @var{pair}.  It is an error to
-take the car of the empty list.
+Returns the contents of the cdr field of @var{pair}.  If an attempt is
+made to take the car of the empty list, an exception that satisfies
+@code{type-exception?} is raised.
 
 @lisp
 (car '(a b c))     @result{} a
 (car '((a) b c d)) @result{} (a)
 (car '(1 . 2))     @result{} 1
-(car '())          @result{} @r{@i{error}}
+(car '())          @exception{type}
 @end lisp
 @end deftypefn
 
 @deftypefn @t{(scheme base)} @/ cdr pair
-Returns the contents of the cdr field of @var{pair}.  It is an error to
-take the cdr of the empty list.
+Returns the contents of the cdr field of @var{pair}.  If an attempt is
+made to take the cdr of the empty list, an exception that satisfies
+@code{type-exception?} is raised.
 
 @lisp
+(cdr '(a b c))     @result{} (b c)
 (cdr '((a) b c d)) @result{} (b c d)
 (cdr '(1 . 2))     @result{} 2
-(cdr '())          @result{} @r{@i{error}}
+(cdr '())          @exception{type}
 @end lisp
 @end deftypefn
 
-@c @deffn procedure set-car! pair obj
+@deftypefn @t{(scheme base)} @/ set-car! pair obj
+Mutates @var{pair} by storing @var{obj} in the car field of @var{pair}.
 
-@c Stores @var{obj} in the car field of @var{pair}.
+@lisp
+(define (f) (list 'not-a-constant-list))
+(define (g) '(constant-list))
 
-@c @lisp
-@c (define (f) (list 'not-a-constant-list))
-@c (define (g) '(constant-list))
-@c (set-car! (f) 3) @result{} @r{unspecified}
-@c (set-car! (g) 3) @result{} @r{error}
-@c @end lisp
-@c @end deffn
-@c @deffn procedure set-cdr! pair obj
+(set-car! (f) 3) @slanted{;; legal, but useless}
+(f)              @result{} (not-a-constant-list)
+(set-car! (g) 3) @slanted{;; r7rs says this is an error}
+@end lisp
+@end deftypefn
 
-@c Stores @var{obj} in the cdr field of @var{pair}.
+@deftypefn @t{(scheme base)} @/ set-cdr! pair obj
+Mutates @var{pair} by storing @var{obj} in the cdr field of @var{pair}.
 
-@c @end deffn
+@lisp
+(define (f) (list 'not-a-constant-list))
+(define (g) '(constant-list))
+
+(set-cdr! (f) 3) @slanted{;; legal, but useless}
+(f)              @result{} (not-a-constant-list)
+(set-cdr! (g) 3) @slanted{;; r7rs says this is an error}
+@end lisp
+@end deftypefn
+
 @c @deffn  procedure caar pair
 @c @deffnx procedure cadr pair
 @c @deffnx procedure cdar pair
