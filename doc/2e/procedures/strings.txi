@@ -283,6 +283,9 @@ through the end of @var{string} are overwritten.  In the four-argument
 form, the elements from index @var{start} (inclusive) to index @var{end}
 (exclusive) are overwritten.
 
+If either @var{start} or @var{end} is not a valid index of @var{string},
+an exception that satisfies @code{range-exception?} is raised.
+
 @lisp
 (define a (string-copy "abcde"))
 (define b (string-copy a))
