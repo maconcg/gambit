@@ -20,7 +20,7 @@ compilation.
 @command{gsc} compiles programs by @dfn{transpiling} Scheme source code
 to source code for a target language, then optionally passing that
 transpiled code to tools like @command{gcc} for further processing
-(@pxref{Top,,,gcc, Using the GNU Compiler Collection}).  Supported
+(@pxref{,,,gcc, Using the GNU Compiler Collection}).  Supported
 target languages include C and JavaScript.
 
 The C target is the most mature, generating efficient C code that lets

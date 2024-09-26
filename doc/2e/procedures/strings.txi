@@ -137,16 +137,19 @@ that language-sensitive mappings and foldings are not used.
 @set WeiB Wei@U{00DF}
 @set weiB wei@U{00DF}
 @lisp
-(string-downcase "@value{WeiB}") @result{} "@value{weiB}"
-(string-foldcase "@value{WeiB}") @result{} "weiss"
-(string-upcase   "@value{WeiB}") @result{} "WEISS"
+(string-downcase "@value{WeiB}")  @result{} "@value{weiB}"
+(string-foldcase "@value{WeiB}")  @result{} "weiss"
+(string-upcase   "@value{WeiB}")  @result{} "WEISS"
 
-(string-downcase "@value{Etoc}") @result{} "@value{etoc}"
-(string-foldcase "@value{Etoc}") @result{} "@value{etoo}"
-(string-upcase   "@value{Etoc}") @result{} "@value{ETOS}"
+(string-downcase "WEISS") @result{} "weiss"
+(string-foldcase "WEISS") @result{} "weiss"
 
-(string-downcase "@value{ETOS}") @result{} "@value{etoo}"
-(string-foldcase "@value{ETOS}") @result{} "@value{etoo}"
+(string-downcase "@value{Etoc}")  @result{} "@value{etoc}"
+(string-foldcase "@value{Etoc}")  @result{} "@value{etoo}"
+(string-upcase   "@value{Etoc}")  @result{} "@value{ETOS}"
+
+(string-downcase "@value{ETOS}")  @result{} "@value{etoo}"
+(string-foldcase "@value{ETOS}")  @result{} "@value{etoo}"
 @end lisp
 @end deftypefn
 
