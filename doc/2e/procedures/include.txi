@@ -1,3 +1,4 @@
 @lowersections
 @include procedures/strings.txi
+@include procedures/pairs-lists.txi
 @raisesections

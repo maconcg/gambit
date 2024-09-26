@@ -8,7 +8,7 @@ programs: @slanted{@command{gsi}}, the Gambit Scheme interpreter, and
 
 In its default configuration, Gambit provides a superset of the language
 described by @cite{The Revised@sup{7} Report on the Algorithmic Language
-Scheme}, also known as @acronym{R7RS}.  Gambit may be configured to
+Scheme}, also known as @slanted{@value{R7RS}}.  Gambit may be configured to
 conform to the @value{R4RS}, @value{R5RS}, @value{R7RS}, or
 @acronym{IEEE 1178-1990} Scheme standards.
 

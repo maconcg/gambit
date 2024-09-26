@@ -59,8 +59,8 @@ Returns @code{#t} if all the @var{string}s are the same length and
 contain exactly the same characters in the same positions, otherwise
 returns @code{#f}.
 
-Gambit's implementation of @code{string=?} extends the @value{R7RS} standard to
-accept any number of arguments.
+Gambit extends the @value{R7RS} description of @code{string=?} to accept
+any number of arguments.
 
 @lisp
 (string=? "abcd" (string #\a #\b #\c #\d)) @result{} #t
@@ -84,7 +84,7 @@ A pair of strings satisfies exactly one of @code{string<?},
 if and only if they do not satisfy @code{string>?}.  They may satisfy
 @code{string>=?} if and only if they do not satisfy @code{string<?}.
 
-Gambit's implementations of these procedures extend the @value{R7RS} standard to
+Gambit extends the @value{R7RS} descriptions of these procedures to
 accept any number of arguments.
 
 @lisp
@@ -134,7 +134,7 @@ that language-sensitive mappings and foldings are not used.
 @set etoc @U{03AD}@U{03C4}@U{03BF}@U{03C2}
 @set etoo @U{03AD}@U{03C4}@U{03BF}@U{03C3}
 @set ETOS @U{0388}@U{03A4}@U{039F}@U{03A3}
-@set WeiB wei@U{00DF}
+@set WeiB Wei@U{00DF}
 @set weiB wei@U{00DF}
 @lisp
 (string-downcase "@value{WeiB}") @result{} "@value{weiB}"

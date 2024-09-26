@@ -2,18 +2,6 @@
 @clear txicodevaristt
 @syncodeindex pg cp
 
-@iftex
-@set R7RS @acronym{R@sup{7}RS}
-@set R5RS @acronym{R@sup{5}RS}
-@set R4RS @acronym{R@sup{4}RS}
-@end iftex
-
-@ifnottex
-@set R7RS @acronym{R7RS}
-@set R5RS @acronym{R5RS}
-@set R4RS @acronym{R4RS}
-@end ifnottex
-
 @copying
 This is the Gambit Scheme manual, @value{EDITION} edition.  It documents
 Gambit v@value{VERSION} (@value{UPDATED}).
