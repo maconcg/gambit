@@ -5,20 +5,32 @@
 Returns @code{#t} if @var{obj} is a string.
 
 @lisp
-(string? "")  @result{} #t
-(string? #\a) @result{} #f
-(string? "a") @result{} #t
+(string? "")                     @result{} #t
+(string? #\a)                    @result{} #f
+(string? "a")                    @result{} #t
+(string? string)                 @result{} #f
+(string? '(#\c #\h #\a #\r #\s)) @result{} #f
+(string? #(#\c #\h #\a #\r #\s)) @result{} #f
 @end lisp
 @end deftypefn
 
 @deftypefn @t{(scheme base)} @/ make-string k [char]
+@c Should this document that Gambit defaults char to \x0?
 Returns a newly allocated string of length @var{k}.  In the one-argument
 form, the contents of the string are unspecified.  In the two-argument
 form, each character is initialized to @var{char}.
 
+If @var{k} is not an exact integer, an exception that satisfies
+@code{type-exception?} is raised.  If @var{k} is a negative exact
+integer, an exception that satisfies @code{range-exception?} is raised.
+
 @lisp
+@c (string=? "\x0;" (make-string 1)) @result{} #t
+(make-string 0)                 @result{} ""
 (string-length (make-string 4)) @result{} 4
 (make-string 4 #\g)             @result{} "gggg"
+(make-string 4 "g")             @exception{type}
+(make-string -1)                @exception{range}
 @end lisp
 @end deftypefn
 
@@ -136,8 +148,8 @@ that language-sensitive mappings and foldings are not used.
 @set etoc @U{03AD}@U{03C4}@U{03BF}@U{03C2}
 @set etoo @U{03AD}@U{03C4}@U{03BF}@U{03C3}
 @set ETOS @U{0388}@U{03A4}@U{039F}@U{03A3}
-@set WeiB Wei@U{00DF}
-@set weiB wei@U{00DF}
+@set WeiB Wei@ss{}
+@set weiB wei@ss{}
 @lisp
 (string-downcase "@value{WeiB}")  @result{} "@value{weiB}"
 (string-foldcase "@value{WeiB}")  @result{} "weiss"
@@ -187,9 +199,9 @@ satisfies @code{range-exception?} is raised.
 @lisp
 (string->list "scheme")     @result{} (#\s #\c #\h #\e #\m #\e)
 (string->list "scheme" 1)   @result{} (#\c #\h #\e #\m #\e)
+(string->list "scheme" 2 6) @result{} (#\h #\e #\m #\e)
 (string->list "scheme" 6)   @result{} ()
-(string->list "scheme" 1 5) @result{} (#\c #\h #\e #\m)
-(string->list "scheme" 1 5) @result{} (#\c #\h #\e #\m)
+(string->list "scheme" 6 6) @result{} ()
 (string->list "scheme" 7)   @exception{range}
 (string->list "scheme" 3 7) @exception{range}
 @end lisp
@@ -300,7 +312,7 @@ raised.
 
 (string-set! (f) 0 #\?) @slanted{;; legal, but useless}
 (string-set! (g) 0 #\?) @slanted{;; r7rs says this is an error}
-(string-set! (f) 5 #\?)                         @exception{range}
 (string-set! (symbol->string 'immutable) 0 #\?) @exception{type}
+(string-set! (f) 5 #\?)                         @exception{range}
 @end lisp
 @end deftypefn
