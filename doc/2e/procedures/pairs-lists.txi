@@ -36,7 +36,7 @@ take the car of the empty list.
 (car '(a b c))     @result{} a
 (car '((a) b c d)) @result{} (a)
 (car '(1 . 2))     @result{} 1
-(car '())          @result{} @result{} @r{@i{error}}
+(car '())          @result{} @r{@i{error}}
 @end lisp
 @end deftypefn
 
@@ -47,7 +47,7 @@ take the cdr of the empty list.
 @lisp
 (cdr '((a) b c d)) @result{} (b c d)
 (cdr '(1 . 2))     @result{} 2
-(cdr '())          @result{} @result{} @r{@i{error}}
+(cdr '())          @result{} @r{@i{error}}
 @end lisp
 @end deftypefn
 

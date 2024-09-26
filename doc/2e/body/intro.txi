@@ -2,9 +2,9 @@
 @chapter Introduction
 
 The Gambit programming system is a complete implementation of the Scheme
-language aimed at portability, speed, and power.  It comprises two main
-programs: @slanted{@command{gsi}}, the Gambit Scheme interpreter, and
-@slanted{@command{gsc}}, the Gambit Scheme compiler.
+language aimed at portability, reliability, and speed.  It comprises two
+main programs: @slanted{@command{gsi}}, the Gambit Scheme interpreter,
+and @slanted{@command{gsc}}, the Gambit Scheme compiler.
 
 In its default configuration, Gambit provides a superset of the language
 described by @cite{The Revised@sup{7} Report on the Algorithmic Language
