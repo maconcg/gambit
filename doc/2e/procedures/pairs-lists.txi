@@ -40,7 +40,7 @@ take the car of the empty list.
 @end lisp
 @end deftypefn
 
-@deftypefn procedure cdr pair
+@deftypefn @t{(scheme base)} @/ cdr pair
 Returns the contents of the cdr field of @var{pair}.  It is an error to
 take the cdr of the empty list.
 
