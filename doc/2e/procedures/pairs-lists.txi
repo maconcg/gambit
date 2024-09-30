@@ -13,7 +13,7 @@ Returns @code{#t} if @var{obj} is a pair.
 @end lisp
 @end deftypefn
 
-@deftypefn @t{(scheme base)} @/ cons @vari{obj} @varii{obj}
+@deftypefn @t{(scheme base)} @/ cons @pari{obj} @parii{obj}
 Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
 @varii{obj}.  The pair is guaranteed to be different (in the sense of
 @code{eqv?}) from every existing object.
@@ -83,203 +83,258 @@ Mutates @var{pair} by storing @var{obj} in the cdr field of @var{pair}.
 @end lisp
 @end deftypefn
 
-@c @deffn  procedure caar pair
-@c @deffnx procedure cadr pair
-@c @deffnx procedure cdar pair
-@c @deffnx procedure cddr pair
+@deftypefn  @t{(scheme cxr)} @/ caar pair
+@deftypefnx @t{(scheme cxr)} @/ cadr pair
+@deftypefnx @t{(scheme cxr)} @/ cdar pair
+@deftypefnx @t{(scheme cxr)} @/ cddr pair
+@deftypefnx @t{(scheme cxr)} @/ caaar pair
+@deftypefnx @t{(scheme cxr)} @/ caadr pair
+@deftypefnx @t{(scheme cxr)} @/ cadar pair
+@deftypefnx @t{(scheme cxr)} @/ caddr pair
+@deftypefnx @t{(scheme cxr)} @/ cdaar pair
+@deftypefnx @t{(scheme cxr)} @/ cdadr pair
+@deftypefnx @t{(scheme cxr)} @/ cddar pair
+@deftypefnx @t{(scheme cxr)} @/ cdddr pair
+@deftypefnx @t{(scheme cxr)} @/ caaaar pair
+@deftypefnx @t{(scheme cxr)} @/ caaadr pair
+@deftypefnx @t{(scheme cxr)} @/ caadar pair
+@deftypefnx @t{(scheme cxr)} @/ caaddr pair
+@deftypefnx @t{(scheme cxr)} @/ cadaar pair
+@deftypefnx @t{(scheme cxr)} @/ cadadr pair
+@deftypefnx @t{(scheme cxr)} @/ caddar pair
+@deftypefnx @t{(scheme cxr)} @/ cadddr pair
+@deftypefnx @t{(scheme cxr)} @/ cdaaar pair
+@deftypefnx @t{(scheme cxr)} @/ cdaadr pair
+@deftypefnx @t{(scheme cxr)} @/ cdadar pair
+@deftypefnx @t{(scheme cxr)} @/ cdaddr pair
+@deftypefnx @t{(scheme cxr)} @/ cddaar pair
+@deftypefnx @t{(scheme cxr)} @/ cddadr pair
+@deftypefnx @t{(scheme cxr)} @/ cdddar pair
+@deftypefnx @t{(scheme cxr)} @/ cddddr pair
 
-@c These procedures are compositions of @code{car} and @code{cdr} as
-@c follows:
+These procedures are compositions of @code{car} and @code{cdr}.
 
-@c @lisp
-@c (define (caar x) (car (car x)))
-@c (define (cadr x) (car (cdr x)))
-@c (define (cdar x) (cdr (car x)))
-@c (define (cddr x) (cdr (cdr x)))
-@c @end lisp
+@lisp
+(define l '((a b) (c) d (e (f) g)))
+(define circle (circular-list 'a 'b 'c))
 
-@c @end deffn
-@c @deffn  {cxr library procedure} caaar @var{pair}
-@c @deffnx {cxr library procedure} caadr @var{pair}
-@c @end deffn
-@c @deffn  {cxr library procedure} cdddar @var{pair}
-@c @deffnx {cxr library procedure} cddddr @var{pair}
+(cadr l)             @result{} (c)
+(car (cdr l))        @result{} (c)
+(cddr '(a b c . d))  @result{} (c . d)
+(cdddr '(a b c . d)) @result{} d
+(cdadr l)            @result{} ()
+(cdar (cdr l))       @result{} ()
+(caar (cdr l))       @result{} c
+(car (car (cdr l)))  @result{} c
+(cadddr l)           @result{} (e (f) g)
+(caaadr l)           @exception{type}
 
-@c These twenty-four procedures are further compositions of @code{car} and
-@c @code{cdr} on the same principles. For example, @code{caddr} could be
-@c defined by
+(car circle)         @result{} a
+(cadr circle)        @result{} b
+(caddr circle)       @result{} c
+(cadddr circle)      @result{} a
+@end lisp
+@end deftypefn
 
-@c @lisp
-@c (define caddr (lambda (x) (car (cdr (cdr x))))).
-@c @end lisp
+@cindex empty list
+@deftypefn @t{(scheme base)} @/ null? obj
+Returns @code{#t} if @var{obj} is the empty list.
 
-@c Arbitrary compositions up to four deep are provided.
+@lisp
+(null? '())    @result{} #t
+(null? (list)) @result{} #t
+(null? #\null) @result{} #f
+(null? null?)  @result{} #f
+(null? #f)     @result{} #f
+(null? 0)      @result{} #f
+(null? "")     @result{} #f
+(null? #())    @result{} #f
+(null? (void)) @result{} #f
+@end lisp
+@end deftypefn
 
-@c @end deffn
-@c @deffn procedure null? obj
+@deftypefn @t{(scheme base)} @/ list? obj
+Returns @code{#t} if @var{obj} is a list (sometimes referred to as a
+@dfn{proper list}).  By definition, a list of finite length is
+terminated by the empty list.
 
-@c @cindex empty list
+@lisp
+(list? '(a b c))     @result{} #t
+(list? '())          @result{} #t
+(list? '(a . b))     @result{} #f
+(let ((x (list 'a)))
+  (set-cdr! x x)
+  (list? x))         @result{} #f
+(list? list)         @result{} #f
+(list? "list")       @result{} #f
+(list? #(0 1 2))     @result{} #f
+@end lisp
+@end deftypefn
 
-@c Returns @code{#t} if @var{obj} is the empty list,
-@c otherwise returns @code{#f}.
+@deftypefn  @t{(scheme base)} @/ make-list k
+@deftypefnx @t{(scheme base)} @/ make-list k fill
+Returns a newly allocated list of @var{k} elements.  In the one-argument
+form, each element is initialized to a default value.  In the
+two-argument form, each element is initialized to the value of
+@var{fill}.
 
-@c @end deffn
-@c @deffn procedure list? obj
+The default value used by the one-argument form may change in a future
+version.  Programs that require a specific initilization value should
+use the two-argument form.
 
-@c Returns @code{#t} if @var{obj} is a list. Otherwise, it returns
-@c @code{#f}. By definition, all lists have finite length and are
-@c terminated by the empty list.
+@lisp
+(make-list 0)        @result{} ()
+(make-list 3 (list)) @result{} (() () ())
+@end lisp
+@end deftypefn
 
-@c @lisp
-@c (list? '(a b c))     @result{} #t
-@c (list? '())          @result{} #t
-@c (list? '(a . b))     @result{} #f
-@c (let ((x (list 'a)))
-@c   (set-cdr! x x)
-@c   (list? x))         @result{} #f
-@c @end lisp
+@deftypefn @t{(scheme base)} @/ list obj@dots{}
+Returns a newly allocated list consisting of its arguments.
 
-@c @end deffn
-@c @deffn  procedure make-list k
-@c @deffnx procedure make-list k fill
+@lisp
+(list 'a (+ 3 4) 'c)      @result{} (a 7 c)
+(list)                    @result{} ()
+((car (list list)) 'list) @result{} (list)
+@end lisp
+@end deftypefn
 
-@c Returns a newly allocated list of @var{k} elements. If a second
-@c argument is given, then each element is initialized to @var{fill}.
-@c Otherwise the initial contents of each element is unspecified.
+@deftypefn @t{(scheme base)} @/ length list
+Returns the length of @var{list}.
 
-@c @lisp
-@c (make-list 2 3) @result{} (3 3)
-@c @end lisp
+@lisp
+(define circle (circular-list 'x 'y 'z))
 
-@c @end deffn
-@c @deffn procedure list obj @dots{}
+(length '(a b c))            @result{} 3
+(length '(a (b) (c d e)))    @result{} 3
+(length '())                 @result{} 0
+(length (cdr (make-list 5))) @result{} 4
+(length circle)              @arrow{} @i{infinite loop}
+@end lisp
+@end deftypefn
 
-@c Returns a newly allocated list of its arguments.
+@deftypefn @t{(scheme base)} @/ append list@dots{} [obj]
+The zero-argument form returns the empty list.  The one-argument form
+returns its argument, whatever that argument's type.  Each argument
+except the last, if present, must be a list.
 
-@c @lisp
-@c (list 'a (+ 3 4) 'c) @result{} (a 7 c)
-@c (list)               @result{} ()
-@c @end lisp
+With two or more arguments, the returned value consists of the elements
+of each list@dots{}, in order (excluding each @var{list}'s terminating
+empty list).  A list is returned if @var{obj} is a list; an improper
+list is returned if if @var{obj} is not a list.  The returned value is
+newly allocated, except that it shares structure with the last argument,
+@var{obj}.
 
-@c @end deffn
-@c @deffn procedure length list
+@lisp
+(define l (list 'f 'g 'h))
 
-@c Returns the length of @var{list}.
+(eq?    l (append (append) l)) @result{} #t
+(eq?    l (append l (append))) @result{} #f
+(equal? l (append l (append))) @result{} #t
 
-@c @lisp
-@c (length '(a b c))         @result{} 3
-@c (length '(a (b) (c d e))) @result{} 3
-@c (length '())              @result{} 0
-@c @end lisp
+(append '(x) '(y))              @result{} (x y)
+(append '(a) '(b c d))          @result{} (a b c d)
+(append '(a (b)) '((c)))        @result{} (a (b) (c))
 
-@c @end deffn
-@c @deffn procedure append list@dots{}
+(append '(a b) '(c . d))        @result{} (a b c . d)
+(append '() 'a)                 @result{} a
+@end lisp
+@end deftypefn
 
-@c The last argument, if there is one, can be of any type.
+@deftypefn @t{(scheme base)} @/ reverse list
+Returns a newly allocated list consisting of the elements of @var{list}
+in reverse order (excluding the terminating empty list).
 
-@c Returns a list consisting of the elements of the first @var{list}
-@c followed by the elements of the other @var{lists}. If there are no
-@c arguments, the empty list is returned. If there is exactly one
-@c argument, it is returned. Otherwise the resulting list is always newly
-@c allocated, except that it shares structure with the last argument. An
-@c improper list results if the last argument is not a proper list.
+@lisp
+(define l (list 'a 'b 'c))
 
-@c @lisp
-@c (append '(x) '(y))       @result{} (x y)
-@c (append '(a) '(b c d))   @result{} (a b c d)
-@c (append '(a (b)) '((c))) @result{} (a (b) (c))
+(eq?    l (reverse (reverse l))) @result{} #f
+(equal? l (reverse (reverse l))) @result{} #t
 
-@c (append '(a b) '(c . d)) @result{} (a b c . d)
-@c (append '() 'a)          @result{} a
-@c @end lisp
+(reverse '(a b c))             @result{} (c b a)
+(reverse '(a (b c) d (e (f)))) @result{} ((e (f)) d (b c) a)
+@end lisp
+@end deftypefn
 
-@c @end deffn
-@c @deffn procedure reverse list
+@deftypefn @t{(scheme base)} @/ list-tail list k
+Returns the sublist of @var{list} obtained by omitting the first
+@var{k} elements. The @code{list-tail} procedure could be defined by
 
-@c Returns a newly allocated list consisting of the elements of @var{list}
-@c in reverse order.
+It is an error if @var{list} has fewer than @var{k} elements.
 
-@c @lisp
-@c (reverse '(a b c))             @result{} (c b a)
-@c (reverse '(a (b c) d (e (f)))) @result{} ((e (f)) d (b c) a)
-@c @end lisp
+@lisp
+(define l '(a b c))
 
-@c @end deffn
-@c @deffn procedure list-tail list k
+(list-tail l 1) @result{} (b c)
+(list-tail l 3) @result{} ()
+(list-tail l 4) @exception{range}
+@end lisp
+@end deftypefn
 
-@c It is an error if @var{list} has fewer than @var{k} elements.
+@deftypefn @t{(scheme base)} @/ list-ref list k
+Returns element @var{k} of @var{list}.  Equivalent to @samp{(car
+(list-tail @slanted{list} @slanted{k}))}.  The @var{list} argument may
+be circular.
 
-@c Returns the sublist of @var{list} obtained by omitting the first
-@c @var{k} elements. The @code{list-tail} procedure could be defined by
+@lisp
+(list-ref '(a b c d) 2)                   @result{} c
+(list-ref '(a b c d) (exact (round 1.8))) @result{} c
+(list-ref (circular-list 'a 'b 'c) 4) @slanted{;; r7rs says this is an error}
+@end lisp
+@end deftypefn
 
-@c @lisp
-@c (define list-tail
-@c   (lambda (x k)
-@c     (if (zero? k)
-@c         x
-@c         (list-tail (cdr x) (- k 1)))))
-@c @end lisp
+@deftypefn @t{(scheme base)} @/ list-set! list k obj
+Mutates @var{list} by storing @var{obj} in element @var{k} of
+@var{list}.  It is an error if @var{k} is not a valid index of
+@var{list}.
 
-@c @end deffn
-@c @deffn procedure list-ref list k
+@lisp
+(let ((ls (list 'one 'two 'five!)))
+  (list-set! ls 2 'three)
+  ls) @result{} (one two three)
 
-@c The @var{list} argument can be circular, but it is an error if @var{list}
-@c has @var{k} or fewer elements.
+(list-set! '(0 1 2) 1 "oops") @slanted{;; r7rs says this is an error}
+@end lisp
+@end deftypefn
 
-@c Returns the @var{k}th element of @var{list}. (This is the same as the
-@c car of @code{(list-tail }@var{list} @var{k}@code{)}.)
+@deftypefn  @t{(scheme base)} @/ memq obj list
+@deftypefnx @t{(scheme base)} @/ memv obj list
+@deftypefnx @t{(scheme base)} @/ member obj list [compare]
+Each procedure successively applies some procedure to the elements of
+@var{list} returns the first sublist of @var{list} whose car satisfies
+that test relative to @var{obj}.  They differ only in the procedure that
+is used.  If no element of @var{list} satisfies the test, @code{#f} is
+returned.
 
-@c @lisp
-@c (list-ref '(a b c d) 2)                   @result{} c
-@c (list-ref '(a b c d) (exact (round 1.8))) @result{} c
-@c @end lisp
+In each two-argument form, a standard equivalence predicate is used.  In
+the three-argument form of @code{@slanted{member}}, @var{compare} may
+return a non-Boolean value.
 
-@c @end deffn
-@c @deffn procedure list-set! list k obj
+@itemize @bullet
+@item
+@code{memq} uses @code{@slanted{eq?}}
+@item
+@code{memv} uses @code{@slanted{eqv?}}
+@item
+@code{member} uses @code{@slanted{equal?}} in the two-argument form.
+@item
+@code{member} uses @var{compare} in the three-argument form.
+@end itemize
 
-@c It is an error if @var{k} is not a valid index of @var{list}.
+@lisp
+(memq 'a '(a b c))                      @result{} (a b c)
+(memq 'b '(a b c))                      @result{} (b c)
+(memq 'a '(b c d))                      @result{} #f
+(memq (list 'a) '(b (a) c))             @result{} #f
+(memq 101 '(100 101 102))               @result{} @r{@i{unspecified}}
+(memv 101 '(100 101 102))               @result{} (101 102)
+(memq 'a '(a b c))                      @result{} (a b c)
+(member (list 'a) '(b (a) c))           @result{} ((a) c)
+(member 7 '(0 1 2 3) +)                 @result{} (0 1 2 3)
+(member 7 '(0 1 2 3) square)            @exception{wrong number of arguments}
+(member "B" '("a" "b" "c") string-ci=?) @result{} ("b" "c")
+@end lisp
+@end deftypefn
 
-@c The @code{list-set!} procedure stores @var{obj} in element @var{k} of
-@c @var{list}.
-
-@c @lisp
-@c (let ((ls (list 'one 'two 'five!)))
-@c   (list-set! ls 2 'three)
-@c   ls) @result{} (one two three)
-
-@c (list-set! '(0 1 2) 1 "oops") @result{} @r{error}  ; constant list
-@c @end lisp
-@c @end deffn
-@c @deffn  procedure memq obj list
-@c @deffnx procedure memv obj list
-@c @deffnx procedure member obj list
-@c @deffnx procedure member obj list compare
-
-@c These procedures return the first sublist of @var{list} whose car is
-@c @var{obj}, where the sublists of @var{list} are the non-empty lists
-@c returned by @code{(list-tail }@var{list} @var{k}@code{)} for @var{k}
-@c less than the length of @var{list}. If @var{obj} does not occur in
-@c @var{list}, then @code{#f} (not the empty list) is returned. The
-@c @code{memq} procedure uses @code{eq?} to compare @var{obj} with the
-@c elements of @var{list}, while @code{memv} uses @code{eqv?} and
-@c @code{member} uses @var{compare}, if given, and @code{equal?}
-@c otherwise.
-
-@c @lisp
-@c (memq 'a '(a b c))          @result{} (a b c)
-@c (memq 'b '(a b c))          @result{} (b c)
-@c (memq 'a '(b c d))          @result{} #f
-@c (memq (list 'a) '(b (a) c)) @result{} #f
-@c (member (list 'a)
-@c         '(b (a) c))         @result{} ((a) c)
-@c (member "B"
-@c         '("a" "b" "c")
-@c         string-ci=?)        @result{} ("b" "c")
-@c (memq 101 '(100 101 102))   @result{} @r{unspecified}
-@c (memv 101 '(100 101 102))   @result{} (101 102)
-@c @end lisp
-
-@c @end deffn
 @c @deffn  procedure assq obj alist
 @c @deffnx procedure assv obj alist
 @c @deffnx procedure assoc obj alist

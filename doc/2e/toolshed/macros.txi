@@ -1,3 +1,19 @@
+@macro pari {name}
+@inlinefmtifelse{info,\name\1,@inlinefmtifelse{plaintext,\name\1,\name\@sub{1}}}
+@end macro
+
+@macro parii {name}
+@inlinefmtifelse{info,\name\2,@inlinefmtifelse{plaintext,\name\2,\name\@sub{2}}}
+@end macro
+
+@macro pariii {name}
+@inlinefmtifelse{info,\name\3,@inlinefmtifelse{plaintext,\name\3,\name\@sub{3}}}
+@end macro
+
+@macro pariv {name}
+@inlinefmtifelse{info,\name\4,@inlinefmtifelse{plaintext,\name\4,\name\@sub{4}}}
+@end macro
+
 @macro vari {name}
 @inlinefmtifelse{info,@var{\name\1},@inlinefmtifelse{plaintext,@var{\name\1},@var{\name\@sub{1}}}}
 @end macro

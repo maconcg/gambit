@@ -34,7 +34,7 @@ integer, an exception that satisfies @code{range-exception?} is raised.
 @end lisp
 @end deftypefn
 
-@deftypefn @t{(scheme base)} {} string [char@dots{}]
+@deftypefn @t{(scheme base)} {} string char@dots{}
 Returns a newly allocated string whose elements are its arguments.  The
 order of the arguments is preserved.  Analogous to @code{list}.
 
@@ -77,11 +77,11 @@ Gambit extends the @value{R7RS} description of @code{string=?} to accept
 any number of arguments.
 
 @lisp
-(string=? "abcd" (string #\a #\b #\c #\d)) @result{} #t
-(string=? "abcd" "Abcd") @result{} #f
-(string=?) @result{} #t
-(string=? "a" "a" "a") @result{} #t
-(string=? "a" #\a) @result{} @r{@i{error}}
+(string=? "abc" (string #\a #\b #\c)) @result{} #t
+(string=? "abcd" "Abcd")              @result{} #f
+(string=?)                            @result{} #t
+(string=? "a" "a" "a")                @result{} #t
+(string=? "a" #\a)                    @exception{type}
 @end lisp
 @end deftypefn
 
