@@ -816,6 +816,7 @@ ___HIDDEN ___BOOL tty_is_dumb ___PVOID
 ___HIDDEN ___BOOL lineeditor_should_echo ___PVOID
 {
   static ___UCS_2 emacs_env_name[] = { 'I', 'N', 'S', 'I', 'D', 'E', '_', 'E', 'M', 'A', 'C', 'S', '\0' };
+  static ___UCS_2 common_begstr[] = { ',', '\0' };
   static ___UCS_2 comint_endstr[] = { ',', 'c', 'o', 'm', 'i', 'n', 't', '\0' };
   static ___UCS_2 eshell_endstr[] = { ',', 'e', 's', 'h', 'e', 'l', 'l', '\0' };
   static ___UCS_2 comint_midstr[] = { ',', 'c', 'o', 'm', 'i', 'n', 't', ',', '\0' };
@@ -827,10 +828,11 @@ ___HIDDEN ___BOOL lineeditor_should_echo ___PVOID
     {
       while (*emacs_env_value != '\0')
         {
-          if ((___strcmp_UCS_2 (comint_endstr, emacs_env_value)) == 0 ||
-              (___strcmp_UCS_2 (eshell_endstr, emacs_env_value)) == 0 ||
-              (___strcmp_UCS_2 (comint_midstr, emacs_env_value)) == 1 ||
-              (___strcmp_UCS_2 (eshell_midstr, emacs_env_value)) == 1)
+          if (((___strcmp_UCS_2 (common_begstr, emacs_env_value)) == 1) &&
+              ((___strcmp_UCS_2 (comint_endstr, emacs_env_value)) == 0 ||
+               (___strcmp_UCS_2 (eshell_endstr, emacs_env_value)) == 0 ||
+               (___strcmp_UCS_2 (comint_midstr, emacs_env_value)) == 1 ||
+               (___strcmp_UCS_2 (eshell_midstr, emacs_env_value)) == 1))
             return 0;
           else
             emacs_env_value++;
@@ -3793,7 +3795,6 @@ int len;)
    * emulated terminal's cursor.
    */
 
-  ___BOOL should_echo = lineeditor_should_echo ();
   ___device_tty *d = self;
   ___SCMOBJ e;
   int pn;
@@ -3838,9 +3839,6 @@ int len;)
               d->prompt_length = i+1;
             }
         }
-
-      if (!should_echo && (d->prompt_length <= 0))
-        return ___FIX(___NO_ERR);
 
       switch (pn)
         {
@@ -4165,6 +4163,9 @@ tty_text_attrs attrs;)
    * This routine outputs "len" characters from the buffer "buf" using
    * the text attributes "attrs".
    */
+
+  if (!self->input_echo)
+    return ___FIX(___NO_ERR);
 
   ___device_tty *d = self;
   ___SCMOBJ e;
