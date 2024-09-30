@@ -1,4 +1,4 @@
-@node Pairs and list procedures
+@node Pair and list procedures
 @chapter Pair and list procedures
 
 @deftypefn @t{(scheme base)} @/ pair? obj
@@ -154,9 +154,8 @@ Returns @code{#t} if @var{obj} is the empty list.
 @end deftypefn
 
 @deftypefn @t{(scheme base)} @/ list? obj
-Returns @code{#t} if @var{obj} is a list (sometimes referred to as a
-@dfn{proper list}).  By definition, a list of finite length is
-terminated by the empty list.
+Returns @code{#t} if @var{obj} is a @dfn{proper list}.  By definition, a
+list of finite length is terminated by the empty list.
 
 @lisp
 (list? '(a b c))     @result{} #t
@@ -175,16 +174,21 @@ terminated by the empty list.
 @deftypefnx @t{(scheme base)} @/ make-list k fill
 Returns a newly allocated list of @var{k} elements.  In the one-argument
 form, each element is initialized to a default value.  In the
-two-argument form, each element is initialized to the value of
-@var{fill}.
+two-argument form, each element is initialized to @var{fill}.
 
 The default value used by the one-argument form may change in a future
 version.  Programs that require a specific initilization value should
 use the two-argument form.
 
+If @var{k} is not an exact integer, an exception that satisfies
+@code{type-exception?} is raised.  If @var{k} is a negative exact
+integer, an exception that satisfies @code{range-exception?} is raised.
+
 @lisp
 (make-list 0)        @result{} ()
 (make-list 3 (list)) @result{} (() () ())
+(make-list 1.25)     @exception{type}
+(make-string -1)     @exception{range}
 @end lisp
 @end deftypefn
 
@@ -208,7 +212,7 @@ Returns the length of @var{list}.
 (length '(a (b) (c d e)))    @result{} 3
 (length '())                 @result{} 0
 (length (cdr (make-list 5))) @result{} 4
-(length circle)              @arrow{} @i{infinite loop}
+(length circle)              @arrow{} @r{@i{infinite loop}}
 @end lisp
 @end deftypefn
 
@@ -219,10 +223,10 @@ except the last, if present, must be a list.
 
 With two or more arguments, the returned value consists of the elements
 of each list@dots{}, in order (excluding each @var{list}'s terminating
-empty list).  A list is returned if @var{obj} is a list; an improper
-list is returned if if @var{obj} is not a list.  The returned value is
-newly allocated, except that it shares structure with the last argument,
-@var{obj}.
+empty list).  A proper list is returned if @var{obj} is a proper list;
+an improper list is returned if if @var{obj} is not a proper list.  The
+returned value is newly allocated, except that it shares structure with
+the last argument, @var{obj}.
 
 @lisp
 (define l (list 'f 'g 'h))
@@ -256,17 +260,19 @@ in reverse order (excluding the terminating empty list).
 @end deftypefn
 
 @deftypefn @t{(scheme base)} @/ list-tail list k
-Returns the sublist of @var{list} obtained by omitting the first
-@var{k} elements. The @code{list-tail} procedure could be defined by
+Returns a list of @var{list} obtained by omitting the first @var{k}
+elements.  If @var{list} is a proper list, a proper list is returned; if
+@var{list} is an improper list, an improper list is returned.
 
-It is an error if @var{list} has fewer than @var{k} elements.
+If @var{k} is not an exact integer, an exception that satisfies
+@code{type-exception?} is raised.  If @var{list} has fewer than @var{k}
+elements, an exception that satisfies @code{range-exception?} is raised.
 
 @lisp
-(define l '(a b c))
-
-(list-tail l 1) @result{} (b c)
-(list-tail l 3) @result{} ()
-(list-tail l 4) @exception{range}
+(list-tail '(a b c) 1)   @result{} (b c)
+(list-tail '(a b c) 3)   @result{} ()
+(list-tail '(a b c) 1.1) @exception{type}
+(list-tail '(a b c) 4)   @exception{range}
 @end lisp
 @end deftypefn
 
@@ -296,14 +302,14 @@ Mutates @var{list} by storing @var{obj} in element @var{k} of
 @end lisp
 @end deftypefn
 
-@deftypefn  @t{(scheme base)} @/ memq obj list
-@deftypefnx @t{(scheme base)} @/ memv obj list
+@deftypefn  @t{(scheme base)} @/ memq   obj list
+@deftypefnx @t{(scheme base)} @/ memv   obj list
 @deftypefnx @t{(scheme base)} @/ member obj list [compare]
-Each procedure successively applies some procedure to the elements of
-@var{list} returns the first sublist of @var{list} whose car satisfies
-that test relative to @var{obj}.  They differ only in the procedure that
-is used.  If no element of @var{list} satisfies the test, @code{#f} is
-returned.
+Each procedure successively applies some procedure to each element of
+@var{list} and returns the first sublist of @var{list} whose car
+satisfies that test relative to @var{obj}.  They differ only in the
+procedure that is used.  If no element of @var{list} satisfies the test,
+@code{#f} is returned.
 
 In each two-argument form, a standard equivalence predicate is used.  In
 the three-argument form of @code{@slanted{member}}, @var{compare} may
@@ -321,63 +327,79 @@ return a non-Boolean value.
 @end itemize
 
 @lisp
+(define nums '(100 101 102))
+
+(memq 101 nums)        @result{} @r{@i{unspecified}}
+(memv 101 nums)        @result{} (101 102)
+(member 7 nums +)      @result{} (100 101 102)
+(member 7 nums square) @exception{wrong number of arguments}
+
 (memq 'a '(a b c))                      @result{} (a b c)
 (memq 'b '(a b c))                      @result{} (b c)
 (memq 'a '(b c d))                      @result{} #f
 (memq (list 'a) '(b (a) c))             @result{} #f
-(memq 101 '(100 101 102))               @result{} @r{@i{unspecified}}
-(memv 101 '(100 101 102))               @result{} (101 102)
 (memq 'a '(a b c))                      @result{} (a b c)
 (member (list 'a) '(b (a) c))           @result{} ((a) c)
-(member 7 '(0 1 2 3) +)                 @result{} (0 1 2 3)
-(member 7 '(0 1 2 3) square)            @exception{wrong number of arguments}
 (member "B" '("a" "b" "c") string-ci=?) @result{} ("b" "c")
 @end lisp
 @end deftypefn
 
-@c @deffn  procedure assq obj alist
-@c @deffnx procedure assv obj alist
-@c @deffnx procedure assoc obj alist
-@c @deffnx procedure assoc obj alist compare
+@deftypefn  @t{(scheme base)} @/ assq obj  alist
+@deftypefnx @t{(scheme base)} @/ assv obj  alist
+@deftypefnx @t{(scheme base)} @/ assoc obj alist [compare]
 
-@c It is an error if @var{alist} (for ``association list'') is not a list
-@c of pairs.
+Each procedure successively applies some procedure to the elements of
+@var{alist} returns the first pair of @var{alist} whose car satisfies
+that test relative to @var{obj}.  They differ only in the procedure that
+is used.  If none of @var{alist}'s elements' cars satisfies the test,
+@code{#f} is returned.
 
-@c These procedures find the first pair in @var{alist} whose car field
-@c is @var{obj}, and returns that pair.  If no pair in @var{alist} has
-@c @var{obj} as its car, then @code{#f} (not the empty list) is returned.
-@c The @code{assq} procedure uses @code{eq?} to compare @var{obj} with the
-@c car fields of the pairs in @var{alist}, while @code{assv} uses @code{eqv?}
-@c and @code{assoc} uses @var{compare} if given and @code{equal?} otherwise.
+In each two-argument form, a standard equivalence predicate is used.  In
+the three-argument form of @code{@slanted{assoc}}, @var{compare} may
+return a non-Boolean value.
 
-@c @lisp
-@c (define e '((a 1) (b 2) (c 3)))
-@c (assq 'a e)                            @result{} (a 1)
-@c (assq 'b e)                            @result{} (b 2)
-@c (assq 'd e)                            @result{} #f
-@c (assq (list 'a) '(((a)) ((b)) ((c))))  @result{} #f
-@c (assoc (list 'a) '(((a)) ((b)) ((c)))) @result{} ((a))
-@c (assoc 2.0 '((1 1) (2 4) (3 9)) =)     @result{} (2 4)
-@c (assq 5 '((2 3) (5 7) (11 13)))        @result{} @r{unspecified}
-@c (assv 5 '((2 3) (5 7) (11 13)))        @result{} (5 7)
-@c @end lisp
+@itemize @bullet
+@item
+@code{assq} uses @code{@slanted{eq?}}
+@item
+@code{assv} uses @code{@slanted{eqv?}}
+@item
+@code{assoc} uses @code{@slanted{equal?}} in the two-argument form.
+@item
+@code{assoc} uses @var{compare} in the three-argument form.
+@end itemize
 
-@c @end deffn
-@c @deffn procedure list-copy obj
+@lisp
+(define e '((a 1) (b 2) (c 3)))
 
-@c Returns a newly allocated copy of the given @var{obj} if it is a list.
-@c Only the pairs themselves are copied; the cars of the result are the same
-@c (in the sense of @code{eqv?}) as the cars of @var{list}.  If @var{obj}
-@c is an improper list, so is the result, and the final cdrs are the same in
-@c the sense of @code{eqv?}.  An @var{obj} which is not a list is returned
-@c unchanged.  It is an error if @var{obj} is a circular list.
+(assq 'a e)                            @result{} (a 1)
+(assq 'b e)                            @result{} (b 2)
+(assq 'd e)                            @result{} #f
+(assq (list 'a) '(((a)) ((b)) ((c))))  @result{} #f
+(assoc (list 'a) '(((a)) ((b)) ((c)))) @result{} ((a))
+(assoc 2.0 '((1 1) (2 4) (3 9)) =)     @result{} (2 4)
+(assq 5 '((2 3) (5 7) (11 13)))        @result{} @r{unspecified}
+(assv 5 '((2 3) (5 7) (11 13)))        @result{} (5 7)
+@end lisp
+@end deftypefn
 
-@c @lisp
-@c (define a '(1 8 2 8)) ; a may be immutable
-@c (define b (list-copy a))
-@c (set-car! b 3)        ; b is mutable
-@c b @result{} (3 8 2 8)
-@c a @result{} (1 8 2 8)
-@c @end lisp
+@deftypefn @t{(scheme base)} @/ list-copy obj
+Returns a newly allocated copy of the given @var{obj} if it is a list.
+Only the pairs themselves are copied; the cars of the result are the
+same (in the sense of @code{eqv?}) as the cars of @var{list}.  If
+@var{obj} is an improper list, so is the result, and the final cdrs are
+the same in the sense of @code{eqv?}.  An @var{obj} which is not a list
+is returned unchanged.  It is an error if @var{obj} is a circular list.
 
-@c @end deffn
+@lisp
+(define circle (circular-list 0 1 2 3))
+(define a '(1 8 2 8)) @slanted{;; a may be immutable}
+(define b (list-copy a))
+
+(set-car! b 3)     @slanted{;; b is mutable}
+b                  @result{} (3 8 2 8)
+a                  @result{} (1 8 2 8)
+
+(list-copy circle) @arrow{} @r{@i{infinite loop}}
+@end lisp
+@end deftypefn

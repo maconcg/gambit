@@ -15,28 +15,32 @@ Returns @code{#t} if @var{obj} is a string.
 @end deftypefn
 
 @deftypefn @t{(scheme base)} @/ make-string k [char]
-@c Should this document that Gambit defaults char to \x0?
 Returns a newly allocated string of length @var{k}.  In the one-argument
-form, the contents of the string are unspecified.  In the two-argument
-form, each character is initialized to @var{char}.
+form, each character is initialized to a default value.  In the
+two-argument form, each character is initialized to @var{char}.
+
+The default value used by the one-argument form may change in a future
+version.  Programs that require a specific initilization value should
+use the two-argument form.
 
 If @var{k} is not an exact integer, an exception that satisfies
 @code{type-exception?} is raised.  If @var{k} is a negative exact
 integer, an exception that satisfies @code{range-exception?} is raised.
 
 @lisp
-@c (string=? "\x0;" (make-string 1)) @result{} #t
 (make-string 0)                 @result{} ""
 (string-length (make-string 4)) @result{} 4
 (make-string 4 #\g)             @result{} "gggg"
 (make-string 4 "g")             @exception{type}
+(make-string 4.5)               @exception{type}
 (make-string -1)                @exception{range}
 @end lisp
 @end deftypefn
 
 @deftypefn @t{(scheme base)} {} string char@dots{}
 Returns a newly allocated string whose elements are its arguments.  The
-order of the arguments is preserved.  Analogous to @code{list}.
+order of the arguments is preserved.  Analogous to @code{list}
+(@pxref{Pair and list procedures}).
 
 @lisp
 (string)                         @result{} ""
