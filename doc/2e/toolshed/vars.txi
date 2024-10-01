@@ -10,3 +10,11 @@
 @set R5RS @inlinefmtifelse{info,@acronym{R5RS},@inlinefmtifelse{plaintext,@acronym{R5RS},@acronym{R@sup{5}RS}}}
 
 @set R4RS @inlinefmtifelse{info,@acronym{R4RS},@inlinefmtifelse{plaintext,@acronym{R4RS},@acronym{R@sup{4}RS}}}
+
+@set RNRS @inlinefmtifelse{info,@acronym{RNRS},@inlinefmtifelse{plaintext,@acronym{RNRS},@acronym{R@sup{n}RS}}}
+
+@set true @ok{#t}
+
+@set false @inlinefmtifelse{html,@result{} @code{#f},@result{} #f}
+
+@set void @r{@i{void}}

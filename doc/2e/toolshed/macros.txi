@@ -31,9 +31,11 @@
 @end macro
 
 @macro exception {kind}
-@arrow{} @r{@i{\kind\ exception}}
+@inlinefmtifelse{html,@arrow{} @r{@i{\kind\ exception}},@arrow{} \kind\ exception}
 @end macro
 
-@macro void
-@r{@i{void}}
+@macro ok {val}
+@inlinefmtifelse{html,@result{} @t{\val\},@result{} \val\}
 @end macro
+
+@alias aside = slanted

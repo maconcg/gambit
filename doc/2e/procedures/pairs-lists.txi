@@ -5,11 +5,11 @@
 Returns @code{#t} if @var{obj} is a pair.
 
 @lisp
-(pair? '(a . b)) @result{} #t
-(pair? '(a b c)) @result{} #t
-(pair? '())      @result{} #f
-(pair? '(() ())) @result{} #f
-(pair? '#(a b))  @result{} #f
+(pair? '(a . b)) @value{true}
+(pair? '(a b c)) @value{true}
+(pair? '())      @value{false}
+(pair? '(() ())) @value{false}
+(pair? '#(a b))  @value{false}
 @end lisp
 @end deftypefn
 
@@ -19,14 +19,14 @@ Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
 @code{eqv?}) from every existing object.
 
 @lisp
-(cons 'a '())                      @result{} (a)
-(cons '(a) '(b c d))               @result{} ((a) b c d)
-(cons "a" '(b c))                  @result{} ("a" b c)
-(cons 'a 3)                        @result{} (a . 3)
-(cons '(a b) 'c)                   @result{} ((a b) . c)
-(eq? cons (cdr (cons cons cons)))  @result{} #t
-(eqv?   (cons + car) (cons + car)) @result{} #f
-(equal? (cons + car) (cons + car)) @result{} #t
+(cons 'a '())                      @ok{(a)}
+(cons '(a) '(b c d))               @ok{((a) b c d)}
+(cons "a" '(b c))                  @ok{("a" b c)}
+(cons 'a 3)                        @ok{(a . 3)}
+(cons '(a b) 'c)                   @ok{((a b) . c)}
+(eq? cons (cdr (cons cons cons)))  @value{true}
+(eqv?   (cons + car) (cons + car)) @value{false}
+(equal? (cons + car) (cons + car)) @value{true}
 @end lisp
 @end deftypefn
 
@@ -37,9 +37,9 @@ made to take the car of the empty list, an exception that satisfies
 @code{type-exception?} is raised.
 
 @lisp
-(car '(a b c))     @result{} a
-(car '((a) b c d)) @result{} (a)
-(car '(1 . 2))     @result{} 1
+(car '(a b c))     @ok{a}
+(car '((a) b c d)) @ok{(a)}
+(car '(1 . 2))     @ok{1}
 (car '())          @exception{type}
 @end lisp
 @end deftypefn
@@ -50,9 +50,9 @@ made to take the cdr of the empty list, an exception that satisfies
 @code{type-exception?} is raised.
 
 @lisp
-(cdr '(a b c))     @result{} (b c)
-(cdr '((a) b c d)) @result{} (b c d)
-(cdr '(1 . 2))     @result{} 2
+(cdr '(a b c))     @ok{(b c)}
+(cdr '((a) b c d)) @ok{(b c d)}
+(cdr '(1 . 2))     @ok{2}
 (cdr '())          @exception{type}
 @end lisp
 @end deftypefn
@@ -64,9 +64,9 @@ Mutates @var{pair} by storing @var{obj} in the car field of @var{pair}.
 (define (f) (list 'not-a-constant-list))
 (define (g) '(constant-list))
 
-(set-car! (f) 3) @slanted{;; legal, but useless}
-(f)              @result{} (not-a-constant-list)
-(set-car! (g) 3) @slanted{;; r7rs says this is an error}
+(set-car! (f) 3) @aside{;; legal, but useless}
+(f)              @ok{(not-a-constant-list)}
+(set-car! (g) 3) @aside{;; r7rs says this is an error}
 @end lisp
 @end deftypefn
 
@@ -77,9 +77,9 @@ Mutates @var{pair} by storing @var{obj} in the cdr field of @var{pair}.
 (define (f) (list 'not-a-constant-list))
 (define (g) '(constant-list))
 
-(set-cdr! (f) 3) @slanted{;; legal, but useless}
-(f)              @result{} (not-a-constant-list)
-(set-cdr! (g) 3) @slanted{;; r7rs says this is an error}
+(set-cdr! (f) 3) @aside{;; legal, but useless}
+(f)              @ok{(not-a-constant-list)}
+(set-cdr! (g) 3) @aside{;; r7rs says this is an error}
 @end lisp
 @end deftypefn
 
@@ -111,28 +111,27 @@ Mutates @var{pair} by storing @var{obj} in the cdr field of @var{pair}.
 @deftypefnx @t{(scheme cxr)} @/ cddadr pair
 @deftypefnx @t{(scheme cxr)} @/ cdddar pair
 @deftypefnx @t{(scheme cxr)} @/ cddddr pair
-
-These procedures are compositions of @code{car} and @code{cdr}.
+These 28 procedures are compositions of @code{car} and @code{cdr}.
 
 @lisp
 (define l '((a b) (c) d (e (f) g)))
 (define circle (circular-list 'a 'b 'c))
 
-(cadr l)             @result{} (c)
-(car (cdr l))        @result{} (c)
-(cddr '(a b c . d))  @result{} (c . d)
-(cdddr '(a b c . d)) @result{} d
-(cdadr l)            @result{} ()
-(cdar (cdr l))       @result{} ()
-(caar (cdr l))       @result{} c
-(car (car (cdr l)))  @result{} c
-(cadddr l)           @result{} (e (f) g)
+(cadr l)             @ok{(c)}
+(car (cdr l))        @ok{(c)}
+(cddr '(a b c . d))  @ok{(c . d)}
+(cdddr '(a b c . d)) @ok{d}
+(cdadr l)            @ok{()}
+(cdar (cdr l))       @ok{()}
+(caar (cdr l))       @ok{c}
+(car (car (cdr l)))  @ok{c}
+(cadddr l)           @ok{(e (f) g)}
 (caaadr l)           @exception{type}
 
-(car circle)         @result{} a
-(cadr circle)        @result{} b
-(caddr circle)       @result{} c
-(cadddr circle)      @result{} a
+(car circle)         @ok{a}
+(cadr circle)        @ok{b}
+(caddr circle)       @ok{c}
+(cadddr circle)      @ok{a}
 @end lisp
 @end deftypefn
 
@@ -141,15 +140,15 @@ These procedures are compositions of @code{car} and @code{cdr}.
 Returns @code{#t} if @var{obj} is the empty list.
 
 @lisp
-(null? '())    @result{} #t
-(null? (list)) @result{} #t
-(null? #\null) @result{} #f
-(null? null?)  @result{} #f
-(null? #f)     @result{} #f
-(null? 0)      @result{} #f
-(null? "")     @result{} #f
-(null? #())    @result{} #f
-(null? (void)) @result{} #f
+(null? '())    @value{true}
+(null? (list)) @value{true}
+(null? #\null) @value{false}
+(null? null?)  @value{false}
+(null? #f)     @value{false}
+(null? 0)      @value{false}
+(null? "")     @value{false}
+(null? #())    @value{false}
+(null? (void)) @value{false}
 @end lisp
 @end deftypefn
 
@@ -158,15 +157,15 @@ Returns @code{#t} if @var{obj} is a @dfn{proper list}.  By definition, a
 list of finite length is terminated by the empty list.
 
 @lisp
-(list? '(a b c))     @result{} #t
-(list? '())          @result{} #t
-(list? '(a . b))     @result{} #f
+(list? '(a b c))     @value{true}
+(list? '())          @value{true}
+(list? '(a . b))     @value{false}
 (let ((x (list 'a)))
   (set-cdr! x x)
-  (list? x))         @result{} #f
-(list? list)         @result{} #f
-(list? "list")       @result{} #f
-(list? #(0 1 2))     @result{} #f
+  (list? x))         @value{false}
+(list? list)         @value{false}
+(list? "list")       @value{false}
+(list? #(0 1 2))     @value{false}
 @end lisp
 @end deftypefn
 
@@ -185,8 +184,8 @@ If @var{k} is not an exact integer, an exception that satisfies
 integer, an exception that satisfies @code{range-exception?} is raised.
 
 @lisp
-(make-list 0)        @result{} ()
-(make-list 3 (list)) @result{} (() () ())
+(make-list 0)        @ok{()}
+(make-list 3 (list)) @ok{(() () ())}
 (make-list 1.25)     @exception{type}
 (make-string -1)     @exception{range}
 @end lisp
@@ -196,9 +195,9 @@ integer, an exception that satisfies @code{range-exception?} is raised.
 Returns a newly allocated list consisting of its arguments.
 
 @lisp
-(list 'a (+ 3 4) 'c)      @result{} (a 7 c)
-(list)                    @result{} ()
-((car (list list)) 'list) @result{} (list)
+(list 'a (+ 3 4) 'c)      @ok{(a 7 c)}
+(list)                    @ok{()}
+((car (list list)) 'list) @ok{(list)}
 @end lisp
 @end deftypefn
 
@@ -208,10 +207,10 @@ Returns the length of @var{list}.
 @lisp
 (define circle (circular-list 'x 'y 'z))
 
-(length '(a b c))            @result{} 3
-(length '(a (b) (c d e)))    @result{} 3
-(length '())                 @result{} 0
-(length (cdr (make-list 5))) @result{} 4
+(length '(a b c))            @ok{3}
+(length '(a (b) (c d e)))    @ok{3}
+(length '())                 @ok{0}
+(length (cdr (make-list 5))) @ok{4}
 (length circle)              @arrow{} @r{@i{infinite loop}}
 @end lisp
 @end deftypefn
@@ -231,16 +230,16 @@ the last argument, @var{obj}.
 @lisp
 (define l (list 'f 'g 'h))
 
-(eq?    l (append (append) l)) @result{} #t
-(eq?    l (append l (append))) @result{} #f
-(equal? l (append l (append))) @result{} #t
+(eq?    l (append (append) l)) @value{true}
+(eq?    l (append l (append))) @value{false}
+(equal? l (append l (append))) @value{true}
 
-(append '(x) '(y))              @result{} (x y)
-(append '(a) '(b c d))          @result{} (a b c d)
-(append '(a (b)) '((c)))        @result{} (a (b) (c))
+(append '(x) '(y))              @ok{(x y)}
+(append '(a) '(b c d))          @ok{(a b c d)}
+(append '(a (b)) '((c)))        @ok{(a (b) (c))}
 
-(append '(a b) '(c . d))        @result{} (a b c . d)
-(append '() 'a)                 @result{} a
+(append '(a b) '(c . d))        @ok{(a b c . d)}
+(append '() 'a)                 @ok{a}
 @end lisp
 @end deftypefn
 
@@ -251,11 +250,11 @@ in reverse order (excluding the terminating empty list).
 @lisp
 (define l (list 'a 'b 'c))
 
-(eq?    l (reverse (reverse l))) @result{} #f
-(equal? l (reverse (reverse l))) @result{} #t
+(eq?    l (reverse (reverse l))) @value{false}
+(equal? l (reverse (reverse l))) @value{true}
 
-(reverse '(a b c))             @result{} (c b a)
-(reverse '(a (b c) d (e (f)))) @result{} ((e (f)) d (b c) a)
+(reverse '(a b c))             @ok{(c b a)}
+(reverse '(a (b c) d (e (f)))) @ok{((e (f)) d (b c) a)}
 @end lisp
 @end deftypefn
 
@@ -269,8 +268,8 @@ If @var{k} is not an exact integer, an exception that satisfies
 elements, an exception that satisfies @code{range-exception?} is raised.
 
 @lisp
-(list-tail '(a b c) 1)   @result{} (b c)
-(list-tail '(a b c) 3)   @result{} ()
+(list-tail '(a b c) 1)   @ok{(b c)}
+(list-tail '(a b c) 3)   @ok{()}
 (list-tail '(a b c) 1.1) @exception{type}
 (list-tail '(a b c) 4)   @exception{range}
 @end lisp
@@ -282,9 +281,9 @@ Returns element @var{k} of @var{list}.  Equivalent to @samp{(car
 be circular.
 
 @lisp
-(list-ref '(a b c d) 2)                   @result{} c
-(list-ref '(a b c d) (exact (round 1.8))) @result{} c
-(list-ref (circular-list 'a 'b 'c) 4) @slanted{;; r7rs says this is an error}
+(list-ref '(a b c d) 2)                   @ok{c}
+(list-ref '(a b c d) (exact (round 1.8))) @ok{c}
+(list-ref (circular-list 'a 'b 'c) 4) @aside{;; r7rs says this is an error}
 @end lisp
 @end deftypefn
 
@@ -296,9 +295,9 @@ Mutates @var{list} by storing @var{obj} in element @var{k} of
 @lisp
 (let ((ls (list 'one 'two 'five!)))
   (list-set! ls 2 'three)
-  ls) @result{} (one two three)
+  ls) @ok{(one two three)}
 
-(list-set! '(0 1 2) 1 "oops") @slanted{;; r7rs says this is an error}
+(list-set! '(0 1 2) 1 "oops") @aside{;; r7rs says this is an error}
 @end lisp
 @end deftypefn
 
@@ -329,18 +328,18 @@ return a non-Boolean value.
 @lisp
 (define nums '(100 101 102))
 
-(memq 101 nums)        @result{} @r{@i{unspecified}}
-(memv 101 nums)        @result{} (101 102)
-(member 7 nums +)      @result{} (100 101 102)
+(memq 101 nums)        @ok{@r{@i{unspecified}}}
+(memv 101 nums)        @ok{(101 102)}
+(member 7 nums +)      @ok{(100 101 102)}
 (member 7 nums square) @exception{wrong number of arguments}
 
-(memq 'a '(a b c))                      @result{} (a b c)
-(memq 'b '(a b c))                      @result{} (b c)
-(memq 'a '(b c d))                      @result{} #f
-(memq (list 'a) '(b (a) c))             @result{} #f
-(memq 'a '(a b c))                      @result{} (a b c)
-(member (list 'a) '(b (a) c))           @result{} ((a) c)
-(member "B" '("a" "b" "c") string-ci=?) @result{} ("b" "c")
+(memq 'a '(a b c))                      @ok{(a b c)}
+(memq 'b '(a b c))                      @ok{(b c)}
+(memq 'a '(b c d))                      @value{false}
+(memq (list 'a) '(b (a) c))             @value{false}
+(memq 'a '(a b c))                      @ok{(a b c)}
+(member (list 'a) '(b (a) c))           @ok{((a) c)}
+(member "B" '("a" "b" "c") string-ci=?) @ok{("b" "c")}
 @end lisp
 @end deftypefn
 
@@ -372,14 +371,14 @@ return a non-Boolean value.
 @lisp
 (define e '((a 1) (b 2) (c 3)))
 
-(assq 'a e)                            @result{} (a 1)
-(assq 'b e)                            @result{} (b 2)
-(assq 'd e)                            @result{} #f
-(assq (list 'a) '(((a)) ((b)) ((c))))  @result{} #f
-(assoc (list 'a) '(((a)) ((b)) ((c)))) @result{} ((a))
-(assoc 2.0 '((1 1) (2 4) (3 9)) =)     @result{} (2 4)
-(assq 5 '((2 3) (5 7) (11 13)))        @result{} @r{unspecified}
-(assv 5 '((2 3) (5 7) (11 13)))        @result{} (5 7)
+(assq 'a e)                            @ok{(a 1)}
+(assq 'b e)                            @ok{(b 2)}
+(assq 'd e)                            @value{false}
+(assq (list 'a) '(((a)) ((b)) ((c))))  @value{false}
+(assoc (list 'a) '(((a)) ((b)) ((c)))) @ok{((a))}
+(assoc 2.0 '((1 1) (2 4) (3 9)) =)     @ok{(2 4)}
+(assq 5 '((2 3) (5 7) (11 13)))        @ok{@r{unspecified}}
+(assv 5 '((2 3) (5 7) (11 13)))        @ok{(5 7)}
 @end lisp
 @end deftypefn
 
@@ -396,9 +395,9 @@ is returned unchanged.  It is an error if @var{obj} is a circular list.
 (define a '(1 8 2 8)) @slanted{;; a may be immutable}
 (define b (list-copy a))
 
-(set-car! b 3)     @slanted{;; b is mutable}
-b                  @result{} (3 8 2 8)
-a                  @result{} (1 8 2 8)
+(set-car! b 3) @aside{;; b is mutable}
+b                  @ok{(3 8 2 8)}
+a                  @ok{(1 8 2 8)}
 
 (list-copy circle) @arrow{} @r{@i{infinite loop}}
 @end lisp

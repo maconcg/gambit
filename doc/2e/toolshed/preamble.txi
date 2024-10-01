@@ -1,5 +1,6 @@
 @settitle Gambit Scheme, @value{EDITION} edition
 @clear txicodevaristt
+@synindex tp cp
 @syncodeindex pg cp
 
 @copying

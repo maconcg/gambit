@@ -1,4 +1,66 @@
+a:link {
+    color: #3548cf;  
+}
+
+a:visited {
+    color: #721045;
+}
+
 body {
+    background-color: #fbf7f0;
+    padding: 0.2em 0.2em 0.1em 0.2em;
+    color: #000000;
+}
+
+hr {
+    color: #9f9690;
+}
+
+.chapter-level-extent {
+    max-width: 50em;
+    text-align: justify;
+    margin: 1em 0em 1em 1em;
+    .code {
+        color: #000000;
+    }
+}
+
+.appendix-level-extent {
     max-width: 40em;
     text-align: justify;
+}
+
+.first-deftypefn {
+    .category-def {
+        color: #595959;
+    }
+    .def-name {
+        color: #000000;
+    }
+    .def-code-arguments {
+        color: #721045;
+    }
+    .lisp-preformatted {
+        background-color: #efe9dd;
+        border-color: #9f9690;
+        border-style: solid;
+        color: #000000;
+        margin: 0em 3em 0em 0em;
+        padding: 0.5em;
+        .code {
+            color: #63192a;
+        }
+        .i {
+            color: #624416;
+        }
+        .slanted {
+            color: #595959;
+        }
+        .t {
+            color: #193668;
+        }
+    }
+    .var {
+        color: #721045;
+    }
 }

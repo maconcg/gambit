@@ -1,11 +1,20 @@
 @node Introduction
 @chapter Introduction
 
+@pindex gsc
+@pindex gsi
 The Gambit programming system is a complete implementation of the Scheme
 language aimed at portability, reliability, and speed.  It features two
 main programs: @slanted{@command{gsi}}, the Gambit Scheme interpreter,
 and @slanted{@command{gsc}}, the Gambit Scheme compiler.
 
+@cindex @acronym{IEEE 1178-1990} @seeentry{Scheme standards}
+@cindex Scheme standards
+@cindex @value{RNRS}
+@cindex Revised Report on the Algorithmic Language Scheme @seeentry{@value{RNRS}}
+@cindex @value{R4RS}
+@cindex @value{R5RS}
+@cindex @value{R7RS}
 In its default configuration, Gambit provides a superset of the language
 described by @cite{The Revised@sup{7} Report on the Algorithmic Language
 Scheme}, also known as @slanted{@value{R7RS}}.  Gambit may be configured

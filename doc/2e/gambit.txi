@@ -22,17 +22,19 @@ issues via @url{@value{GITHUB-URL},the Gambit repository on GitHub}.
 @chapter Procedures 
 @include procedures/include.txi
 
+@node General Index
+@unnumbered General Index
+@printindex cp
+
+@node Index of procedures and syntactic forms
+@unnumbered Index of procedures and syntactic forms
+@printindex fn
+
 @node GNU Lesser General Public License
 @appendix GNU Lesser General Public License
 @include toolshed/lgpl-2.1.texi
 
 @node Apache License
 @appendix Apache License
-@verbatiminclude toolshed/LICENSE-2.0.txt
-
-@node Index
-@unnumbered Index
-
-@printindex cp
-
+@include toolshed/LICENSE-2.0.txt
 @bye

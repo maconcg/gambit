@@ -1,3 +1,3 @@
-@include toolshed/vars.txi
 @include toolshed/macros.txi
+@include toolshed/vars.txi
 @include toolshed/preamble.txi
