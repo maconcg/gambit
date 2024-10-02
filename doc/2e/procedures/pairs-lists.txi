@@ -202,8 +202,7 @@ empty list.
 @end deftypefn
 
 @tindex list @subentry @r{constructors} @subentry make-list
-@deftypefn  @t{(scheme base)} @/ make-list k
-@deftypefnx @t{(scheme base)} @/ make-list k fill
+@deftypefn  @t{(scheme base)} @/ make-list k @opt{fill}
 Returns a newly allocated list of @var{k} elements.  In the one-argument
 form, each element is initialized to a default value.  In the
 two-argument form, each element is initialized to @var{fill}.
