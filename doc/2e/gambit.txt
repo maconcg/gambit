@@ -767,7 +767,7 @@ about pairs and lists.
           (list->string '(#\s #\c #\h #\e #\m #\e))   ⇒ "scheme"
           (list->string '(#\s #\c #\h #\e #\m #\e 2)) → type exception
 
- -- (scheme base): string-copy [start [end]]
+ -- (scheme base): string-copy string [start [end]]
      Returns a newly allocated string whose value is a portion of
      STRING.  In the one-argument form, the returned portion is all of
      STRING.  In the two-argument form, the returned string is a copy of

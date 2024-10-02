@@ -250,7 +250,7 @@ is raised.
 @end lisp
 @end deftypefn
 
-@deftypefn @t{(scheme base)} @/ string-copy @opt{start @opt{end}}
+@deftypefn @t{(scheme base)} @/ string-copy string @opt{start @opt{end}}
 Returns a newly allocated string whose value is a portion of
 @var{string}.  In the one-argument form, the returned portion is all of
 @var{string}.  In the two-argument form, the returned string is a copy
