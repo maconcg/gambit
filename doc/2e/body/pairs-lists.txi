@@ -8,7 +8,7 @@ about pairs and lists.
 
 @cindex the empty list @sortas{empty list} @seeentry{lists}
 @cindex lists @subentry the empty list @sortas{empty list, the}
-@deftp {@value{R7RS} type} @r{empty list}
+@deftp {@value{R7RS} type} {empty list}
 The empty list is a unique object whose external representation is
 @samp{()}.  Because the empty list is a unique object, it can never be
 newly allocated (reference goes here).  The predicate @code{null?}  may
@@ -22,7 +22,7 @@ The empty list is a @i{list}.
 @cindex car
 @cindex cdr
 @cindex pairs @subentry @i{pair} type
-@deftp {@value{R7RS} type} @r{pair}
+@deftp {@value{R7RS} type} pair
 A pair is an object with two fields.  It is constructed by the
 @code{cons} procedure; the content of its first field is selected by the
 @code{car} procedure; the content of its second field is selected by the
@@ -52,7 +52,7 @@ its cdr is a @i{list}.
 @end deftp
 
 @cindex lists @subentry @i{list} type
-@deftp {@value{R7RS} type} @r{list}
+@deftp {@value{R7RS} type} list
 @cindex lists @subentry termination of lists
 A list is either @i{the empty list} or a @i{pair} whose cdr is a list.
 This implies a list must have finite length and be terminated by @i{the
@@ -62,7 +62,7 @@ whether an object is a list (@pxref{Pair and list procedures}).
 With the exception of @i{the empty list}, every list is a @i{pair}.
 @end deftp
 @cindex lists @subentry proper lists
-@deftypevr colloquialism @/ @r{proper list}
+@deftypevr colloquialism @/ {proper list}
 ``Proper list'' is a widely-used synonym for @i{list} (see above).
 Because it's a synonym, there's technically no need for the qualifier.
 But in practice, people often refer to list-like objects that are not
@@ -72,7 +72,7 @@ used to emphasize that an object is a Scheme @i{list} that satisfies
 @end deftypevr
 
 @cindex pairs @subentry improper lists
-@deftypevr colloquialism @/ @r{improper list}
+@deftypevr colloquialism @/ {improper list}
 The term ``improper list'' is sometimes used to describe a @i{pair}
 whose cdr is not a @i{list}.  This means that, despite its name, an
 ``improper list'' is not a @i{list} under Scheme's formal definition.
@@ -81,7 +81,7 @@ often referred to as ``proper lists'' to emphasize the distinction.
 @end deftypevr
 
 @cindex pairs @subentry dotted pairs
-@deftypevr colloquialism @/ @r{dotted pair}
+@deftypevr colloquialism @/ {dotted pair}
 ``Dotted pair'' is sometimes used as a synonym for @i{pair}.  ``Dotted''
 refers to the common external representation of a @i{pair} in which the
 last element is preceded by a period (@samp{.}, which resembles a dot).
@@ -92,7 +92,7 @@ This ``dotted notation'' may technically be used to represent any
 
 @cindex lists @subentry association lists
 @vindex alist @seeentry {association list}
-@deftypevr colloquialism @/ @r{association list}
+@deftypevr colloquialism @/ {association list}
 An ``association list'' (or ``alist'', for short) is a @i{list} of
 @i{pairs}.
 @end deftypevr

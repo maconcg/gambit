@@ -69,6 +69,13 @@ dd, .center, li, ol, p:not(.nav-panel p) {max-width: 40em}
     pre {border-style: solid; padding: 0.3236em 0.2em}
 }
 
+dl.first-deftypevr dt.deftypevr, dl.first-deftp dt.deftp {
+    span strong {
+        font-family: normal;
+        font-weight: normal;
+    }
+}
+
 -->
 </style>
 
@@ -425,7 +432,7 @@ Next: <a href="#Pair-and-list-procedures" accesskey="n" rel="next">Pair and list
 
 <a class="index-entry-id" id="index-lists-the-empty-list"></a>
 <dl class="first-deftp">
-<dt class="deftp" id="index-empty-list"><span class="category-def"><abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> type: </span><span><strong class="def-name"><span class="r">empty list</span></strong><a class="copiable-link" href="#index-empty-list"> &para;</a></span></dt>
+<dt class="deftp" id="index-empty-list"><span class="category-def"><abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> type: </span><span><strong class="def-name">empty list</strong><a class="copiable-link" href="#index-empty-list"> &para;</a></span></dt>
 <dd><p>The empty list is a unique object whose external representation is
 &lsquo;<samp class="samp">()</samp>&rsquo;.  Because the empty list is a unique object, it can never be
 newly allocated (reference goes here).  The predicate <code class="code">null?</code>  may
@@ -439,7 +446,7 @@ be used to determine whether an object is the empty list (see <a class="pxref" h
 <a class="index-entry-id" id="index-cdr"></a>
 <a class="index-entry-id" id="index-pairs-pair-type"></a>
 <dl class="first-deftp">
-<dt class="deftp" id="index-pair"><span class="category-def"><abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> type: </span><span><strong class="def-name"><span class="r">pair</span></strong><a class="copiable-link" href="#index-pair"> &para;</a></span></dt>
+<dt class="deftp" id="index-pair"><span class="category-def"><abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> type: </span><span><strong class="def-name">pair</strong><a class="copiable-link" href="#index-pair"> &para;</a></span></dt>
 <dd><p>A pair is an object with two fields.  It is constructed by the
 <code class="code">cons</code> procedure; the content of its first field is selected by the
 <code class="code">car</code> procedure; the content of its second field is selected by the
@@ -469,7 +476,7 @@ its cdr is a <i class="i">list</i>.
 
 <a class="index-entry-id" id="index-lists-list-type"></a>
 <dl class="first-deftp">
-<dt class="deftp" id="index-list-1"><span class="category-def"><abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> type: </span><span><strong class="def-name"><span class="r">list</span></strong><a class="copiable-link" href="#index-list-1"> &para;</a></span></dt>
+<dt class="deftp" id="index-list-1"><span class="category-def"><abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> type: </span><span><strong class="def-name">list</strong><a class="copiable-link" href="#index-list-1"> &para;</a></span></dt>
 <dd><a class="index-entry-id" id="index-lists-termination-of-lists"></a>
 <p>A list is either <i class="i">the empty list</i> or a <i class="i">pair</i> whose cdr is a list.
 This implies a list must have finite length and be terminated by <i class="i">the
@@ -480,7 +487,7 @@ whether an object is a list (see <a class="pxref" href="#Pair-and-list-procedure
 </p></dd></dl>
 <a class="index-entry-id" id="index-lists-proper-lists"></a>
 <dl class="first-deftypevr">
-<dt class="deftypevr" id="index-proper-list"><span class="category-def">colloquialism: </span><span><strong class="def-name"><span class="r">proper list</span></strong><a class="copiable-link" href="#index-proper-list"> &para;</a></span></dt>
+<dt class="deftypevr" id="index-proper-list"><span class="category-def">colloquialism: </span><span><strong class="def-name">proper list</strong><a class="copiable-link" href="#index-proper-list"> &para;</a></span></dt>
 <dd><p>&ldquo;Proper list&rdquo; is a widely-used synonym for <i class="i">list</i> (see above).
 Because it&rsquo;s a synonym, there&rsquo;s technically no need for the qualifier.
 But in practice, people often refer to list-like objects that are not
@@ -491,7 +498,7 @@ used to emphasize that an object is a Scheme <i class="i">list</i> that satisfie
 
 <a class="index-entry-id" id="index-pairs-improper-lists"></a>
 <dl class="first-deftypevr">
-<dt class="deftypevr" id="index-improper-list"><span class="category-def">colloquialism: </span><span><strong class="def-name"><span class="r">improper list</span></strong><a class="copiable-link" href="#index-improper-list"> &para;</a></span></dt>
+<dt class="deftypevr" id="index-improper-list"><span class="category-def">colloquialism: </span><span><strong class="def-name">improper list</strong><a class="copiable-link" href="#index-improper-list"> &para;</a></span></dt>
 <dd><p>The term &ldquo;improper list&rdquo; is sometimes used to describe a <i class="i">pair</i>
 whose cdr is not a <i class="i">list</i>.  This means that, despite its name, an
 &ldquo;improper list&rdquo; is not a <i class="i">list</i> under Scheme&rsquo;s formal definition.
@@ -501,7 +508,7 @@ often referred to as &ldquo;proper lists&rdquo; to emphasize the distinction.
 
 <a class="index-entry-id" id="index-pairs-dotted-pairs"></a>
 <dl class="first-deftypevr">
-<dt class="deftypevr" id="index-dotted-pair"><span class="category-def">colloquialism: </span><span><strong class="def-name"><span class="r">dotted pair</span></strong><a class="copiable-link" href="#index-dotted-pair"> &para;</a></span></dt>
+<dt class="deftypevr" id="index-dotted-pair"><span class="category-def">colloquialism: </span><span><strong class="def-name">dotted pair</strong><a class="copiable-link" href="#index-dotted-pair"> &para;</a></span></dt>
 <dd><p>&ldquo;Dotted pair&rdquo; is sometimes used as a synonym for <i class="i">pair</i>.  &ldquo;Dotted&rdquo;
 refers to the common external representation of a <i class="i">pair</i> in which the
 last element is preceded by a period (&lsquo;<samp class="samp">.</samp>&rsquo;, which resembles a dot).
@@ -512,7 +519,7 @@ This &ldquo;dotted notation&rdquo; may technically be used to represent any
 
 <a class="index-entry-id" id="index-lists-association-lists"></a>
 <dl class="first-deftypevr">
-<dt class="deftypevr" id="index-association-list"><span class="category-def">colloquialism: </span><span><strong class="def-name"><span class="r">association list</span></strong><a class="copiable-link" href="#index-association-list"> &para;</a></span></dt>
+<dt class="deftypevr" id="index-association-list"><span class="category-def">colloquialism: </span><span><strong class="def-name">association list</strong><a class="copiable-link" href="#index-association-list"> &para;</a></span></dt>
 <dd><p>An &ldquo;association list&rdquo; (or &ldquo;alist&rdquo;, for short) is a <i class="i">list</i> of
 <i class="i">pairs</i>.
 </p></dd></dl>
@@ -1425,7 +1432,7 @@ Next: <a href="#Type-Index" accesskey="n" rel="next">Type Index</a>, Previous: <
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="General-Index_cp_letter-A">A</th></tr>
 <tr><td></td><td class="printindex-index-see-entry">alist, <em class="emph">See</em> association list</td><td class="printindex-index-see-entry-section"></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-association-list"><span class="r">association list</span></a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-association-list">association list</a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="General-Index_cp_letter-C">C</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-car">car</a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
@@ -1441,7 +1448,7 @@ Next: <a href="#Type-Index" accesskey="n" rel="next">Type Index</a>, Previous: <
 <tr><td></td><td class="printindex-index-entry index-entry-level-1"><a href="#index-cons-cons-procedure"><code class="code">cons</code> procedure</a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="General-Index_cp_letter-D">D</th></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-dotted-pair"><span class="r">dotted pair</span></a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-dotted-pair">dotted pair</a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="General-Index_cp_letter-E">E</th></tr>
 <tr><td></td><td class="printindex-index-see-entry">the empty list, <em class="emph">See</em> lists</td><td class="printindex-index-see-entry-section"></td></tr>
@@ -1452,7 +1459,7 @@ Next: <a href="#Type-Index" accesskey="n" rel="next">Type Index</a>, Previous: <
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="General-Index_cp_letter-I">I</th></tr>
 <tr><td></td><td class="printindex-index-see-entry"><abbr class="acronym">IEEE 1178-1990</abbr>, <em class="emph">See</em> Scheme standards</td><td class="printindex-index-see-entry-section"></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-improper-list"><span class="r">improper list</span></a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-improper-list">improper list</a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="General-Index_cp_letter-L">L</th></tr>
 <tr><td></td><td class="printindex-index-entry">lists</td><td></td></tr>
@@ -1468,7 +1475,7 @@ Next: <a href="#Type-Index" accesskey="n" rel="next">Type Index</a>, Previous: <
 <tr><td></td><td class="printindex-index-entry index-entry-level-1"><a href="#index-pairs-dotted-pairs">dotted pairs</a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
 <tr><td></td><td class="printindex-index-entry index-entry-level-1"><a href="#index-pairs-improper-lists">improper lists</a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
 <tr><td></td><td class="printindex-index-entry index-entry-level-1"><a href="#index-pairs-pair-type"><i class="i">pair</i> type</a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-proper-list"><span class="r">proper list</span></a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-proper-list">proper list</a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="General-Index_cp_letter-R">R</th></tr>
 <tr><td></td><td class="printindex-index-see-entry"><abbr class="acronym">R<sup class="sup">4</sup>RS</abbr>, <em class="emph">See</em> <abbr class="acronym">R<sup class="sup">n</sup>RS</abbr></td><td class="printindex-index-see-entry-section"></td></tr>
@@ -1524,12 +1531,12 @@ Next: <a href="#Index-of-procedures-and-syntactic-forms" accesskey="n" rel="next
 <tr><td></td><th class="entries-header-printindex">Index Entry</th><th class="sections-header-printindex">Section</th></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Type-Index_tp_letter-E">E</th></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-empty-list"><code><span class="r">empty list</span></code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-empty-list"><code>empty list</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
 <tr><td></td><td class="printindex-index-entry index-entry-level-1"><code><span class="r">predicate</span></code></td><td></td></tr>
 <tr><td></td><td class="printindex-index-entry index-entry-level-2"><a href="#index-empty-list-predicate-null_003f"><code>null?</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Type-Index_tp_letter-L">L</th></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-list-1"><code><span class="r">list</span></code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-list-1"><code>list</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
 <tr><td></td><td class="printindex-index-entry index-entry-level-1"><code><span class="r">constructors</span></code></td><td></td></tr>
 <tr><td></td><td class="printindex-index-entry index-entry-level-2"><a href="#index-list-constructors-list"><code>list</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
 <tr><td></td><td class="printindex-index-entry index-entry-level-2"><a href="#index-list-constructors-list_002dcopy"><code>list-copy</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
@@ -1549,7 +1556,7 @@ Next: <a href="#Index-of-procedures-and-syntactic-forms" accesskey="n" rel="next
 <tr><td></td><td class="printindex-index-entry index-entry-level-2"><a href="#index-list-selectors-memv"><code>memv</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Type-Index_tp_letter-P">P</th></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-pair"><code><span class="r">pair</span></code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-pair"><code>pair</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
 <tr><td></td><td class="printindex-index-entry index-entry-level-1"><code><span class="r">constructor</span></code></td><td></td></tr>
 <tr><td></td><td class="printindex-index-entry index-entry-level-2"><a href="#index-pair-constructor-cons"><code>cons</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
 <tr><td></td><td class="printindex-index-entry index-entry-level-1"><code><span class="r">mutators</span></code></td><td></td></tr>

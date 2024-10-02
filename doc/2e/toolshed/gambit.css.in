@@ -25,3 +25,10 @@ dd, .center, li, ol, p:not(.nav-panel p) {max-width: 40em}
     dd p:not(.nav-panel p), p:not(.nav-panel p) {text-align: justify}
     pre {border-style: solid; padding: 0.3236em 0.2em}
 }
+
+dl.first-deftypevr dt.deftypevr, dl.first-deftp dt.deftp {
+    span strong {
+        font-family: normal;
+        font-weight: normal;
+    }
+}
