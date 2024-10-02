@@ -73,11 +73,11 @@ used to emphasize that an object is a Scheme @i{list} that satisfies
 
 @cindex pairs @subentry improper lists
 @deftypevr colloquialism @/ @r{improper list}
-The term ``improper list'' is sometimes used to describe a pair whose
-cdr is not a list.  This means that, despite its name, an ``improper
-list'' is not a @i{list} under Scheme's formal definition.  In contexts
-where the term ``improper list'' appears, @i{lists} are often referred
-to as ``proper lists'' to emphasize the distinction.
+The term ``improper list'' is sometimes used to describe a @i{pair}
+whose cdr is not a @i{list}.  This means that, despite its name, an
+``improper list'' is not a @i{list} under Scheme's formal definition.
+In contexts where the term ``improper list'' appears, @i{lists} are
+often referred to as ``proper lists'' to emphasize the distinction.
 @end deftypevr
 
 @cindex pairs @subentry dotted pairs

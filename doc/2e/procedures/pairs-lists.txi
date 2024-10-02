@@ -175,8 +175,9 @@ Returns @code{#t} if @var{obj} is the empty list.
 
 @tindex list @subentry @r{predicate} @subentry list?
 @deftypefn @t{(scheme base)} @/ list? obj
-Returns @code{#t} if @var{obj} is a @dfn{proper list}.  By definition, a
-list of finite length is terminated by the empty list.
+Returns @code{#t} if @var{obj} is a proper list (@pxref{Pair and list
+jargon}).  By definition, a list of finite length is terminated by the
+empty list.
 
 @lisp
 (list? '(a b c)) @value{true}

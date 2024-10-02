@@ -193,14 +193,14 @@ Scheme</cite>, also known as <i class="slanted"><abbr class="acronym">R<sup clas
 to conform to the <abbr class="acronym">R<sup class="sup">4</sup>RS</abbr>, <abbr class="acronym">R<sup class="sup">5</sup>RS</abbr>, <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr>, or
 <abbr class="acronym">IEEE 1178-1990</abbr> Scheme standards.
 </p>
-<p><code class="command">gsi</code> provides a subset of <code class="command">gsc</code>&rsquo;s functionality.  The
-only difference between these programs is that <code class="command">gsc</code> also
+<p><code class="t">gsi</code> provides a subset of <code class="t">gsc</code>&rsquo;s functionality.  The
+only difference between these programs is that <code class="t">gsc</code> also
 provides certain procedures and invocation options specific to
 compilation.
 </p>
-<p><code class="command">gsc</code> compiles programs by <em class="dfn">transpiling</em> Scheme source code
+<p><code class="t">gsc</code> compiles programs by <em class="dfn">transpiling</em> Scheme source code
 to source code for a target language, then optionally passing that
-transpiled code to tools like <code class="command">gcc</code> for further processing
+transpiled code to tools like <code class="t">gcc</code> for further processing
 (see <cite class="cite"><a data-manual="gcc" href="https://gcc.gnu.org/onlinedocs/gcc/index.html">Using the GNU Compiler Collection</a></cite>).  Supported target
 languages include C and JavaScript.
 </p>
@@ -209,8 +209,8 @@ Gambit run on any platform for which a C compiler is available.  With
 appropriate declarations in the Scheme source code (see <a class="pxref" href="#gsc-declarations">gsc declarations</a>), the resulting programs run roughly as fast as
 functionally equivalent programs built from hand-written C.
 </p>
-<p>Most of the Gambit system, including <code class="command">gsi</code> and <code class="command">gsc</code>
-itself, is written in Scheme and compiled using <code class="command">gsc</code>.
+<p>Most of the Gambit system, including <code class="t">gsi</code> and <code class="t">gsc</code>
+itself, is written in Scheme and compiled using <code class="t">gsc</code>.
 </p>
 <hr>
 </div>
@@ -490,11 +490,11 @@ used to emphasize that an object is a Scheme <i class="i">list</i> that satisfie
 <a class="index-entry-id" id="index-pairs-improper-lists"></a>
 <dl class="first-deftypevr">
 <dt class="deftypevr" id="index-improper-list"><span class="category-def">colloquialism: </span><span><strong class="def-name"><span class="r">improper list</span></strong><a class="copiable-link" href="#index-improper-list"> &para;</a></span></dt>
-<dd><p>The term &ldquo;improper list&rdquo; is sometimes used to describe a pair whose
-cdr is not a list.  This means that, despite its name, an &ldquo;improper
-list&rdquo; is not a <i class="i">list</i> under Scheme&rsquo;s formal definition.  In contexts
-where the term &ldquo;improper list&rdquo; appears, <i class="i">lists</i> are often referred
-to as &ldquo;proper lists&rdquo; to emphasize the distinction.
+<dd><p>The term &ldquo;improper list&rdquo; is sometimes used to describe a <i class="i">pair</i>
+whose cdr is not a <i class="i">list</i>.  This means that, despite its name, an
+&ldquo;improper list&rdquo; is not a <i class="i">list</i> under Scheme&rsquo;s formal definition.
+In contexts where the term &ldquo;improper list&rdquo; appears, <i class="i">lists</i> are
+often referred to as &ldquo;proper lists&rdquo; to emphasize the distinction.
 </p></dd></dl>
 
 <a class="index-entry-id" id="index-pairs-dotted-pairs"></a>
@@ -706,8 +706,8 @@ made to take the cdr of the empty list, an exception that satisfies
 <a class="index-entry-id" id="index-list-predicate-list_003f"></a>
 <dl class="first-deftypefn">
 <dt class="deftypefn" id="index-list_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">list?</strong> <code class="def-code-arguments">obj</code><a class="copiable-link" href="#index-list_003f"> &para;</a></span></dt>
-<dd><p>Returns <code class="code">#t</code> if <var class="var">obj</var> is a <em class="dfn">proper list</em>.  By definition, a
-list of finite length is terminated by the empty list.
+<dd><p>Returns <code class="code">#t</code> if <var class="var">obj</var> is a proper list (see <a class="pxref" href="#Pair-and-list-jargon">Pair and list jargon</a>).  By definition, a list of finite length is terminated by the
+empty list.
 </p>
 <div class="example lisp">
 <pre class="lisp-preformatted">(list? '(a b c)) &rArr; <code class="t">#t</code>
