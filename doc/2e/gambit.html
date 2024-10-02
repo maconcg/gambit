@@ -546,16 +546,18 @@ Previous: <a href="#Pair-and-list-jargon" accesskey="p" rel="prev">Pair and list
 <code class="code">eqv?</code>) from every existing object.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(cons 'a '())                      &rArr; <code class="t">(a)</code>
-(cons '(a) '(b c d))               &rArr; <code class="t">((a) b c d)</code>
-(cons &quot;a&quot; '(b c))                  &rArr; <code class="t">(&quot;a&quot; b c)</code>
-(cons 'a 3)                        &rArr; <code class="t">(a . 3)</code>
-(cons '(a b) 'c)                   &rArr; <code class="t">((a b) . c)</code>
+<pre class="lisp-preformatted">(cons 'a '())        &rArr; <code class="t">(a)</code>
+(cons '(a) '(b c d)) &rArr; <code class="t">((a) b c d)</code>
+(cons &quot;a&quot; '(b c))    &rArr; <code class="t">(&quot;a&quot; b c)</code>
+(cons 'a 3)          &rArr; <code class="t">(a . 3)</code>
+(cons '(a b) 'c)     &rArr; <code class="t">((a b) . c)</code>
 </pre></div>
 <div class="example lisp">
-<pre class="lisp-preformatted">(eq? cons (cdr (cons cons cons)))  &rArr; <code class="t">#t</code>
-(eqv?   (cons + car) (cons + car)) &rArr; <code class="code">#f</code>
+<pre class="lisp-preformatted">(eqv?   (cons + car) (cons + car)) &rArr; <code class="code">#f</code>
 (equal? (cons + car) (cons + car)) &rArr; <code class="t">#t</code>
+</pre></div>
+<div class="example lisp">
+<pre class="lisp-preformatted">(eq? cons (cdr (cons cons cons))) &rArr; <code class="t">#t</code>
 </pre></div>
 </dd></dl>
 

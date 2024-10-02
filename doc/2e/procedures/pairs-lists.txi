@@ -22,16 +22,18 @@ Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
 @code{eqv?}) from every existing object.
 
 @lisp
-(cons 'a '())                      @ok{(a)}
-(cons '(a) '(b c d))               @ok{((a) b c d)}
-(cons "a" '(b c))                  @ok{("a" b c)}
-(cons 'a 3)                        @ok{(a . 3)}
-(cons '(a b) 'c)                   @ok{((a b) . c)}
+(cons 'a '())        @ok{(a)}
+(cons '(a) '(b c d)) @ok{((a) b c d)}
+(cons "a" '(b c))    @ok{("a" b c)}
+(cons 'a 3)          @ok{(a . 3)}
+(cons '(a b) 'c)     @ok{((a b) . c)}
 @end lisp
 @lisp
-(eq? cons (cdr (cons cons cons)))  @value{true}
 (eqv?   (cons + car) (cons + car)) @value{false}
 (equal? (cons + car) (cons + car)) @value{true}
+@end lisp
+@lisp
+(eq? cons (cdr (cons cons cons))) @value{true}
 @end lisp
 @end deftypefn
 

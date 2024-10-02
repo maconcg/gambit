@@ -252,14 +252,14 @@ about pairs and lists.
      OBJ2.  The pair is guaranteed to be different (in the sense of
      ‘eqv?’) from every existing object.
 
-          (cons 'a '())                      ⇒ (a)
-          (cons '(a) '(b c d))               ⇒ ((a) b c d)
-          (cons "a" '(b c))                  ⇒ ("a" b c)
-          (cons 'a 3)                        ⇒ (a . 3)
-          (cons '(a b) 'c)                   ⇒ ((a b) . c)
-          (eq? cons (cdr (cons cons cons)))  ⇒ #t
+          (cons 'a '())        ⇒ (a)
+          (cons '(a) '(b c d)) ⇒ ((a) b c d)
+          (cons "a" '(b c))    ⇒ ("a" b c)
+          (cons 'a 3)          ⇒ (a . 3)
+          (cons '(a b) 'c)     ⇒ ((a b) . c)
           (eqv?   (cons + car) (cons + car)) ⇒ #f
           (equal? (cons + car) (cons + car)) ⇒ #t
+          (eq? cons (cdr (cons cons cons))) ⇒ #t
 
  -- (scheme base): car pair
      Returns the contents of the cdr field of PAIR.  If an attempt is
