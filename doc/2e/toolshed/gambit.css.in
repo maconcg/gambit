@@ -1,0 +1,26 @@
+body {color: %fg-main%; background-color: %bg-main%}
+a:link {color: %link%}
+a:visited {color: %link-visited%}
+hr {color: %hr%}
+.chapter-level-extent pre {background-color: %bg-dim%; border-color: %border%}
+
+dl,first-deftp, dl.first-deftypefn {
+    .i {color: %emphasis%}
+    dt span.category-def {color: %fg-dim%}
+    dd pre {
+        .code {color: %false%}
+        .slanted {color: %fg-dim%}
+        .t {color: %fg-alt%}
+    }
+}
+
+dl.first-deftypefn {
+    dt code.def-code-arguments, dd p var {color: %arg%}
+}
+
+dd, .center, li, ol, p:not(.nav-panel p) {max-width: 40em}
+
+.chapter-level-extent dd {
+    p:not(.nav-panel p) {text-align: justify}
+    pre {border-style: solid; padding: 0.3236em 0.2em}
+}

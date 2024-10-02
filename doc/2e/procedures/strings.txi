@@ -20,7 +20,7 @@ form, each character is initialized to a default value.  In the
 two-argument form, each character is initialized to @var{char}.
 
 The default value used by the one-argument form may change in a future
-version.  Programs that require a specific initilization value should
+version.  Programs that require a specific initialization value should
 use the two-argument form.
 
 If @var{k} is not an exact integer, an exception that satisfies
@@ -266,12 +266,12 @@ five-argument form, the value of @samp{(string-copy
 @slanted{from-string} @slanted{@var{start}} @slanted{@var{end}})} is
 copied.
 
-If @var{at} is not a valid index of @var{to}, an exception that
+If @var{at} is not a valid index of @var{to-string}, an exception that
 satisfies @code{range-exception?} is raised.  If @samp{(- (string-length
-@slanted{to}) @slanted{at})} is less than @samp{(- @slanted{end}
+@slanted{to-string}) @slanted{at})} is less than @samp{(- @slanted{end}
 @slanted{start})}, an exception that satisfies @code{range-exception?}
 is raised (in other words, the copied substring must not overflow beyond
-the end of @var{to}).
+the end of @var{to-string}).
 
 @lisp
 (define a "12345")

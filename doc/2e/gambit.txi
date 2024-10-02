@@ -18,9 +18,18 @@ issues via @url{@value{GITHUB-URL},the Gambit repository on GitHub}.
 
 @include body/include.txi
 
-@node Procedures
-@chapter Procedures 
-@include procedures/include.txi
+@node Pairs and lists
+@chapter Pairs and lists
+@lowersections
+@include body/pairs-lists.txi
+@include procedures/pairs-lists.txi
+@raisesections
+
+@node Strings
+@chapter Strings
+@lowersections
+@include procedures/strings.txi
+@raisesections
 
 @node General Index
 @unnumbered General Index
@@ -30,6 +39,9 @@ issues via @url{@value{GITHUB-URL},the Gambit repository on GitHub}.
 @unnumbered Index of procedures and syntactic forms
 @printindex fn
 
+@c @ifnothtml
+@ifnotplaintext
+@ifnotxml
 @node GNU Lesser General Public License
 @appendix GNU Lesser General Public License
 @include toolshed/lgpl-2.1.texi
@@ -37,4 +49,7 @@ issues via @url{@value{GITHUB-URL},the Gambit repository on GitHub}.
 @node Apache License
 @appendix Apache License
 @include toolshed/LICENSE-2.0.txt
+@end ifnotxml
+@end ifnotplaintext
+@c @end ifnothtml
 @bye

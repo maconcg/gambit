@@ -1,0 +1,76 @@
+@node Overview of pairs and lists
+@chapter Overview of pairs and lists
+This section may eventually provide introductory/high-level information
+about pairs and lists.
+
+@node Pair and list types
+@chapter Pair and list types
+
+@tindex empty list, the @seeentry{the empty list}
+@deftp {@value{R7RS} type} @r{the empty list}
+The empty list is a unique object whose external representation is
+@samp{()}.  Because the empty list is a unique object, it can never be
+newly allocated (reference goes here).  The predicate @code{null?}  may
+be used to determine whether an object is the empty list (@pxref{Pair
+and list procedures}).
+
+The empty list is a @i{list}.
+@end deftp
+
+@deftp {@value{R7RS} type} @r{pair}
+A pair is an object with two fields.  It is constructed by the
+@code{cons} procedure; the content of its first field is selected by the
+@code{car} procedure; the content of its second field is selected by the
+@code{cdr} procedure.  The predicate @code{pair?} may be used to
+determine whether an object is a pair (@pxref{Pair and list
+procedures}).
+
+The first field of a pair is often referred to as its @dfn{car field} or
+just its @dfn{car}.  Its second field is often referred to as the pair's
+@dfn{cdr field} or just its @dfn{cdr}.
+
+@i{The empty list} is not a pair.  A pair is a @i{list} if and only if
+its cdr is a @i{list}.
+@end deftp
+
+@deftp {@value{R7RS} type} @r{list}
+A list is either @i{the empty list} or a @i{pair} whose cdr is a list.
+This implies a list must have finite length and be terminated by @i{the
+empty list}.  The predicate @code{list?} may be used to determine
+whether an object is a list (@pxref{Pair and list procedures}).
+
+With the exception of @i{the empty list}, every list is a @i{pair}.
+@end deftp
+
+@deftp jargon @r{proper list}
+@dfn{Proper list} is a widely-used synonym for @i{list} (see above).
+Because it's a synonym, there is technically no need for the qualifier.
+But in practice, people often refer to list-like objects that are not
+@i{lists} as @dfn{improper lists}.  The qualifier @dfn{proper} is
+therefore used to emphasize that an object is a Scheme @i{list} that
+satisfies @code{list?}.
+@end deftp
+
+@deftp jargon @r{improper list}
+The term @dfn{improper list} is sometimes used to describe a pair whose
+cdr is not a list.  This means that, despite its name, an @dfn{improper
+list} is not a @i{list} under Scheme's formal definition.  In contexts
+where the term @dfn{improper list} appears, @i{lists} are often referred
+to as @dfn{proper lists} to emphasize the distinction.
+@end deftp
+
+@deftp jargon @r{dotted pair}
+@dfn{Dotted pair} is sometimes used as a synonym for @i{pair}.
+@quotedblleft{}Dotted@quotedblright{} refers to the common external
+representation of a @i{pair} in which the last element is preceded by a
+period (@samp{.}, which resembles a dot).  This
+@quotedblleft{}dotted@quotedblright{} notation may technically be used
+to represent any @i{pair}, but is typically used only to represent
+@i{pairs} that are not @i{lists}.
+@end deftp
+
+@c @node External representations of pairs and lists
+@c @chapter External representations of pairs and lists
+
+@c @defblock
+@c @defline jargon dotted pair

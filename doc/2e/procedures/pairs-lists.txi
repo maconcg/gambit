@@ -5,6 +5,7 @@
 Returns @code{#t} if @var{obj} is a pair.
 
 @lisp
+01234567890123456789012345678901234567890123456789012345678901234567
 (pair? '(a . b)) @value{true}
 (pair? '(a b c)) @value{true}
 (pair? '())      @value{false}
@@ -31,7 +32,6 @@ Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
 @end deftypefn
 
 @deftypefn @t{(scheme base)} @/ car pair
-@tindex empty list
 Returns the contents of the cdr field of @var{pair}.  If an attempt is
 made to take the car of the empty list, an exception that satisfies
 @code{type-exception?} is raised.
@@ -135,7 +135,7 @@ These 28 procedures are compositions of @code{car} and @code{cdr}.
 @end lisp
 @end deftypefn
 
-@cindex empty list
+@tindex the empty list @subentry predicate
 @deftypefn @t{(scheme base)} @/ null? obj
 Returns @code{#t} if @var{obj} is the empty list.
 
@@ -153,6 +153,8 @@ Returns @code{#t} if @var{obj} is the empty list.
 @end deftypefn
 
 @deftypefn @t{(scheme base)} @/ list? obj
+@tindex proper list @subentry predicate
+@tindex the empty list @subentry termination of proper lists
 Returns @code{#t} if @var{obj} is a @dfn{proper list}.  By definition, a
 list of finite length is terminated by the empty list.
 
@@ -176,7 +178,7 @@ form, each element is initialized to a default value.  In the
 two-argument form, each element is initialized to @var{fill}.
 
 The default value used by the one-argument form may change in a future
-version.  Programs that require a specific initilization value should
+version.  Programs that require a specific initialization value should
 use the two-argument form.
 
 If @var{k} is not an exact integer, an exception that satisfies
@@ -324,7 +326,6 @@ return a non-Boolean value.
 @item
 @code{member} uses @var{compare} in the three-argument form.
 @end itemize
-
 @lisp
 (define nums '(100 101 102))
 
@@ -367,7 +368,6 @@ return a non-Boolean value.
 @item
 @code{assoc} uses @var{compare} in the three-argument form.
 @end itemize
-
 @lisp
 (define e '((a 1) (b 2) (c 3)))
 

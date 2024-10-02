@@ -3,21 +3,6 @@
 @synindex tp cp
 @syncodeindex pg cp
 
-@copying
-This is the Gambit Scheme manual, @value{EDITION} edition.  It documents
-Gambit v@value{VERSION} (@value{UPDATED}).
-
-Not officially copyright @copyright{} 1994--2024 by Marc Feeley et al.
-
-@quotation
-The Gambit system, version @value{VERSION}, is licensed under two
-licenses: the Apache License, version 2.0, and the GNU Lesser General
-Public License, version 2.1.  You have the option to choose which of
-these two licenses to abide by.  A copy of each license is included in
-this document.
-@end quotation
-@end copying
-
 @dircategory The Algorithmic Language Scheme
 @direntry
 * gambit: (gambit)The Gambit programming system. 
