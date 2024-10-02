@@ -828,9 +828,10 @@ in reverse order (excluding the terminating empty list).
 <a class="index-entry-id" id="index-list-selectors-list_002dtail"></a>
 <dl class="first-deftypefn">
 <dt class="deftypefn" id="index-list_002dtail"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">list-tail</strong> <code class="def-code-arguments">list k</code><a class="copiable-link" href="#index-list_002dtail"> &para;</a></span></dt>
-<dd><p>Returns a list of <var class="var">list</var> obtained by omitting the first <var class="var">k</var>
+<dd><p>Returns a copy of <var class="var">list</var> obtained by omitting the first <var class="var">k</var>
 elements.  If <var class="var">list</var> is a proper list, a proper list is returned; if
-<var class="var">list</var> is an improper list, an improper list is returned.
+<var class="var">list</var> is an improper list, an improper list is returned
+(see <a class="pxref" href="#Pair-and-list-jargon">Pair and list jargon</a>).
 </p>
 <p>If <var class="var">k</var> is not an exact integer, an exception that satisfies
 <code class="code">type-exception?</code> is raised.  If <var class="var">list</var> has fewer than <var class="var">k</var>

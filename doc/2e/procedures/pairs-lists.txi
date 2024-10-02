@@ -287,9 +287,10 @@ in reverse order (excluding the terminating empty list).
 
 @tindex list @subentry @r{selectors} @subentry list-tail
 @deftypefn @t{(scheme base)} @/ list-tail list k
-Returns a list of @var{list} obtained by omitting the first @var{k}
+Returns a copy of @var{list} obtained by omitting the first @var{k}
 elements.  If @var{list} is a proper list, a proper list is returned; if
-@var{list} is an improper list, an improper list is returned.
+@var{list} is an improper list, an improper list is returned
+(@pxref{Pair and list jargon}).
 
 If @var{k} is not an exact integer, an exception that satisfies
 @code{type-exception?} is raised.  If @var{list} has fewer than @var{k}

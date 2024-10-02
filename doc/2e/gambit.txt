@@ -448,9 +448,10 @@ about pairs and lists.
           (equal? l (reverse (reverse l))) ⇒ #t
 
  -- (scheme base): list-tail list k
-     Returns a list of LIST obtained by omitting the first K elements.
+     Returns a copy of LIST obtained by omitting the first K elements.
      If LIST is a proper list, a proper list is returned; if LIST is an
-     improper list, an improper list is returned.
+     improper list, an improper list is returned (*note Pair and list
+     jargon::).
 
      If K is not an exact integer, an exception that satisfies
      ‘type-exception?’ is raised.  If LIST has fewer than K elements, an
@@ -901,29 +902,29 @@ Type Index
 * list, constructors, list:              Pair and list procedures.
                                                               (line 400)
 * list, constructors, list-copy:         Pair and list procedures.
-                                                              (line 541)
+                                                              (line 542)
 * list, constructors, make-list:         Pair and list procedures.
                                                               (line 381)
 * list, mutator, list-set!:              Pair and list procedures.
-                                                              (line 471)
+                                                              (line 472)
 * list, predicate, list?:                Pair and list procedures.
                                                               (line 367)
 * list, selectors, assoc:                Pair and list procedures.
-                                                              (line 513)
+                                                              (line 514)
 * list, selectors, assq:                 Pair and list procedures.
-                                                              (line 513)
+                                                              (line 514)
 * list, selectors, assv:                 Pair and list procedures.
-                                                              (line 513)
+                                                              (line 514)
 * list, selectors, list-ref:             Pair and list procedures.
-                                                              (line 463)
+                                                              (line 464)
 * list, selectors, list-tail:            Pair and list procedures.
                                                               (line 449)
 * list, selectors, member:               Pair and list procedures.
-                                                              (line 481)
+                                                              (line 482)
 * list, selectors, memq:                 Pair and list procedures.
-                                                              (line 481)
+                                                              (line 482)
 * list, selectors, memv:                 Pair and list procedures.
-                                                              (line 481)
+                                                              (line 482)
 * pair:                                  Pair and list jargon.
                                                               (line 183)
 * pair, constructor, cons:               Pair and list procedures.
@@ -949,11 +950,11 @@ Index of procedures and syntactic forms
 * append:                                Pair and list procedures.
                                                               (line 417)
 * assoc:                                 Pair and list procedures.
-                                                              (line 515)
+                                                              (line 516)
 * assq:                                  Pair and list procedures.
-                                                              (line 513)
-* assv:                                  Pair and list procedures.
                                                               (line 514)
+* assv:                                  Pair and list procedures.
+                                                              (line 515)
 * caaaar:                                Pair and list procedures.
                                                               (line 319)
 * caaadr:                                Pair and list procedures.
@@ -1020,13 +1021,13 @@ Index of procedures and syntactic forms
                                                               (line 407)
 * list:                                  Pair and list procedures.
                                                               (line 400)
-* list->string:                          String procedures.   (line 732)
+* list->string:                          String procedures.   (line 733)
 * list-copy:                             Pair and list procedures.
-                                                              (line 541)
+                                                              (line 542)
 * list-ref:                              Pair and list procedures.
-                                                              (line 463)
+                                                              (line 464)
 * list-set!:                             Pair and list procedures.
-                                                              (line 471)
+                                                              (line 472)
 * list-tail:                             Pair and list procedures.
                                                               (line 449)
 * list?:                                 Pair and list procedures.
@@ -1035,13 +1036,13 @@ Index of procedures and syntactic forms
                                                               (line 381)
 * make-list <1>:                         Pair and list procedures.
                                                               (line 382)
-* make-string:                           String procedures.   (line 574)
+* make-string:                           String procedures.   (line 575)
 * member:                                Pair and list procedures.
-                                                              (line 483)
+                                                              (line 484)
 * memq:                                  Pair and list procedures.
-                                                              (line 481)
-* memv:                                  Pair and list procedures.
                                                               (line 482)
+* memv:                                  Pair and list procedures.
+                                                              (line 483)
 * null?:                                 Pair and list procedures.
                                                               (line 354)
 * pair?:                                 Pair and list procedures.
@@ -1052,27 +1053,27 @@ Index of procedures and syntactic forms
                                                               (line 283)
 * set-cdr!:                              Pair and list procedures.
                                                               (line 295)
-* string:                                String procedures.   (line 594)
-* string->list:                          String procedures.   (line 711)
-* string-append:                         String procedures.   (line 699)
-* string-ci<?:                           String procedures.   (line 662)
-* string-ci<=?:                          String procedures.   (line 664)
-* string-ci=?:                           String procedures.   (line 661)
-* string-ci>?:                           String procedures.   (line 663)
-* string-ci>=?:                          String procedures.   (line 665)
-* string-copy:                           String procedures.   (line 743)
-* string-copy!:                          String procedures.   (line 770)
-* string-downcase:                       String procedures.   (line 680)
-* string-fill!:                          String procedures.   (line 791)
-* string-foldcase:                       String procedures.   (line 681)
-* string-length:                         String procedures.   (line 603)
-* string-ref:                            String procedures.   (line 609)
-* string-set!:                           String procedures.   (line 813)
-* string-upcase:                         String procedures.   (line 679)
-* string?:                               String procedures.   (line 564)
-* string<?:                              String procedures.   (line 633)
-* string<=?:                             String procedures.   (line 635)
-* string=?:                              String procedures.   (line 619)
-* string>?:                              String procedures.   (line 634)
-* string>=?:                             String procedures.   (line 636)
+* string:                                String procedures.   (line 595)
+* string->list:                          String procedures.   (line 712)
+* string-append:                         String procedures.   (line 700)
+* string-ci<?:                           String procedures.   (line 663)
+* string-ci<=?:                          String procedures.   (line 665)
+* string-ci=?:                           String procedures.   (line 662)
+* string-ci>?:                           String procedures.   (line 664)
+* string-ci>=?:                          String procedures.   (line 666)
+* string-copy:                           String procedures.   (line 744)
+* string-copy!:                          String procedures.   (line 771)
+* string-downcase:                       String procedures.   (line 681)
+* string-fill!:                          String procedures.   (line 792)
+* string-foldcase:                       String procedures.   (line 682)
+* string-length:                         String procedures.   (line 604)
+* string-ref:                            String procedures.   (line 610)
+* string-set!:                           String procedures.   (line 814)
+* string-upcase:                         String procedures.   (line 680)
+* string?:                               String procedures.   (line 565)
+* string<?:                              String procedures.   (line 634)
+* string<=?:                             String procedures.   (line 636)
+* string=?:                              String procedures.   (line 620)
+* string>?:                              String procedures.   (line 635)
+* string>=?:                             String procedures.   (line 637)
 
