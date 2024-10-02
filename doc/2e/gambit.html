@@ -840,6 +840,8 @@ elements, an exception that satisfies <code class="code">range-exception?</code>
 <div class="example lisp">
 <pre class="lisp-preformatted">(list-tail '(a b c) 1)   &rArr; <code class="t">(b c)</code>
 (list-tail '(a b c) 3)   &rArr; <code class="t">()</code>
+(list-tail '(a b . c) 1) &rArr; <code class="t">(b . c)</code>
+(list-tail '(a b . c) 2) &rArr; <code class="t">c</code>
 </pre></div>
 <div class="example lisp">
 <pre class="lisp-preformatted">(list-tail '(a b c) 1.1) &rarr; <span class="r"><i class="i">type exception</i></span>

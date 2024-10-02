@@ -161,8 +161,6 @@ Returns @code{#t} if @var{obj} is the empty list.
 @lisp
 (null? '())    @value{true}
 (null? (list)) @value{true}
-@end lisp
-@lisp
 (null? #\null) @value{false}
 (null? null?)  @value{false}
 (null? #f)     @value{false}
@@ -299,6 +297,8 @@ elements, an exception that satisfies @code{range-exception?} is raised.
 @lisp
 (list-tail '(a b c) 1)   @ok{(b c)}
 (list-tail '(a b c) 3)   @ok{()}
+(list-tail '(a b . c) 1) @ok{(b . c)}
+(list-tail '(a b . c) 2) @ok{c}
 @end lisp
 @lisp
 (list-tail '(a b c) 1.1) @exception{type}
