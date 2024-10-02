@@ -59,6 +59,7 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
 
 dl.first-deftypefn {
     dt code.def-code-arguments, dd p var.var {color: #721045}
+    dt code.def-code-arguments code.t {color:#000000}
 }
 
 dd, .center, li, ol, p:not(.nav-panel p) {max-width: 40em}
@@ -75,6 +76,7 @@ dd, .center, li, ol, p:not(.nav-panel p) {max-width: 40em}
 </head>
 
 <body lang="en">
+
 
 
 
@@ -778,7 +780,7 @@ integer, an exception that satisfies <code class="code">range-exception?</code> 
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-append"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">append</strong> <code class="def-code-arguments">list&hellip; [obj]</code><a class="copiable-link" href="#index-append"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-append"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">append</strong> <code class="def-code-arguments">list&hellip; <code class="t">[</code>obj<code class="t">]</code></code><a class="copiable-link" href="#index-append"> &para;</a></span></dt>
 <dd><p>The zero-argument form returns the empty list.  The one-argument form
 returns its argument, whatever that argument&rsquo;s type.  Each argument
 except the last, if present, must be a list.
@@ -837,7 +839,7 @@ elements, an exception that satisfies <code class="code">range-exception?</code>
 <pre class="lisp-preformatted">(list-tail '(a b c) 1)   &rArr; <code class="t">(b c)</code>
 (list-tail '(a b c) 3)   &rArr; <code class="t">()</code>
 (list-tail '(a b . c) 1) &rArr; <code class="t">(b . c)</code>
-(list-tail '(a b . c) 2) &rArr; <code class="t">c</code>
+(list-tail '(a b . c) 2) &rArr; <code class="t">c</code>       <i class="slanted">;; abject impropriety</i>
 </pre></div>
 <div class="example lisp">
 <pre class="lisp-preformatted">(list-tail '(a b c) 1.1) &rarr; <span class="r"><i class="i">type exception</i></span>
@@ -885,7 +887,7 @@ ls &rArr; <code class="t">(one two three)</code>
 <dl class="first-deftypefn">
 <dt class="deftypefn" id="index-memq"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">memq</strong> <code class="def-code-arguments">obj list</code><a class="copiable-link" href="#index-memq"> &para;</a></span></dt>
 <dt class="deftypefnx def-cmd-deftypefn" id="index-memv"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">memv</strong> <code class="def-code-arguments">obj list</code><a class="copiable-link" href="#index-memv"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-member"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">member</strong> <code class="def-code-arguments">obj list [compare]</code><a class="copiable-link" href="#index-member"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-member"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">member</strong> <code class="def-code-arguments">obj list <code class="t">[</code>compare<code class="t">]</code></code><a class="copiable-link" href="#index-member"> &para;</a></span></dt>
 <dd><p>Each procedure successively applies some procedure to each element of
 <var class="var">list</var> and returns the first sublist of <var class="var">list</var> whose car
 satisfies that test relative to <var class="var">obj</var>.  They differ only in the
@@ -926,7 +928,7 @@ return a non-Boolean value.
 <dl class="first-deftypefn">
 <dt class="deftypefn" id="index-assq"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">assq</strong> <code class="def-code-arguments">obj  alist</code><a class="copiable-link" href="#index-assq"> &para;</a></span></dt>
 <dt class="deftypefnx def-cmd-deftypefn" id="index-assv"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">assv</strong> <code class="def-code-arguments">obj  alist</code><a class="copiable-link" href="#index-assv"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-assoc"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">assoc</strong> <code class="def-code-arguments">obj alist [compare]</code><a class="copiable-link" href="#index-assoc"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-assoc"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">assoc</strong> <code class="def-code-arguments">obj alist <code class="t">[</code>compare<code class="t">]</code></code><a class="copiable-link" href="#index-assoc"> &para;</a></span></dt>
 <dd><p>Each procedure successively applies some procedure to the elements of
 <var class="var">alist</var> returns the first pair of <var class="var">alist</var> whose car satisfies
 that test relative to <var class="var">obj</var>.  They differ only in the procedure that
@@ -1018,7 +1020,7 @@ Up: <a href="#Strings" accesskey="u" rel="up">Strings</a> &nbsp; [<a href="#SEC_
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-make_002dstring"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">make-string</strong> <code class="def-code-arguments">k [char]</code><a class="copiable-link" href="#index-make_002dstring"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-make_002dstring"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">make-string</strong> <code class="def-code-arguments">k <code class="t">[</code>char<code class="t">]</code></code><a class="copiable-link" href="#index-make_002dstring"> &para;</a></span></dt>
 <dd><p>Returns a newly allocated string of length <var class="var">k</var>.  In the one-argument
 form, each character is initialized to a default value.  In the
 two-argument form, each character is initialized to <var class="var">char</var>.
@@ -1057,7 +1059,7 @@ order of the arguments is preserved.  Analogous to <code class="code">list</code
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dlength"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-length</strong> <code class="def-code-arguments">[string]</code><a class="copiable-link" href="#index-string_002dlength"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_002dlength"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-length</strong> <code class="def-code-arguments"><code class="t">[</code>string<code class="t">]</code></code><a class="copiable-link" href="#index-string_002dlength"> &para;</a></span></dt>
 <dd><p>Returns the number of characters in <var class="var">string</var>.
 </p><div class="example lisp">
 <pre class="lisp-preformatted">(string-length (make-string 5)) &rArr; <code class="t">5</code>
@@ -1081,7 +1083,7 @@ not a valid index of <var class="var">string</var>, an exception that satisfies
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_003d_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string=?</strong> <code class="def-code-arguments">[string&hellip;]</code><a class="copiable-link" href="#index-string_003d_003f"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_003d_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string=?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_003d_003f"> &para;</a></span></dt>
 <dd><p>Returns <code class="code">#t</code> if all the <var class="var">strings</var> are the same length and
 contain exactly the same characters in the same positions, otherwise
 returns <code class="code">#f</code>.
@@ -1099,10 +1101,10 @@ any number of arguments.
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_003c_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&lt;?</strong> <code class="def-code-arguments">[string&hellip;]</code><a class="copiable-link" href="#index-string_003c_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003e_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&gt;?</strong> <code class="def-code-arguments">[string&hellip;]</code><a class="copiable-link" href="#index-string_003e_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003c_003d_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&lt;=?</strong> <code class="def-code-arguments">[string&hellip;]</code><a class="copiable-link" href="#index-string_003c_003d_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003e_003d_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&gt;=?</strong> <code class="def-code-arguments">[string&hellip;]</code><a class="copiable-link" href="#index-string_003e_003d_003f"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_003c_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&lt;?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_003c_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003e_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&gt;?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_003e_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003c_003d_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&lt;=?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_003c_003d_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003e_003d_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&gt;=?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_003e_003d_003f"> &para;</a></span></dt>
 <dd><p>These predicates return <code class="code">#t</code> if their arguments are (respectively):
 monotonically increasing, monotonically decreasing, monotonically
 non-decreasing, or monotonically non-increasing.  They are transitive.
@@ -1130,11 +1132,11 @@ accept any number of arguments.
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dci_003d_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci=?</strong> <code class="def-code-arguments">[string&hellip;]</code><a class="copiable-link" href="#index-string_002dci_003d_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003c_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&lt;?</strong> <code class="def-code-arguments">[string&hellip;]</code><a class="copiable-link" href="#index-string_002dci_003c_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003e_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&gt;?</strong> <code class="def-code-arguments">[string&hellip;]</code><a class="copiable-link" href="#index-string_002dci_003e_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003c_003d_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&lt;=?</strong> <code class="def-code-arguments">[string&hellip;]</code><a class="copiable-link" href="#index-string_002dci_003c_003d_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003e_003d_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&gt;=?</strong> <code class="def-code-arguments">[string&hellip;]</code><a class="copiable-link" href="#index-string_002dci_003e_003d_003f"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_002dci_003d_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci=?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_002dci_003d_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003c_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&lt;?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_002dci_003c_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003e_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&gt;?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_002dci_003e_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003c_003d_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&lt;=?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_002dci_003c_003d_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003e_003d_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&gt;=?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_002dci_003e_003d_003f"> &para;</a></span></dt>
 <dd><p>Each of these predicates behaves as if <code class="code">string-foldcase</code> were
 applied to each of its arguments, and then that predicate&rsquo;s
 non-&lsquo;<samp class="samp">-ci</samp>&rsquo; counterpart were applied to those case-folded arguments.
@@ -1193,7 +1195,7 @@ of the characters in the given <var class="var">strings</var>.
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002d_003elist"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-&gt;list</strong> <code class="def-code-arguments">string [start [end]]</code><a class="copiable-link" href="#index-string_002d_003elist"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_002d_003elist"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-&gt;list</strong> <code class="def-code-arguments">string <code class="t">[</code>start <code class="t">[</code>end<code class="t">]</code><code class="t">]</code></code><a class="copiable-link" href="#index-string_002d_003elist"> &para;</a></span></dt>
 <dd><p>Returns a newly allocated list of characters in <var class="var">string</var>.  In the
 one-argument form, the returned list comprises all characters of
 <var class="var">string</var>.  In the two-argument form, the returned list comprises
@@ -1237,7 +1239,7 @@ is raised.
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dcopy"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-copy</strong> <code class="def-code-arguments">[start [end]]</code><a class="copiable-link" href="#index-string_002dcopy"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_002dcopy"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-copy</strong> <code class="def-code-arguments"><code class="t">[</code>start <code class="t">[</code>end<code class="t">]</code><code class="t">]</code></code><a class="copiable-link" href="#index-string_002dcopy"> &para;</a></span></dt>
 <dd><p>Returns a newly allocated string whose value is a portion of
 <var class="var">string</var>.  In the one-argument form, the returned portion is all of
 <var class="var">string</var>.  In the two-argument form, the returned string is a copy
@@ -1271,7 +1273,7 @@ not a valid index of <var class="var">string</var>, an exception that satisfies
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dcopy_0021"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-copy!</strong> <code class="def-code-arguments">to-string at from-string [start [end]]</code><a class="copiable-link" href="#index-string_002dcopy_0021"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_002dcopy_0021"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-copy!</strong> <code class="def-code-arguments">to-string at from-string <code class="t">[</code>start <code class="t">[</code>end<code class="t">]</code><code class="t">]</code></code><a class="copiable-link" href="#index-string_002dcopy_0021"> &para;</a></span></dt>
 <dd>
 <p>Mutates <var class="var">to-string</var> by copying a substring of <var class="var">from-string</var> into
 <var class="var">to-string</var>, beginning with index <var class="var">at</var> of <var class="var">to-string</var>.  In
@@ -1299,7 +1301,7 @@ b &rArr; <code class="t">&quot;a12de&quot;</code>
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dfill_0021"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-fill!</strong> <code class="def-code-arguments">string char [start [end]]</code><a class="copiable-link" href="#index-string_002dfill_0021"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_002dfill_0021"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-fill!</strong> <code class="def-code-arguments">string char <code class="t">[</code>start <code class="t">[</code>end<code class="t">]</code><code class="t">]</code></code><a class="copiable-link" href="#index-string_002dfill_0021"> &para;</a></span></dt>
 <dd><p>Mutates <var class="var">string</var> by overwriting some or all of its elements with
 <var class="var">char</var>.  In the two-argument form, each element is overwritten.  In
 the three-argument form, the elements from index <var class="var">start</var> (inclusive)
@@ -1437,8 +1439,8 @@ Next: <a href="#Type-Index" accesskey="n" rel="next">Type Index</a>, Previous: <
 <tr><td></td><td class="printindex-index-see-entry"><abbr class="acronym">R<sup class="sup">4</sup>RS</abbr>, <em class="emph">See</em> <abbr class="acronym">R<sup class="sup">n</sup>RS</abbr></td><td class="printindex-index-see-entry-section"></td></tr>
 <tr><td></td><td class="printindex-index-see-entry"><abbr class="acronym">R<sup class="sup">5</sup>RS</abbr>, <em class="emph">See</em> <abbr class="acronym">R<sup class="sup">n</sup>RS</abbr></td><td class="printindex-index-see-entry-section"></td></tr>
 <tr><td></td><td class="printindex-index-see-entry"><abbr class="acronym">R<sup class="sup">7</sup>RS</abbr>, <em class="emph">See</em> <abbr class="acronym">R<sup class="sup">n</sup>RS</abbr></td><td class="printindex-index-see-entry-section"></td></tr>
-<tr><td></td><td class="printindex-index-see-entry">Revised Report on the Algorithmic Language Scheme, <em class="emph">See</em> <abbr class="acronym">R<sup class="sup">n</sup>RS</abbr></td><td class="printindex-index-see-entry-section"></td></tr>
-<tr><td></td><td class="printindex-index-see-entry"><abbr class="acronym">R<sup class="sup">n</sup>RS</abbr>, <em class="emph">See</em> Scheme standards</td><td class="printindex-index-see-entry-section"></td></tr>
+<tr><td></td><td class="printindex-index-see-entry">Revised Report on the Algorithmic Language Scheme, <em class="emph">See</em> Scheme standards</td><td class="printindex-index-see-entry-section"></td></tr>
+<tr><td></td><td class="printindex-index-see-entry"><abbr class="acronym">R<sup class="sup">n</sup>RS</abbr>, <em class="emph">See</em> Revised Report on the Algorithmic Language Scheme</td><td class="printindex-index-see-entry-section"></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="General-Index_cp_letter-S">S</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-Scheme-standards">Scheme standards</a></td><td class="printindex-index-section"><a href="#Introduction">Introduction</a></td></tr>

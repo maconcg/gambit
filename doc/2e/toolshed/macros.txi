@@ -39,3 +39,7 @@
 @end macro
 
 @alias aside = slanted
+
+@rmacro opt {arg}
+@inlinefmtifelse{html,@t{[}\arg\@t{]},[\arg\]}
+@end rmacro

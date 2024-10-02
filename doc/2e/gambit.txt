@@ -461,7 +461,7 @@ about pairs and lists.
           (list-tail '(a b c) 1)   ⇒ (b c)
           (list-tail '(a b c) 3)   ⇒ ()
           (list-tail '(a b . c) 1) ⇒ (b . c)
-          (list-tail '(a b . c) 2) ⇒ c
+          (list-tail '(a b . c) 2) ⇒ c       ;; abject impropriety
           (list-tail '(a b c) 1.1) → type exception
           (list-tail '(a b c) 4)   → range exception
 

@@ -1,4 +1,5 @@
 @node Pair and list procedures
+@nodedescription The @sc{P} in @sc{LIST PROCESSING}.
 @chapter Pair and list procedures
 
 @tindex pair @subentry @r{predicate} @subentry pair?
@@ -244,7 +245,7 @@ Returns the length of @var{list}.
 @end lisp
 @end deftypefn
 
-@deftypefn @t{(scheme base)} @/ append list@dots{} [obj]
+@deftypefn @t{(scheme base)} @/ append list@dots{} @opt{obj}
 The zero-argument form returns the empty list.  The one-argument form
 returns its argument, whatever that argument's type.  Each argument
 except the last, if present, must be a list.
@@ -301,7 +302,7 @@ elements, an exception that satisfies @code{range-exception?} is raised.
 (list-tail '(a b c) 1)   @ok{(b c)}
 (list-tail '(a b c) 3)   @ok{()}
 (list-tail '(a b . c) 1) @ok{(b . c)}
-(list-tail '(a b . c) 2) @ok{c}
+(list-tail '(a b . c) 2) @ok{c} @aside{;; abject impropriety}
 @end lisp
 @lisp
 (list-tail '(a b c) 1.1) @exception{type}
@@ -346,7 +347,7 @@ ls @ok{(one two three)}
 @tindex list @subentry @r{selectors} @subentry member
 @deftypefn  @t{(scheme base)} @/ memq   obj list
 @deftypefnx @t{(scheme base)} @/ memv   obj list
-@deftypefnx @t{(scheme base)} @/ member obj list [compare]
+@deftypefnx @t{(scheme base)} @/ member obj list @opt{compare}
 Each procedure successively applies some procedure to each element of
 @var{list} and returns the first sublist of @var{list} whose car
 satisfies that test relative to @var{obj}.  They differ only in the
@@ -390,7 +391,7 @@ return a non-Boolean value.
 @tindex list @subentry @r{selectors} @subentry assoc
 @deftypefn  @t{(scheme base)} @/ assq obj  alist
 @deftypefnx @t{(scheme base)} @/ assv obj  alist
-@deftypefnx @t{(scheme base)} @/ assoc obj alist [compare]
+@deftypefnx @t{(scheme base)} @/ assoc obj alist @opt{compare}
 Each procedure successively applies some procedure to the elements of
 @var{alist} returns the first pair of @var{alist} whose car satisfies
 that test relative to @var{obj}.  They differ only in the procedure that

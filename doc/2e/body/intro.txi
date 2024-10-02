@@ -8,12 +8,12 @@ language aimed at portability, reliability, and speed.  It features two
 main programs: @slanted{@command{gsi}}, the Gambit Scheme interpreter,
 and @slanted{@command{gsc}}, the Gambit Scheme compiler.
 
-@cindex Scheme standards
-@cindex @value{RNRS} @seeentry{Scheme standards}
-@cindex Revised Report on the Algorithmic Language Scheme @seeentry{@value{RNRS}}
+@cindex @value{RNRS} @seeentry {Revised Report on the Algorithmic Language Scheme}
 @cindex @value{R4RS} @seeentry{@value{RNRS}}
 @cindex @value{R5RS} @seeentry{@value{RNRS}}
 @cindex @value{R7RS} @seeentry{@value{RNRS}}
+@cindex Revised Report on the Algorithmic Language Scheme @seeentry{Scheme standards}
+@cindex Scheme standards
 @cindex @acronym{IEEE 1178-1990} @seeentry{Scheme standards}
 In its default configuration, Gambit provides a superset of the language
 described by @cite{The Revised@sup{7} Report on the Algorithmic Language

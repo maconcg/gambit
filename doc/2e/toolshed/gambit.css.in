@@ -16,6 +16,7 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
 
 dl.first-deftypefn {
     dt code.def-code-arguments, dd p var.var {color: %arg%}
+    dt code.def-code-arguments code.t {color:%fg-main%}
 }
 
 dd, .center, li, ol, p:not(.nav-panel p) {max-width: 40em}

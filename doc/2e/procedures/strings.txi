@@ -16,7 +16,7 @@ Returns @code{#t} if @var{obj} is a string.
 @end lisp
 @end deftypefn
 
-@deftypefn @t{(scheme base)} @/ make-string k [char]
+@deftypefn @t{(scheme base)} @/ make-string k @opt{char}
 Returns a newly allocated string of length @var{k}.  In the one-argument
 form, each character is initialized to a default value.  In the
 two-argument form, each character is initialized to @var{char}.
@@ -53,7 +53,7 @@ order of the arguments is preserved.  Analogous to @code{list}
 @end lisp
 @end deftypefn
 
-@deftypefn @t{(scheme base)} @/ string-length [string]
+@deftypefn @t{(scheme base)} @/ string-length @opt{string}
 Returns the number of characters in @var{string}.
 @lisp
 (string-length (make-string 5)) @ok{5}
@@ -75,7 +75,7 @@ not a valid index of @var{string}, an exception that satisfies
 @end lisp
 @end deftypefn
 
-@deftypefn @t{(scheme base)} @/ string=? [string@dots{}]
+@deftypefn @t{(scheme base)} @/ string=? @opt{string@dots{}}
 Returns @code{#t} if all the @var{strings} are the same length and
 contain exactly the same characters in the same positions, otherwise
 returns @code{#f}.
@@ -92,10 +92,10 @@ any number of arguments.
 @end lisp
 @end deftypefn
 
-@deftypefn  @t{(scheme base)} @/ string<? [string@dots{}]
-@deftypefnx @t{(scheme base)} @/ string>? [string@dots{}]
-@deftypefnx @t{(scheme base)} @/ string<=? [string@dots{}]
-@deftypefnx @t{(scheme base)} @/ string>=? [string@dots{}]
+@deftypefn  @t{(scheme base)} @/ string<? @opt{string@dots{}}
+@deftypefnx @t{(scheme base)} @/ string>? @opt{string@dots{}}
+@deftypefnx @t{(scheme base)} @/ string<=? @opt{string@dots{}}
+@deftypefnx @t{(scheme base)} @/ string>=? @opt{string@dots{}}
 These predicates return @code{#t} if their arguments are (respectively):
 monotonically increasing, monotonically decreasing, monotonically
 non-decreasing, or monotonically non-increasing.  They are transitive.
@@ -122,11 +122,11 @@ accept any number of arguments.
 @end lisp
 @end deftypefn
 
-@deftypefn  @t{(scheme char)} @/ string-ci=? [string@dots{}]
-@deftypefnx @t{(scheme char)} @/ string-ci<? [string@dots{}]
-@deftypefnx @t{(scheme char)} @/ string-ci>? [string@dots{}]
-@deftypefnx @t{(scheme char)} @/ string-ci<=? [string@dots{}]
-@deftypefnx @t{(scheme char)} @/ string-ci>=? [string@dots{}]
+@deftypefn  @t{(scheme char)} @/ string-ci=? @opt{string@dots{}}
+@deftypefnx @t{(scheme char)} @/ string-ci<? @opt{string@dots{}}
+@deftypefnx @t{(scheme char)} @/ string-ci>? @opt{string@dots{}}
+@deftypefnx @t{(scheme char)} @/ string-ci<=? @opt{string@dots{}}
+@deftypefnx @t{(scheme char)} @/ string-ci>=? @opt{string@dots{}}
 Each of these predicates behaves as if @code{string-foldcase} were
 applied to each of its arguments, and then that predicate's
 non-@samp{-ci} counterpart were applied to those case-folded arguments.
@@ -188,7 +188,7 @@ of the characters in the given @var{strings}.
 @end lisp
 @end deftypefn
 
-@deftypefn @t{(scheme base)} @/ string->list string [start [end]]
+@deftypefn @t{(scheme base)} @/ string->list string @opt{start @opt{end}}
 Returns a newly allocated list of characters in @var{string}.  In the
 one-argument form, the returned list comprises all characters of
 @var{string}.  In the two-argument form, the returned list comprises
@@ -230,7 +230,7 @@ is raised.
 @end lisp
 @end deftypefn
 
-@deftypefn @t{(scheme base)} @/ string-copy [start [end]]
+@deftypefn @t{(scheme base)} @/ string-copy @opt{start @opt{end}}
 Returns a newly allocated string whose value is a portion of
 @var{string}.  In the one-argument form, the returned portion is all of
 @var{string}.  In the two-argument form, the returned string is a copy
@@ -263,7 +263,7 @@ not a valid index of @var{string}, an exception that satisfies
 @end lisp
 @end deftypefn
 
-@deftypefn @t{(scheme base)} @/ string-copy! to-string at from-string [start [end]]
+@deftypefn @t{(scheme base)} @/ string-copy! to-string at from-string @opt{start @opt{end}}
 
 Mutates @var{to-string} by copying a substring of @var{from-string} into
 @var{to-string}, beginning with index @var{at} of @var{to-string}.  In
@@ -290,7 +290,7 @@ b @ok{"a12de"}
 @end lisp
 @end deftypefn
 
-@deftypefn @t{(scheme base)} @/ string-fill! string char [start [end]]
+@deftypefn @t{(scheme base)} @/ string-fill! string char @opt{start @opt{end}}
 Mutates @var{string} by overwriting some or all of its elements with
 @var{char}.  In the two-argument form, each element is overwritten.  In
 the three-argument form, the elements from index @var{start} (inclusive)

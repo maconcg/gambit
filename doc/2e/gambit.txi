@@ -19,6 +19,7 @@ issues via @url{@value{GITHUB-URL},the Gambit repository on GitHub}.
 @include body/include.txi
 
 @node Pairs and lists
+@nodedescription The @sc{LIST} in @sc{LIST PROCESSING}.
 @chapter Pairs and lists
 @lowersections
 @include body/pairs-lists.txi
@@ -26,6 +27,7 @@ issues via @url{@value{GITHUB-URL},the Gambit repository on GitHub}.
 @raisesections
 
 @node Strings
+@nodedescription Sequences of characters.
 @chapter Strings
 @lowersections
 @include procedures/strings.txi
