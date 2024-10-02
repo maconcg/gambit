@@ -19,7 +19,7 @@ issues via @url{@value{GITHUB-URL},the Gambit repository on GitHub}.
 @include body/include.txi
 
 @node Pairs and lists
-@nodedescription The @sc{LIST} in @sc{LIST PROCESSING}.
+@nodedescription The @sc{LIS} in @sc{LISP}.
 @chapter Pairs and lists
 @lowersections
 @include body/pairs-lists.txi

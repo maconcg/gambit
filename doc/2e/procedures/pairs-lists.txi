@@ -1,5 +1,5 @@
 @node Pair and list procedures
-@nodedescription The @sc{P} in @sc{LIST PROCESSING}.
+@nodedescription The @sc{P} in @sc{LISP}.
 @chapter Pair and list procedures
 
 @tindex pair @subentry @r{predicate} @subentry pair?
