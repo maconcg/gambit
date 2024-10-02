@@ -1,0 +1,1004 @@
+Gambit
+1 Introduction
+2 The Gambit system
+  2.1 Invoking Gambit
+    2.1.1 Argument processing
+    2.1.2 Interactive mode
+    2.1.3 Batch mode
+    2.1.4 Module management mode
+    2.1.5 Scheme scripts
+  2.2 gsc
+    2.2.1 Invoking gsc
+    2.2.2 gsc declarations
+    2.2.3 Link files
+3 Debugging
+  3.1 Debugging model
+  3.2 Debugging commands
+  3.3 Debugging example
+4 Pairs and lists
+  4.1 Overview of pairs and lists
+  4.2 Pair and list types
+  4.3 Pair and list procedures
+5 Strings
+  5.1 String procedures
+General Index
+Index of procedures and syntactic forms
+Gambit
+******
+
+Gambit is a complete implementation of the Scheme language aimed at
+portability, speed, and power.
+
+   For the most up-to-date information on Gambit and related resources,
+visit the Gambit home page (https://gambitscheme.org).  Please report
+issues via the Gambit repository on GitHub
+(https://github.com/gambit/gambit).
+
+   This is the Gambit Scheme manual, revised edition.  It documents
+Gambit v4.9.5 (September 20, 2024).
+
+   Not officially copyright © 1994-2024 by Marc Feeley et al.
+
+     The Gambit system, version 4.9.5, is licensed under two licenses:
+     the Apache License, version 2.0 (https://www.apache.org/licenses/),
+     and the GNU Lesser General Public License, version 2.1
+     (https://www.gnu.org/licenses/).  You may choose which of these two
+     licenses to abide by.
+
+1 Introduction
+**************
+
+The Gambit programming system is a complete implementation of the Scheme
+language aimed at portability, reliability, and speed.  It features two
+main programs: ‘gsi’, the Gambit Scheme interpreter, and ‘gsc’, the
+Gambit Scheme compiler.
+
+   In its default configuration, Gambit provides a superset of the
+language described by ‘The Revised^{7} Report on the Algorithmic
+Language Scheme’, also known as R7RS.  Gambit may be configured to
+conform to the R4RS, R5RS, R7RS, or IEEE 1178-1990 Scheme standards.
+
+   ‘gsi’ provides a subset of ‘gsc’'s functionality.  The only
+difference between these programs is that ‘gsc’ also provides certain
+procedures and invocation options specific to compilation.
+
+   ‘gsc’ compiles programs by “transpiling” Scheme source code to source
+code for a target language, then optionally passing that transpiled code
+to tools like ‘gcc’ for further processing (*note (gcc)::).  Supported
+target languages include C and JavaScript.
+
+   The C target is the most mature, generating efficient C code that
+lets Gambit run on any platform for which a C compiler is available.
+With appropriate declarations in the Scheme source code (*note gsc
+declarations::), the resulting programs run roughly as fast as
+functionally equivalent programs built from hand-written C.
+
+   Most of the Gambit system, including ‘gsi’ and ‘gsc’ itself, is
+written in Scheme and compiled using ‘gsc’.
+
+2 The Gambit system
+*******************
+
+This chapter desrcibes the Gambit system, including installation,
+program invocation, and filesystem usage.
+
+2.1 Invoking Gambit
+===================
+
+This node is about invoking Gambit, covering features common to ‘gsc’
+and ‘gsi’ (and ‘gsi’'s various symlinks).  ‘gsc’-specific features are
+covered elsewhere.
+
+2.1.1 Argument processing
+-------------------------
+
+This node covers how Gambit processes command line arguments, and how
+those arguments may be used to choose a mode of operation (interactive,
+batch, module management, etc.).
+
+2.1.2 Interactive mode
+----------------------
+
+This node is about interacting with Gambit via the REPL (read-eval-print
+loop).
+
+2.1.3 Batch mode
+----------------
+
+This node is about batch mode.
+
+2.1.4 Module management mode
+----------------------------
+
+This node is about module management mode.
+
+2.1.5 Scheme scripts
+--------------------
+
+This node is about using Gambit as a script interpreter.  It will cover
+shebangs, the ‘main’ procedure, etc.
+
+2.2 gsc
+=======
+
+This node is about features unique to Gambit's compiler, ‘gsc’.
+
+2.2.1 Invoking gsc
+------------------
+
+This node is about invoking ‘gsc’.  It will focus on features not
+available via ‘gsi’.
+
+2.2.2 gsc declarations
+----------------------
+
+This node is about ‘gsc’ declarations.
+
+2.2.3 Link files
+----------------
+
+This node is about link files.
+
+3 Debugging
+***********
+
+This node gives an overview of Gambit's debugging facilities.
+
+3.1 Debugging model
+===================
+
+This node is about Gambit's debugging model.
+
+3.2 Debugging commands
+======================
+
+This node is about debugging commands.
+
+3.3 Debugging example
+=====================
+
+This node presents an example debugging session.
+
+4 Pairs and lists
+*****************
+
+4.1 Overview of pairs and lists
+===============================
+
+This section may eventually provide introductory/high-level information
+about pairs and lists.
+
+4.2 Pair and list types
+=======================
+
+ -- R7RS type: empty list
+     The empty list is a unique object whose external representation is
+     ‘()’.  Because the empty list is a unique object, it can never be
+     newly allocated (reference goes here).  The predicate ‘null?’ may
+     be used to determine whether an object is the empty list (*note
+     Pair and list procedures::).
+
+     The empty list is a list.
+
+ -- R7RS type: pair
+     A pair is an object with two fields.  It is constructed by the
+     ‘cons’ procedure; the content of its first field is selected by the
+     ‘car’ procedure; the content of its second field is selected by the
+     ‘cdr’ procedure.  The predicate ‘pair?’ may be used to determine
+     whether an object is a pair (*note Pair and list procedures::).
+
+     "Cons a onto b" means "use ‘cons’ to construct a pair whose first
+     field contains a and whose second field contains b".
+
+     The first field of a pair is often referred to as its "car field"
+     or just its "car".  Its second field is often referred to as the
+     pair's "cdr field" or just its "cdr".
+
+     "Take the car of p" of a means to "use ‘car’ to select the first
+     field of p".  "Take the cdr of p" of a means to "use ‘cdr’ to
+     select the second field of p".
+
+     The empty list is not a pair.  A pair is a list if and only if its
+     cdr is a list.
+
+ -- R7RS type: list
+     A list is either the empty list or a pair whose cdr is a list.
+     This implies a list must have finite length and be terminated by
+     the empty list.  The predicate ‘list?’ may be used to determine
+     whether an object is a list (*note Pair and list procedures::).
+
+     With the exception of the empty list, every list is a pair.
+
+ -- jargon: proper list
+     "Proper list" is a widely-used synonym for list (see above).
+     Because it's a synonym, there's technically no need for the
+     qualifier.  But in practice, people often refer to list-like
+     objects that are not lists as "improper lists".  The qualifier
+     "proper" is therefore used to emphasize that an object is a Scheme
+     list that satisfies ‘list?’.
+
+ -- jargon: improper list
+     The term "improper list" is sometimes used to describe a pair whose
+     cdr is not a list.  This means that, despite its name, an "improper
+     list" is not a list under Scheme's formal definition.  In contexts
+     where the term "improper list" appears, lists are often referred to
+     as "proper lists" to emphasize the distinction.
+
+ -- jargon: dotted pair
+     "Dotted pair" is sometimes used as a synonym for pair.  "Dotted"
+     refers to the common external representation of a pair in which the
+     last element is preceded by a period (‘.’, which resembles a dot).
+     This "dotted notation" may technically be used to represent any
+     pair, but is typically used only to represent pairs that are not
+     lists.
+
+4.3 Pair and list procedures
+============================
+
+ -- (scheme base): pair? obj
+     Returns ‘#t’ if OBJ is a pair.
+
+          (pair? '(a . b)) ⇒ #t
+          (pair? '(a b c)) ⇒ #t
+          (pair? '())      ⇒ #f
+          (pair? '(() ())) ⇒ #f
+          (pair? '#(a b))  ⇒ #f
+
+ -- (scheme base): cons obj1 obj2
+     Returns a newly allocated pair whose car is OBJ1 and whose cdr is
+     OBJ2.  The pair is guaranteed to be different (in the sense of
+     ‘eqv?’) from every existing object.
+
+          (cons 'a '())                      ⇒ (a)
+          (cons '(a) '(b c d))               ⇒ ((a) b c d)
+          (cons "a" '(b c))                  ⇒ ("a" b c)
+          (cons 'a 3)                        ⇒ (a . 3)
+          (cons '(a b) 'c)                   ⇒ ((a b) . c)
+          (eq? cons (cdr (cons cons cons)))  ⇒ #t
+          (eqv?   (cons + car) (cons + car)) ⇒ #f
+          (equal? (cons + car) (cons + car)) ⇒ #t
+
+ -- (scheme base): car pair
+     Returns the contents of the cdr field of PAIR.  If an attempt is
+     made to take the car of the empty list, an exception that satisfies
+     ‘type-exception?’ is raised.
+
+          (car '(a b c))     ⇒ a
+          (car '((a) b c d)) ⇒ (a)
+          (car '(1 . 2))     ⇒ 1
+          (car '())          → type exception
+
+ -- (scheme base): cdr pair
+     Returns the contents of the cdr field of PAIR.  If an attempt is
+     made to take the cdr of the empty list, an exception that satisfies
+     ‘type-exception?’ is raised.
+
+          (cdr '(a b c))     ⇒ (b c)
+          (cdr '((a) b c d)) ⇒ (b c d)
+          (cdr '(1 . 2))     ⇒ 2
+          (cdr '())          → type exception
+
+ -- (scheme base): set-car! pair obj
+     Mutates PAIR by storing OBJ in the car field of PAIR.
+
+          (define (f) (list 'not-a-constant-list))
+          (define (g) '(constant-list))
+
+          (set-car! (f) 3) ;; legal, but useless
+          (f)              ⇒ (not-a-constant-list)
+          (set-car! (g) 3) ;; r7rs says this is an error
+
+ -- (scheme base): set-cdr! pair obj
+     Mutates PAIR by storing OBJ in the cdr field of PAIR.
+
+          (define (f) (list 'not-a-constant-list))
+          (define (g) '(constant-list))
+
+          (set-cdr! (f) 3) ;; legal, but useless
+          (f)              ⇒ (not-a-constant-list)
+          (set-cdr! (g) 3) ;; r7rs says this is an error
+
+ -- (scheme cxr): caar pair
+ -- (scheme cxr): cadr pair
+ -- (scheme cxr): cdar pair
+ -- (scheme cxr): cddr pair
+ -- (scheme cxr): caaar pair
+ -- (scheme cxr): caadr pair
+ -- (scheme cxr): cadar pair
+ -- (scheme cxr): caddr pair
+ -- (scheme cxr): cdaar pair
+ -- (scheme cxr): cdadr pair
+ -- (scheme cxr): cddar pair
+ -- (scheme cxr): cdddr pair
+ -- (scheme cxr): caaaar pair
+ -- (scheme cxr): caaadr pair
+ -- (scheme cxr): caadar pair
+ -- (scheme cxr): caaddr pair
+ -- (scheme cxr): cadaar pair
+ -- (scheme cxr): cadadr pair
+ -- (scheme cxr): caddar pair
+ -- (scheme cxr): cadddr pair
+ -- (scheme cxr): cdaaar pair
+ -- (scheme cxr): cdaadr pair
+ -- (scheme cxr): cdadar pair
+ -- (scheme cxr): cdaddr pair
+ -- (scheme cxr): cddaar pair
+ -- (scheme cxr): cddadr pair
+ -- (scheme cxr): cdddar pair
+ -- (scheme cxr): cddddr pair
+     These 28 procedures are compositions of ‘car’ and ‘cdr’.
+
+          (define l '((a b) (c) d (e (f) g)))
+          (define circle (circular-list 'a 'b 'c))
+
+          (cadr l)             ⇒ (c)
+          (car (cdr l))        ⇒ (c)
+          (cddr '(a b c . d))  ⇒ (c . d)
+          (cdddr '(a b c . d)) ⇒ d
+          (cdadr l)            ⇒ ()
+          (cdar (cdr l))       ⇒ ()
+          (caar (cdr l))       ⇒ c
+          (car (car (cdr l)))  ⇒ c
+          (cadddr l)           ⇒ (e (f) g)
+          (caaadr l)           → type exception
+
+          (car circle)         ⇒ a
+          (cadr circle)        ⇒ b
+          (caddr circle)       ⇒ c
+          (cadddr circle)      ⇒ a
+
+ -- (scheme base): null? obj
+     Returns ‘#t’ if OBJ is the empty list.
+
+          (null? '())    ⇒ #t
+          (null? (list)) ⇒ #t
+          (null? #\null) ⇒ #f
+          (null? null?)  ⇒ #f
+          (null? #f)     ⇒ #f
+          (null? 0)      ⇒ #f
+          (null? "")     ⇒ #f
+          (null? #())    ⇒ #f
+          (null? (void)) ⇒ #f
+
+ -- (scheme base): list? obj
+     Returns ‘#t’ if OBJ is a “proper list”.  By definition, a list of
+     finite length is terminated by the empty list.
+
+          (list? '(a b c))     ⇒ #t
+          (list? '())          ⇒ #t
+          (list? '(a . b))     ⇒ #f
+          (let ((x (list 'a)))
+            (set-cdr! x x)
+            (list? x))         ⇒ #f
+          (list? list)         ⇒ #f
+          (list? "list")       ⇒ #f
+          (list? #(0 1 2))     ⇒ #f
+
+ -- (scheme base): make-list k
+ -- (scheme base): make-list k fill
+     Returns a newly allocated list of K elements.  In the one-argument
+     form, each element is initialized to a default value.  In the
+     two-argument form, each element is initialized to FILL.
+
+     The default value used by the one-argument form may change in a
+     future version.  Programs that require a specific initialization
+     value should use the two-argument form.
+
+     If K is not an exact integer, an exception that satisfies
+     ‘type-exception?’ is raised.  If K is a negative exact integer, an
+     exception that satisfies ‘range-exception?’ is raised.
+
+          (make-list 0)        ⇒ ()
+          (make-list 3 (list)) ⇒ (() () ())
+          (make-list 1.25)     → type exception
+          (make-string -1)     → range exception
+
+ -- (scheme base): list obj...
+     Returns a newly allocated list consisting of its arguments.
+
+          (list 'a (+ 3 4) 'c)      ⇒ (a 7 c)
+          (list)                    ⇒ ()
+          ((car (list list)) 'list) ⇒ (list)
+
+ -- (scheme base): length list
+     Returns the length of LIST.
+
+          (define circle (circular-list 'x 'y 'z))
+
+          (length '(a b c))            ⇒ 3
+          (length '(a (b) (c d e)))    ⇒ 3
+          (length '())                 ⇒ 0
+          (length (cdr (make-list 5))) ⇒ 4
+          (length circle)              → infinite loop
+
+ -- (scheme base): append list... [obj]
+     The zero-argument form returns the empty list.  The one-argument
+     form returns its argument, whatever that argument's type.  Each
+     argument except the last, if present, must be a list.
+
+     With two or more arguments, the returned value consists of the
+     elements of each list..., in order (excluding each LIST's
+     terminating empty list).  A proper list is returned if OBJ is a
+     proper list; an improper list is returned if if OBJ is not a proper
+     list.  The returned value is newly allocated, except that it shares
+     structure with the last argument, OBJ.
+
+          (define l (list 'f 'g 'h))
+
+          (eq?    l (append (append) l)) ⇒ #t
+          (eq?    l (append l (append))) ⇒ #f
+          (equal? l (append l (append))) ⇒ #t
+
+          (append '(x) '(y))              ⇒ (x y)
+          (append '(a) '(b c d))          ⇒ (a b c d)
+          (append '(a (b)) '((c)))        ⇒ (a (b) (c))
+
+          (append '(a b) '(c . d))        ⇒ (a b c . d)
+          (append '() 'a)                 ⇒ a
+
+ -- (scheme base): reverse list
+     Returns a newly allocated list consisting of the elements of LIST
+     in reverse order (excluding the terminating empty list).
+
+          (define l (list 'a 'b 'c))
+
+          (eq?    l (reverse (reverse l))) ⇒ #f
+          (equal? l (reverse (reverse l))) ⇒ #t
+
+          (reverse '(a b c))             ⇒ (c b a)
+          (reverse '(a (b c) d (e (f)))) ⇒ ((e (f)) d (b c) a)
+
+ -- (scheme base): list-tail list k
+     Returns a list of LIST obtained by omitting the first K elements.
+     If LIST is a proper list, a proper list is returned; if LIST is an
+     improper list, an improper list is returned.
+
+     If K is not an exact integer, an exception that satisfies
+     ‘type-exception?’ is raised.  If LIST has fewer than K elements, an
+     exception that satisfies ‘range-exception?’ is raised.
+
+          (list-tail '(a b c) 1)   ⇒ (b c)
+          (list-tail '(a b c) 3)   ⇒ ()
+          (list-tail '(a b c) 1.1) → type exception
+          (list-tail '(a b c) 4)   → range exception
+
+ -- (scheme base): list-ref list k
+     Returns element K of LIST.  Equivalent to ‘(car (list-tail list
+     k))’.  The LIST argument may be circular.
+
+          (list-ref '(a b c d) 2)                   ⇒ c
+          (list-ref '(a b c d) (exact (round 1.8))) ⇒ c
+          (list-ref (circular-list 'a 'b 'c) 4) ;; r7rs says this is an error
+
+ -- (scheme base): list-set! list k obj
+     Mutates LIST by storing OBJ in element K of LIST.  It is an error
+     if K is not a valid index of LIST.
+
+          (let ((ls (list 'one 'two 'five!)))
+            (list-set! ls 2 'three)
+            ls) ⇒ (one two three)
+
+          (list-set! '(0 1 2) 1 "oops") ;; r7rs says this is an error
+
+ -- (scheme base): memq obj list
+ -- (scheme base): memv obj list
+ -- (scheme base): member obj list [compare]
+     Each procedure successively applies some procedure to each element
+     of LIST and returns the first sublist of LIST whose car satisfies
+     that test relative to OBJ.  They differ only in the procedure that
+     is used.  If no element of LIST satisfies the test, ‘#f’ is
+     returned.
+
+     In each two-argument form, a standard equivalence predicate is
+     used.  In the three-argument form of ‘member’, COMPARE may return a
+     non-Boolean value.
+
+        • ‘memq’ uses ‘eq?’
+        • ‘memv’ uses ‘eqv?’
+        • ‘member’ uses ‘equal?’ in the two-argument form.
+        • ‘member’ uses COMPARE in the three-argument form.
+          (define nums '(100 101 102))
+
+          (memq 101 nums)        ⇒ unspecified
+          (memv 101 nums)        ⇒ (101 102)
+          (member 7 nums +)      ⇒ (100 101 102)
+          (member 7 nums square) → wrong number of arguments exception
+
+          (memq 'a '(a b c))                      ⇒ (a b c)
+          (memq 'b '(a b c))                      ⇒ (b c)
+          (memq 'a '(b c d))                      ⇒ #f
+          (memq (list 'a) '(b (a) c))             ⇒ #f
+          (memq 'a '(a b c))                      ⇒ (a b c)
+          (member (list 'a) '(b (a) c))           ⇒ ((a) c)
+          (member "B" '("a" "b" "c") string-ci=?) ⇒ ("b" "c")
+
+ -- (scheme base): assq obj alist
+ -- (scheme base): assv obj alist
+ -- (scheme base): assoc obj alist [compare]
+
+     Each procedure successively applies some procedure to the elements
+     of ALIST returns the first pair of ALIST whose car satisfies that
+     test relative to OBJ.  They differ only in the procedure that is
+     used.  If none of ALIST's elements' cars satisfies the test, ‘#f’
+     is returned.
+
+     In each two-argument form, a standard equivalence predicate is
+     used.  In the three-argument form of ‘assoc’, COMPARE may return a
+     non-Boolean value.
+
+        • ‘assq’ uses ‘eq?’
+        • ‘assv’ uses ‘eqv?’
+        • ‘assoc’ uses ‘equal?’ in the two-argument form.
+        • ‘assoc’ uses COMPARE in the three-argument form.
+          (define e '((a 1) (b 2) (c 3)))
+
+          (assq 'a e)                            ⇒ (a 1)
+          (assq 'b e)                            ⇒ (b 2)
+          (assq 'd e)                            ⇒ #f
+          (assq (list 'a) '(((a)) ((b)) ((c))))  ⇒ #f
+          (assoc (list 'a) '(((a)) ((b)) ((c)))) ⇒ ((a))
+          (assoc 2.0 '((1 1) (2 4) (3 9)) =)     ⇒ (2 4)
+          (assq 5 '((2 3) (5 7) (11 13)))        ⇒ unspecified
+          (assv 5 '((2 3) (5 7) (11 13)))        ⇒ (5 7)
+
+ -- (scheme base): list-copy obj
+     Returns a newly allocated copy of the given OBJ if it is a list.
+     Only the pairs themselves are copied; the cars of the result are
+     the same (in the sense of ‘eqv?’) as the cars of LIST.  If OBJ is
+     an improper list, so is the result, and the final cdrs are the same
+     in the sense of ‘eqv?’.  An OBJ which is not a list is returned
+     unchanged.  It is an error if OBJ is a circular list.
+
+          (define circle (circular-list 0 1 2 3))
+          (define a '(1 8 2 8)) ;; a may be immutable
+          (define b (list-copy a))
+
+          (set-car! b 3) ;; b is mutable
+          b                  ⇒ (3 8 2 8)
+          a                  ⇒ (1 8 2 8)
+
+          (list-copy circle) → infinite loop
+
+5 Strings
+*********
+
+5.1 String procedures
+=====================
+
+ -- (scheme base): string? obj
+     Returns ‘#t’ if OBJ is a string.
+
+          (string? "")                     ⇒ #t
+          (string? #\a)                    ⇒ #f
+          (string? "a")                    ⇒ #t
+          (string? 'string)                ⇒ #f
+          (string? '(#\c #\h #\a #\r #\s)) ⇒ #f
+          (string? #(#\c #\h #\a #\r #\s)) ⇒ #f
+
+ -- (scheme base): make-string k [char]
+     Returns a newly allocated string of length K.  In the one-argument
+     form, each character is initialized to a default value.  In the
+     two-argument form, each character is initialized to CHAR.
+
+     The default value used by the one-argument form may change in a
+     future version.  Programs that require a specific initialization
+     value should use the two-argument form.
+
+     If K is not an exact integer, an exception that satisfies
+     ‘type-exception?’ is raised.  If K is a negative exact integer, an
+     exception that satisfies ‘range-exception?’ is raised.
+
+          (make-string 0)                 ⇒ ""
+          (string-length (make-string 4)) ⇒ 4
+          (make-string 4 #\g)             ⇒ "gggg"
+          (make-string 4 "g")             → type exception
+          (make-string 4.5)               → type exception
+          (make-string -1)                → range exception
+
+ -- (scheme base): string char...
+     Returns a newly allocated string whose elements are its arguments.
+     The order of the arguments is preserved.  Analogous to ‘list’
+     (*note Pair and list procedures::).
+
+          (string)                         ⇒ ""
+          (string #\G #\a #\m #\b #\i #\t) ⇒ "Gambit"
+          (string (string->list "Gambit")) ⇒ "Gambit"
+
+ -- (scheme base): string-length [string]
+     Returns the number of characters in STRING.
+          (string-length (make-string 5)) ⇒ 5
+          (string-length "")              ⇒ 0
+          (string-length "lambda")        ⇒ 6
+
+ -- (scheme base): string-ref string k
+     Returns the character at index K of STRING.  If K is not a valid
+     index of STRING, an exception that satisfies ‘range-exception?’ is
+     raised.
+
+          (define s "off by one")
+
+          (string-ref "zero-origin indexing" 0)  ⇒ #\z
+          (string-ref s (- (string-length s) 1)) ⇒ #\e
+          (string-ref s (string-length s))       → range exception
+
+ -- (scheme base): string=? [string...]
+     Returns ‘#t’ if all the STRINGS are the same length and contain
+     exactly the same characters in the same positions, otherwise
+     returns ‘#f’.
+
+     Gambit extends the R7RS description of ‘string=?’ to accept any
+     number of arguments.
+
+          (string=? "abc" (string #\a #\b #\c)) ⇒ #t
+          (string=? "abcd" "Abcd")              ⇒ #f
+          (string=?)                            ⇒ #t
+          (string=? "a" "a" "a")                ⇒ #t
+          (string=? "a" #\a)                    → type exception
+
+ -- (scheme base): string<? [string...]
+ -- (scheme base): string>? [string...]
+ -- (scheme base): string<=? [string...]
+ -- (scheme base): string>=? [string...]
+     These predicates return ‘#t’ if their arguments are (respectively):
+     monotonically increasing, monotonically decreasing, monotonically
+     non-decreasing, or monotonically non-increasing.  They are
+     transitive.
+
+     A pair of strings satisfies exactly one of ‘string<?’, ‘string=?’,
+     and ‘string>?’.  They may satisfy ‘string<=?’ if and only if they
+     do not satisfy ‘string>?’.  They may satisfy ‘string>=?’ if and
+     only if they do not satisfy ‘string<?’.
+
+     Gambit extends the R7RS descriptions of these procedures to accept
+     any number of arguments.
+
+          (string<=? "g" "g") ⇒ #f
+          (string>=? "g" "g") ⇒ #f
+          (string<?  "g" "g") ⇒ #f
+          (string>?  "g" "g") ⇒ #f
+
+          (string<? "G" "g")  ⇒ #t
+          (string>? "G" "g")  ⇒ #f
+
+          (string<? "gg" "g") ⇒ #f
+          (string>? "gg" "g") ⇒ #t
+
+ -- (scheme char): string-ci=? [string...]
+ -- (scheme char): string-ci<? [string...]
+ -- (scheme char): string-ci>? [string...]
+ -- (scheme char): string-ci<=? [string...]
+ -- (scheme char): string-ci>=? [string...]
+     Each of these predicates behaves as if ‘string-foldcase’ were
+     applied to each of its arguments, and then that predicate's
+     non-‘-ci’ counterpart were applied to those case-folded arguments.
+
+          (string-ci=?  "G" "g")  ⇒ #t
+          (string-ci<=? "G" "g")  ⇒ #f
+
+          (string-ci<?  "G" "g")  ⇒ #f
+          (string-ci>?  "G" "g")  ⇒ #f
+
+          (string-ci<?  "gg" "g") ⇒ #f
+          (string-ci>?  "gg" "g") ⇒ #t
+
+ -- (scheme char): string-upcase string
+ -- (scheme char): string-downcase string
+ -- (scheme char): string-foldcase string
+     These procedures apply the Unicode full string uppercasing,
+     lowercasing, and case-folding algorithms to their arguments and
+     return the result.  In certain cases, the result differs in length
+     from STRING.  Note that language-sensitive mappings and foldings
+     are not used.
+
+          (string-downcase "Weiß")  ⇒ "weiß"
+          (string-foldcase "Weiß")  ⇒ "weiss"
+          (string-upcase   "Weiß")  ⇒ "WEISS"
+
+          (string-downcase "WEISS") ⇒ "weiss"
+          (string-foldcase "WEISS") ⇒ "weiss"
+
+          (string-downcase "Έτος")  ⇒ "έτος"
+          (string-foldcase "Έτος")  ⇒ "έτοσ"
+          (string-upcase   "Έτος")  ⇒ "ΈΤΟΣ"
+
+          (string-downcase "ΈΤΟΣ")  ⇒ "έτοσ"
+          (string-foldcase "ΈΤΟΣ")  ⇒ "έτοσ"
+
+ -- (scheme base): string-append string...
+
+     Returns a newly allocated string whose characters are the
+     concatenation of the characters in the given STRINGS.
+
+          (string-append)                     ⇒ ""
+          (string-append "")                  ⇒ ""
+          (string-append "hello" "world")     ⇒ "helloworld"
+          (string-append "hello" "" "world")  ⇒ "helloworld"
+          (string-append "hello " " world")   ⇒ "hello  world"
+          (string-append "hello" " " "world") ⇒ "hello world"
+
+ -- (scheme base): string->list string [start [end]]
+     Returns a newly allocated list of characters in STRING.  In the
+     one-argument form, the returned list comprises all characters of
+     STRING.  In the two-argument form, the returned list comprises
+     characters from index START (inclusive) through the end of STRING.
+     In the three-argument form, the returned list comprises characters
+     from index START (inclusive) through index END (exclusive).
+
+     Order is preserved.  ‘string->list’ and ‘list->string’ are inverses
+     so far as ‘equal?’ is concerned.  If either START or END is not a
+     valid index of STRING, an exception that satisfies
+     ‘range-exception?’ is raised.
+
+          (string->list "scheme")     ⇒ (#\s #\c #\h #\e #\m #\e)
+          (string->list "scheme" 1)   ⇒ (#\c #\h #\e #\m #\e)
+          (string->list "scheme" 2 6) ⇒ (#\h #\e #\m #\e)
+          (string->list "scheme" 6)   ⇒ ()
+          (string->list "scheme" 6 6) ⇒ ()
+          (string->list "scheme" 7)   → range exception
+          (string->list "scheme" 3 7) → range exception
+
+ -- (scheme base): list->string list
+     Returns a newly allocated string formed from the elements in LIST.
+
+     Order is preserved.  ‘list->string’ and ‘string->list’ and are
+     inverses so far as ‘equal?’ is concerned.  If any element of LIST
+     is not a character, an exception that satisfies ‘type?’ is raised.
+
+          (list->string (list))                       ⇒ ""
+          (list->string '(#\s #\c #\h #\e #\m #\e))   ⇒ "scheme"
+          (list->string '(#\s #\c #\h #\e #\m #\e 2)) → type exception
+
+ -- (scheme base): string-copy [start [end]]
+     Returns a newly allocated string whose value is a portion of
+     STRING.  In the one-argument form, the returned portion is all of
+     STRING.  In the two-argument form, the returned string is a copy of
+     STRING from index START (inclusive) through the end of STRING.  In
+     the three-argument form, the returned string is a copy of STRING
+     from index START (inclusive) to index END (exclusive).
+
+     Order is preserved.  ‘string->list’ and ‘list->string’ and are
+     inverses so far as ‘equal?’ is concerned.  If either START or END
+     is not a valid index of STRING, an exception that satisfies
+     ‘range-exception?’ is raised.
+
+          (define s "dwim")
+
+          (string-copy s)                     ⇒ "dwim"
+          (string-copy s 1)                   ⇒ "wim"
+          (string-copy s 1 1)                 ⇒ ""
+          (string-copy s 0 (string-length s)) ⇒ "dwim"
+          (eqv?     s (string-copy s))        ⇒ #f
+          (string=? s (string-copy s))        ⇒ #t
+          (string-copy s 6)                   → range exception
+          (string-copy s -1 3)                → range exception
+          (string-copy s 2 5)                 → range exception
+
+ -- (scheme base): string-copy! to-string at from-string [start [end]]
+
+     Mutates TO-STRING by copying a substring of FROM-STRING into
+     TO-STRING, beginning with index AT of TO-STRING.  In the
+     three-argument form, all of FROM-STRING is copied.  In the
+     four-argument form, the value of ‘(string-copy from-string START)’
+     is copied.  In the five-argument form, the value of ‘(string-copy
+     from-string START END)’ is copied.
+
+     If AT is not a valid index of TO-STRING, an exception that
+     satisfies ‘range-exception?’ is raised.  If ‘(- (string-length
+     to-string) at)’ is less than ‘(- end start)’, an exception that
+     satisfies ‘range-exception?’ is raised (in other words, the copied
+     substring must not overflow beyond the end of TO-STRING).
+
+          (define a "12345")
+          (define b (string-copy "abcde"))
+
+          (string-copy! b 1 a 0 2)
+          b ⇒ "a12de"
+
+ -- (scheme base): string-fill! string char [start [end]]
+     Mutates STRING by overwriting some or all of its elements with
+     CHAR.  In the two-argument form, each element is overwritten.  In
+     the three-argument form, the elements from index START (inclusive)
+     through the end of STRING are overwritten.  In the four-argument
+     form, the elements from index START (inclusive) to index END
+     (exclusive) are overwritten.
+
+     If either START or END is not a valid index of STRING, an exception
+     that satisfies ‘range-exception?’ is raised.
+
+          (define a (string-copy "abcde"))
+          (define b (string-copy a))
+          (define c (string-copy b))
+
+          (string-fill! a #\0)
+          (string-fill! b #\0 3)
+          (string-fill! c #\0 3 4)
+
+          a ⇒ "00000"
+          b ⇒ "abc00"
+          c ⇒ "abc0e"
+
+ -- (scheme base): string-set! string k char
+     Mutates STRING by storing CHAR in element K of STRING.
+
+     If STRING is not a mutable string, an exception that satisfies
+     ‘type-exception?’ is raised.  If K is not a valid index of STRING,
+     an exception that satisfies ‘range-exception?’ is raised.
+
+          (define (f) (make-string 3 #\*))
+          (define (g) "***")
+
+          (string-set! (f) 0 #\?) ;; legal, but useless
+          (string-set! (g) 0 #\?) ;; r7rs says this is an error
+          (string-set! (symbol->string 'immutable) 0 #\?) → type exception
+          (string-set! (f) 5 #\?)                         → range exception
+
+General Index
+*************
+
+* Menu:
+
+* car:                                   Pair and list types. (line 182)
+* car, field:                            Pair and list types. (line 182)
+* car, of a pair:                        Pair and list types. (line 182)
+* car, take the car:                     Pair and list types. (line 196)
+* cdr:                                   Pair and list types. (line 182)
+* cdr, field:                            Pair and list types. (line 182)
+* cdr, of a pair:                        Pair and list types. (line 182)
+* cdr, take the cdr:                     Pair and list types. (line 196)
+* cons:                                  Pair and list types. (line 182)
+* cons, cons onto:                       Pair and list types. (line 189)
+* dotted pair:                           Pair and list types. (line 226)
+* empty list:                            Pair and list types. (line 173)
+* empty list, predicate:                 Pair and list procedures.
+                                                              (line 349)
+* empty list, termination of proper lists: Pair and list procedures.
+                                                              (line 363)
+* gsc:                                   Introduction.        (line  50)
+* gsi:                                   Introduction.        (line  50)
+* improper list:                         Pair and list types. (line 219)
+* list:                                  Pair and list types. (line 203)
+* pair:                                  Pair and list types. (line 182)
+* proper list:                           Pair and list types. (line 211)
+* proper list, predicate:                Pair and list procedures.
+                                                              (line 363)
+* R4RS:                                  Introduction.        (line  55)
+* R5RS:                                  Introduction.        (line  55)
+* R7RS:                                  Introduction.        (line  55)
+* RNRS:                                  Introduction.        (line  55)
+* Scheme standards:                      Introduction.        (line  55)
+
+Index of procedures and syntactic forms
+***************************************
+
+* Menu:
+
+* append:                                Pair and list procedures.
+                                                              (line 413)
+* assoc:                                 Pair and list procedures.
+                                                              (line 516)
+* assq:                                  Pair and list procedures.
+                                                              (line 514)
+* assv:                                  Pair and list procedures.
+                                                              (line 515)
+* caaaar:                                Pair and list procedures.
+                                                              (line 312)
+* caaadr:                                Pair and list procedures.
+                                                              (line 313)
+* caaar:                                 Pair and list procedures.
+                                                              (line 304)
+* caadar:                                Pair and list procedures.
+                                                              (line 314)
+* caaddr:                                Pair and list procedures.
+                                                              (line 315)
+* caadr:                                 Pair and list procedures.
+                                                              (line 305)
+* caar:                                  Pair and list procedures.
+                                                              (line 300)
+* cadaar:                                Pair and list procedures.
+                                                              (line 316)
+* cadadr:                                Pair and list procedures.
+                                                              (line 317)
+* cadar:                                 Pair and list procedures.
+                                                              (line 306)
+* caddar:                                Pair and list procedures.
+                                                              (line 318)
+* cadddr:                                Pair and list procedures.
+                                                              (line 319)
+* caddr:                                 Pair and list procedures.
+                                                              (line 307)
+* cadr:                                  Pair and list procedures.
+                                                              (line 301)
+* car:                                   Pair and list procedures.
+                                                              (line 260)
+* cdaaar:                                Pair and list procedures.
+                                                              (line 320)
+* cdaadr:                                Pair and list procedures.
+                                                              (line 321)
+* cdaar:                                 Pair and list procedures.
+                                                              (line 308)
+* cdadar:                                Pair and list procedures.
+                                                              (line 322)
+* cdaddr:                                Pair and list procedures.
+                                                              (line 323)
+* cdadr:                                 Pair and list procedures.
+                                                              (line 309)
+* cdar:                                  Pair and list procedures.
+                                                              (line 302)
+* cddaar:                                Pair and list procedures.
+                                                              (line 324)
+* cddadr:                                Pair and list procedures.
+                                                              (line 325)
+* cddar:                                 Pair and list procedures.
+                                                              (line 310)
+* cdddar:                                Pair and list procedures.
+                                                              (line 326)
+* cddddr:                                Pair and list procedures.
+                                                              (line 327)
+* cdddr:                                 Pair and list procedures.
+                                                              (line 311)
+* cddr:                                  Pair and list procedures.
+                                                              (line 303)
+* cdr:                                   Pair and list procedures.
+                                                              (line 270)
+* cons:                                  Pair and list procedures.
+                                                              (line 246)
+* length:                                Pair and list procedures.
+                                                              (line 402)
+* list:                                  Pair and list procedures.
+                                                              (line 395)
+* list->string:                          String procedures.   (line 739)
+* list-copy:                             Pair and list procedures.
+                                                              (line 543)
+* list-ref:                              Pair and list procedures.
+                                                              (line 464)
+* list-set!:                             Pair and list procedures.
+                                                              (line 472)
+* list-tail:                             Pair and list procedures.
+                                                              (line 450)
+* list?:                                 Pair and list procedures.
+                                                              (line 362)
+* make-list:                             Pair and list procedures.
+                                                              (line 376)
+* make-list <1>:                         Pair and list procedures.
+                                                              (line 377)
+* make-string:                           String procedures.   (line 577)
+* member:                                Pair and list procedures.
+                                                              (line 484)
+* memq:                                  Pair and list procedures.
+                                                              (line 482)
+* memv:                                  Pair and list procedures.
+                                                              (line 483)
+* null?:                                 Pair and list procedures.
+                                                              (line 349)
+* pair?:                                 Pair and list procedures.
+                                                              (line 237)
+* reverse:                               Pair and list procedures.
+                                                              (line 438)
+* set-car!:                              Pair and list procedures.
+                                                              (line 280)
+* set-cdr!:                              Pair and list procedures.
+                                                              (line 290)
+* string:                                String procedures.   (line 597)
+* string->list:                          String procedures.   (line 718)
+* string-append:                         String procedures.   (line 706)
+* string-ci<?:                           String procedures.   (line 666)
+* string-ci<=?:                          String procedures.   (line 668)
+* string-ci=?:                           String procedures.   (line 665)
+* string-ci>?:                           String procedures.   (line 667)
+* string-ci>=?:                          String procedures.   (line 669)
+* string-copy:                           String procedures.   (line 750)
+* string-copy!:                          String procedures.   (line 775)
+* string-downcase:                       String procedures.   (line 684)
+* string-fill!:                          String procedures.   (line 796)
+* string-foldcase:                       String procedures.   (line 685)
+* string-length:                         String procedures.   (line 606)
+* string-ref:                            String procedures.   (line 612)
+* string-set!:                           String procedures.   (line 819)
+* string-upcase:                         String procedures.   (line 683)
+* string?:                               String procedures.   (line 567)
+* string<?:                              String procedures.   (line 637)
+* string<=?:                             String procedures.   (line 639)
+* string=?:                              String procedures.   (line 623)
+* string>?:                              String procedures.   (line 638)
+* string>=?:                             String procedures.   (line 640)
+

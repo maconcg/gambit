@@ -39,7 +39,7 @@ issues via @url{@value{GITHUB-URL},the Gambit repository on GitHub}.
 @unnumbered Index of procedures and syntactic forms
 @printindex fn
 
-@c @ifnothtml
+@ifnothtml
 @ifnotplaintext
 @ifnotxml
 @node GNU Lesser General Public License
@@ -51,5 +51,5 @@ issues via @url{@value{GITHUB-URL},the Gambit repository on GitHub}.
 @include toolshed/LICENSE-2.0.txt
 @end ifnotxml
 @end ifnotplaintext
-@c @end ifnothtml
+@end ifnothtml
 @bye
