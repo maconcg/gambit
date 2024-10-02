@@ -1,6 +1,7 @@
 @node Pair and list procedures
 @chapter Pair and list procedures
 
+@tindex pair @subentry @r{predicate} @subentry pair?
 @deftypefn @t{(scheme base)} @/ pair? obj
 Returns @code{#t} if @var{obj} is a pair.
 
@@ -13,6 +14,8 @@ Returns @code{#t} if @var{obj} is a pair.
 @end lisp
 @end deftypefn
 
+@cindex cons @subentry @code{cons} procedure
+@tindex pair @subentry @r{constructor} @subentry cons
 @deftypefn @t{(scheme base)} @/ cons @pari{obj} @parii{obj}
 Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
 @varii{obj}.  The pair is guaranteed to be different (in the sense of
@@ -24,12 +27,16 @@ Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
 (cons "a" '(b c))                  @ok{("a" b c)}
 (cons 'a 3)                        @ok{(a . 3)}
 (cons '(a b) 'c)                   @ok{((a b) . c)}
+@end lisp
+@lisp
 (eq? cons (cdr (cons cons cons)))  @value{true}
 (eqv?   (cons + car) (cons + car)) @value{false}
 (equal? (cons + car) (cons + car)) @value{true}
 @end lisp
 @end deftypefn
 
+@cindex car @subentry @code{car} procedure
+@tindex pair @subentry @r{selectors} @subentry car
 @deftypefn @t{(scheme base)} @/ car pair
 Returns the contents of the cdr field of @var{pair}.  If an attempt is
 made to take the car of the empty list, an exception that satisfies
@@ -43,6 +50,8 @@ made to take the car of the empty list, an exception that satisfies
 @end lisp
 @end deftypefn
 
+@cindex cdr @subentry @code{cdr} procedure
+@tindex pair @subentry @r{selectors} @subentry cdr
 @deftypefn @t{(scheme base)} @/ cdr pair
 Returns the contents of the cdr field of @var{pair}.  If an attempt is
 made to take the cdr of the empty list, an exception that satisfies
@@ -56,32 +65,43 @@ made to take the cdr of the empty list, an exception that satisfies
 @end lisp
 @end deftypefn
 
+@tindex pair @subentry @r{mutators} @subentry set-car!
 @deftypefn @t{(scheme base)} @/ set-car! pair obj
 Mutates @var{pair} by storing @var{obj} in the car field of @var{pair}.
 
 @lisp
 (define (f) (list 'not-a-constant-list))
-(define (g) '(constant-list))
+(set-car! (f) 3)
 
-(set-car! (f) 3) @aside{;; legal, but useless}
-(f)              @ok{(not-a-constant-list)}
-(set-car! (g) 3) @aside{;; r7rs says this is an error}
+(f) @ok{(not-a-constant-list)}
+@end lisp
+@lisp
+(define (g) '(constant-list))
+(set-car! (g) 3) @aside{;; @value{R7RS} says this is an error}
+
+(g) @ok{(3)}        @aside{;; current Gambit behavior}
 @end lisp
 @end deftypefn
 
+@tindex pair @subentry @r{mutators} @subentry set-cdr!
 @deftypefn @t{(scheme base)} @/ set-cdr! pair obj
 Mutates @var{pair} by storing @var{obj} in the cdr field of @var{pair}.
 
 @lisp
 (define (f) (list 'not-a-constant-list))
-(define (g) '(constant-list))
+(set-cdr! (f) 3)
 
-(set-cdr! (f) 3) @aside{;; legal, but useless}
-(f)              @ok{(not-a-constant-list)}
-(set-cdr! (g) 3) @aside{;; r7rs says this is an error}
+(f) @ok{(not-a-constant-list)}
+@end lisp
+@lisp
+(define (g) '(constant-list))
+(set-cdr! (g) 3)          @aside{;; @value{R7RS} says this is an error}
+
+(g) @ok{(constant-list . 3)} @aside{;; current Gambit behavior}
 @end lisp
 @end deftypefn
 
+@tindex pair @subentry @r{selectors} @subentry (scheme cxr) @r{library} @sortas{s}
 @deftypefn  @t{(scheme cxr)} @/ caar pair
 @deftypefnx @t{(scheme cxr)} @/ cadr pair
 @deftypefnx @t{(scheme cxr)} @/ cdar pair
@@ -114,8 +134,6 @@ These 28 procedures are compositions of @code{car} and @code{cdr}.
 
 @lisp
 (define l '((a b) (c) d (e (f) g)))
-(define circle (circular-list 'a 'b 'c))
-
 (cadr l)             @ok{(c)}
 (car (cdr l))        @ok{(c)}
 (cddr '(a b c . d))  @ok{(c . d)}
@@ -126,21 +144,25 @@ These 28 procedures are compositions of @code{car} and @code{cdr}.
 (car (car (cdr l)))  @ok{c}
 (cadddr l)           @ok{(e (f) g)}
 (caaadr l)           @exception{type}
-
-(car circle)         @ok{a}
-(cadr circle)        @ok{b}
-(caddr circle)       @ok{c}
-(cadddr circle)      @ok{a}
+@end lisp
+@lisp
+(define circle (circular-list 'a 'b 'c))
+(car circle)    @ok{a}
+(cadr circle)   @ok{b}
+(caddr circle)  @ok{c}
+(cadddr circle) @ok{a}
 @end lisp
 @end deftypefn
 
-@tindex empty list @subentry predicate
+@tindex empty list @subentry @r{predicate} @subentry null?
 @deftypefn @t{(scheme base)} @/ null? obj
 Returns @code{#t} if @var{obj} is the empty list.
 
 @lisp
 (null? '())    @value{true}
 (null? (list)) @value{true}
+@end lisp
+@lisp
 (null? #\null) @value{false}
 (null? null?)  @value{false}
 (null? #f)     @value{false}
@@ -151,25 +173,27 @@ Returns @code{#t} if @var{obj} is the empty list.
 @end lisp
 @end deftypefn
 
+@tindex list @subentry @r{predicate} @subentry list?
 @deftypefn @t{(scheme base)} @/ list? obj
-@tindex proper list @subentry predicate
-@tindex empty list @subentry termination of proper lists
 Returns @code{#t} if @var{obj} is a @dfn{proper list}.  By definition, a
 list of finite length is terminated by the empty list.
 
 @lisp
-(list? '(a b c))     @value{true}
-(list? '())          @value{true}
-(list? '(a . b))     @value{false}
+(list? '(a b c)) @value{true}
+(list? '())      @value{true}
+(list? '(a . b)) @value{false}
+(list? list)     @value{false}
+(list? "list")   @value{false}
+(list? #(0 1 2)) @value{false}
+@end lisp
+@lisp
 (let ((x (list 'a)))
   (set-cdr! x x)
-  (list? x))         @value{false}
-(list? list)         @value{false}
-(list? "list")       @value{false}
-(list? #(0 1 2))     @value{false}
+  (list? x)) @value{false}
 @end lisp
 @end deftypefn
 
+@tindex list @subentry @r{constructors} @subentry make-list
 @deftypefn  @t{(scheme base)} @/ make-list k
 @deftypefnx @t{(scheme base)} @/ make-list k fill
 Returns a newly allocated list of @var{k} elements.  In the one-argument
@@ -187,11 +211,15 @@ integer, an exception that satisfies @code{range-exception?} is raised.
 @lisp
 (make-list 0)        @ok{()}
 (make-list 3 (list)) @ok{(() () ())}
+@end lisp
+@lisp
 (make-list 1.25)     @exception{type}
 (make-string -1)     @exception{range}
 @end lisp
 @end deftypefn
 
+@cindex lists @subentry @code{list} @r{procedure}
+@tindex list @subentry @r{constructors} @subentry list
 @deftypefn @t{(scheme base)} @/ list obj@dots{}
 Returns a newly allocated list consisting of its arguments.
 
@@ -207,12 +235,11 @@ Returns the length of @var{list}.
 
 @lisp
 (define circle (circular-list 'x 'y 'z))
-
 (length '(a b c))            @ok{3}
 (length '(a (b) (c d e)))    @ok{3}
 (length '())                 @ok{0}
 (length (cdr (make-list 5))) @ok{4}
-(length circle)              @arrow{} @r{@i{infinite loop}}
+(length circle)              @arrow{} @r{@i{infinite loop}} @aside{;; not caught}
 @end lisp
 @end deftypefn
 
@@ -229,18 +256,17 @@ returned value is newly allocated, except that it shares structure with
 the last argument, @var{obj}.
 
 @lisp
+(append '(x) '(y))       @ok{(x y)}
+(append '(a) '(b c d))   @ok{(a b c d)}
+(append '(a (b)) '((c))) @ok{(a (b) (c))}
+(append '(a b) '(c . d)) @ok{(a b c . d)}
+(append '() 'a)          @ok{a}
+@end lisp
+@lisp
 (define l (list 'f 'g 'h))
-
 (eq?    l (append (append) l)) @value{true}
 (eq?    l (append l (append))) @value{false}
 (equal? l (append l (append))) @value{true}
-
-(append '(x) '(y))              @ok{(x y)}
-(append '(a) '(b c d))          @ok{(a b c d)}
-(append '(a (b)) '((c)))        @ok{(a (b) (c))}
-
-(append '(a b) '(c . d))        @ok{(a b c . d)}
-(append '() 'a)                 @ok{a}
 @end lisp
 @end deftypefn
 
@@ -249,16 +275,17 @@ Returns a newly allocated list consisting of the elements of @var{list}
 in reverse order (excluding the terminating empty list).
 
 @lisp
-(define l (list 'a 'b 'c))
-
-(eq?    l (reverse (reverse l))) @value{false}
-(equal? l (reverse (reverse l))) @value{true}
-
 (reverse '(a b c))             @ok{(c b a)}
 (reverse '(a (b c) d (e (f)))) @ok{((e (f)) d (b c) a)}
 @end lisp
+@lisp
+(define l (list 'a 'b 'c))
+(eq?    l (reverse (reverse l))) @value{false}
+(equal? l (reverse (reverse l))) @value{true}
+@end lisp
 @end deftypefn
 
+@tindex list @subentry @r{selectors} @subentry list-tail
 @deftypefn @t{(scheme base)} @/ list-tail list k
 Returns a list of @var{list} obtained by omitting the first @var{k}
 elements.  If @var{list} is a proper list, a proper list is returned; if
@@ -271,11 +298,14 @@ elements, an exception that satisfies @code{range-exception?} is raised.
 @lisp
 (list-tail '(a b c) 1)   @ok{(b c)}
 (list-tail '(a b c) 3)   @ok{()}
+@end lisp
+@lisp
 (list-tail '(a b c) 1.1) @exception{type}
 (list-tail '(a b c) 4)   @exception{range}
 @end lisp
 @end deftypefn
 
+@tindex list @subentry @r{selectors} @subentry list-ref
 @deftypefn @t{(scheme base)} @/ list-ref list k
 Returns element @var{k} of @var{list}.  Equivalent to @samp{(car
 (list-tail @slanted{list} @slanted{k}))}.  The @var{list} argument may
@@ -284,24 +314,32 @@ be circular.
 @lisp
 (list-ref '(a b c d) 2)                   @ok{c}
 (list-ref '(a b c d) (exact (round 1.8))) @ok{c}
-(list-ref (circular-list 'a 'b 'c) 4) @aside{;; r7rs says this is an error}
+@end lisp
+@lisp
+(list-ref (circular-list 'a 'b) 3) @ok{b} @aside{;; @value{R7RS} says this is an error}
 @end lisp
 @end deftypefn
 
+@tindex list @subentry @r{mutator} @subentry list-set!
 @deftypefn @t{(scheme base)} @/ list-set! list k obj
 Mutates @var{list} by storing @var{obj} in element @var{k} of
 @var{list}.  It is an error if @var{k} is not a valid index of
 @var{list}.
 
 @lisp
-(let ((ls (list 'one 'two 'five!)))
-  (list-set! ls 2 'three)
-  ls) @ok{(one two three)}
+(define ls (list 'one 'two 'five!))
+(list-set! ls 2 'three)
 
-(list-set! '(0 1 2) 1 "oops") @aside{;; r7rs says this is an error}
+ls @ok{(one two three)}
+@end lisp
+@lisp
+(list-set! '(0 1 2) 1 "oops") @aside{;; @value{R7RS} says this is an error}
 @end lisp
 @end deftypefn
 
+@tindex list @subentry @r{selectors} @subentry memq
+@tindex list @subentry @r{selectors} @subentry memv
+@tindex list @subentry @r{selectors} @subentry member
 @deftypefn  @t{(scheme base)} @/ memq   obj list
 @deftypefnx @t{(scheme base)} @/ memv   obj list
 @deftypefnx @t{(scheme base)} @/ member obj list [compare]
@@ -343,10 +381,12 @@ return a non-Boolean value.
 @end lisp
 @end deftypefn
 
+@tindex list @subentry @r{selectors} @subentry assq
+@tindex list @subentry @r{selectors} @subentry assv
+@tindex list @subentry @r{selectors} @subentry assoc
 @deftypefn  @t{(scheme base)} @/ assq obj  alist
 @deftypefnx @t{(scheme base)} @/ assv obj  alist
 @deftypefnx @t{(scheme base)} @/ assoc obj alist [compare]
-
 Each procedure successively applies some procedure to the elements of
 @var{alist} returns the first pair of @var{alist} whose car satisfies
 that test relative to @var{obj}.  They differ only in the procedure that
@@ -381,6 +421,7 @@ return a non-Boolean value.
 @end lisp
 @end deftypefn
 
+@tindex list @subentry @r{constructors} @subentry list-copy
 @deftypefn @t{(scheme base)} @/ list-copy obj
 Returns a newly allocated copy of the given @var{obj} if it is a list.
 Only the pairs themselves are copied; the cars of the result are the
@@ -390,14 +431,15 @@ the same in the sense of @code{eqv?}.  An @var{obj} which is not a list
 is returned unchanged.  It is an error if @var{obj} is a circular list.
 
 @lisp
-(define circle (circular-list 0 1 2 3))
-(define a '(1 8 2 8)) @slanted{;; a may be immutable}
+(define a '(1 8 2 8))    @aside{;; a may be immutable}
 (define b (list-copy a))
+(set-car! b 3)           @aside{;; b is mutable}
 
-(set-car! b 3) @aside{;; b is mutable}
-b                  @ok{(3 8 2 8)}
-a                  @ok{(1 8 2 8)}
-
-(list-copy circle) @arrow{} @r{@i{infinite loop}}
+b @ok{(3 8 2 8)}
+a @ok{(1 8 2 8)}
+@end lisp
+@lisp
+(define circle (circular-list 0 1 2 3))
+(list-copy circle) @arrow{} @r{@i{infinite loop}} @aside{;; not caught}
 @end lisp
 @end deftypefn

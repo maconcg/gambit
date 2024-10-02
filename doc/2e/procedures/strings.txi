@@ -6,8 +6,10 @@ Returns @code{#t} if @var{obj} is a string.
 
 @lisp
 (string? "")                     @value{true}
-(string? #\a)                    @value{false}
 (string? "a")                    @value{true}
+@end lisp
+@lisp
+(string? #\a)                    @value{false}
 (string? 'string)                @value{false}
 (string? '(#\c #\h #\a #\r #\s)) @value{false}
 (string? #(#\c #\h #\a #\r #\s)) @value{false}
@@ -31,9 +33,11 @@ integer, an exception that satisfies @code{range-exception?} is raised.
 (make-string 0)                 @ok{""}
 (string-length (make-string 4)) @ok{4}
 (make-string 4 #\g)             @ok{"gggg"}
-(make-string 4 "g")             @exception{type}
-(make-string 4.5)               @exception{type}
-(make-string -1)                @exception{range}
+@end lisp
+@lisp
+(make-string 4 "g") @exception{type}
+(make-string 4.5)   @exception{type}
+(make-string -1)    @exception{range}
 @end lisp
 @end deftypefn
 
@@ -65,7 +69,6 @@ not a valid index of @var{string}, an exception that satisfies
 
 @lisp
 (define s "off by one")
-
 (string-ref "zero-origin indexing" 0)  @ok{#\z}
 (string-ref s (- (string-length s) 1)) @ok{#\e}
 (string-ref s (string-length s))       @exception{range}
@@ -155,19 +158,18 @@ that language-sensitive mappings and foldings are not used.
 @set WeiB Wei@ss{}
 @set weiB wei@ss{}
 @lisp
+(string-downcase "@value{Etoc}") @ok{"@value{etoc}"}
+(string-foldcase "@value{Etoc}") @ok{"@value{etoo}"}
+(string-upcase   "@value{Etoc}") @ok{"@value{ETOS}"}
+(string-downcase "@value{ETOS}") @ok{"@value{etoo}"}
+(string-foldcase "@value{ETOS}") @ok{"@value{etoo}"}
+@end lisp
+@lisp
 (string-downcase "@value{WeiB}")  @ok{"@value{weiB}"}
 (string-foldcase "@value{WeiB}")  @ok{"weiss"}
 (string-upcase   "@value{WeiB}")  @ok{"WEISS"}
-
 (string-downcase "WEISS") @ok{"weiss"}
 (string-foldcase "WEISS") @ok{"weiss"}
-
-(string-downcase "@value{Etoc}")  @ok{"@value{etoc}"}
-(string-foldcase "@value{Etoc}")  @ok{"@value{etoo}"}
-(string-upcase   "@value{Etoc}")  @ok{"@value{ETOS}"}
-
-(string-downcase "@value{ETOS}")  @ok{"@value{etoo}"}
-(string-foldcase "@value{ETOS}")  @ok{"@value{etoo}"}
 @end lisp
 @end deftypefn
 
@@ -206,6 +208,8 @@ satisfies @code{range-exception?} is raised.
 (string->list "scheme" 2 6) @ok{(#\h #\e #\m #\e)}
 (string->list "scheme" 6)   @ok{()}
 (string->list "scheme" 6 6) @ok{()}
+@end lisp
+@lisp
 (string->list "scheme" 7)   @exception{range}
 (string->list "scheme" 3 7) @exception{range}
 @end lisp
@@ -237,21 +241,25 @@ of @var{string} from index @var{start} (inclusive) to index @var{end}
 
 Order is preserved.  @code{string->list} and @code{list->string} and are
 inverses so far as @code{equal?} is concerned.  If either @var{start} or
-@var{end} is not a valid index of @var{string}, an exception that
-satisfies @code{range-exception?} is raised.
+@var{end} is not an exact integer, an exception that satisfies
+@code{type-exception?} is raised.  If either @var{start} or @var{end} is
+not a valid index of @var{string}, an exception that satisfies
+@code{range-exception?} is raised.
 
 @lisp
-(define s "dwim")
-
-(string-copy s)                     @ok{"dwim"}
-(string-copy s 1)                   @ok{"wim"}
-(string-copy s 1 1)                 @ok{""}
-(string-copy s 0 (string-length s)) @ok{"dwim"}
-(eqv?     s (string-copy s))        @value{false}
-(string=? s (string-copy s))        @value{true}
-(string-copy s 6)                   @exception{range}
-(string-copy s -1 3)                @exception{range}
-(string-copy s 2 5)                 @exception{range}
+(string-copy "dwim")                          @ok{"dwim"}
+(string-copy "dwim" 0)                        @ok{"dwim"}
+(string-copy "dwim" 1)                        @ok{"wim"}
+(string-copy "dwim" 1 1)                      @ok{""}
+(string-copy "dwim" 0 (string-length "dwim")) @ok{"dwim"}
+(eqv?     "dwim" (string-copy "dwim"))        @value{false}
+(string=? "dwim" (string-copy "dwim"))        @value{true}
+@end lisp
+@lisp
+(string-copy "dwim" 5)    @exception{range}
+(string-copy "dwim" -1 3) @exception{range}
+(string-copy "dwim" 2 5)  @exception{range}
+(string-copy "dwim" 2.5)  @exception{type}
 @end lisp
 @end deftypefn
 
@@ -276,8 +284,8 @@ the end of @var{to-string}).
 @lisp
 (define a "12345")
 (define b (string-copy "abcde"))
-
 (string-copy! b 1 a 0 2)
+
 b @ok{"a12de"}
 @end lisp
 @end deftypefn
@@ -297,7 +305,6 @@ an exception that satisfies @code{range-exception?} is raised.
 (define a (string-copy "abcde"))
 (define b (string-copy a))
 (define c (string-copy b))
-
 (string-fill! a #\0)
 (string-fill! b #\0 3)
 (string-fill! c #\0 3 4)
@@ -313,17 +320,24 @@ Mutates @var{string} by storing @var{char} in element @var{k} of
 @var{string}.
 
 If @var{string} is not a mutable string, an exception that satisfies
-@code{type-exception?} is raised.  If @var{k} is not a valid index of
-@var{string}, an exception that satisfies @code{range-exception?} is
-raised.
+@code{type-exception?} is raised.  If either @var{k} is not an exact
+integer, an exception that satisfies @code{type-exception?} is raised.
+If @var{k} is not a valid index of @var{string}, an exception that
+satisfies @code{range-exception?} is raised.
 
 @lisp
 (define (f) (make-string 3 #\*))
-(define (g) "***")
-
-(string-set! (f) 0 #\?) @slanted{;; legal, but useless}
-(string-set! (g) 0 #\?) @slanted{;; r7rs says this is an error}
+(string-set! (f) 0 #\?) @aside{;; ok}
+(string-set! (f) 5 #\?)   @exception{range}
+(string-set! (f) 1.1 #\?) @exception{type}
+@end lisp
+@lisp
 (string-set! (symbol->string 'immutable) 0 #\?) @exception{type}
-(string-set! (f) 5 #\?)                         @exception{range}
+@end lisp
+@lisp
+(define (g) "***")
+(string-set! (g) 0 #\?) @aside{;; @value{R7RS} says this is an error}
+
+(g) @ok{"?**"}             @aside{;; current Gambit behavior} 
 @end lisp
 @end deftypefn

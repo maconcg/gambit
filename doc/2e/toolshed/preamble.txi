@@ -1,6 +1,6 @@
 @settitle Gambit Scheme, @value{EDITION} edition
 @clear txicodevaristt
-@synindex tp cp
+@synindex vr cp
 @syncodeindex pg cp
 
 @dircategory The Algorithmic Language Scheme

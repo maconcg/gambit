@@ -4,7 +4,7 @@ a:visited {color: %link-visited%}
 hr {color: %hr%}
 .chapter-level-extent pre {background-color: %bg-dim%; border-color: %border%}
 
-dl,first-deftp, dl.first-deftypefn {
+dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     .i {color: %emphasis%}
     dt span.category-def {color: %fg-dim%}
     dd pre {
@@ -14,13 +14,14 @@ dl,first-deftp, dl.first-deftypefn {
     }
 }
 
-dl.first-deftypefn {
-    dt code.def-code-arguments, dd p var {color: %arg%}
+dl.first-deftp, dl.first-deftypevr {
+    code.code {color: %fg-alt%}
+    var.var {color: %arg%}
 }
 
 dd, .center, li, ol, p:not(.nav-panel p) {max-width: 40em}
 
-.chapter-level-extent dd {
-    p:not(.nav-panel p) {text-align: justify}
+.chapter-level-extent {
+    dd p:not(.nav-panel p), p:not(.nav-panel p) {text-align: justify}
     pre {border-style: solid; padding: 0.3236em 0.2em}
 }

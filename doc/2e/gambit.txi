@@ -35,6 +35,10 @@ issues via @url{@value{GITHUB-URL},the Gambit repository on GitHub}.
 @unnumbered General Index
 @printindex cp
 
+@node Type Index
+@unnumbered Type Index
+@printindex tp
+
 @node Index of procedures and syntactic forms
 @unnumbered Index of procedures and syntactic forms
 @printindex fn

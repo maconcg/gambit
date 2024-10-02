@@ -6,6 +6,8 @@ about pairs and lists.
 @node Pair and list jargon
 @chapter Pair and list jargon
 
+@cindex the empty list @sortas{empty list} @seeentry{lists}
+@cindex lists @subentry the empty list @sortas{empty list, the}
 @deftp {@value{R7RS} type} @r{empty list}
 The empty list is a unique object whose external representation is
 @samp{()}.  Because the empty list is a unique object, it can never be
@@ -18,11 +20,8 @@ The empty list is a @i{list}.
 
 @cindex cons
 @cindex car
-@cindex car @subentry field
-@cindex car @subentry of a pair
 @cindex cdr
-@cindex cdr @subentry field
-@cindex cdr @subentry of a pair
+@cindex pairs @subentry @i{pair} type
 @deftp {@value{R7RS} type} @r{pair}
 A pair is an object with two fields.  It is constructed by the
 @code{cons} procedure; the content of its first field is selected by the
@@ -36,21 +35,25 @@ procedures}).
 construct a pair whose first field contains @slanted{a} and whose second
 field contains @slanted{b}''.
 
+@cindex car @subentry car field
+@cindex cdr @subentry cdr field
 The first field of a pair is often referred to as its ``car field'' or
-just its ``car''.  Its second field is often referred to as the pair's
-``cdr field'' or just its ``cdr''.
+just its ``car''.  The second field of a pair is often referred to as
+its ``cdr field'' or just its ``cdr''.
 
 @cindex car @subentry take the car
 @cindex cdr @subentry take the cdr
-``Take the car of @slanted{p}'' of a means to ``use @code{car} to select
-the first field of @slanted{p}''.  ``Take the cdr of @slanted{p}'' of a
-means to ``use @code{cdr} to select the second field of @slanted{p}''.
+``Take the car of @slanted{p}'' means ``use @code{car} to select the
+first field of @slanted{p}''.  ``Take the cdr of @slanted{p}'' means
+``use @code{cdr} to select the second field of @slanted{p}''.
 
 @i{The empty list} is not a pair.  A pair is a @i{list} if and only if
 its cdr is a @i{list}.
 @end deftp
 
+@cindex lists @subentry @i{list} type
 @deftp {@value{R7RS} type} @r{list}
+@cindex lists @subentry termination of lists
 A list is either @i{the empty list} or a @i{pair} whose cdr is a list.
 This implies a list must have finite length and be terminated by @i{the
 empty list}.  The predicate @code{list?} may be used to determine
@@ -58,29 +61,38 @@ whether an object is a list (@pxref{Pair and list procedures}).
 
 With the exception of @i{the empty list}, every list is a @i{pair}.
 @end deftp
-
-@deftp colloquialism @r{proper list}
+@cindex lists @subentry proper lists
+@deftypevr colloquialism @/ @r{proper list}
 ``Proper list'' is a widely-used synonym for @i{list} (see above).
 Because it's a synonym, there's technically no need for the qualifier.
 But in practice, people often refer to list-like objects that are not
 @i{lists} as ``improper lists''.  The qualifier ``proper'' is therefore
 used to emphasize that an object is a Scheme @i{list} that satisfies
 @code{list?}.
-@end deftp
+@end deftypevr
 
-@deftp colloquialism @r{improper list}
+@cindex pairs @subentry improper lists
+@deftypevr colloquialism @/ @r{improper list}
 The term ``improper list'' is sometimes used to describe a pair whose
 cdr is not a list.  This means that, despite its name, an ``improper
 list'' is not a @i{list} under Scheme's formal definition.  In contexts
 where the term ``improper list'' appears, @i{lists} are often referred
 to as ``proper lists'' to emphasize the distinction.
-@end deftp
+@end deftypevr
 
-@deftp colloquialism @r{dotted pair}
+@cindex pairs @subentry dotted pairs
+@deftypevr colloquialism @/ @r{dotted pair}
 ``Dotted pair'' is sometimes used as a synonym for @i{pair}.  ``Dotted''
 refers to the common external representation of a @i{pair} in which the
 last element is preceded by a period (@samp{.}, which resembles a dot).
 This ``dotted notation'' may technically be used to represent any
 @i{pair}, but is typically used only to represent @i{pairs} that are not
 @i{lists}.
-@end deftp
+@end deftypevr
+
+@cindex lists @subentry association lists
+@vindex alist @seeentry {association list}
+@deftypevr colloquialism @/ @r{association list}
+An ``association list'' (or ``alist'', for short) is a @i{list} of
+@i{pairs}.
+@end deftypevr
