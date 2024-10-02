@@ -1,4 +1,5 @@
 **/.stamp
 html/**.html
+gambit-html
 toolshed/gambit.css
 *.info

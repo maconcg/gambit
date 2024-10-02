@@ -3,8 +3,8 @@
 This section may eventually provide introductory/high-level information
 about pairs and lists.
 
-@node Pair and list types
-@chapter Pair and list types
+@node Pair and list jargon
+@chapter Pair and list jargon
 
 @deftp {@value{R7RS} type} @r{empty list}
 The empty list is a unique object whose external representation is
@@ -59,7 +59,7 @@ whether an object is a list (@pxref{Pair and list procedures}).
 With the exception of @i{the empty list}, every list is a @i{pair}.
 @end deftp
 
-@deftp jargon @r{proper list}
+@deftp colloquialism @r{proper list}
 ``Proper list'' is a widely-used synonym for @i{list} (see above).
 Because it's a synonym, there's technically no need for the qualifier.
 But in practice, people often refer to list-like objects that are not
@@ -68,7 +68,7 @@ used to emphasize that an object is a Scheme @i{list} that satisfies
 @code{list?}.
 @end deftp
 
-@deftp jargon @r{improper list}
+@deftp colloquialism @r{improper list}
 The term ``improper list'' is sometimes used to describe a pair whose
 cdr is not a list.  This means that, despite its name, an ``improper
 list'' is not a @i{list} under Scheme's formal definition.  In contexts
@@ -76,7 +76,7 @@ where the term ``improper list'' appears, @i{lists} are often referred
 to as ``proper lists'' to emphasize the distinction.
 @end deftp
 
-@deftp jargon @r{dotted pair}
+@deftp colloquialism @r{dotted pair}
 ``Dotted pair'' is sometimes used as a synonym for @i{pair}.  ``Dotted''
 refers to the common external representation of a @i{pair} in which the
 last element is preceded by a period (@samp{.}, which resembles a dot).
@@ -84,9 +84,3 @@ This ``dotted notation'' may technically be used to represent any
 @i{pair}, but is typically used only to represent @i{pairs} that are not
 @i{lists}.
 @end deftp
-
-@c @node External representations of pairs and lists
-@c @chapter External representations of pairs and lists
-
-@c @defblock
-@c @defline jargon dotted pair

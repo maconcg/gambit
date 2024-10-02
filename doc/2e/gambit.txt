@@ -17,7 +17,7 @@ Gambit
   3.3 Debugging example
 4 Pairs and lists
   4.1 Overview of pairs and lists
-  4.2 Pair and list types
+  4.2 Pair and list jargon
   4.3 Pair and list procedures
 5 Strings
   5.1 String procedures
@@ -168,8 +168,8 @@ This node presents an example debugging session.
 This section may eventually provide introductory/high-level information
 about pairs and lists.
 
-4.2 Pair and list types
-=======================
+4.2 Pair and list jargon
+========================
 
  -- R7RS type: empty list
      The empty list is a unique object whose external representation is
@@ -209,7 +209,7 @@ about pairs and lists.
 
      With the exception of the empty list, every list is a pair.
 
- -- jargon: proper list
+ -- colloquialism: proper list
      "Proper list" is a widely-used synonym for list (see above).
      Because it's a synonym, there's technically no need for the
      qualifier.  But in practice, people often refer to list-like
@@ -217,14 +217,14 @@ about pairs and lists.
      "proper" is therefore used to emphasize that an object is a Scheme
      list that satisfies ‘list?’.
 
- -- jargon: improper list
+ -- colloquialism: improper list
      The term "improper list" is sometimes used to describe a pair whose
      cdr is not a list.  This means that, despite its name, an "improper
      list" is not a list under Scheme's formal definition.  In contexts
      where the term "improper list" appears, lists are often referred to
      as "proper lists" to emphasize the distinction.
 
- -- jargon: dotted pair
+ -- colloquialism: dotted pair
      "Dotted pair" is sometimes used as a synonym for pair.  "Dotted"
      refers to the common external representation of a pair in which the
      last element is preceded by a period (‘.’, which resembles a dot).
@@ -837,28 +837,44 @@ General Index
 
 * Menu:
 
-* car:                                   Pair and list types. (line 182)
-* car, field:                            Pair and list types. (line 182)
-* car, of a pair:                        Pair and list types. (line 182)
-* car, take the car:                     Pair and list types. (line 196)
-* cdr:                                   Pair and list types. (line 182)
-* cdr, field:                            Pair and list types. (line 182)
-* cdr, of a pair:                        Pair and list types. (line 182)
-* cdr, take the cdr:                     Pair and list types. (line 196)
-* cons:                                  Pair and list types. (line 182)
-* cons, cons onto:                       Pair and list types. (line 189)
-* dotted pair:                           Pair and list types. (line 226)
-* empty list:                            Pair and list types. (line 173)
+* car:                                   Pair and list jargon.
+                                                              (line 182)
+* car, field:                            Pair and list jargon.
+                                                              (line 182)
+* car, of a pair:                        Pair and list jargon.
+                                                              (line 182)
+* car, take the car:                     Pair and list jargon.
+                                                              (line 196)
+* cdr:                                   Pair and list jargon.
+                                                              (line 182)
+* cdr, field:                            Pair and list jargon.
+                                                              (line 182)
+* cdr, of a pair:                        Pair and list jargon.
+                                                              (line 182)
+* cdr, take the cdr:                     Pair and list jargon.
+                                                              (line 196)
+* cons:                                  Pair and list jargon.
+                                                              (line 182)
+* cons, cons onto:                       Pair and list jargon.
+                                                              (line 189)
+* dotted pair:                           Pair and list jargon.
+                                                              (line 226)
+* empty list:                            Pair and list jargon.
+                                                              (line 173)
 * empty list, predicate:                 Pair and list procedures.
                                                               (line 349)
 * empty list, termination of proper lists: Pair and list procedures.
                                                               (line 363)
 * gsc:                                   Introduction.        (line  50)
 * gsi:                                   Introduction.        (line  50)
-* improper list:                         Pair and list types. (line 219)
-* list:                                  Pair and list types. (line 203)
-* pair:                                  Pair and list types. (line 182)
-* proper list:                           Pair and list types. (line 211)
+* improper list:                         Pair and list jargon.
+                                                              (line 219)
+* list:                                  Pair and list jargon.
+                                                              (line 203)
+* pair:                                  Pair and list jargon.
+                                                              (line 182)
+* proper list:                           Pair and list jargon.
+                                                              (line 211)
 * proper list, predicate:                Pair and list procedures.
                                                               (line 363)
 * R4RS:                                  Introduction.        (line  55)
