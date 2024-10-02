@@ -2,7 +2,7 @@
 @nodedescription The @sc{P} in @sc{LISP}.
 @chapter Pair and list procedures
 
-@tindex pair @subentry @r{predicate} @subentry pair?
+@tindex pair @subentry predicate @subentry pair?
 @deftypefn @t{(scheme base)} @/ pair? obj
 Returns @code{#t} if @var{obj} is a pair.
 
@@ -16,7 +16,7 @@ Returns @code{#t} if @var{obj} is a pair.
 @end deftypefn
 
 @cindex cons @subentry @code{cons} procedure
-@tindex pair @subentry @r{constructor} @subentry cons
+@tindex pair @subentry constructor @subentry cons
 @deftypefn @t{(scheme base)} @/ cons @pari{obj} @parii{obj}
 Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
 @varii{obj}.  The pair is guaranteed to be different (in the sense of
@@ -41,7 +41,7 @@ Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
 @end deftypefn
 
 @cindex car @subentry @code{car} procedure
-@tindex pair @subentry @r{selectors} @subentry car
+@tindex pair @subentry selectors @subentry car
 @deftypefn @t{(scheme base)} @/ car pair
 Returns the contents of the cdr field of @var{pair}.  If an attempt is
 made to take the car of the empty list, an exception that satisfies
@@ -56,7 +56,7 @@ made to take the car of the empty list, an exception that satisfies
 @end deftypefn
 
 @cindex cdr @subentry @code{cdr} procedure
-@tindex pair @subentry @r{selectors} @subentry cdr
+@tindex pair @subentry selectors @subentry cdr
 @deftypefn @t{(scheme base)} @/ cdr pair
 Returns the contents of the cdr field of @var{pair}.  If an attempt is
 made to take the cdr of the empty list, an exception that satisfies
@@ -70,7 +70,7 @@ made to take the cdr of the empty list, an exception that satisfies
 @end lisp
 @end deftypefn
 
-@tindex pair @subentry @r{mutators} @subentry set-car!
+@tindex pair @subentry mutators @subentry set-car!
 @deftypefn @t{(scheme base)} @/ set-car! pair obj
 Mutates @var{pair} by storing @var{obj} in the car field of @var{pair}.
 
@@ -89,7 +89,7 @@ Mutates @var{pair} by storing @var{obj} in the car field of @var{pair}.
 @end lisp
 @end deftypefn
 
-@tindex pair @subentry @r{mutators} @subentry set-cdr!
+@tindex pair @subentry mutators @subentry set-cdr!
 @deftypefn @t{(scheme base)} @/ set-cdr! pair obj
 Mutates @var{pair} by storing @var{obj} in the cdr field of @var{pair}.
 
@@ -108,7 +108,7 @@ Mutates @var{pair} by storing @var{obj} in the cdr field of @var{pair}.
 @end lisp
 @end deftypefn
 
-@tindex pair @subentry @r{selectors} @subentry (scheme cxr) @r{library} @sortas{s}
+@tindex pair @subentry selectors @subentry (scheme cxr) @sortas{scheme cxr}
 @deftypefn  @t{(scheme cxr)} @/ caar pair
 @deftypefnx @t{(scheme cxr)} @/ cadr pair
 @deftypefnx @t{(scheme cxr)} @/ cdar pair
@@ -162,7 +162,7 @@ These 28 procedures are compositions of @code{car} and @code{cdr}.
 @end lisp
 @end deftypefn
 
-@tindex empty list @subentry @r{predicate} @subentry null?
+@tindex empty list @subentry predicate @subentry null?
 @deftypefn @t{(scheme base)} @/ null? obj
 Returns @code{#t} if @var{obj} is the empty list.
 
@@ -179,7 +179,7 @@ Returns @code{#t} if @var{obj} is the empty list.
 @end lisp
 @end deftypefn
 
-@tindex list @subentry @r{predicate} @subentry list?
+@tindex list @subentry predicate @subentry list?
 @deftypefn @t{(scheme base)} @/ list? obj
 Returns @code{#t} if @var{obj} is a proper list (@pxref{Pair and list
 jargon}).  By definition, a list of finite length is terminated by the
@@ -201,7 +201,7 @@ empty list.
 @end lisp
 @end deftypefn
 
-@tindex list @subentry @r{constructors} @subentry make-list
+@tindex list @subentry constructors @subentry make-list
 @deftypefn  @t{(scheme base)} @/ make-list k @opt{fill}
 Returns a newly allocated list of @var{k} elements.  In the one-argument
 form, each element is initialized to a default value.  In the
@@ -226,8 +226,8 @@ integer, an exception that satisfies @code{range-exception?} is raised.
 @end lisp
 @end deftypefn
 
-@cindex lists @subentry @code{list} @r{procedure}
-@tindex list @subentry @r{constructors} @subentry list
+@cindex lists @subentry @code{list} procedure
+@tindex list @subentry constructors @subentry list
 @deftypefn @t{(scheme base)} @/ list obj@dots{}
 Returns a newly allocated list consisting of its arguments.
 
@@ -296,7 +296,7 @@ in reverse order (excluding the terminating empty list).
 @end lisp
 @end deftypefn
 
-@tindex list @subentry @r{selectors} @subentry list-tail
+@tindex list @subentry selectors @subentry list-tail
 @deftypefn @t{(scheme base)} @/ list-tail list k
 Returns a copy of @var{list} obtained by omitting the first @var{k}
 elements.  If @var{list} is a proper list, a proper list is returned; if
@@ -320,7 +320,7 @@ elements, an exception that satisfies @code{range-exception?} is raised.
 @end lisp
 @end deftypefn
 
-@tindex list @subentry @r{selectors} @subentry list-ref
+@tindex list @subentry selectors @subentry list-ref
 @deftypefn @t{(scheme base)} @/ list-ref list k
 Returns element @var{k} of @var{list}.  Equivalent to @samp{(car
 (list-tail @slanted{list} @slanted{k}))}.  The @var{list} argument may
@@ -336,7 +336,7 @@ be circular.
 @end lisp
 @end deftypefn
 
-@tindex list @subentry @r{mutator} @subentry list-set!
+@tindex list @subentry mutator @subentry list-set!
 @deftypefn @t{(scheme base)} @/ list-set! list k obj
 Mutates @var{list} by storing @var{obj} in element @var{k} of
 @var{list}.  It is an error if @var{k} is not a valid index of
@@ -353,9 +353,9 @@ ls @ok{(one two three)}
 @end lisp
 @end deftypefn
 
-@tindex list @subentry @r{selectors} @subentry memq
-@tindex list @subentry @r{selectors} @subentry memv
-@tindex list @subentry @r{selectors} @subentry member
+@tindex list @subentry selectors @subentry memq
+@tindex list @subentry selectors @subentry memv
+@tindex list @subentry selectors @subentry member
 @deftypefn  @t{(scheme base)} @/ memq   obj list
 @deftypefnx @t{(scheme base)} @/ memv   obj list
 @deftypefnx @t{(scheme base)} @/ member obj list @opt{compare}
@@ -398,9 +398,9 @@ return a non-Boolean value.
 @end lisp
 @end deftypefn
 
-@tindex list @subentry @r{selectors} @subentry assq
-@tindex list @subentry @r{selectors} @subentry assv
-@tindex list @subentry @r{selectors} @subentry assoc
+@tindex list @subentry selectors @subentry assq
+@tindex list @subentry selectors @subentry assv
+@tindex list @subentry selectors @subentry assoc
 @deftypefn  @t{(scheme base)} @/ assq obj  alist
 @deftypefnx @t{(scheme base)} @/ assv obj  alist
 @deftypefnx @t{(scheme base)} @/ assoc obj alist @opt{compare}
@@ -434,12 +434,12 @@ return a non-Boolean value.
 (assq (list 'a) '(((a)) ((b)) ((c))))  @value{false}
 (assoc (list 'a) '(((a)) ((b)) ((c)))) @ok{((a))}
 (assoc 2.0 '((1 1) (2 4) (3 9)) =)     @ok{(2 4)}
-(assq 5 '((2 3) (5 7) (11 13)))        @ok{@r{unspecified}}
+(assq 5 '((2 3) (5 7) (11 13)))        @ok{@i{unspecified}}
 (assv 5 '((2 3) (5 7) (11 13)))        @ok{(5 7)}
 @end lisp
 @end deftypefn
 
-@tindex list @subentry @r{constructors} @subentry list-copy
+@tindex list @subentry constructors @subentry list-copy
 @deftypefn @t{(scheme base)} @/ list-copy obj
 Returns a newly allocated copy of the given @var{obj} if it is a list.
 Only the pairs themselves are copied; the cars of the result are the

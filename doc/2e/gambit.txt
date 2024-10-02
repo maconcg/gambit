@@ -966,7 +966,7 @@ Type Index
                                                               (line 265)
 * pair, selectors, cdr:                  Pair and list procedures.
                                                               (line 275)
-* pair, selectors, (scheme cxr) library: Pair and list procedures.
+* pair, selectors, (scheme cxr):         Pair and list procedures.
                                                               (line 311)
 
 Index of procedures and syntactic forms
