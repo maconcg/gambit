@@ -249,7 +249,7 @@ Returns the length of @var{list}.
 (length '(a (b) (c d e)))    @ok{3}
 (length '())                 @ok{0}
 (length (cdr (make-list 5))) @ok{4}
-(length circle)              @arrow{} @r{@i{infinite loop}} @aside{;; not caught}
+(length circle)              @arrow{} @i{infinite loop} @aside{;; not caught}
 @end lisp
 @end deftypefn
 
@@ -459,6 +459,6 @@ a @ok{(1 8 2 8)}
 @end lisp
 @lisp
 (define circle (circular-list 0 1 2 3))
-(list-copy circle) @arrow{} @r{@i{infinite loop}} @aside{;; not caught}
+(list-copy circle) @arrow{} @i{infinite loop} @aside{;; not caught}
 @end lisp
 @end deftypefn

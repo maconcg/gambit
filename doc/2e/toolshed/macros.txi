@@ -31,7 +31,7 @@
 @end macro
 
 @macro exception {kind}
-@inlinefmtifelse{html,@arrow{} @r{@i{\kind\ exception}},@arrow{} \kind\ exception}
+@arrow{} @i{\kind\ exception}
 @end macro
 
 @macro ok {val}

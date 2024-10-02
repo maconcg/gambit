@@ -577,7 +577,7 @@ made to take the car of the empty list, an exception that satisfies
 <pre class="lisp-preformatted">(car '(a b c))     &rArr; <code class="t">a</code>
 (car '((a) b c d)) &rArr; <code class="t">(a)</code>
 (car '(1 . 2))     &rArr; <code class="t">1</code>
-(car '())          &rarr; <span class="r"><i class="i">type exception</i></span>
+(car '())          &rarr; <i class="i">type exception</i>
 </pre></div>
 </dd></dl>
 
@@ -593,7 +593,7 @@ made to take the cdr of the empty list, an exception that satisfies
 <pre class="lisp-preformatted">(cdr '(a b c))     &rArr; <code class="t">(b c)</code>
 (cdr '((a) b c d)) &rArr; <code class="t">(b c d)</code>
 (cdr '(1 . 2))     &rArr; <code class="t">2</code>
-(cdr '())          &rarr; <span class="r"><i class="i">type exception</i></span>
+(cdr '())          &rarr; <i class="i">type exception</i>
 </pre></div>
 </dd></dl>
 
@@ -680,7 +680,7 @@ made to take the cdr of the empty list, an exception that satisfies
 (caar (cdr l))       &rArr; <code class="t">c</code>
 (car (car (cdr l)))  &rArr; <code class="t">c</code>
 (cadddr l)           &rArr; <code class="t">(e (f) g)</code>
-(caaadr l)           &rarr; <span class="r"><i class="i">type exception</i></span>
+(caaadr l)           &rarr; <i class="i">type exception</i>
 </pre></div>
 
 <div class="example lisp">
@@ -754,8 +754,8 @@ integer, an exception that satisfies <code class="code">range-exception?</code> 
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(make-list 1.25) &rarr; <span class="r"><i class="i">type exception</i></span>
-(make-string -1) &rarr; <span class="r"><i class="i">range exception</i></span>
+<pre class="lisp-preformatted">(make-list 1.25) &rarr; <i class="i">type exception</i>
+(make-string -1) &rarr; <i class="i">range exception</i>
 </pre></div>
 </dd></dl>
 
@@ -783,7 +783,7 @@ integer, an exception that satisfies <code class="code">range-exception?</code> 
 (length '(a (b) (c d e)))    &rArr; <code class="t">3</code>
 (length '())                 &rArr; <code class="t">0</code>
 (length (cdr (make-list 5))) &rArr; <code class="t">4</code>
-(length circle)              &rarr; <span class="r"><i class="i">infinite loop</i></span> <i class="slanted">;; not caught</i>
+(length circle)              &rarr; <i class="i">infinite loop</i> <i class="slanted">;; not caught</i>
 </pre></div>
 </dd></dl>
 
@@ -853,8 +853,8 @@ elements, an exception that satisfies <code class="code">range-exception?</code>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(list-tail '(a b c) 1.1) &rarr; <span class="r"><i class="i">type exception</i></span>
-(list-tail '(a b c) 4)   &rarr; <span class="r"><i class="i">range exception</i></span>
+<pre class="lisp-preformatted">(list-tail '(a b c) 1.1) &rarr; <i class="i">type exception</i>
+(list-tail '(a b c) 4)   &rarr; <i class="i">range exception</i>
 </pre></div>
 </dd></dl>
 
@@ -921,7 +921,7 @@ return a non-Boolean value.
 <pre class="lisp-preformatted">(memq 101 '(100 101 102))   &rArr; <code class="t">(101 102)</code> <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says unspecified</i>
 (memv 101 '(100 101 102))   &rArr; <code class="t">(101 102)</code>
 (member 7 '(100 101 102) +) &rArr; <code class="t">(100 101 102)</code>
-(member 7 '(8 9 10) square) &rarr; <span class="r"><i class="i">wrong number of arguments exception</i></span>
+(member 7 '(8 9 10) square) &rarr; <i class="i">wrong number of arguments exception</i>
 </pre></div>
 
 <div class="example lisp">
@@ -993,7 +993,7 @@ a &rArr; <code class="t">(1 8 2 8)</code>
 </pre></div>
 <div class="example lisp">
 <pre class="lisp-preformatted">(define circle (circular-list 0 1 2 3))
-(list-copy circle) &rarr; <span class="r"><i class="i">infinite loop</i></span> <i class="slanted">;; not caught</i>
+(list-copy circle) &rarr; <i class="i">infinite loop</i> <i class="slanted">;; not caught</i>
 </pre></div>
 </dd></dl>
 
@@ -1055,9 +1055,9 @@ integer, an exception that satisfies <code class="code">range-exception?</code> 
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(make-string 4 &quot;g&quot;) &rarr; <span class="r"><i class="i">type exception</i></span>
-(make-string 4.5)   &rarr; <span class="r"><i class="i">type exception</i></span>
-(make-string -1)    &rarr; <span class="r"><i class="i">range exception</i></span>
+<pre class="lisp-preformatted">(make-string 4 &quot;g&quot;) &rarr; <i class="i">type exception</i>
+(make-string 4.5)   &rarr; <i class="i">type exception</i>
+(make-string -1)    &rarr; <i class="i">range exception</i>
 </pre></div>
 </dd></dl>
 
@@ -1095,7 +1095,7 @@ not a valid index of <var class="var">string</var>, an exception that satisfies
 <pre class="lisp-preformatted">(define s &quot;off by one&quot;)
 (string-ref &quot;zero-origin indexing&quot; 0)  &rArr; <code class="t">#\z</code>
 (string-ref s (- (string-length s) 1)) &rArr; <code class="t">#\e</code>
-(string-ref s (string-length s))       &rarr; <span class="r"><i class="i">range exception</i></span>
+(string-ref s (string-length s))       &rarr; <i class="i">range exception</i>
 </pre></div>
 </dd></dl>
 
@@ -1113,7 +1113,7 @@ any number of arguments.
 (string=?)                            &rArr; <code class="t">#t</code>
 (string=? (string))                   &rArr; <code class="t">#t</code>
 (string=? &quot;a&quot; &quot;a&quot; &quot;a&quot;)                &rArr; <code class="t">#t</code>
-(string=? &quot;a&quot; #\a)                    &rarr; <span class="r"><i class="i">type exception</i></span>
+(string=? &quot;a&quot; #\a)                    &rarr; <i class="i">type exception</i>
 </pre></div>
 </dd></dl>
 
@@ -1251,8 +1251,8 @@ satisfies <code class="code">range-exception?</code> is raised.
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-&gt;list &quot;scheme&quot; 7)   &rarr; <span class="r"><i class="i">range exception</i></span>
-(string-&gt;list &quot;scheme&quot; 3 7) &rarr; <span class="r"><i class="i">range exception</i></span>
+<pre class="lisp-preformatted">(string-&gt;list &quot;scheme&quot; 7)   &rarr; <i class="i">range exception</i>
+(string-&gt;list &quot;scheme&quot; 3 7) &rarr; <i class="i">range exception</i>
 </pre></div>
 </dd></dl>
 
@@ -1268,7 +1268,7 @@ is raised.
 <div class="example lisp">
 <pre class="lisp-preformatted">(list-&gt;string (list))                       &rArr; <code class="t">&quot;&quot;</code>
 (list-&gt;string '(#\s #\c #\h #\e #\m #\e))   &rArr; <code class="t">&quot;scheme&quot;</code>
-(list-&gt;string '(#\s #\c #\h #\e #\m #\e 2)) &rarr; <span class="r"><i class="i">type exception</i></span>
+(list-&gt;string '(#\s #\c #\h #\e #\m #\e 2)) &rarr; <i class="i">type exception</i>
 </pre></div>
 </dd></dl>
 
@@ -1300,10 +1300,10 @@ not a valid index of <var class="var">string</var>, an exception that satisfies
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-copy &quot;dwim&quot; 5)    &rarr; <span class="r"><i class="i">range exception</i></span>
-(string-copy &quot;dwim&quot; -1 3) &rarr; <span class="r"><i class="i">range exception</i></span>
-(string-copy &quot;dwim&quot; 2 5)  &rarr; <span class="r"><i class="i">range exception</i></span>
-(string-copy &quot;dwim&quot; 2.5)  &rarr; <span class="r"><i class="i">type exception</i></span>
+<pre class="lisp-preformatted">(string-copy &quot;dwim&quot; 5)    &rarr; <i class="i">range exception</i>
+(string-copy &quot;dwim&quot; -1 3) &rarr; <i class="i">range exception</i>
+(string-copy &quot;dwim&quot; 2 5)  &rarr; <i class="i">range exception</i>
+(string-copy &quot;dwim&quot; 2.5)  &rarr; <i class="i">type exception</i>
 </pre></div>
 </dd></dl>
 
@@ -1375,12 +1375,12 @@ satisfies <code class="code">range-exception?</code> is raised.
 <div class="example lisp">
 <pre class="lisp-preformatted">(define (f) (make-string 3 #\*))
 (string-set! (f) 0 #\?) <i class="slanted">;; ok</i>
-(string-set! (f) 5 #\?)   &rarr; <span class="r"><i class="i">range exception</i></span>
-(string-set! (f) 1.1 #\?) &rarr; <span class="r"><i class="i">type exception</i></span>
+(string-set! (f) 5 #\?)   &rarr; <i class="i">range exception</i>
+(string-set! (f) 1.1 #\?) &rarr; <i class="i">type exception</i>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-set! (symbol-&gt;string 'immutable) 0 #\?) &rarr; <span class="r"><i class="i">type exception</i></span>
+<pre class="lisp-preformatted">(string-set! (symbol-&gt;string 'immutable) 0 #\?) &rarr; <i class="i">type exception</i>
 </pre></div>
 
 <div class="example lisp">
