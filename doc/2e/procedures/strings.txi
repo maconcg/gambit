@@ -8,6 +8,7 @@ Returns @code{#t} if @var{obj} is a string.
 (string? "")                     @value{true}
 (string? "a")                    @value{true}
 @end lisp
+
 @lisp
 (string? #\a)                    @value{false}
 (string? 'string)                @value{false}
@@ -34,6 +35,7 @@ integer, an exception that satisfies @code{range-exception?} is raised.
 (string-length (make-string 4)) @ok{4}
 (make-string 4 #\g)             @ok{"gggg"}
 @end lisp
+
 @lisp
 (make-string 4 "g") @exception{type}
 (make-string 4.5)   @exception{type}
@@ -42,8 +44,8 @@ integer, an exception that satisfies @code{range-exception?} is raised.
 @end deftypefn
 
 @deftypefn @t{(scheme base)} {} string char@dots{}
-Returns a newly allocated string whose elements are its arguments.  The
-order of the arguments is preserved.  Analogous to @code{list}
+Returns a newly allocated string whose elements are @var{char}@enddots{}
+The order of the arguments is preserved.  Analogous to @code{list}
 (@pxref{Pair and list procedures}).
 
 @lisp
@@ -53,8 +55,9 @@ order of the arguments is preserved.  Analogous to @code{list}
 @end lisp
 @end deftypefn
 
-@deftypefn @t{(scheme base)} @/ string-length @opt{string}
+@deftypefn @t{(scheme base)} @/ string-length string
 Returns the number of characters in @var{string}.
+
 @lisp
 (string-length (make-string 5)) @ok{5}
 (string-length "")              @ok{0}
@@ -75,10 +78,9 @@ not a valid index of @var{string}, an exception that satisfies
 @end lisp
 @end deftypefn
 
-@deftypefn @t{(scheme base)} @/ string=? @opt{string@dots{}}
-Returns @code{#t} if all the @var{strings} are the same length and
-contain exactly the same characters in the same positions, otherwise
-returns @code{#f}.
+@deftypefn @t{(scheme base)} @/ string=? string@dots{}
+Returns @code{#t} if all of @var{string} arguments are the same length
+and contain exactly the same characters in the same positions.
 
 Gambit extends the @value{R7RS} description of @code{string=?} to accept
 any number of arguments.
@@ -87,18 +89,20 @@ any number of arguments.
 (string=? "abc" (string #\a #\b #\c)) @value{true}
 (string=? "abcd" "Abcd")              @value{false}
 (string=?)                            @value{true}
+(string=? (string))                   @value{true}
 (string=? "a" "a" "a")                @value{true}
 (string=? "a" #\a)                    @exception{type}
 @end lisp
 @end deftypefn
 
-@deftypefn  @t{(scheme base)} @/ string<? @opt{string@dots{}}
-@deftypefnx @t{(scheme base)} @/ string>? @opt{string@dots{}}
-@deftypefnx @t{(scheme base)} @/ string<=? @opt{string@dots{}}
-@deftypefnx @t{(scheme base)} @/ string>=? @opt{string@dots{}}
-These predicates return @code{#t} if their arguments are (respectively):
-monotonically increasing, monotonically decreasing, monotonically
-non-decreasing, or monotonically non-increasing.  They are transitive.
+@deftypefn  @t{(scheme base)} @/ string<? string@dots{}
+@deftypefnx @t{(scheme base)} @/ string>? string@dots{}
+@deftypefnx @t{(scheme base)} @/ string<=? string@dots{}
+@deftypefnx @t{(scheme base)} @/ string>=? string@dots{}
+These predicates return @code{#t} if their @var{string} arguments are
+(respectively): monotonically increasing, monotonically decreasing,
+monotonically non-decreasing, or monotonically non-increasing.  They are
+transitive.
 
 A pair of strings satisfies exactly one of @code{string<?},
 @code{string=?}, and @code{string>?}.  They may satisfy @code{string<=?}
@@ -122,24 +126,38 @@ accept any number of arguments.
 @end lisp
 @end deftypefn
 
-@deftypefn  @t{(scheme char)} @/ string-ci=? @opt{string@dots{}}
-@deftypefnx @t{(scheme char)} @/ string-ci<? @opt{string@dots{}}
-@deftypefnx @t{(scheme char)} @/ string-ci>? @opt{string@dots{}}
-@deftypefnx @t{(scheme char)} @/ string-ci<=? @opt{string@dots{}}
-@deftypefnx @t{(scheme char)} @/ string-ci>=? @opt{string@dots{}}
+@deftypefn  @t{(scheme char)} @/ string-ci=? string@dots{}
+@deftypefnx @t{(scheme char)} @/ string-ci<? string@dots{}
+@deftypefnx @t{(scheme char)} @/ string-ci>? string@dots{}
+@deftypefnx @t{(scheme char)} @/ string-ci<=? string@dots{}
+@deftypefnx @t{(scheme char)} @/ string-ci>=? string@dots{}
 Each of these predicates behaves as if @code{string-foldcase} were
-applied to each of its arguments, and then that predicate's
-non-@samp{-ci} counterpart were applied to those case-folded arguments.
+applied to each @var{string} and then that predicate's non-@samp{-ci}
+counterpart were applied to those case-folded arguments.
 
 @lisp
-(string-ci=?  "G" "g")  @value{true}
-(string-ci<=? "G" "g")  @value{false}
+(string-ci=?  "G" "g")                             @value{true}
+(apply string=? (map string-foldcase '("G" "g")))  @value{true}
+@end lisp
 
-(string-ci<?  "G" "g")  @value{false}
-(string-ci>?  "G" "g")  @value{false}
+@lisp
+(string-ci>=? "G" "g")                             @value{true}
+(apply string<=? (map string-foldcase '("G" "g"))) @value{true}
+@end lisp
 
-(string-ci<?  "gg" "g") @value{false}
-(string-ci>?  "gg" "g") @value{true}
+@lisp
+(string-ci<=? "g" "G")                             @value{true}
+(apply string<=? (map string-foldcase '("g" "G"))) @value{true}
+@end lisp
+
+@lisp
+(string-ci<?  "G" "g")                             @value{false}
+(apply string<? (map string-foldcase '("G" "g")))  @value{false}
+@end lisp
+
+@lisp
+(string-ci>?  "g" "G")                             @value{false}
+(apply string>? (map string-foldcase '("g" "G")))  @value{false}
 @end lisp
 @end deftypefn
 
@@ -164,6 +182,7 @@ that language-sensitive mappings and foldings are not used.
 (string-downcase "@value{ETOS}") @ok{"@value{etoo}"}
 (string-foldcase "@value{ETOS}") @ok{"@value{etoo}"}
 @end lisp
+
 @lisp
 (string-downcase "@value{WeiB}")  @ok{"@value{weiB}"}
 (string-foldcase "@value{WeiB}")  @ok{"weiss"}
@@ -209,6 +228,7 @@ satisfies @code{range-exception?} is raised.
 (string->list "scheme" 6)   @ok{()}
 (string->list "scheme" 6 6) @ok{()}
 @end lisp
+
 @lisp
 (string->list "scheme" 7)   @exception{range}
 (string->list "scheme" 3 7) @exception{range}
@@ -255,6 +275,7 @@ not a valid index of @var{string}, an exception that satisfies
 (eqv?     "dwim" (string-copy "dwim"))        @value{false}
 (string=? "dwim" (string-copy "dwim"))        @value{true}
 @end lisp
+
 @lisp
 (string-copy "dwim" 5)    @exception{range}
 (string-copy "dwim" -1 3) @exception{range}
@@ -269,17 +290,17 @@ Mutates @var{to-string} by copying a substring of @var{from-string} into
 @var{to-string}, beginning with index @var{at} of @var{to-string}.  In
 the three-argument form, all of @var{from-string} is copied.  In the
 four-argument form, the value of @samp{(string-copy
-@slanted{from-string} @slanted{@var{start}})} is copied.  In the
+@slanted{@var{from-string}} @slanted{@var{start}})} is copied.  In the
 five-argument form, the value of @samp{(string-copy
-@slanted{from-string} @slanted{@var{start}} @slanted{@var{end}})} is
-copied.
+@slanted{@var{from-string}} @slanted{@var{start}} @slanted{@var{end}})}
+is copied.
 
 If @var{at} is not a valid index of @var{to-string}, an exception that
 satisfies @code{range-exception?} is raised.  If @samp{(- (string-length
-@slanted{to-string}) @slanted{at})} is less than @samp{(- @slanted{end}
-@slanted{start})}, an exception that satisfies @code{range-exception?}
-is raised (in other words, the copied substring must not overflow beyond
-the end of @var{to-string}).
+@slanted{@var{to-string}}) @slanted{@var{at}})} is less than @samp{(-
+@slanted{@var{end}} @slanted{@var{start}})}, an exception that satisfies
+@code{range-exception?}  is raised (in other words, the copied substring
+must not overflow beyond the end of @var{to-string}).
 
 @lisp
 (define a "12345")
@@ -331,13 +352,14 @@ satisfies @code{range-exception?} is raised.
 (string-set! (f) 5 #\?)   @exception{range}
 (string-set! (f) 1.1 #\?) @exception{type}
 @end lisp
+
 @lisp
 (string-set! (symbol->string 'immutable) 0 #\?) @exception{type}
 @end lisp
+
 @lisp
 (define (g) "***")
 (string-set! (g) 0 #\?) @aside{;; @value{R7RS} says this is an error}
-
 (g) @ok{"?**"}             @aside{;; current Gambit behavior} 
 @end lisp
 @end deftypefn

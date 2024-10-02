@@ -554,10 +554,12 @@ Previous: <a href="#Pair-and-list-jargon" accesskey="p" rel="prev">Pair and list
 (cons 'a 3)          &rArr; <code class="t">(a . 3)</code>
 (cons '(a b) 'c)     &rArr; <code class="t">((a b) . c)</code>
 </pre></div>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(eqv?   (cons + car) (cons + car)) &rArr; <code class="code">#f</code>
 (equal? (cons + car) (cons + car)) &rArr; <code class="t">#t</code>
 </pre></div>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(eq? cons (cdr (cons cons cons))) &rArr; <code class="t">#t</code>
 </pre></div>
@@ -606,6 +608,7 @@ made to take the cdr of the empty list, an exception that satisfies
 
 (f) &rArr; <code class="t">(not-a-constant-list)</code>
 </pre></div>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(define (g) '(constant-list))
 (set-car! (g) 3) <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</i>
@@ -625,6 +628,7 @@ made to take the cdr of the empty list, an exception that satisfies
 
 (f) &rArr; <code class="t">(not-a-constant-list)</code>
 </pre></div>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(define (g) '(constant-list))
 (set-cdr! (g) 3)          <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</i>
@@ -678,6 +682,7 @@ made to take the cdr of the empty list, an exception that satisfies
 (cadddr l)           &rArr; <code class="t">(e (f) g)</code>
 (caaadr l)           &rarr; <span class="r"><i class="i">type exception</i></span>
 </pre></div>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(define circle (circular-list 'a 'b 'c))
 (car circle)    &rArr; <code class="t">a</code>
@@ -719,6 +724,7 @@ empty list.
 (list? &quot;list&quot;)   &rArr; <code class="code">#f</code>
 (list? #(0 1 2)) &rArr; <code class="code">#f</code>
 </pre></div>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(let ((x (list 'a)))
   (set-cdr! x x)
@@ -746,9 +752,10 @@ integer, an exception that satisfies <code class="code">range-exception?</code> 
 <pre class="lisp-preformatted">(make-list 0)        &rArr; <code class="t">()</code>
 (make-list 3 (list)) &rArr; <code class="t">(() () ())</code>
 </pre></div>
+
 <div class="example lisp">
-<pre class="lisp-preformatted">(make-list 1.25)     &rarr; <span class="r"><i class="i">type exception</i></span>
-(make-string -1)     &rarr; <span class="r"><i class="i">range exception</i></span>
+<pre class="lisp-preformatted">(make-list 1.25) &rarr; <span class="r"><i class="i">type exception</i></span>
+(make-string -1) &rarr; <span class="r"><i class="i">range exception</i></span>
 </pre></div>
 </dd></dl>
 
@@ -759,9 +766,10 @@ integer, an exception that satisfies <code class="code">range-exception?</code> 
 <dd><p>Returns a newly allocated list consisting of its arguments.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(list 'a (+ 3 4) 'c)      &rArr; <code class="t">(a 7 c)</code>
-(list)                    &rArr; <code class="t">()</code>
-((car (list list)) 'list) &rArr; <code class="t">(list)</code>
+<pre class="lisp-preformatted">(list 'a (+ 3 4) 'c)         &rArr; <code class="t">(a 7 c)</code>
+(list)                       &rArr; <code class="t">()</code>
+((car (list list)) 'list)    &rArr; <code class="t">(list)</code>
+(eqv? (list #\l) (list #\l)) &rArr; <code class="code">#f</code>
 </pre></div>
 </dd></dl>
 
@@ -786,19 +794,20 @@ returns its argument, whatever that argument&rsquo;s type.  Each argument
 except the last, if present, must be a list.
 </p>
 <p>With two or more arguments, the returned value consists of the elements
-of each list&hellip;, in order (excluding each <var class="var">list</var>&rsquo;s terminating
+of each <var class="var">list</var> in order (excluding each <var class="var">list</var>&rsquo;s terminating
 empty list).  A proper list is returned if <var class="var">obj</var> is a proper list;
-an improper list is returned if if <var class="var">obj</var> is not a proper list.  The
-returned value is newly allocated, except that it shares structure with
-the last argument, <var class="var">obj</var>.
+an improper list is returned if if <var class="var">obj</var> is not a proper list
+(see <a class="pxref" href="#Pair-and-list-jargon">Pair and list jargon</a>).  The returned value is newly allocated,
+except that it shares structure with the last argument, <var class="var">obj</var>.
 </p>
 <div class="example lisp">
 <pre class="lisp-preformatted">(append '(x) '(y))       &rArr; <code class="t">(x y)</code>
 (append '(a) '(b c d))   &rArr; <code class="t">(a b c d)</code>
 (append '(a (b)) '((c))) &rArr; <code class="t">(a (b) (c))</code>
-(append '(a b) '(c . d)) &rArr; <code class="t">(a b c . d)</code>
-(append '() 'a)          &rArr; <code class="t">a</code>
+(append '(a b) '(c . d)) &rArr; <code class="t">(a b c . d)</code> <i class="slanted">;; lacking propriety</i>
+(append '() 'a)          &rArr; <code class="t">a</code> <i class="slanted">;; egregiously lacking propriety</i>
 </pre></div>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(define l (list 'f 'g 'h))
 (eq?    l (append (append) l)) &rArr; <code class="t">#t</code>
@@ -816,6 +825,7 @@ in reverse order (excluding the terminating empty list).
 <pre class="lisp-preformatted">(reverse '(a b c))             &rArr; <code class="t">(c b a)</code>
 (reverse '(a (b c) d (e (f)))) &rArr; <code class="t">((e (f)) d (b c) a)</code>
 </pre></div>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(define l (list 'a 'b 'c))
 (eq?    l (reverse (reverse l))) &rArr; <code class="code">#f</code>
@@ -838,9 +848,10 @@ elements, an exception that satisfies <code class="code">range-exception?</code>
 <div class="example lisp">
 <pre class="lisp-preformatted">(list-tail '(a b c) 1)   &rArr; <code class="t">(b c)</code>
 (list-tail '(a b c) 3)   &rArr; <code class="t">()</code>
-(list-tail '(a b . c) 1) &rArr; <code class="t">(b . c)</code>
-(list-tail '(a b . c) 2) &rArr; <code class="t">c</code>       <i class="slanted">;; abject impropriety</i>
+(list-tail '(a b . c) 1) &rArr; <code class="t">(b . c)</code> <i class="slanted">;; impropriety</i>
+(list-tail '(a b . c) 2) &rArr; <code class="t">c</code> <i class="slanted">;; abject impropriety</i>
 </pre></div>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(list-tail '(a b c) 1.1) &rarr; <span class="r"><i class="i">type exception</i></span>
 (list-tail '(a b c) 4)   &rarr; <span class="r"><i class="i">range exception</i></span>
@@ -858,6 +869,7 @@ be circular.
 <pre class="lisp-preformatted">(list-ref '(a b c d) 2)                   &rArr; <code class="t">c</code>
 (list-ref '(a b c d) (exact (round 1.8))) &rArr; <code class="t">c</code>
 </pre></div>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(list-ref (circular-list 'a 'b) 3) &rArr; <code class="t">b</code> <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</i>
 </pre></div>
@@ -873,9 +885,9 @@ be circular.
 <div class="example lisp">
 <pre class="lisp-preformatted">(define ls (list 'one 'two 'five!))
 (list-set! ls 2 'three)
-
 ls &rArr; <code class="t">(one two three)</code>
 </pre></div>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(list-set! '(0 1 2) 1 &quot;oops&quot;) <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</i>
 </pre></div>
@@ -904,15 +916,16 @@ return a non-Boolean value.
 </li><li><code class="code">member</code> uses <code class="code"><i class="slanted">equal?</i></code> in the two-argument form.
 </li><li><code class="code">member</code> uses <var class="var">compare</var> in the three-argument form.
 </li></ul>
+
 <div class="example lisp">
-<pre class="lisp-preformatted">(define nums '(100 101 102))
+<pre class="lisp-preformatted">(memq 101 '(100 101 102))   &rArr; <code class="t">(101 102)</code> <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says unspecified</i>
+(memv 101 '(100 101 102))   &rArr; <code class="t">(101 102)</code>
+(member 7 '(100 101 102) +) &rArr; <code class="t">(100 101 102)</code>
+(member 7 '(8 9 10) square) &rarr; <span class="r"><i class="i">wrong number of arguments exception</i></span>
+</pre></div>
 
-(memq 101 nums)        &rArr; <code class="t"><span class="r"><i class="i">unspecified</i></span></code>
-(memv 101 nums)        &rArr; <code class="t">(101 102)</code>
-(member 7 nums +)      &rArr; <code class="t">(100 101 102)</code>
-(member 7 nums square) &rarr; <span class="r"><i class="i">wrong number of arguments exception</i></span>
-
-(memq 'a '(a b c))                      &rArr; <code class="t">(a b c)</code>
+<div class="example lisp">
+<pre class="lisp-preformatted">(memq 'a '(a b c))                      &rArr; <code class="t">(a b c)</code>
 (memq 'b '(a b c))                      &rArr; <code class="t">(b c)</code>
 (memq 'a '(b c d))                      &rArr; <code class="code">#f</code>
 (memq (list 'a) '(b (a) c))             &rArr; <code class="code">#f</code>
@@ -945,6 +958,7 @@ return a non-Boolean value.
 </li><li><code class="code">assoc</code> uses <code class="code"><i class="slanted">equal?</i></code> in the two-argument form.
 </li><li><code class="code">assoc</code> uses <var class="var">compare</var> in the three-argument form.
 </li></ul>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(define e '((a 1) (b 2) (c 3)))
 
@@ -1011,6 +1025,7 @@ Up: <a href="#Strings" accesskey="u" rel="up">Strings</a> &nbsp; [<a href="#SEC_
 <pre class="lisp-preformatted">(string? &quot;&quot;)                     &rArr; <code class="t">#t</code>
 (string? &quot;a&quot;)                    &rArr; <code class="t">#t</code>
 </pre></div>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(string? #\a)                    &rArr; <code class="code">#f</code>
 (string? 'string)                &rArr; <code class="code">#f</code>
@@ -1038,6 +1053,7 @@ integer, an exception that satisfies <code class="code">range-exception?</code> 
 (string-length (make-string 4)) &rArr; <code class="t">4</code>
 (make-string 4 #\g)             &rArr; <code class="t">&quot;gggg&quot;</code>
 </pre></div>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(make-string 4 &quot;g&quot;) &rarr; <span class="r"><i class="i">type exception</i></span>
 (make-string 4.5)   &rarr; <span class="r"><i class="i">type exception</i></span>
@@ -1047,8 +1063,8 @@ integer, an exception that satisfies <code class="code">range-exception?</code> 
 
 <dl class="first-deftypefn">
 <dt class="deftypefn" id="index-string"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string</strong> <code class="def-code-arguments">char&hellip;</code><a class="copiable-link" href="#index-string"> &para;</a></span></dt>
-<dd><p>Returns a newly allocated string whose elements are its arguments.  The
-order of the arguments is preserved.  Analogous to <code class="code">list</code>
+<dd><p>Returns a newly allocated string whose elements are <var class="var">char</var><small class="enddots">...</small>
+The order of the arguments is preserved.  Analogous to <code class="code">list</code>
 (see <a class="pxref" href="#Pair-and-list-procedures">Pair and list procedures</a>).
 </p>
 <div class="example lisp">
@@ -1059,9 +1075,10 @@ order of the arguments is preserved.  Analogous to <code class="code">list</code
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dlength"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-length</strong> <code class="def-code-arguments"><code class="t">[</code>string<code class="t">]</code></code><a class="copiable-link" href="#index-string_002dlength"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_002dlength"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-length</strong> <code class="def-code-arguments">string</code><a class="copiable-link" href="#index-string_002dlength"> &para;</a></span></dt>
 <dd><p>Returns the number of characters in <var class="var">string</var>.
-</p><div class="example lisp">
+</p>
+<div class="example lisp">
 <pre class="lisp-preformatted">(string-length (make-string 5)) &rArr; <code class="t">5</code>
 (string-length &quot;&quot;)              &rArr; <code class="t">0</code>
 (string-length &quot;lambda&quot;)        &rArr; <code class="t">6</code>
@@ -1083,10 +1100,9 @@ not a valid index of <var class="var">string</var>, an exception that satisfies
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_003d_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string=?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_003d_003f"> &para;</a></span></dt>
-<dd><p>Returns <code class="code">#t</code> if all the <var class="var">strings</var> are the same length and
-contain exactly the same characters in the same positions, otherwise
-returns <code class="code">#f</code>.
+<dt class="deftypefn" id="index-string_003d_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string=?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_003d_003f"> &para;</a></span></dt>
+<dd><p>Returns <code class="code">#t</code> if all of <var class="var">string</var> arguments are the same length
+and contain exactly the same characters in the same positions.
 </p>
 <p>Gambit extends the <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> description of <code class="code">string=?</code> to accept
 any number of arguments.
@@ -1095,19 +1111,21 @@ any number of arguments.
 <pre class="lisp-preformatted">(string=? &quot;abc&quot; (string #\a #\b #\c)) &rArr; <code class="t">#t</code>
 (string=? &quot;abcd&quot; &quot;Abcd&quot;)              &rArr; <code class="code">#f</code>
 (string=?)                            &rArr; <code class="t">#t</code>
+(string=? (string))                   &rArr; <code class="t">#t</code>
 (string=? &quot;a&quot; &quot;a&quot; &quot;a&quot;)                &rArr; <code class="t">#t</code>
 (string=? &quot;a&quot; #\a)                    &rarr; <span class="r"><i class="i">type exception</i></span>
 </pre></div>
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_003c_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&lt;?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_003c_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003e_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&gt;?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_003e_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003c_003d_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&lt;=?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_003c_003d_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003e_003d_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&gt;=?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_003e_003d_003f"> &para;</a></span></dt>
-<dd><p>These predicates return <code class="code">#t</code> if their arguments are (respectively):
-monotonically increasing, monotonically decreasing, monotonically
-non-decreasing, or monotonically non-increasing.  They are transitive.
+<dt class="deftypefn" id="index-string_003c_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&lt;?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_003c_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003e_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&gt;?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_003e_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003c_003d_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&lt;=?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_003c_003d_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003e_003d_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&gt;=?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_003e_003d_003f"> &para;</a></span></dt>
+<dd><p>These predicates return <code class="code">#t</code> if their <var class="var">string</var> arguments are
+(respectively): monotonically increasing, monotonically decreasing,
+monotonically non-decreasing, or monotonically non-increasing.  They are
+transitive.
 </p>
 <p>A pair of strings satisfies exactly one of <code class="code">string&lt;?</code>,
 <code class="code">string=?</code>, and <code class="code">string&gt;?</code>.  They may satisfy <code class="code">string&lt;=?</code>
@@ -1132,24 +1150,38 @@ accept any number of arguments.
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dci_003d_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci=?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_002dci_003d_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003c_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&lt;?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_002dci_003c_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003e_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&gt;?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_002dci_003e_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003c_003d_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&lt;=?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_002dci_003c_003d_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003e_003d_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&gt;=?</strong> <code class="def-code-arguments"><code class="t">[</code>string&hellip;<code class="t">]</code></code><a class="copiable-link" href="#index-string_002dci_003e_003d_003f"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_002dci_003d_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci=?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_002dci_003d_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003c_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&lt;?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_002dci_003c_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003e_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&gt;?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_002dci_003e_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003c_003d_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&lt;=?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_002dci_003c_003d_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003e_003d_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&gt;=?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_002dci_003e_003d_003f"> &para;</a></span></dt>
 <dd><p>Each of these predicates behaves as if <code class="code">string-foldcase</code> were
-applied to each of its arguments, and then that predicate&rsquo;s
-non-&lsquo;<samp class="samp">-ci</samp>&rsquo; counterpart were applied to those case-folded arguments.
+applied to each <var class="var">string</var> and then that predicate&rsquo;s non-&lsquo;<samp class="samp">-ci</samp>&rsquo;
+counterpart were applied to those case-folded arguments.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-ci=?  &quot;G&quot; &quot;g&quot;)  &rArr; <code class="t">#t</code>
-(string-ci&lt;=? &quot;G&quot; &quot;g&quot;)  &rArr; <code class="code">#f</code>
+<pre class="lisp-preformatted">(string-ci=?  &quot;G&quot; &quot;g&quot;)                             &rArr; <code class="t">#t</code>
+(apply string=? (map string-foldcase '(&quot;G&quot; &quot;g&quot;)))  &rArr; <code class="t">#t</code>
+</pre></div>
 
-(string-ci&lt;?  &quot;G&quot; &quot;g&quot;)  &rArr; <code class="code">#f</code>
-(string-ci&gt;?  &quot;G&quot; &quot;g&quot;)  &rArr; <code class="code">#f</code>
+<div class="example lisp">
+<pre class="lisp-preformatted">(string-ci&gt;=? &quot;G&quot; &quot;g&quot;)                             &rArr; <code class="t">#t</code>
+(apply string&lt;=? (map string-foldcase '(&quot;G&quot; &quot;g&quot;))) &rArr; <code class="t">#t</code>
+</pre></div>
 
-(string-ci&lt;?  &quot;gg&quot; &quot;g&quot;) &rArr; <code class="code">#f</code>
-(string-ci&gt;?  &quot;gg&quot; &quot;g&quot;) &rArr; <code class="t">#t</code>
+<div class="example lisp">
+<pre class="lisp-preformatted">(string-ci&lt;=? &quot;g&quot; &quot;G&quot;)                             &rArr; <code class="t">#t</code>
+(apply string&lt;=? (map string-foldcase '(&quot;g&quot; &quot;G&quot;))) &rArr; <code class="t">#t</code>
+</pre></div>
+
+<div class="example lisp">
+<pre class="lisp-preformatted">(string-ci&lt;?  &quot;G&quot; &quot;g&quot;)                             &rArr; <code class="code">#f</code>
+(apply string&lt;? (map string-foldcase '(&quot;G&quot; &quot;g&quot;)))  &rArr; <code class="code">#f</code>
+</pre></div>
+
+<div class="example lisp">
+<pre class="lisp-preformatted">(string-ci&gt;?  &quot;g&quot; &quot;G&quot;)                             &rArr; <code class="code">#f</code>
+(apply string&gt;? (map string-foldcase '(&quot;g&quot; &quot;G&quot;)))  &rArr; <code class="code">#f</code>
 </pre></div>
 </dd></dl>
 
@@ -1169,6 +1201,7 @@ that language-sensitive mappings and foldings are not used.
 (string-downcase &quot;&#x0388;&#x03A4;&#x039F;&#x03A3;&quot;) &rArr; <code class="t">&quot;&#x03AD;&#x03C4;&#x03BF;&#x03C3;&quot;</code>
 (string-foldcase &quot;&#x0388;&#x03A4;&#x039F;&#x03A3;&quot;) &rArr; <code class="t">&quot;&#x03AD;&#x03C4;&#x03BF;&#x03C3;&quot;</code>
 </pre></div>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(string-downcase &quot;Wei&szlig;&quot;)  &rArr; <code class="t">&quot;wei&szlig;&quot;</code>
 (string-foldcase &quot;Wei&szlig;&quot;)  &rArr; <code class="t">&quot;weiss&quot;</code>
@@ -1216,6 +1249,7 @@ satisfies <code class="code">range-exception?</code> is raised.
 (string-&gt;list &quot;scheme&quot; 6)   &rArr; <code class="t">()</code>
 (string-&gt;list &quot;scheme&quot; 6 6) &rArr; <code class="t">()</code>
 </pre></div>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(string-&gt;list &quot;scheme&quot; 7)   &rarr; <span class="r"><i class="i">range exception</i></span>
 (string-&gt;list &quot;scheme&quot; 3 7) &rarr; <span class="r"><i class="i">range exception</i></span>
@@ -1264,6 +1298,7 @@ not a valid index of <var class="var">string</var>, an exception that satisfies
 (eqv?     &quot;dwim&quot; (string-copy &quot;dwim&quot;))        &rArr; <code class="code">#f</code>
 (string=? &quot;dwim&quot; (string-copy &quot;dwim&quot;))        &rArr; <code class="t">#t</code>
 </pre></div>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(string-copy &quot;dwim&quot; 5)    &rarr; <span class="r"><i class="i">range exception</i></span>
 (string-copy &quot;dwim&quot; -1 3) &rarr; <span class="r"><i class="i">range exception</i></span>
@@ -1279,17 +1314,17 @@ not a valid index of <var class="var">string</var>, an exception that satisfies
 <var class="var">to-string</var>, beginning with index <var class="var">at</var> of <var class="var">to-string</var>.  In
 the three-argument form, all of <var class="var">from-string</var> is copied.  In the
 four-argument form, the value of &lsquo;<samp class="samp">(string-copy
-<i class="slanted">from-string</i> <i class="slanted"><var class="var">start</var></i>)</samp>&rsquo; is copied.  In the
+<i class="slanted"><var class="var">from-string</var></i> <i class="slanted"><var class="var">start</var></i>)</samp>&rsquo; is copied.  In the
 five-argument form, the value of &lsquo;<samp class="samp">(string-copy
-<i class="slanted">from-string</i> <i class="slanted"><var class="var">start</var></i> <i class="slanted"><var class="var">end</var></i>)</samp>&rsquo; is
-copied.
+<i class="slanted"><var class="var">from-string</var></i> <i class="slanted"><var class="var">start</var></i> <i class="slanted"><var class="var">end</var></i>)</samp>&rsquo;
+is copied.
 </p>
 <p>If <var class="var">at</var> is not a valid index of <var class="var">to-string</var>, an exception that
 satisfies <code class="code">range-exception?</code> is raised.  If &lsquo;<samp class="samp">(- (string-length
-<i class="slanted">to-string</i>) <i class="slanted">at</i>)</samp>&rsquo; is less than &lsquo;<samp class="samp">(- <i class="slanted">end</i>
-<i class="slanted">start</i>)</samp>&rsquo;, an exception that satisfies <code class="code">range-exception?</code>
-is raised (in other words, the copied substring must not overflow beyond
-the end of <var class="var">to-string</var>).
+<i class="slanted"><var class="var">to-string</var></i>) <i class="slanted"><var class="var">at</var></i>)</samp>&rsquo; is less than &lsquo;<samp class="samp">(-
+<i class="slanted"><var class="var">end</var></i> <i class="slanted"><var class="var">start</var></i>)</samp>&rsquo;, an exception that satisfies
+<code class="code">range-exception?</code>  is raised (in other words, the copied substring
+must not overflow beyond the end of <var class="var">to-string</var>).
 </p>
 <div class="example lisp">
 <pre class="lisp-preformatted">(define a &quot;12345&quot;)
@@ -1343,13 +1378,14 @@ satisfies <code class="code">range-exception?</code> is raised.
 (string-set! (f) 5 #\?)   &rarr; <span class="r"><i class="i">range exception</i></span>
 (string-set! (f) 1.1 #\?) &rarr; <span class="r"><i class="i">type exception</i></span>
 </pre></div>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(string-set! (symbol-&gt;string 'immutable) 0 #\?) &rarr; <span class="r"><i class="i">type exception</i></span>
 </pre></div>
+
 <div class="example lisp">
 <pre class="lisp-preformatted">(define (g) &quot;***&quot;)
 (string-set! (g) 0 #\?) <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</i>
-
 (g) &rArr; <code class="t">&quot;?**&quot;</code>             <i class="slanted">;; current Gambit behavior</i> 
 </pre></div>
 </dd></dl>
