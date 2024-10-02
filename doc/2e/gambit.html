@@ -57,10 +57,6 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     }
 }
 
-dl.first-deftp, dl.first-deftypevr {
-    code.code {color: #193668}
-}
-
 dl.first-deftypefn {
     dt code.def-code-arguments, dd p var.var {color: #721045}
 }
@@ -695,9 +691,7 @@ made to take the cdr of the empty list, an exception that satisfies
 <div class="example lisp">
 <pre class="lisp-preformatted">(null? '())    &rArr; <code class="t">#t</code>
 (null? (list)) &rArr; <code class="t">#t</code>
-</pre></div>
-<div class="example lisp">
-<pre class="lisp-preformatted">(null? #\null) &rArr; <code class="code">#f</code>
+(null? #\null) &rArr; <code class="code">#f</code>
 (null? null?)  &rArr; <code class="code">#f</code>
 (null? #f)     &rArr; <code class="code">#f</code>
 (null? 0)      &rArr; <code class="code">#f</code>

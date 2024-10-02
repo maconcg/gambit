@@ -14,10 +14,6 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     }
 }
 
-dl.first-deftp, dl.first-deftypevr {
-    code.code {color: %fg-alt%}
-}
-
 dl.first-deftypefn {
     dt code.def-code-arguments, dd p var.var {color: %arg%}
 }
