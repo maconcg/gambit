@@ -5,7 +5,6 @@
 Returns @code{#t} if @var{obj} is a pair.
 
 @lisp
-01234567890123456789012345678901234567890123456789012345678901234567
 (pair? '(a . b)) @value{true}
 (pair? '(a b c)) @value{true}
 (pair? '())      @value{false}
@@ -135,7 +134,7 @@ These 28 procedures are compositions of @code{car} and @code{cdr}.
 @end lisp
 @end deftypefn
 
-@tindex the empty list @subentry predicate
+@tindex empty list @subentry predicate
 @deftypefn @t{(scheme base)} @/ null? obj
 Returns @code{#t} if @var{obj} is the empty list.
 
@@ -154,7 +153,7 @@ Returns @code{#t} if @var{obj} is the empty list.
 
 @deftypefn @t{(scheme base)} @/ list? obj
 @tindex proper list @subentry predicate
-@tindex the empty list @subentry termination of proper lists
+@tindex empty list @subentry termination of proper lists
 Returns @code{#t} if @var{obj} is a @dfn{proper list}.  By definition, a
 list of finite length is terminated by the empty list.
 
