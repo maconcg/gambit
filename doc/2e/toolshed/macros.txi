@@ -43,3 +43,7 @@
 @rmacro opt {arg}
 @inlinefmtifelse{html,@t{[}\arg\@t{]},[\arg\]}
 @end rmacro
+
+@macro quotedbl {text}
+@inlinefmtifelse{tex,``\text\'',@quotedblleft{}\text\@quotedblright{}}
+@end macro

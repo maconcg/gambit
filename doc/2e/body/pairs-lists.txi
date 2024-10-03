@@ -30,22 +30,23 @@ A pair is an object with two fields.  It is constructed by the
 determine whether an object is a pair (@pxref{Pair and list
 procedures}).
 
-@cindex cons @subentry cons onto
-``Cons @slanted{a} onto @slanted{b}'' means ``use @code{cons} to
-construct a pair whose first field contains @slanted{a} and whose second
-field contains @slanted{b}''.
-
 @cindex car @subentry car field
 @cindex cdr @subentry cdr field
-The first field of a pair is often referred to as its ``car field'' or
-just its ``car''.  The second field of a pair is often referred to as
-its ``cdr field'' or just its ``cdr''.
+The first field of a pair is often referred to as its @quotedbl{car
+field} or just its @quotedbl{car}.  The second field of a pair is often
+referred to as its @quotedbl{cdr field} or just its @quotedbl{cdr}.
 
 @cindex car @subentry take the car
 @cindex cdr @subentry take the cdr
-``Take the car of @slanted{p}'' means ``use @code{car} to select the
-first field of @slanted{p}''.  ``Take the cdr of @slanted{p}'' means
-``use @code{cdr} to select the second field of @slanted{p}''.
+@quotedbl{Take the car of @slanted{p}} means @quotedbl{use @code{car} to
+select the first field of @slanted{p}}.  @quotedbl{Take the cdr of
+@slanted{p}} means @quotedbl{use @code{cdr} to select the second field
+of @slanted{p}}.
+
+@cindex cons @subentry cons onto
+@quotedbl{Cons @slanted{a} onto @slanted{b}} means @quotedbl{use
+@code{cons} to construct a pair whose first field contains @slanted{a}
+and whose second field contains @slanted{b}}.
 
 @i{The empty list} is not a pair.  A pair is a @i{list} if and only if
 its cdr is a @i{list}.
@@ -61,38 +62,40 @@ whether an object is a list (@pxref{Pair and list procedures}).
 
 With the exception of @i{the empty list}, every list is a @i{pair}.
 @end deftp
+
 @cindex lists @subentry proper lists
 @deftypevr colloquialism @/ {proper list}
-``Proper list'' is a widely-used synonym for @i{list} (see above).
-Because it's a synonym, there's technically no need for the qualifier.
-But in practice, people often refer to list-like objects that are not
-@i{lists} as ``improper lists''.  The qualifier ``proper'' is therefore
-used to emphasize that an object is a Scheme @i{list} that satisfies
-@code{list?}.
+@quotedbl{Proper list} is a widely-used synonym for @i{list} (see
+above).  Because it's a synonym, there's technically no need for the
+qualifier.  But in practice, people often refer to list-like objects
+that are not @i{lists} as @quotedbl{improper lists}.  The qualifier
+@quotedbl{proper} is therefore used to emphasize that an object is a
+Scheme @i{list} that satisfies @code{list?}.
 @end deftypevr
 
 @cindex pairs @subentry improper lists
 @deftypevr colloquialism @/ {improper list}
-The term ``improper list'' is sometimes used to describe a @i{pair}
-whose cdr is not a @i{list}.  This means that, despite its name, an
-``improper list'' is not a @i{list} under Scheme's formal definition.
-In contexts where the term ``improper list'' appears, @i{lists} are
-often referred to as ``proper lists'' to emphasize the distinction.
+@quotedbl{Improper list} is sometimes used to describe a @i{pair} whose
+cdr is not a @i{list}.  This means that, despite its name, an
+@quotedbl{improper list} is not a @i{list} under Scheme's formal
+definition.  In contexts where the term @quotedbl{improper list}
+appears, @i{lists} are often referred to as @quotedbl{proper lists} to
+emphasize the distinction.
 @end deftypevr
 
 @cindex pairs @subentry dotted pairs
 @deftypevr colloquialism @/ {dotted pair}
-``Dotted pair'' is sometimes used as a synonym for @i{pair}.  ``Dotted''
-refers to the common external representation of a @i{pair} in which the
-last element is preceded by a period (@samp{.}, which resembles a dot).
-This ``dotted notation'' may technically be used to represent any
-@i{pair}, but is typically used only to represent @i{pairs} that are not
-@i{lists}.
+@quotedbl{Dotted pair} is sometimes used as a synonym for @i{pair}.
+@quotedbl{Dotted} refers to the common external representation of a
+@i{pair} in which the last element is preceded by a period (@samp{.},
+which resembles a dot).  This @quotedbl{dotted notation} may technically
+be used to represent any @i{pair}, but is typically used only to
+represent @i{pairs} that are not @i{lists}.
 @end deftypevr
 
 @cindex lists @subentry association lists
 @vindex alist @seeentry {association list}
 @deftypevr colloquialism @/ {association list}
-An ``association list'' (or ``alist'', for short) is a @i{list} of
-@i{pairs}.
+An @quotedbl{association list} (or @quotedbl{alist}, for short) is a
+@i{list} of @i{pairs}.
 @end deftypevr
