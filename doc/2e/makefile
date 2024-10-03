@@ -1,13 +1,16 @@
-html-sources := gambit.txi toolshed/gambit.css
+gambit-css := toolshed/gambit.css
+css-arg := --css-include=${gambit-css}
+html-sources := gambit.txi ${gambit-css}
+make-css := toolshed/make-css.sh
+
 html-modules-dir := gambit-html
-css-arg := --css-include=toolshed/gambit.css
 
 default: html info txt
 
 .PHONY: clean default html html-modules html-monolith info txt
 
 clean:
-	rm -fr ${html-modules-dir}/ gambit.html gambit.info gambit.txt
+	rm -fr ${html-modules-dir}/ ${gambit-css} gambit.{html,info,txt}
 
 gambit.txi: body/* procedures/* toolshed/*.t*
 	touch $@
@@ -35,5 +38,5 @@ gambit.info: gambit.txi
 gambit.txt: gambit.txi
 	texi2any -o $@ --plaintext gambit.txi
 
-toolshed/gambit.css: toolshed/gambit.css.in toolshed/make-css.sh
-	toolshed/make-css.sh toolshed/gambit.css.in > $@
+${gambit-css}: ${gambit-css}.in ${make-css}
+	${make-css} ${gambit-css}.in > $@
