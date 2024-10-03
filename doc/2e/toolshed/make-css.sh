@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh -fure
 # Colors are based on Protesilaos Stavrou's modus-themes.
 
 readonly template=${1:?}
@@ -39,9 +39,7 @@ arg="$link_visited"
 comment="$fg_dim"
 hr="$border"
 
-readonly default=$(mktemp) && {
-    substitute > "$default"
-}
+substitute
 
 # Dark, based on modus-vivendi-tinted
 fg_main='#ffffff'
@@ -58,21 +56,11 @@ arg="$link_visited"
 comment="$fg_dim"
 hr="$border"
 
-readonly dark=$(mktemp) && {
-    substitute > "$dark"
-}
-
-readonly rest=$(mktemp) && {
-    sed -n '/^\/\* END COLORS \*\/$/,$ {
-                /^\/\* END COLORS \*\/$/!p
-            }' "$template" > "$rest"
-}
-
-cat "$default"
 echo
 echo '@media (prefers-color-scheme: dark) {'
-sed 's/^/    /' "$dark"
+substitute | sed 's/^/    /'
 echo '}'
-cat "$rest"
 
-rm "$default" "$dark" "$rest"
+sed -n '/^\/\* END COLORS \*\/$/,$ {
+            /^\/\* END COLORS \*\/$/!p
+        }' "$template"
