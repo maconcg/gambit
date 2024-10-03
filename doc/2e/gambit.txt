@@ -261,7 +261,7 @@ about pairs and lists.
 
           (eqv?   (cons + car) (cons + car)) ⇒ #f
           (equal? (cons + car) (cons + car)) ⇒ #t
-          (eq? cons (cdr (cons cons cons))) ⇒ #t
+          (eq? cons (cdr (cons cons cons)))  ⇒ #t
 
           (cons)    → wrong number of arguments exception
           (cons 'a) → wrong number of arguments exception
