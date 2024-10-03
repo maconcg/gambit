@@ -1,24 +1,23 @@
-#!/bin/sh -fure
 # Colors are based on Protesilaos Stavrou's modus-themes.
 
-readonly template=${1:?}
+readonly template="${1:?}"
 
-function substitute {
+substitute() {
     sed -n "/^\/\* BEGIN COLORS \*\/\$/,/^\/\* END COLORS \*\/\$/ {
                 /^\/\*/! {
-                    s/%fg-main%/$fg_main/
-                    s/%fg-alt%/$fg_alt/
-                    s/%fg-dim%/$fg_dim/
-                    s/%bg-main%/$bg_main/
-                    s/%bg-dim%/$bg_dim/
-                    s/%link%/$link/
-                    s/%link-visited%/$link_visited/
-                    s/%arg%/$arg/
-                    s/%border%/$border/
-                    s/%comment/$comment/
-                    s/%emphasis%/$emphasis/
-                    s/%false%/$false/
-                    s/%hr%/$hr/
+                    s/%fg-main%/${fg_main:?}/
+                    s/%fg-alt%/${fg_alt:?}/
+                    s/%fg-dim%/${fg_dim:?}/
+                    s/%bg-main%/${bg_main:?}/
+                    s/%bg-dim%/${bg_dim:?}/
+                    s/%link%/${link:?}/
+                    s/%link-visited%/${link_visited:?}/
+                    s/%arg%/${arg:?}/
+                    s/%border%/${border:?}/
+                    s/%comment/${comment:?}/
+                    s/%emphasis%/${emphasis:?}/
+                    s/%false%/${false:?}/
+                    s/%hr%/${hr:?}/
                     p
                 }
            }" "$template"

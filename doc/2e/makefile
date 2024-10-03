@@ -39,4 +39,4 @@ gambit.txt: gambit.txi
 	texi2any -o $@ --plaintext gambit.txi
 
 ${gambit-css}: ${gambit-css}.in ${make-css}
-	${make-css} ${gambit-css}.in > $@
+	sh ${make-css} ${gambit-css}.in > $@
