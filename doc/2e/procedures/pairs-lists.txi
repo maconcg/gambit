@@ -33,7 +33,7 @@ Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
 @lisp
 (eqv?   (cons + car) (cons + car)) @value{false}
 (equal? (cons + car) (cons + car)) @value{true}
-(eq? cons (cdr (cons cons cons))) @value{true}
+(eq? cons (cdr (cons cons cons)))  @value{true}
 @end lisp
 
 @lisp
