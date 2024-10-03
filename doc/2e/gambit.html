@@ -1041,11 +1041,11 @@ return a non-Boolean value.
 <dt class="deftypefnx def-cmd-deftypefn" id="index-assv"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">assv</strong> <code class="def-code-arguments">obj  alist</code><a class="copiable-link" href="#index-assv"> &para;</a></span></dt>
 <dt class="deftypefnx def-cmd-deftypefn" id="index-assoc"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">assoc</strong> <code class="def-code-arguments">obj alist <code class="t">[</code>compare<code class="t">]</code></code><a class="copiable-link" href="#index-assoc"> &para;</a></span></dt>
 <dd><p>Each of these procedures successively applies some test procedure to the
-elements of <var class="var">alist</var> (an &ldquo;association list&rdquo;) returns the first pair
-of <var class="var">alist</var> whose car satisfies that test procedure relative to
-<var class="var">obj</var> (see <a class="pxref" href="#Pair-and-list-jargon">Pair and list jargon</a>).  They differ only in the test
-procedure that is used.  If none of <var class="var">alist</var>&rsquo;s elements&rsquo; cars
-satisfies the test, <code class="code">#f</code> is returned.
+elements of <var class="var">alist</var> and returns the first pair of <var class="var">alist</var> whose
+car satisfies that test procedure relative to <var class="var">obj</var> (&ldquo;alist&rdquo; is
+short for &ldquo;association list&rdquo;; see <a class="pxref" href="#Pair-and-list-jargon">Pair and list jargon</a>).  They
+differ only in the test procedure that is used.  If none of
+<var class="var">alist</var>&rsquo;s elements&rsquo; cars satisfies the test, <code class="code">#f</code> is returned.
 </p>
 <p>In each two-argument form, a standard equivalence predicate is used.  In
 the three-argument form of <code class="code"><i class="slanted">assoc</i></code>, <var class="var">compare</var> may

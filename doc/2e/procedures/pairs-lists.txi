@@ -406,11 +406,11 @@ return a non-Boolean value.
 @deftypefnx @t{(scheme base)} @/ assv obj  alist
 @deftypefnx @t{(scheme base)} @/ assoc obj alist @opt{compare}
 Each of these procedures successively applies some test procedure to the
-elements of @var{alist} (an ``association list'') returns the first pair
-of @var{alist} whose car satisfies that test procedure relative to
-@var{obj} (@pxref{Pair and list jargon}).  They differ only in the test
-procedure that is used.  If none of @var{alist}'s elements' cars
-satisfies the test, @code{#f} is returned.
+elements of @var{alist} and returns the first pair of @var{alist} whose
+car satisfies that test procedure relative to @var{obj} (``alist'' is
+short for ``association list''; @pxref{Pair and list jargon}).  They
+differ only in the test procedure that is used.  If none of
+@var{alist}'s elements' cars satisfies the test, @code{#f} is returned.
 
 In each two-argument form, a standard equivalence predicate is used.  In
 the three-argument form of @code{@slanted{assoc}}, @var{compare} may

@@ -530,11 +530,11 @@ about pairs and lists.
  -- (scheme base): assv obj alist
  -- (scheme base): assoc obj alist [compare]
      Each of these procedures successively applies some test procedure
-     to the elements of ALIST (an "association list") returns the first
-     pair of ALIST whose car satisfies that test procedure relative to
-     OBJ (*note Pair and list jargon::).  They differ only in the test
-     procedure that is used.  If none of ALIST's elements' cars
-     satisfies the test, ‘#f’ is returned.
+     to the elements of ALIST and returns the first pair of ALIST whose
+     car satisfies that test procedure relative to OBJ ("alist" is short
+     for "association list"; *note Pair and list jargon::).  They differ
+     only in the test procedure that is used.  If none of ALIST's
+     elements' cars satisfies the test, ‘#f’ is returned.
 
      In each two-argument form, a standard equivalence predicate is
      used.  In the three-argument form of ‘assoc’, COMPARE may return a
