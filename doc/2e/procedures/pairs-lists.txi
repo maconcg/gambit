@@ -359,11 +359,11 @@ ls @ok{(one two three)}
 @deftypefn  @t{(scheme base)} @/ memq   obj list
 @deftypefnx @t{(scheme base)} @/ memv   obj list
 @deftypefnx @t{(scheme base)} @/ member obj list @opt{compare}
-Each procedure successively applies some procedure to each element of
-@var{list} and returns the first sublist of @var{list} whose car
-satisfies that test relative to @var{obj}.  They differ only in the
-procedure that is used.  If no element of @var{list} satisfies the test,
-@code{#f} is returned.
+Each procedure successively applies some test procedure to each element
+of @var{list} and returns the first sublist of @var{list} whose car
+satisfies that test procedure relative to @var{obj}.  They differ only
+in the test procedure that is used.  If no element of @var{list}
+satisfies the test, @code{#f} is returned.
 
 In each two-argument form, a standard equivalence predicate is used.  In
 the three-argument form of @code{@slanted{member}}, @var{compare} may
@@ -381,18 +381,19 @@ return a non-Boolean value.
 @end itemize
 
 @lisp
-(memq 101 '(100 101 102))   @ok{(101 102)} @aside{;; @value{R7RS} says unspecified}
-(memv 101 '(100 101 102))   @ok{(101 102)}
+(memq   101 '(100 101 102)) @ok{(101 102)} @aside{;; @value{R7RS} says unspecified}
+(memv   101 '(100 101 102)) @ok{(101 102)}
 (member 7 '(100 101 102) +) @ok{(100 101 102)}
-(member 7 '(8 9 10) square) @exception{wrong number of arguments}
+(member 7 '(7 8 9) square)  @exception{wrong number of arguments}
 @end lisp
 
 @lisp
-(memq 'a '(a b c))                      @ok{(a b c)}
-(memq 'b '(a b c))                      @ok{(b c)}
-(memq 'a '(b c d))                      @value{false}
-(memq (list 'a) '(b (a) c))             @value{false}
-(memq 'a '(a b c))                      @ok{(a b c)}
+(memq   'a '(a b c))                    @ok{(a b c)}
+(memq   'b '(a b c))                    @ok{(b c)}
+(member 'b '(a b c) eq?)                @ok{(b c)}
+(memq   'a '(b c d))                    @value{false}
+(memq   (list 'a) '(b (a) c))           @value{false}
+(memq   'a '(a b c))                    @ok{(a b c)}
 (member (list 'a) '(b (a) c))           @ok{((a) c)}
 (member "B" '("a" "b" "c") string-ci=?) @ok{("b" "c")}
 @end lisp
@@ -404,11 +405,12 @@ return a non-Boolean value.
 @deftypefn  @t{(scheme base)} @/ assq obj  alist
 @deftypefnx @t{(scheme base)} @/ assv obj  alist
 @deftypefnx @t{(scheme base)} @/ assoc obj alist @opt{compare}
-Each procedure successively applies some procedure to the elements of
-@var{alist} returns the first pair of @var{alist} whose car satisfies
-that test relative to @var{obj}.  They differ only in the procedure that
-is used.  If none of @var{alist}'s elements' cars satisfies the test,
-@code{#f} is returned.
+Each of these procedures successively applies some test procedure to the
+elements of @var{alist} (an ``association list'') returns the first pair
+of @var{alist} whose car satisfies that test procedure relative to
+@var{obj} (@pxref{Pair and list jargon}).  They differ only in the test
+procedure that is used.  If none of @var{alist}'s elements' cars
+satisfies the test, @code{#f} is returned.
 
 In each two-argument form, a standard equivalence predicate is used.  In
 the three-argument form of @code{@slanted{assoc}}, @var{compare} may

@@ -63,7 +63,7 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
 }
 
 dl.first-deftypefn {
-    dt code.def-code-arguments, dd p var.var {color: #721045}
+    dt code.def-code-arguments, dd p var.var, dd li var.var {color: #721045}
     dt code.def-code-arguments code.t {color:#000000}
 }
 
@@ -91,12 +91,14 @@ dl.first-deftypefn {
     }
     
     dl.first-deftypefn {
-        dt code.def-code-arguments, dd p var.var {color: #feacd0}
+        dt code.def-code-arguments, dd p var.var, dd li var.var {color: #feacd0}
         dt code.def-code-arguments code.t {color:#ffffff}
     }
 }
 
-dd, .center, li, ol, p:not(.nav-panel p) {max-width: 40em}
+.top-level-extent, .chapter-level-extent, .appendix-level-extent {
+    dd, .center, li, p:not(.nav-panel p) {max-width: 40em}
+}
 
 .chapter-level-extent {
     dd p:not(.nav-panel p), p:not(.nav-panel p) {text-align: justify}
@@ -940,11 +942,11 @@ ls &rArr; <code class="t">(one two three)</code>
 <dt class="deftypefn" id="index-memq"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">memq</strong> <code class="def-code-arguments">obj list</code><a class="copiable-link" href="#index-memq"> &para;</a></span></dt>
 <dt class="deftypefnx def-cmd-deftypefn" id="index-memv"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">memv</strong> <code class="def-code-arguments">obj list</code><a class="copiable-link" href="#index-memv"> &para;</a></span></dt>
 <dt class="deftypefnx def-cmd-deftypefn" id="index-member"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">member</strong> <code class="def-code-arguments">obj list <code class="t">[</code>compare<code class="t">]</code></code><a class="copiable-link" href="#index-member"> &para;</a></span></dt>
-<dd><p>Each procedure successively applies some procedure to each element of
-<var class="var">list</var> and returns the first sublist of <var class="var">list</var> whose car
-satisfies that test relative to <var class="var">obj</var>.  They differ only in the
-procedure that is used.  If no element of <var class="var">list</var> satisfies the test,
-<code class="code">#f</code> is returned.
+<dd><p>Each procedure successively applies some test procedure to each element
+of <var class="var">list</var> and returns the first sublist of <var class="var">list</var> whose car
+satisfies that test procedure relative to <var class="var">obj</var>.  They differ only
+in the test procedure that is used.  If no element of <var class="var">list</var>
+satisfies the test, <code class="code">#f</code> is returned.
 </p>
 <p>In each two-argument form, a standard equivalence predicate is used.  In
 the three-argument form of <code class="code"><i class="slanted">member</i></code>, <var class="var">compare</var> may
@@ -958,18 +960,19 @@ return a non-Boolean value.
 </li></ul>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(memq 101 '(100 101 102))   &rArr; <code class="t">(101 102)</code> <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says unspecified</i>
-(memv 101 '(100 101 102))   &rArr; <code class="t">(101 102)</code>
+<pre class="lisp-preformatted">(memq   101 '(100 101 102)) &rArr; <code class="t">(101 102)</code> <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says unspecified</i>
+(memv   101 '(100 101 102)) &rArr; <code class="t">(101 102)</code>
 (member 7 '(100 101 102) +) &rArr; <code class="t">(100 101 102)</code>
-(member 7 '(8 9 10) square) &rarr; <i class="i">wrong number of arguments exception</i>
+(member 7 '(7 8 9) square)  &rarr; <i class="i">wrong number of arguments exception</i>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(memq 'a '(a b c))                      &rArr; <code class="t">(a b c)</code>
-(memq 'b '(a b c))                      &rArr; <code class="t">(b c)</code>
-(memq 'a '(b c d))                      &rArr; <code class="code">#f</code>
-(memq (list 'a) '(b (a) c))             &rArr; <code class="code">#f</code>
-(memq 'a '(a b c))                      &rArr; <code class="t">(a b c)</code>
+<pre class="lisp-preformatted">(memq   'a '(a b c))                    &rArr; <code class="t">(a b c)</code>
+(memq   'b '(a b c))                    &rArr; <code class="t">(b c)</code>
+(member 'b '(a b c) eq?)                &rArr; <code class="t">(b c)</code>
+(memq   'a '(b c d))                    &rArr; <code class="code">#f</code>
+(memq   (list 'a) '(b (a) c))           &rArr; <code class="code">#f</code>
+(memq   'a '(a b c))                    &rArr; <code class="t">(a b c)</code>
 (member (list 'a) '(b (a) c))           &rArr; <code class="t">((a) c)</code>
 (member &quot;B&quot; '(&quot;a&quot; &quot;b&quot; &quot;c&quot;) string-ci=?) &rArr; <code class="t">(&quot;b&quot; &quot;c&quot;)</code>
 </pre></div>
@@ -982,11 +985,12 @@ return a non-Boolean value.
 <dt class="deftypefn" id="index-assq"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">assq</strong> <code class="def-code-arguments">obj  alist</code><a class="copiable-link" href="#index-assq"> &para;</a></span></dt>
 <dt class="deftypefnx def-cmd-deftypefn" id="index-assv"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">assv</strong> <code class="def-code-arguments">obj  alist</code><a class="copiable-link" href="#index-assv"> &para;</a></span></dt>
 <dt class="deftypefnx def-cmd-deftypefn" id="index-assoc"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">assoc</strong> <code class="def-code-arguments">obj alist <code class="t">[</code>compare<code class="t">]</code></code><a class="copiable-link" href="#index-assoc"> &para;</a></span></dt>
-<dd><p>Each procedure successively applies some procedure to the elements of
-<var class="var">alist</var> returns the first pair of <var class="var">alist</var> whose car satisfies
-that test relative to <var class="var">obj</var>.  They differ only in the procedure that
-is used.  If none of <var class="var">alist</var>&rsquo;s elements&rsquo; cars satisfies the test,
-<code class="code">#f</code> is returned.
+<dd><p>Each of these procedures successively applies some test procedure to the
+elements of <var class="var">alist</var> (an &ldquo;association list&rdquo;) returns the first pair
+of <var class="var">alist</var> whose car satisfies that test procedure relative to
+<var class="var">obj</var> (see <a class="pxref" href="#Pair-and-list-jargon">Pair and list jargon</a>).  They differ only in the test
+procedure that is used.  If none of <var class="var">alist</var>&rsquo;s elements&rsquo; cars
+satisfies the test, <code class="code">#f</code> is returned.
 </p>
 <p>In each two-argument form, a standard equivalence predicate is used.  In
 the three-argument form of <code class="code"><i class="slanted">assoc</i></code>, <var class="var">compare</var> may
@@ -1407,9 +1411,9 @@ c &rArr; <code class="t">&quot;abc0e&quot;</code>
 <var class="var">string</var>.
 </p>
 <p>If <var class="var">string</var> is not a mutable string, an exception that satisfies
-<code class="code">type-exception?</code> is raised.  If either <var class="var">k</var> is not an exact
-integer, an exception that satisfies <code class="code">type-exception?</code> is raised.
-If <var class="var">k</var> is not a valid index of <var class="var">string</var>, an exception that
+<code class="code">type-exception?</code> is raised.  If <var class="var">k</var> is not an exact integer,
+an exception that satisfies <code class="code">type-exception?</code> is raised.  If
+<var class="var">k</var> is not a valid index of <var class="var">string</var>, an exception that
 satisfies <code class="code">range-exception?</code> is raised.
 </p>
 <div class="example lisp">

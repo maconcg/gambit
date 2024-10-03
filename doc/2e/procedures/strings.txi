@@ -341,9 +341,9 @@ Mutates @var{string} by storing @var{char} in element @var{k} of
 @var{string}.
 
 If @var{string} is not a mutable string, an exception that satisfies
-@code{type-exception?} is raised.  If either @var{k} is not an exact
-integer, an exception that satisfies @code{type-exception?} is raised.
-If @var{k} is not a valid index of @var{string}, an exception that
+@code{type-exception?} is raised.  If @var{k} is not an exact integer,
+an exception that satisfies @code{type-exception?} is raised.  If
+@var{k} is not a valid index of @var{string}, an exception that
 satisfies @code{range-exception?} is raised.
 
 @lisp
