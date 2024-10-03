@@ -1,39 +1,70 @@
 /* BEGIN COLORS */
 body {
     color: %fg-main%;
-    background-color: %bg-main%
+    background-color: %bg-main%;
 }
-a:link {color: %link%}
-a:visited {color: %link-visited%}
-hr {color: %hr%}
+
+a:link {
+    color: %link%;
+}
+
+a:visited {
+    color: %link-visited%;
+}
+
+hr {
+    color: %hr%;
+}
+
 .chapter-level-extent pre {
     background-color: %bg-dim%;
-    border-color: %border%
+    border-color: %border%;
 }
 
 dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
-    .i {color: %emphasis%}
-    dt span.category-def {color: %fg-dim%}
+    .i {
+        color: %emphasis%;
+    }
+    dt span.category-def {
+        color: %fg-dim%;
+    }
     dd pre {
-        .code {color: %false%}
-        .slanted {color: %fg-dim%}
-        .t {color: %fg-alt%}
+        .code {
+            color: %false%;
+        }
+        .slanted {
+            color: %fg-dim%;
+        }
+        .t {
+            color: %fg-alt%;
+        }
     }
 }
 
 dl.first-deftypefn {
-    dt code.def-code-arguments, dd p var.var, dd li var.var {color: %arg%}
-    dt code.def-code-arguments code.t {color:%fg-main%}
+    dt code.def-code-arguments, dd p var.var, dd li var.var {
+        color: %arg%;
+    }
+    dt code.def-code-arguments code.t {
+        color:%fg-main%;
+    }
 }
 /* END COLORS */
 
 .top-level-extent, .chapter-level-extent, .appendix-level-extent {
-    dd, .center, li, p:not(.nav-panel p) {max-width: 40em}
+    dd, .center, li, p:not(.nav-panel p) {
+        max-width: 40em;
+    }
 }
 
 .chapter-level-extent {
-    dd p:not(.nav-panel p), p:not(.nav-panel p) {text-align: justify}
-    pre {border-style: solid; padding: 0.3236em 0.2em}
+    dd p:not(.nav-panel p), p:not(.nav-panel p) {
+        text-align: justify;
+    }
+    pre {
+        border-style: solid;
+        padding: 0.3236em 0.2em;
+    }
 }
 
 dl.first-deftypevr dt.deftypevr, dl.first-deftp dt.deftp {
