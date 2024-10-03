@@ -1,8 +1,15 @@
-body {color: %fg-main%; background-color: %bg-main%}
+/* BEGIN COLORS */
+body {
+    color: %fg-main%;
+    background-color: %bg-main%
+}
 a:link {color: %link%}
 a:visited {color: %link-visited%}
 hr {color: %hr%}
-.chapter-level-extent pre {background-color: %bg-dim%; border-color: %border%}
+.chapter-level-extent pre {
+    background-color: %bg-dim%;
+    border-color: %border%
+}
 
 dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     .i {color: %emphasis%}
@@ -18,6 +25,7 @@ dl.first-deftypefn {
     dt code.def-code-arguments, dd p var.var {color: %arg%}
     dt code.def-code-arguments code.t {color:%fg-main%}
 }
+/* END COLORS */
 
 dd, .center, li, ol, p:not(.nav-panel p) {max-width: 40em}
 

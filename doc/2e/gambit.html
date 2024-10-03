@@ -40,11 +40,17 @@ th.entries-header-printindex {text-align:left}
 th.sections-header-printindex {text-align:left; padding-left: 1em}
 ul.mark-bullet {list-style-type: disc}
 ul.toc-numbered-mark {list-style: none}
-body {color: #000000; background-color: #fbf7f0}
+body {
+    color: #000000;
+    background-color: #fbf7f0
+}
 a:link {color: #3548cf}
 a:visited {color: #721045}
 hr {color: #9f9690}
-.chapter-level-extent pre {background-color: #efe9dd; border-color: #9f9690}
+.chapter-level-extent pre {
+    background-color: #efe9dd;
+    border-color: #9f9690
+}
 
 dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     .i {color: #624416}
@@ -59,6 +65,35 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
 dl.first-deftypefn {
     dt code.def-code-arguments, dd p var.var {color: #721045}
     dt code.def-code-arguments code.t {color:#000000}
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        color: #ffffff;
+        background-color: #0d0e1c
+    }
+    a:link {color: #79a8ff}
+    a:visited {color: #feacd0}
+    hr {color: #61647a}
+    .chapter-level-extent pre {
+        background-color: #1d2235;
+        border-color: #61647a
+    }
+    
+    dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
+        .i {color: #d2b580}
+        dt span.category-def {color: #989898}
+        dd pre {
+            .code {color: #f1b090}
+            .slanted {color: #989898}
+            .t {color: #c6daff}
+        }
+    }
+    
+    dl.first-deftypefn {
+        dt code.def-code-arguments, dd p var.var {color: #feacd0}
+        dt code.def-code-arguments code.t {color:#ffffff}
+    }
 }
 
 dd, .center, li, ol, p:not(.nav-panel p) {max-width: 40em}
