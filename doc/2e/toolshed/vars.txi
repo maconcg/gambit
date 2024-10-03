@@ -15,7 +15,7 @@
 
 @set true @ok{#t}
 
-@set false @inlinefmtifelse{html,@result{} @code{#f},@result{} #f}
+@set false @result{} @inlinefmtifelse{html,@inlineraw{html,<span class="false">#f</span>},#f}
 
 @set void @r{@i{void}}
 

@@ -62,6 +62,13 @@ hr {
     border-color: #9f9690;
 }
 
+
+dl.first-deftypefn {
+    dt.deftypefn, dt.deftypefnx {
+        font-family: monospace;
+    }
+}
+
 dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     .i {
         color: #624416;
@@ -70,13 +77,13 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
         color: #595959;
     }
     dd pre {
-        .code {
-            color: #63192a;
-        }
         .slanted {
             color: #595959;
         }
-        .t {
+        span.false {
+            color: #63192a;
+        }
+        span.ok {
             color: #193668;
         }
     }
@@ -86,7 +93,7 @@ dl.first-deftypefn {
     dt code.def-code-arguments, dd p var.var, dd li var.var {
         color: #721045;
     }
-    dt code.def-code-arguments code.t {
+    dt code.def-code-arguments span.bracket {
         color:#000000;
     }
 }
@@ -114,6 +121,13 @@ dl.first-deftypefn {
         border-color: #61647a;
     }
     
+    
+    dl.first-deftypefn {
+        dt.deftypefn, dt.deftypefnx {
+            font-family: monospace;
+        }
+    }
+    
     dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
         .i {
             color: #d2b580;
@@ -122,13 +136,13 @@ dl.first-deftypefn {
             color: #989898;
         }
         dd pre {
-            .code {
-                color: #f1b090;
-            }
             .slanted {
                 color: #989898;
             }
-            .t {
+            span.false {
+                color: #f1b090;
+            }
+            span.ok {
                 color: #c6daff;
             }
         }
@@ -138,7 +152,7 @@ dl.first-deftypefn {
         dt code.def-code-arguments, dd p var.var, dd li var.var {
             color: #feacd0;
         }
-        dt code.def-code-arguments code.t {
+        dt code.def-code-arguments span.bracket {
             color:#ffffff;
         }
     }
@@ -208,7 +222,7 @@ Next: <a href="#Introduction" accesskey="n" rel="next">Introduction</a> &nbsp; [
 <h1 class="top" id="Gambit"><span>Gambit<a class="copiable-link" href="#Gambit"> &para;</a></span></h1>
 
 <p>Gambit is a complete implementation of the Scheme language aimed at
-portability, speed, and power.
+portability, reliability, and efficiency.
 </p>
 <p>For the most up-to-date information on Gambit and related resources,
 visit the <a class="url" href="https://gambitscheme.org">Gambit home page</a>.  Please report
@@ -283,9 +297,9 @@ Next: <a href="#The-Gambit-system" accesskey="n" rel="next">The Gambit system</a
 <a class="index-entry-id" id="index-gsc"></a>
 <a class="index-entry-id" id="index-gsi"></a>
 <p>The Gambit programming system is a complete implementation of the Scheme
-language aimed at portability, reliability, and speed.  It features two
-main programs: <i class="slanted"><code class="command">gsi</code></i>, the Gambit Scheme interpreter,
-and <i class="slanted"><code class="command">gsc</code></i>, the Gambit Scheme compiler.
+language aimed at portability, reliability, and efficiency.  It features
+two main programs: <i class="slanted"><code class="command">gsi</code></i>, the Gambit Scheme
+interpreter, and <i class="slanted"><code class="command">gsc</code></i>, the Gambit Scheme compiler.
 </p>
 <a class="index-entry-id" id="index-Scheme-standards"></a>
 <p>In its default configuration, Gambit provides a superset of the language
@@ -629,214 +643,234 @@ Previous: <a href="#Pair-and-list-jargon" accesskey="p" rel="prev">Pair and list
 
 <a class="index-entry-id" id="index-pair-predicate-pair_003f"></a>
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-pair_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">pair?</strong> <code class="def-code-arguments">obj</code><a class="copiable-link" href="#index-pair_003f"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-pair_003f"><span class="category-def">(scheme base): </span><span><strong class="def-name">pair?</strong> <code class="def-code-arguments">obj</code><a class="copiable-link" href="#index-pair_003f"> &para;</a></span></dt>
 <dd><p>Returns <code class="code">#t</code> if <var class="var">obj</var> is a pair.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(pair? '(a . b)) &rArr; <code class="t">#t</code>
-(pair? '(a b c)) &rArr; <code class="t">#t</code>
-(pair? '())      &rArr; <code class="code">#f</code>
-(pair? '(() ())) &rArr; <code class="code">#f</code>
-(pair? '#(a b))  &rArr; <code class="code">#f</code>
+<pre class="lisp-preformatted">(pair? '(a . b)) &rArr; <span class="ok">#t</span>
+(pair? '(a b c)) &rArr; <span class="ok">#t</span>
+(pair? '())      &rArr; <span class="false">#f</span>
+(pair? '(() ())) &rArr; <span class="false">#f</span>
+(pair? '#(a b))  &rArr; <span class="false">#f</span>
 </pre></div>
 </dd></dl>
 
 <a class="index-entry-id" id="index-cons-cons-procedure"></a>
 <a class="index-entry-id" id="index-pair-constructor-cons"></a>
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-cons-1"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">cons</strong> <code class="def-code-arguments">obj<sub class="sub">1</sub> obj<sub class="sub">2</sub></code><a class="copiable-link" href="#index-cons-1"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-cons-1"><span class="category-def">(scheme base): </span><span><strong class="def-name">cons</strong> <code class="def-code-arguments">obj<sub class="sub">1</sub> obj<sub class="sub">2</sub></code><a class="copiable-link" href="#index-cons-1"> &para;</a></span></dt>
 <dd><p>Returns a newly allocated pair whose car is <var class="var">obj<sub class="sub">1</sub></var> and whose cdr is
 <var class="var">obj<sub class="sub">2</sub></var>.  The pair is guaranteed to be different (in the sense of
 <code class="code">eqv?</code>) from every existing object.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(cons 'a '())        &rArr; <code class="t">(a)</code>
-(cons '(a) '(b c d)) &rArr; <code class="t">((a) b c d)</code>
-(cons &quot;a&quot; '(b c))    &rArr; <code class="t">(&quot;a&quot; b c)</code>
-(cons 'a 3)          &rArr; <code class="t">(a . 3)</code>
-(cons '(a b) 'c)     &rArr; <code class="t">((a b) . c)</code>
+<pre class="lisp-preformatted">(cons 'a '())        &rArr; <span class="ok">(a)</span>
+(cons '(a) '(b c d)) &rArr; <span class="ok">((a) b c d)</span>
+(cons &quot;a&quot; '(b c))    &rArr; <span class="ok">("a" b c)</span>
+(cons 'a 3)          &rArr; <span class="ok">(a . 3)</span>
+(cons '(a b) 'c)     &rArr; <span class="ok">((a b) . c)</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(eqv?   (cons + car) (cons + car)) &rArr; <code class="code">#f</code>
-(equal? (cons + car) (cons + car)) &rArr; <code class="t">#t</code>
+<pre class="lisp-preformatted">(eqv?   (cons + car) (cons + car)) &rArr; <span class="false">#f</span>
+(equal? (cons + car) (cons + car)) &rArr; <span class="ok">#t</span>
+(eq? cons (cdr (cons cons cons))) &rArr; <span class="ok">#t</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(eq? cons (cdr (cons cons cons))) &rArr; <code class="t">#t</code>
+<pre class="lisp-preformatted">(cons)    &rarr; <i class="i">wrong number of arguments exception</i>
+(cons 'a) &rarr; <i class="i">wrong number of arguments exception</i>
 </pre></div>
 </dd></dl>
 
 <a class="index-entry-id" id="index-car-car-procedure"></a>
 <a class="index-entry-id" id="index-pair-selectors-car"></a>
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-car-1"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">car</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-car-1"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-car-1"><span class="category-def">(scheme base): </span><span><strong class="def-name">car</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-car-1"> &para;</a></span></dt>
 <dd><p>Returns the contents of the cdr field of <var class="var">pair</var>.  If an attempt is
 made to take the car of the empty list, an exception that satisfies
 <code class="code">type-exception?</code> is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(car '(a b c))     &rArr; <code class="t">a</code>
-(car '((a) b c d)) &rArr; <code class="t">(a)</code>
-(car '(1 . 2))     &rArr; <code class="t">1</code>
-(car '())          &rarr; <i class="i">type exception</i>
+<pre class="lisp-preformatted">(car '(a b c))     &rArr; <span class="ok">a</span>
+(car '((a) b c d)) &rArr; <span class="ok">(a)</span>
+(car '(1 . 2))     &rArr; <span class="ok">1</span>
+</pre></div>
+
+<div class="example lisp">
+<pre class="lisp-preformatted">(car '())      &rarr; <i class="i">type exception</i>
+(car #(4 6 8)) &rarr; <i class="i">type exception</i>
 </pre></div>
 </dd></dl>
 
 <a class="index-entry-id" id="index-cdr-cdr-procedure"></a>
 <a class="index-entry-id" id="index-pair-selectors-cdr"></a>
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-cdr-1"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">cdr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdr-1"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-cdr-1"><span class="category-def">(scheme base): </span><span><strong class="def-name">cdr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdr-1"> &para;</a></span></dt>
 <dd><p>Returns the contents of the cdr field of <var class="var">pair</var>.  If an attempt is
 made to take the cdr of the empty list, an exception that satisfies
 <code class="code">type-exception?</code> is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(cdr '(a b c))     &rArr; <code class="t">(b c)</code>
-(cdr '((a) b c d)) &rArr; <code class="t">(b c d)</code>
-(cdr '(1 . 2))     &rArr; <code class="t">2</code>
-(cdr '())          &rarr; <i class="i">type exception</i>
+<pre class="lisp-preformatted">(cdr '(a b c))     &rArr; <span class="ok">(b c)</span>
+(cdr '((a) b c d)) &rArr; <span class="ok">(b c d)</span>
+(cdr '(1 . 2))     &rArr; <span class="ok">2</span>
+</pre></div>
+
+<div class="example lisp">
+<pre class="lisp-preformatted">(cdr '())          &rarr; <i class="i">type exception</i>
+(cdr #(4 6 8))     &rarr; <i class="i">type exception</i>
 </pre></div>
 </dd></dl>
 
 <a class="index-entry-id" id="index-pair-mutators-set_002dcar_0021"></a>
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-set_002dcar_0021"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">set-car!</strong> <code class="def-code-arguments">pair obj</code><a class="copiable-link" href="#index-set_002dcar_0021"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-set_002dcar_0021"><span class="category-def">(scheme base): </span><span><strong class="def-name">set-car!</strong> <code class="def-code-arguments">pair obj</code><a class="copiable-link" href="#index-set_002dcar_0021"> &para;</a></span></dt>
 <dd><p>Mutates <var class="var">pair</var> by storing <var class="var">obj</var> in the car field of <var class="var">pair</var>.
 </p>
 <div class="example lisp">
 <pre class="lisp-preformatted">(define (f) (list 'not-a-constant-list))
 (set-car! (f) 3)
 
-(f) &rArr; <code class="t">(not-a-constant-list)</code>
+(f) &rArr; <span class="ok">(not-a-constant-list)</span>
 </pre></div>
 
 <div class="example lisp">
 <pre class="lisp-preformatted">(define (g) '(constant-list))
 (set-car! (g) 3) <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</i>
 
-(g) &rArr; <code class="t">(3)</code>        <i class="slanted">;; current Gambit behavior</i>
+(g) &rArr; <span class="ok">(3)</span>        <i class="slanted">;; current Gambit behavior</i>
 </pre></div>
 </dd></dl>
 
 <a class="index-entry-id" id="index-pair-mutators-set_002dcdr_0021"></a>
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-set_002dcdr_0021"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">set-cdr!</strong> <code class="def-code-arguments">pair obj</code><a class="copiable-link" href="#index-set_002dcdr_0021"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-set_002dcdr_0021"><span class="category-def">(scheme base): </span><span><strong class="def-name">set-cdr!</strong> <code class="def-code-arguments">pair obj</code><a class="copiable-link" href="#index-set_002dcdr_0021"> &para;</a></span></dt>
 <dd><p>Mutates <var class="var">pair</var> by storing <var class="var">obj</var> in the cdr field of <var class="var">pair</var>.
 </p>
 <div class="example lisp">
 <pre class="lisp-preformatted">(define (f) (list 'not-a-constant-list))
 (set-cdr! (f) 3)
 
-(f) &rArr; <code class="t">(not-a-constant-list)</code>
+(f) &rArr; <span class="ok">(not-a-constant-list)</span>
 </pre></div>
 
 <div class="example lisp">
 <pre class="lisp-preformatted">(define (g) '(constant-list))
 (set-cdr! (g) 3)          <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</i>
 
-(g) &rArr; <code class="t">(constant-list . 3)</code> <i class="slanted">;; current Gambit behavior</i>
+(g) &rArr; <span class="ok">(constant-list . 3)</span> <i class="slanted">;; current Gambit behavior</i>
 </pre></div>
 </dd></dl>
 
 <a class="index-entry-id" id="index-pair-selectors-_0028scheme-cxr_0029"></a>
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-caar"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">caar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-caar"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cadr"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cadr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cadr"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cdar"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cdar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdar"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cddr"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cddr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cddr"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-caaar"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">caaar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-caaar"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-caadr"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">caadr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-caadr"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cadar"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cadar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cadar"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-caddr"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">caddr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-caddr"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cdaar"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cdaar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdaar"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cdadr"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cdadr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdadr"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cddar"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cddar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cddar"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cdddr"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cdddr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdddr"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-caaaar"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">caaaar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-caaaar"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-caaadr"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">caaadr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-caaadr"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-caadar"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">caadar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-caadar"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-caaddr"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">caaddr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-caaddr"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cadaar"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cadaar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cadaar"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cadadr"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cadadr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cadadr"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-caddar"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">caddar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-caddar"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cadddr"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cadddr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cadddr"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cdaaar"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cdaaar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdaaar"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cdaadr"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cdaadr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdaadr"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cdadar"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cdadar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdadar"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cdaddr"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cdaddr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdaddr"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cddaar"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cddaar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cddaar"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cddadr"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cddadr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cddadr"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cdddar"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cdddar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdddar"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-cddddr"><span class="category-def"><code class="t">(scheme cxr)</code>: </span><span><strong class="def-name">cddddr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cddddr"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-caar"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">caar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-caar"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cadr"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cadr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cadr"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cdar"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cdar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdar"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cddr"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cddr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cddr"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-caaar"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">caaar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-caaar"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-caadr"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">caadr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-caadr"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cadar"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cadar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cadar"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-caddr"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">caddr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-caddr"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cdaar"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cdaar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdaar"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cdadr"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cdadr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdadr"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cddar"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cddar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cddar"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cdddr"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cdddr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdddr"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-caaaar"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">caaaar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-caaaar"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-caaadr"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">caaadr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-caaadr"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-caadar"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">caadar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-caadar"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-caaddr"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">caaddr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-caaddr"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cadaar"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cadaar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cadaar"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cadadr"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cadadr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cadadr"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-caddar"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">caddar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-caddar"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cadddr"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cadddr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cadddr"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cdaaar"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cdaaar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdaaar"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cdaadr"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cdaadr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdaadr"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cdadar"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cdadar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdadar"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cdaddr"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cdaddr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdaddr"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cddaar"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cddaar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cddaar"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cddadr"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cddadr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cddadr"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cdddar"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cdddar</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cdddar"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-cddddr"><span class="category-def">(scheme cxr): </span><span><strong class="def-name">cddddr</strong> <code class="def-code-arguments">pair</code><a class="copiable-link" href="#index-cddddr"> &para;</a></span></dt>
 <dd><p>These 28 procedures are compositions of <code class="code">car</code> and <code class="code">cdr</code>.
 </p>
 <div class="example lisp">
 <pre class="lisp-preformatted">(define l '((a b) (c) d (e (f) g)))
-(cadr l)             &rArr; <code class="t">(c)</code>
-(car (cdr l))        &rArr; <code class="t">(c)</code>
-(cddr '(a b c . d))  &rArr; <code class="t">(c . d)</code>
-(cdddr '(a b c . d)) &rArr; <code class="t">d</code>
-(cdadr l)            &rArr; <code class="t">()</code>
-(cdar (cdr l))       &rArr; <code class="t">()</code>
-(caar (cdr l))       &rArr; <code class="t">c</code>
-(car (car (cdr l)))  &rArr; <code class="t">c</code>
-(cadddr l)           &rArr; <code class="t">(e (f) g)</code>
-(caaadr l)           &rarr; <i class="i">type exception</i>
+(cadr l)             &rArr; <span class="ok">(c)</span>
+(car (cdr l))        &rArr; <span class="ok">(c)</span>
+(cddr '(a b c . d))  &rArr; <span class="ok">(c . d)</span>
+(cdddr '(a b c . d)) &rArr; <span class="ok">d</span>
+(cdadr l)            &rArr; <span class="ok">()</span>
+(cdar (cdr l))       &rArr; <span class="ok">()</span>
+(caar (cdr l))       &rArr; <span class="ok">c</span>
+(car (car (cdr l)))  &rArr; <span class="ok">c</span>
+(cadddr l)           &rArr; <span class="ok">(e (f) g)</span>
 </pre></div>
 
 <div class="example lisp">
 <pre class="lisp-preformatted">(define circle (circular-list 'a 'b 'c))
-(car circle)    &rArr; <code class="t">a</code>
-(cadr circle)   &rArr; <code class="t">b</code>
-(caddr circle)  &rArr; <code class="t">c</code>
-(cadddr circle) &rArr; <code class="t">a</code>
+(car circle)    &rArr; <span class="ok">a</span>
+(cadr circle)   &rArr; <span class="ok">b</span>
+(caddr circle)  &rArr; <span class="ok">c</span>
+(cadddr circle) &rArr; <span class="ok">a</span>
+</pre></div>
+
+<div class="example lisp">
+<pre class="lisp-preformatted">(cdar '(a . b))   &rarr; <i class="i">type exception</i>
+(cddr (list #\f)) &rarr; <i class="i">type exception</i>
 </pre></div>
 </dd></dl>
 
 <a class="index-entry-id" id="index-empty-list-predicate-null_003f"></a>
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-null_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">null?</strong> <code class="def-code-arguments">obj</code><a class="copiable-link" href="#index-null_003f"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-null_003f"><span class="category-def">(scheme base): </span><span><strong class="def-name">null?</strong> <code class="def-code-arguments">obj</code><a class="copiable-link" href="#index-null_003f"> &para;</a></span></dt>
 <dd><p>Returns <code class="code">#t</code> if <var class="var">obj</var> is the empty list.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(null? '())    &rArr; <code class="t">#t</code>
-(null? (list)) &rArr; <code class="t">#t</code>
-(null? #\null) &rArr; <code class="code">#f</code>
-(null? null?)  &rArr; <code class="code">#f</code>
-(null? #f)     &rArr; <code class="code">#f</code>
-(null? 0)      &rArr; <code class="code">#f</code>
-(null? &quot;&quot;)     &rArr; <code class="code">#f</code>
-(null? #())    &rArr; <code class="code">#f</code>
-(null? (void)) &rArr; <code class="code">#f</code>
+<pre class="lisp-preformatted">(null? '())    &rArr; <span class="ok">#t</span>
+(null? (list)) &rArr; <span class="ok">#t</span>
+(null? #\null) &rArr; <span class="false">#f</span>
+(null? #!eof)  &rArr; <span class="false">#f</span>
+(null? #f)     &rArr; <span class="false">#f</span>
+(null? 0)      &rArr; <span class="false">#f</span>
+(null? &quot;&quot;)     &rArr; <span class="false">#f</span>
+(null? #())    &rArr; <span class="false">#f</span>
+(null? (void)) &rArr; <span class="false">#f</span>
 </pre></div>
 </dd></dl>
 
-<a class="index-entry-id" id="index-list-predicate-list_003f"></a>
+<a class="index-entry-id" id="index-list-predicates-list_003f"></a>
+<a class="index-entry-id" id="index-list-predicates-proper_002dlist_003f"></a>
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-list_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">list?</strong> <code class="def-code-arguments">obj</code><a class="copiable-link" href="#index-list_003f"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-list_003f"><span class="category-def">(scheme base): </span><span><strong class="def-name">list?</strong> <code class="def-code-arguments">obj</code><a class="copiable-link" href="#index-list_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-proper_002dlist_003f"><span class="category-def">(gambit list): </span><span><strong class="def-name">proper-list?</strong> <code class="def-code-arguments">obj</code><a class="copiable-link" href="#index-proper_002dlist_003f"> &para;</a></span></dt>
 <dd><p>Returns <code class="code">#t</code> if <var class="var">obj</var> is a proper list (see <a class="pxref" href="#Pair-and-list-jargon">Pair and list jargon</a>).  By definition, a list of finite length is terminated by the
 empty list.
 </p>
+<p><code class="code">proper-list?</code> is functionally equivalent to <code class="code">list?</code>.
+</p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(list? '(a b c)) &rArr; <code class="t">#t</code>
-(list? '())      &rArr; <code class="t">#t</code>
-(list? '(a . b)) &rArr; <code class="code">#f</code>
-(list? list)     &rArr; <code class="code">#f</code>
-(list? &quot;list&quot;)   &rArr; <code class="code">#f</code>
-(list? #(0 1 2)) &rArr; <code class="code">#f</code>
+<pre class="lisp-preformatted">(list? '(a b c))              &rArr; <span class="ok">#t</span>
+(list? '())                   &rArr; <span class="ok">#t</span>
+(list? (list 0))              &rArr; <span class="ok">#t</span>
+(list? '(a . b))              &rArr; <span class="false">#f</span>
+(list? list)                  &rArr; <span class="false">#f</span>
+(list? &quot;list&quot;)                &rArr; <span class="false">#f</span>
+(list? #(0 1 2))              &rArr; <span class="false">#f</span>
+(list? (circular-list 0 1 2)) &rArr; <span class="false">#f</span>
 </pre></div>
 
 <div class="example lisp">
 <pre class="lisp-preformatted">(let ((x (list 'a)))
   (set-cdr! x x)
-  (list? x)) &rArr; <code class="code">#f</code>
+  (list? x)) &rArr; <span class="false">#f</span>
 </pre></div>
 </dd></dl>
 
 <a class="index-entry-id" id="index-list-constructors-make_002dlist"></a>
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-make_002dlist"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">make-list</strong> <code class="def-code-arguments">k <code class="t">[</code>fill<code class="t">]</code></code><a class="copiable-link" href="#index-make_002dlist"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-make_002dlist"><span class="category-def">(scheme base): </span><span><strong class="def-name">make-list</strong> <code class="def-code-arguments">k <span class="bracket">[</span>fill<span class="bracket">]</span></code><a class="copiable-link" href="#index-make_002dlist"> &para;</a></span></dt>
 <dd><p>Returns a newly allocated list of <var class="var">k</var> elements.  In the one-argument
 form, each element is initialized to a default value.  In the
 two-argument form, each element is initialized to <var class="var">fill</var>.
@@ -850,46 +884,48 @@ use the two-argument form.
 integer, an exception that satisfies <code class="code">range-exception?</code> is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(make-list 0)        &rArr; <code class="t">()</code>
-(make-list 3 (list)) &rArr; <code class="t">(() () ())</code>
+<pre class="lisp-preformatted">(make-list 0)                        &rArr; <span class="ok">()</span>
+(make-list 3 (list))                 &rArr; <span class="ok">(() () ())</span>
+(make-list 3 (vector))               &rArr; <span class="ok">(#() #() #())</span>
+(make-list 2 (make-list 2 (vector))) &rArr; <span class="ok">((#() #()) (#() #()))</span>
 </pre></div>
 
 <div class="example lisp">
 <pre class="lisp-preformatted">(make-list 1.25) &rarr; <i class="i">type exception</i>
-(make-string -1) &rarr; <i class="i">range exception</i>
+(make-list -1)   &rarr; <i class="i">range exception</i>
 </pre></div>
 </dd></dl>
 
 <a class="index-entry-id" id="index-lists-list-procedure"></a>
 <a class="index-entry-id" id="index-list-constructors-list"></a>
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-list"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">list</strong> <code class="def-code-arguments">obj&hellip;</code><a class="copiable-link" href="#index-list"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-list"><span class="category-def">(scheme base): </span><span><strong class="def-name">list</strong> <code class="def-code-arguments">obj&hellip;</code><a class="copiable-link" href="#index-list"> &para;</a></span></dt>
 <dd><p>Returns a newly allocated list consisting of its arguments.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(list 'a (+ 3 4) 'c)         &rArr; <code class="t">(a 7 c)</code>
-(list)                       &rArr; <code class="t">()</code>
-((car (list list)) 'list)    &rArr; <code class="t">(list)</code>
-(eqv? (list #\l) (list #\l)) &rArr; <code class="code">#f</code>
+<pre class="lisp-preformatted">(list 'a (+ 3 4) 'c)         &rArr; <span class="ok">(a 7 c)</span>
+(list)                       &rArr; <span class="ok">()</span>
+((car (list list)) 'list)    &rArr; <span class="ok">(list)</span>
+(eqv? (list #\l) (list #\l)) &rArr; <span class="false">#f</span>
 </pre></div>
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-length"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">length</strong> <code class="def-code-arguments">list</code><a class="copiable-link" href="#index-length"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-length"><span class="category-def">(scheme base): </span><span><strong class="def-name">length</strong> <code class="def-code-arguments">list</code><a class="copiable-link" href="#index-length"> &para;</a></span></dt>
 <dd><p>Returns the length of <var class="var">list</var>.
 </p>
 <div class="example lisp">
 <pre class="lisp-preformatted">(define circle (circular-list 'x 'y 'z))
-(length '(a b c))            &rArr; <code class="t">3</code>
-(length '(a (b) (c d e)))    &rArr; <code class="t">3</code>
-(length '())                 &rArr; <code class="t">0</code>
-(length (cdr (make-list 5))) &rArr; <code class="t">4</code>
+(length '(a b c))            &rArr; <span class="ok">3</span>
+(length '(a (b) (c d e)))    &rArr; <span class="ok">3</span>
+(length '())                 &rArr; <span class="ok">0</span>
+(length (cdr (make-list 5))) &rArr; <span class="ok">4</span>
 (length circle)              &rarr; <i class="i">infinite loop</i> <i class="slanted">;; not caught</i>
 </pre></div>
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-append"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">append</strong> <code class="def-code-arguments">list&hellip; <code class="t">[</code>obj<code class="t">]</code></code><a class="copiable-link" href="#index-append"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-append"><span class="category-def">(scheme base): </span><span><strong class="def-name">append</strong> <code class="def-code-arguments">list&hellip; <span class="bracket">[</span>obj<span class="bracket">]</span></code><a class="copiable-link" href="#index-append"> &para;</a></span></dt>
 <dd><p>The zero-argument form returns the empty list.  The one-argument form
 returns its argument, whatever that argument&rsquo;s type.  Each argument
 except the last, if present, must be a list.
@@ -902,41 +938,41 @@ an improper list is returned if if <var class="var">obj</var> is not a proper li
 except that it shares structure with the last argument, <var class="var">obj</var>.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(append '(x) '(y))       &rArr; <code class="t">(x y)</code>
-(append '(a) '(b c d))   &rArr; <code class="t">(a b c d)</code>
-(append '(a (b)) '((c))) &rArr; <code class="t">(a (b) (c))</code>
-(append '(a b) '(c . d)) &rArr; <code class="t">(a b c . d)</code> <i class="slanted">;; lacking propriety</i>
-(append '() 'a)          &rArr; <code class="t">a</code> <i class="slanted">;; egregiously lacking propriety</i>
+<pre class="lisp-preformatted">(append '(x) '(y))       &rArr; <span class="ok">(x y)</span>
+(append '(a) '(b c d))   &rArr; <span class="ok">(a b c d)</span>
+(append '(a (b)) '((c))) &rArr; <span class="ok">(a (b) (c))</span>
+(append '(a b) '(c . d)) &rArr; <span class="ok">(a b c . d)</span> <i class="slanted">;; lacking propriety</i>
+(append '() 'a)          &rArr; <span class="ok">a</span> <i class="slanted">;; egregiously lacking propriety</i>
 </pre></div>
 
 <div class="example lisp">
 <pre class="lisp-preformatted">(define l (list 'f 'g 'h))
-(eq?    l (append (append) l)) &rArr; <code class="t">#t</code>
-(eq?    l (append l (append))) &rArr; <code class="code">#f</code>
-(equal? l (append l (append))) &rArr; <code class="t">#t</code>
+(eq?    l (append (append) l)) &rArr; <span class="ok">#t</span>
+(eq?    l (append l (append))) &rArr; <span class="false">#f</span>
+(equal? l (append l (append))) &rArr; <span class="ok">#t</span>
 </pre></div>
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-reverse"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">reverse</strong> <code class="def-code-arguments">list</code><a class="copiable-link" href="#index-reverse"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-reverse"><span class="category-def">(scheme base): </span><span><strong class="def-name">reverse</strong> <code class="def-code-arguments">list</code><a class="copiable-link" href="#index-reverse"> &para;</a></span></dt>
 <dd><p>Returns a newly allocated list consisting of the elements of <var class="var">list</var>
 in reverse order (excluding the terminating empty list).
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(reverse '(a b c))             &rArr; <code class="t">(c b a)</code>
-(reverse '(a (b c) d (e (f)))) &rArr; <code class="t">((e (f)) d (b c) a)</code>
+<pre class="lisp-preformatted">(reverse '(a b c))             &rArr; <span class="ok">(c b a)</span>
+(reverse '(a (b c) d (e (f)))) &rArr; <span class="ok">((e (f)) d (b c) a)</span>
 </pre></div>
 
 <div class="example lisp">
 <pre class="lisp-preformatted">(define l (list 'a 'b 'c))
-(eq?    l (reverse (reverse l))) &rArr; <code class="code">#f</code>
-(equal? l (reverse (reverse l))) &rArr; <code class="t">#t</code>
+(eq?    l (reverse (reverse l))) &rArr; <span class="false">#f</span>
+(equal? l (reverse (reverse l))) &rArr; <span class="ok">#t</span>
 </pre></div>
 </dd></dl>
 
 <a class="index-entry-id" id="index-list-selectors-list_002dtail"></a>
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-list_002dtail"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">list-tail</strong> <code class="def-code-arguments">list k</code><a class="copiable-link" href="#index-list_002dtail"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-list_002dtail"><span class="category-def">(scheme base): </span><span><strong class="def-name">list-tail</strong> <code class="def-code-arguments">list k</code><a class="copiable-link" href="#index-list_002dtail"> &para;</a></span></dt>
 <dd><p>Returns a copy of <var class="var">list</var> obtained by omitting the first <var class="var">k</var>
 elements.  If <var class="var">list</var> is a proper list, a proper list is returned; if
 <var class="var">list</var> is an improper list, an improper list is returned
@@ -947,10 +983,10 @@ elements.  If <var class="var">list</var> is a proper list, a proper list is ret
 elements, an exception that satisfies <code class="code">range-exception?</code> is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(list-tail '(a b c) 1)   &rArr; <code class="t">(b c)</code>
-(list-tail '(a b c) 3)   &rArr; <code class="t">()</code>
-(list-tail '(a b . c) 1) &rArr; <code class="t">(b . c)</code> <i class="slanted">;; impropriety</i>
-(list-tail '(a b . c) 2) &rArr; <code class="t">c</code> <i class="slanted">;; abject impropriety</i>
+<pre class="lisp-preformatted">(list-tail '(a b c) 1)   &rArr; <span class="ok">(b c)</span>
+(list-tail '(a b c) 3)   &rArr; <span class="ok">()</span>
+(list-tail '(a b . c) 1) &rArr; <span class="ok">(b . c)</span> <i class="slanted">;; impropriety</i>
+(list-tail '(a b . c) 2) &rArr; <span class="ok">c</span> <i class="slanted">;; abject impropriety</i>
 </pre></div>
 
 <div class="example lisp">
@@ -961,24 +997,24 @@ elements, an exception that satisfies <code class="code">range-exception?</code>
 
 <a class="index-entry-id" id="index-list-selectors-list_002dref"></a>
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-list_002dref"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">list-ref</strong> <code class="def-code-arguments">list k</code><a class="copiable-link" href="#index-list_002dref"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-list_002dref"><span class="category-def">(scheme base): </span><span><strong class="def-name">list-ref</strong> <code class="def-code-arguments">list k</code><a class="copiable-link" href="#index-list_002dref"> &para;</a></span></dt>
 <dd><p>Returns element <var class="var">k</var> of <var class="var">list</var>.  Equivalent to &lsquo;<samp class="samp">(car
 (list-tail <i class="slanted">list</i> <i class="slanted">k</i>))</samp>&rsquo;.  The <var class="var">list</var> argument may
 be circular.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(list-ref '(a b c d) 2)                   &rArr; <code class="t">c</code>
-(list-ref '(a b c d) (exact (round 1.8))) &rArr; <code class="t">c</code>
+<pre class="lisp-preformatted">(list-ref '(a b c d) 2)                   &rArr; <span class="ok">c</span>
+(list-ref '(a b c d) (exact (round 1.8))) &rArr; <span class="ok">c</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(list-ref (circular-list 'a 'b) 3) &rArr; <code class="t">b</code> <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</i>
+<pre class="lisp-preformatted">(list-ref (circular-list 'a 'b) 3) &rArr; <span class="ok">b</span> <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</i>
 </pre></div>
 </dd></dl>
 
 <a class="index-entry-id" id="index-list-mutator-list_002dset_0021"></a>
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-list_002dset_0021"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">list-set!</strong> <code class="def-code-arguments">list k obj</code><a class="copiable-link" href="#index-list_002dset_0021"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-list_002dset_0021"><span class="category-def">(scheme base): </span><span><strong class="def-name">list-set!</strong> <code class="def-code-arguments">list k obj</code><a class="copiable-link" href="#index-list_002dset_0021"> &para;</a></span></dt>
 <dd><p>Mutates <var class="var">list</var> by storing <var class="var">obj</var> in element <var class="var">k</var> of
 <var class="var">list</var>.  It is an error if <var class="var">k</var> is not a valid index of
 <var class="var">list</var>.
@@ -986,7 +1022,7 @@ be circular.
 <div class="example lisp">
 <pre class="lisp-preformatted">(define ls (list 'one 'two 'five!))
 (list-set! ls 2 'three)
-ls &rArr; <code class="t">(one two three)</code>
+ls &rArr; <span class="ok">(one two three)</span>
 </pre></div>
 
 <div class="example lisp">
@@ -998,9 +1034,9 @@ ls &rArr; <code class="t">(one two three)</code>
 <a class="index-entry-id" id="index-list-selectors-memv"></a>
 <a class="index-entry-id" id="index-list-selectors-member"></a>
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-memq"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">memq</strong> <code class="def-code-arguments">obj list</code><a class="copiable-link" href="#index-memq"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-memv"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">memv</strong> <code class="def-code-arguments">obj list</code><a class="copiable-link" href="#index-memv"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-member"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">member</strong> <code class="def-code-arguments">obj list <code class="t">[</code>compare<code class="t">]</code></code><a class="copiable-link" href="#index-member"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-memq"><span class="category-def">(scheme base): </span><span><strong class="def-name">memq</strong> <code class="def-code-arguments">obj list</code><a class="copiable-link" href="#index-memq"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-memv"><span class="category-def">(scheme base): </span><span><strong class="def-name">memv</strong> <code class="def-code-arguments">obj list</code><a class="copiable-link" href="#index-memv"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-member"><span class="category-def">(scheme base): </span><span><strong class="def-name">member</strong> <code class="def-code-arguments">obj list <span class="bracket">[</span>compare<span class="bracket">]</span></code><a class="copiable-link" href="#index-member"> &para;</a></span></dt>
 <dd><p>Each procedure successively applies some test procedure to each element
 of <var class="var">list</var> and returns the first sublist of <var class="var">list</var> whose car
 satisfies that test procedure relative to <var class="var">obj</var>.  They differ only
@@ -1019,21 +1055,27 @@ return a non-Boolean value.
 </li></ul>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(memq   101 '(100 101 102)) &rArr; <code class="t">(101 102)</code> <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says unspecified</i>
-(memv   101 '(100 101 102)) &rArr; <code class="t">(101 102)</code>
-(member 7 '(100 101 102) +) &rArr; <code class="t">(100 101 102)</code>
-(member 7 '(7 8 9) square)  &rarr; <i class="i">wrong number of arguments exception</i>
+<pre class="lisp-preformatted">(memq   101 '(100 101 102)) &rArr; <span class="ok">(101 102)</span> <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr>: unspecified</i>
+(memv   101 '(100 101 102)) &rArr; <span class="ok">(101 102)</span>
+(member 7 '(100 101 102) +) &rArr; <span class="ok">(100 101 102)</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(memq   'a '(a b c))                    &rArr; <code class="t">(a b c)</code>
-(memq   'b '(a b c))                    &rArr; <code class="t">(b c)</code>
-(member 'b '(a b c) eq?)                &rArr; <code class="t">(b c)</code>
-(memq   'a '(b c d))                    &rArr; <code class="code">#f</code>
-(memq   (list 'a) '(b (a) c))           &rArr; <code class="code">#f</code>
-(memq   'a '(a b c))                    &rArr; <code class="t">(a b c)</code>
-(member (list 'a) '(b (a) c))           &rArr; <code class="t">((a) c)</code>
-(member &quot;B&quot; '(&quot;a&quot; &quot;b&quot; &quot;c&quot;) string-ci=?) &rArr; <code class="t">(&quot;b&quot; &quot;c&quot;)</code>
+<pre class="lisp-preformatted">(memq   'a '(a b c))                    &rArr; <span class="ok">(a b c)</span>
+(memq   'a '(b c d))                    &rArr; <span class="false">#f</span>
+(memq   (list 'a) '(b (a) c))           &rArr; <span class="false">#f</span>
+(memq   'a '(a b c))                    &rArr; <span class="ok">(a b c)</span>
+(memv   'b '(a b c))                    &rArr; <span class="ok">(b c)</span>
+(memv 'b '(a b . c))                    &rArr; <span class="ok">(b . c)</span>
+(member 'b '(a b c) eq?)                &rArr; <span class="ok">(b c)</span>
+(member (list 'a) '(b (a) c))           &rArr; <span class="ok">((a) c)</span>
+(member &quot;B&quot; '(&quot;a&quot; &quot;b&quot; &quot;c&quot;) string-ci=?) &rArr; <span class="ok">("b" "c")</span>
+(member 7 '(7 8 9) (lambda x #f))       &rArr; <span class="false">#f</span>
+</pre></div>
+
+<div class="example lisp">
+<pre class="lisp-preformatted">(memv 'c '(a b . c))      &rarr; <i class="i">type exception</i>
+(member 9 '(7 8 9) zero?) &rarr; <i class="i">wrong number of arguments exception</i>
 </pre></div>
 </dd></dl>
 
@@ -1041,9 +1083,9 @@ return a non-Boolean value.
 <a class="index-entry-id" id="index-list-selectors-assv"></a>
 <a class="index-entry-id" id="index-list-selectors-assoc"></a>
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-assq"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">assq</strong> <code class="def-code-arguments">obj  alist</code><a class="copiable-link" href="#index-assq"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-assv"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">assv</strong> <code class="def-code-arguments">obj  alist</code><a class="copiable-link" href="#index-assv"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-assoc"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">assoc</strong> <code class="def-code-arguments">obj alist <code class="t">[</code>compare<code class="t">]</code></code><a class="copiable-link" href="#index-assoc"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-assq"><span class="category-def">(scheme base): </span><span><strong class="def-name">assq</strong> <code class="def-code-arguments">obj  alist</code><a class="copiable-link" href="#index-assq"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-assv"><span class="category-def">(scheme base): </span><span><strong class="def-name">assv</strong> <code class="def-code-arguments">obj  alist</code><a class="copiable-link" href="#index-assv"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-assoc"><span class="category-def">(scheme base): </span><span><strong class="def-name">assoc</strong> <code class="def-code-arguments">obj alist <span class="bracket">[</span>compare<span class="bracket">]</span></code><a class="copiable-link" href="#index-assoc"> &para;</a></span></dt>
 <dd><p>Each of these procedures successively applies some test procedure to the
 elements of <var class="var">alist</var> and returns the first pair of <var class="var">alist</var> whose
 car satisfies that test procedure relative to <var class="var">obj</var> (&ldquo;alist&rdquo; is
@@ -1063,22 +1105,50 @@ return a non-Boolean value.
 </li></ul>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(define e '((a 1) (b 2) (c 3)))
+<pre class="lisp-preformatted">(define p '((a 1) (b 2) (c 3)))
 
-(assq 'a e)                            &rArr; <code class="t">(a 1)</code>
-(assq 'b e)                            &rArr; <code class="t">(b 2)</code>
-(assq 'd e)                            &rArr; <code class="code">#f</code>
-(assq (list 'a) '(((a)) ((b)) ((c))))  &rArr; <code class="code">#f</code>
-(assoc (list 'a) '(((a)) ((b)) ((c)))) &rArr; <code class="t">((a))</code>
-(assoc 2.0 '((1 1) (2 4) (3 9)) =)     &rArr; <code class="t">(2 4)</code>
-(assq 5 '((2 3) (5 7) (11 13)))        &rArr; <code class="t"><i class="i">unspecified</i></code>
-(assv 5 '((2 3) (5 7) (11 13)))        &rArr; <code class="t">(5 7)</code>
+(assq 'a p)                            &rArr; <span class="ok">(a 1)</span>
+(assq 'b p)                            &rArr; <span class="ok">(b 2)</span>
+(assv 'd p)                            &rArr; <span class="false">#f</span>
+(assq (list 'a) '(((a)) ((b)) ((c))))  &rArr; <span class="false">#f</span>
+(assoc (list 'a) '(((a)) ((b)) ((c)))) &rArr; <span class="ok">((a))</span>
+(assoc 2.0 '((1 1) (2 4) (3 9)) =)     &rArr; <span class="ok">(2 4)</span>
+(assq 5 '((2 3) (5 7) (11 13)))        &rArr; <span class="ok">(5 7)</span> <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr>: unspecified</i>
+(assv 5 '((2 3) (5 7) (11 13)))        &rArr; <span class="ok">(5 7)</span>
+</pre></div>
+
+<div class="example lisp">
+<pre class="lisp-preformatted">(define i '((a . 1) (b . 2) (c . 3)))
+
+(assq 'b i) &rArr; <span class="ok">(a . 1)</span>
+(assv 'c i) &rArr; <span class="ok">(c . 3)</span>
+(assq 'd p) &rArr; <span class="false">#f</span>
+(assv 'b '((a . 1) (b . 2) . (c . 3))) &rArr; <span class="ok">(b . 2)</span>
+</pre></div>
+
+<div class="example lisp">
+<pre class="lisp-preformatted">(assv 'c '((a . 1) (b . 2) . (c . 3))) &rarr; <i class="i">type exception</i>
+</pre></div>
+
+<div class="example lisp">
+<pre class="lisp-preformatted">(define dc '((&quot;red&quot;    . &quot;rouge&quot;)
+             (&quot;green&quot;  . &quot;vert&quot;)
+             (&quot;blue&quot;   . &quot;bleu&quot;)
+             (&quot;orange&quot; . &quot;orange&quot;)))
+
+(define (f e)
+  (let ((f (assoc e dc string=?)))
+    (and f (cdr f))))
+
+(f &quot;green&quot;)  &rArr; <span class="ok">"vert"</span>
+(f &quot;orange&quot;) &rArr; <span class="ok">"orange"</span>
+(f &quot;purple&quot;) &rArr; <span class="false">#f</span>
 </pre></div>
 </dd></dl>
 
 <a class="index-entry-id" id="index-list-constructors-list_002dcopy"></a>
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-list_002dcopy"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">list-copy</strong> <code class="def-code-arguments">obj</code><a class="copiable-link" href="#index-list_002dcopy"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-list_002dcopy"><span class="category-def">(scheme base): </span><span><strong class="def-name">list-copy</strong> <code class="def-code-arguments">obj</code><a class="copiable-link" href="#index-list_002dcopy"> &para;</a></span></dt>
 <dd><p>Returns a newly allocated copy of the given <var class="var">obj</var> if it is a list.
 Only the pairs themselves are copied; the cars of the result are the
 same (in the sense of <code class="code">eqv?</code>) as the cars of <var class="var">list</var>.  If
@@ -1091,12 +1161,33 @@ is returned unchanged.  It is an error if <var class="var">obj</var> is a circul
 (define b (list-copy a))
 (set-car! b 3)           <i class="slanted">;; b is mutable</i>
 
-b &rArr; <code class="t">(3 8 2 8)</code>
-a &rArr; <code class="t">(1 8 2 8)</code>
+b &rArr; <span class="ok">(3 8 2 8)</span>
+a &rArr; <span class="ok">(1 8 2 8)</span>
 </pre></div>
+
 <div class="example lisp">
-<pre class="lisp-preformatted">(define circle (circular-list 0 1 2 3))
-(list-copy circle) &rarr; <i class="i">infinite loop</i> <i class="slanted">;; not caught</i>
+<pre class="lisp-preformatted">(list-copy '(a b . c))                           &rArr; <span class="ok">(a b . c)</span>
+(list-copy 'unchanged)                           &rArr; <span class="ok">unchanged</span>
+(eqv? '() (list-copy '()))                       &rArr; <span class="ok">#t</span>
+(eqv? list-copy ((lambda (x) x) list-copy))      &rArr; <span class="ok">#t</span>
+(eqv? (lambda (x) x) (list-copy (lambda (x) x))) &rArr; <span class="false">#f</span>
+</pre></div>
+
+<div class="example lisp">
+<pre class="lisp-preformatted">(define i (cons (string-copy &quot;one&quot;) (string-copy &quot;two&quot;)))
+(define p (cons (car i) (cons (cdr i) '())))
+(eqv? (cdr i) (cdr (list-copy i))) &rArr; <span class="ok">#t</span>
+(eqv? (cdr p) (cdr (list-copy p))) &rArr; <span class="false">#f</span>
+</pre></div>
+
+<div class="example lisp">
+<pre class="lisp-preformatted">(list-copy) &rarr; <i class="i">wrong number of arguments exception</i>
+</pre></div>
+
+<div class="example lisp">
+<pre class="lisp-preformatted">(define c (circular-list 0 1 2))
+(circular-list? c) &rArr; <span class="ok">#t</span>
+(list-copy (circular-list 0 1 2)) &rarr; <i class="i">infinite loop</i> <i class="slanted">;; not caught</i>
 </pre></div>
 </dd></dl>
 
@@ -1121,24 +1212,24 @@ Up: <a href="#Strings" accesskey="u" rel="up">Strings</a> &nbsp; [<a href="#SEC_
 <h3 class="section chapter-level-set-section" id="String-procedures-1"><span>5.1 String procedures<a class="copiable-link" href="#String-procedures-1"> &para;</a></span></h3>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string?</strong> <code class="def-code-arguments">obj</code><a class="copiable-link" href="#index-string_003f"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_003f"><span class="category-def">(scheme base): </span><span><strong class="def-name">string?</strong> <code class="def-code-arguments">obj</code><a class="copiable-link" href="#index-string_003f"> &para;</a></span></dt>
 <dd><p>Returns <code class="code">#t</code> if <var class="var">obj</var> is a string.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string? &quot;&quot;)                     &rArr; <code class="t">#t</code>
-(string? &quot;a&quot;)                    &rArr; <code class="t">#t</code>
+<pre class="lisp-preformatted">(string? &quot;&quot;)                     &rArr; <span class="ok">#t</span>
+(string? &quot;a&quot;)                    &rArr; <span class="ok">#t</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string? #\a)                    &rArr; <code class="code">#f</code>
-(string? 'string)                &rArr; <code class="code">#f</code>
-(string? '(#\c #\h #\a #\r #\s)) &rArr; <code class="code">#f</code>
-(string? #(#\c #\h #\a #\r #\s)) &rArr; <code class="code">#f</code>
+<pre class="lisp-preformatted">(string? #\a)                    &rArr; <span class="false">#f</span>
+(string? 'string)                &rArr; <span class="false">#f</span>
+(string? '(#\c #\h #\a #\r #\s)) &rArr; <span class="false">#f</span>
+(string? #(#\c #\h #\a #\r #\s)) &rArr; <span class="false">#f</span>
 </pre></div>
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-make_002dstring"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">make-string</strong> <code class="def-code-arguments">k <code class="t">[</code>char<code class="t">]</code></code><a class="copiable-link" href="#index-make_002dstring"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-make_002dstring"><span class="category-def">(scheme base): </span><span><strong class="def-name">make-string</strong> <code class="def-code-arguments">k <span class="bracket">[</span>char<span class="bracket">]</span></code><a class="copiable-link" href="#index-make_002dstring"> &para;</a></span></dt>
 <dd><p>Returns a newly allocated string of length <var class="var">k</var>.  In the one-argument
 form, each character is initialized to a default value.  In the
 two-argument form, each character is initialized to <var class="var">char</var>.
@@ -1152,9 +1243,9 @@ use the two-argument form.
 integer, an exception that satisfies <code class="code">range-exception?</code> is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(make-string 0)                 &rArr; <code class="t">&quot;&quot;</code>
-(string-length (make-string 4)) &rArr; <code class="t">4</code>
-(make-string 4 #\g)             &rArr; <code class="t">&quot;gggg&quot;</code>
+<pre class="lisp-preformatted">(make-string 0)                 &rArr; <span class="ok">""</span>
+(string-length (make-string 4)) &rArr; <span class="ok">4</span>
+(make-string 4 #\g)             &rArr; <span class="ok">"gggg"</span>
 </pre></div>
 
 <div class="example lisp">
@@ -1165,45 +1256,45 @@ integer, an exception that satisfies <code class="code">range-exception?</code> 
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string</strong> <code class="def-code-arguments">char&hellip;</code><a class="copiable-link" href="#index-string"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string"><span class="category-def">(scheme base): </span><span><strong class="def-name">string</strong> <code class="def-code-arguments">char&hellip;</code><a class="copiable-link" href="#index-string"> &para;</a></span></dt>
 <dd><p>Returns a newly allocated string whose elements are <var class="var">char</var><small class="enddots">...</small>
 The order of the arguments is preserved.  Analogous to <code class="code">list</code>
 (see <a class="pxref" href="#Pair-and-list-procedures">Pair and list procedures</a>).
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string)                         &rArr; <code class="t">&quot;&quot;</code>
-(string #\G #\a #\m #\b #\i #\t) &rArr; <code class="t">&quot;Gambit&quot;</code>
-(string (string-&gt;list &quot;Gambit&quot;)) &rArr; <code class="t">&quot;Gambit&quot;</code>
+<pre class="lisp-preformatted">(string)                         &rArr; <span class="ok">""</span>
+(string #\G #\a #\m #\b #\i #\t) &rArr; <span class="ok">"Gambit"</span>
+(string (string-&gt;list &quot;Gambit&quot;)) &rArr; <span class="ok">"Gambit"</span>
 </pre></div>
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dlength"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-length</strong> <code class="def-code-arguments">string</code><a class="copiable-link" href="#index-string_002dlength"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_002dlength"><span class="category-def">(scheme base): </span><span><strong class="def-name">string-length</strong> <code class="def-code-arguments">string</code><a class="copiable-link" href="#index-string_002dlength"> &para;</a></span></dt>
 <dd><p>Returns the number of characters in <var class="var">string</var>.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-length (make-string 5)) &rArr; <code class="t">5</code>
-(string-length &quot;&quot;)              &rArr; <code class="t">0</code>
-(string-length &quot;lambda&quot;)        &rArr; <code class="t">6</code>
+<pre class="lisp-preformatted">(string-length (make-string 5)) &rArr; <span class="ok">5</span>
+(string-length &quot;&quot;)              &rArr; <span class="ok">0</span>
+(string-length &quot;lambda&quot;)        &rArr; <span class="ok">6</span>
 </pre></div>
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dref"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-ref</strong> <code class="def-code-arguments">string k</code><a class="copiable-link" href="#index-string_002dref"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_002dref"><span class="category-def">(scheme base): </span><span><strong class="def-name">string-ref</strong> <code class="def-code-arguments">string k</code><a class="copiable-link" href="#index-string_002dref"> &para;</a></span></dt>
 <dd><p>Returns the character at index <var class="var">k</var> of <var class="var">string</var>.  If <var class="var">k</var> is
 not a valid index of <var class="var">string</var>, an exception that satisfies
 <code class="code">range-exception?</code> is raised.
 </p>
 <div class="example lisp">
 <pre class="lisp-preformatted">(define s &quot;off by one&quot;)
-(string-ref &quot;zero-origin indexing&quot; 0)  &rArr; <code class="t">#\z</code>
-(string-ref s (- (string-length s) 1)) &rArr; <code class="t">#\e</code>
+(string-ref &quot;zero-origin indexing&quot; 0)  &rArr; <span class="ok">#\z</span>
+(string-ref s (- (string-length s) 1)) &rArr; <span class="ok">#\e</span>
 (string-ref s (string-length s))       &rarr; <i class="i">range exception</i>
 </pre></div>
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_003d_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string=?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_003d_003f"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_003d_003f"><span class="category-def">(scheme base): </span><span><strong class="def-name">string=?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_003d_003f"> &para;</a></span></dt>
 <dd><p>Returns <code class="code">#t</code> if all of <var class="var">string</var> arguments are the same length
 and contain exactly the same characters in the same positions.
 </p>
@@ -1211,20 +1302,20 @@ and contain exactly the same characters in the same positions.
 any number of arguments.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string=? &quot;abc&quot; (string #\a #\b #\c)) &rArr; <code class="t">#t</code>
-(string=? &quot;abcd&quot; &quot;Abcd&quot;)              &rArr; <code class="code">#f</code>
-(string=?)                            &rArr; <code class="t">#t</code>
-(string=? (string))                   &rArr; <code class="t">#t</code>
-(string=? &quot;a&quot; &quot;a&quot; &quot;a&quot;)                &rArr; <code class="t">#t</code>
+<pre class="lisp-preformatted">(string=? &quot;abc&quot; (string #\a #\b #\c)) &rArr; <span class="ok">#t</span>
+(string=? &quot;abcd&quot; &quot;Abcd&quot;)              &rArr; <span class="false">#f</span>
+(string=?)                            &rArr; <span class="ok">#t</span>
+(string=? (string))                   &rArr; <span class="ok">#t</span>
+(string=? &quot;a&quot; &quot;a&quot; &quot;a&quot;)                &rArr; <span class="ok">#t</span>
 (string=? &quot;a&quot; #\a)                    &rarr; <i class="i">type exception</i>
 </pre></div>
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_003c_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&lt;?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_003c_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003e_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&gt;?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_003e_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003c_003d_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&lt;=?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_003c_003d_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003e_003d_003f"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string&gt;=?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_003e_003d_003f"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_003c_003f"><span class="category-def">(scheme base): </span><span><strong class="def-name">string&lt;?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_003c_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003e_003f"><span class="category-def">(scheme base): </span><span><strong class="def-name">string&gt;?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_003e_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003c_003d_003f"><span class="category-def">(scheme base): </span><span><strong class="def-name">string&lt;=?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_003c_003d_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003e_003d_003f"><span class="category-def">(scheme base): </span><span><strong class="def-name">string&gt;=?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_003e_003d_003f"> &para;</a></span></dt>
 <dd><p>These predicates return <code class="code">#t</code> if their <var class="var">string</var> arguments are
 (respectively): monotonically increasing, monotonically decreasing,
 monotonically non-decreasing, or monotonically non-increasing.  They are
@@ -1239,99 +1330,99 @@ if and only if they do not satisfy <code class="code">string&gt;?</code>.  They 
 accept any number of arguments.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string&lt;=? &quot;g&quot; &quot;g&quot;) &rArr; <code class="code">#f</code>
-(string&gt;=? &quot;g&quot; &quot;g&quot;) &rArr; <code class="code">#f</code>
-(string&lt;?  &quot;g&quot; &quot;g&quot;) &rArr; <code class="code">#f</code>
-(string&gt;?  &quot;g&quot; &quot;g&quot;) &rArr; <code class="code">#f</code>
+<pre class="lisp-preformatted">(string&lt;=? &quot;g&quot; &quot;g&quot;) &rArr; <span class="false">#f</span>
+(string&gt;=? &quot;g&quot; &quot;g&quot;) &rArr; <span class="false">#f</span>
+(string&lt;?  &quot;g&quot; &quot;g&quot;) &rArr; <span class="false">#f</span>
+(string&gt;?  &quot;g&quot; &quot;g&quot;) &rArr; <span class="false">#f</span>
 
-(string&lt;? &quot;G&quot; &quot;g&quot;)  &rArr; <code class="t">#t</code>
-(string&gt;? &quot;G&quot; &quot;g&quot;)  &rArr; <code class="code">#f</code>
+(string&lt;? &quot;G&quot; &quot;g&quot;)  &rArr; <span class="ok">#t</span>
+(string&gt;? &quot;G&quot; &quot;g&quot;)  &rArr; <span class="false">#f</span>
 
-(string&lt;? &quot;gg&quot; &quot;g&quot;) &rArr; <code class="code">#f</code>
-(string&gt;? &quot;gg&quot; &quot;g&quot;) &rArr; <code class="t">#t</code>
+(string&lt;? &quot;gg&quot; &quot;g&quot;) &rArr; <span class="false">#f</span>
+(string&gt;? &quot;gg&quot; &quot;g&quot;) &rArr; <span class="ok">#t</span>
 </pre></div>
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dci_003d_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci=?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_002dci_003d_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003c_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&lt;?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_002dci_003c_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003e_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&gt;?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_002dci_003e_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003c_003d_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&lt;=?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_002dci_003c_003d_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003e_003d_003f"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-ci&gt;=?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_002dci_003e_003d_003f"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_002dci_003d_003f"><span class="category-def">(scheme char): </span><span><strong class="def-name">string-ci=?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_002dci_003d_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003c_003f"><span class="category-def">(scheme char): </span><span><strong class="def-name">string-ci&lt;?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_002dci_003c_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003e_003f"><span class="category-def">(scheme char): </span><span><strong class="def-name">string-ci&gt;?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_002dci_003e_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003c_003d_003f"><span class="category-def">(scheme char): </span><span><strong class="def-name">string-ci&lt;=?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_002dci_003c_003d_003f"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003e_003d_003f"><span class="category-def">(scheme char): </span><span><strong class="def-name">string-ci&gt;=?</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_002dci_003e_003d_003f"> &para;</a></span></dt>
 <dd><p>Each of these predicates behaves as if <code class="code">string-foldcase</code> were
 applied to each <var class="var">string</var> and then that predicate&rsquo;s non-&lsquo;<samp class="samp">-ci</samp>&rsquo;
 counterpart were applied to those case-folded arguments.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-ci=?  &quot;G&quot; &quot;g&quot;)                             &rArr; <code class="t">#t</code>
-(apply string=? (map string-foldcase '(&quot;G&quot; &quot;g&quot;)))  &rArr; <code class="t">#t</code>
+<pre class="lisp-preformatted">(string-ci=?  &quot;G&quot; &quot;g&quot;)                             &rArr; <span class="ok">#t</span>
+(apply string=? (map string-foldcase '(&quot;G&quot; &quot;g&quot;)))  &rArr; <span class="ok">#t</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-ci&gt;=? &quot;G&quot; &quot;g&quot;)                             &rArr; <code class="t">#t</code>
-(apply string&lt;=? (map string-foldcase '(&quot;G&quot; &quot;g&quot;))) &rArr; <code class="t">#t</code>
+<pre class="lisp-preformatted">(string-ci&gt;=? &quot;G&quot; &quot;g&quot;)                             &rArr; <span class="ok">#t</span>
+(apply string&lt;=? (map string-foldcase '(&quot;G&quot; &quot;g&quot;))) &rArr; <span class="ok">#t</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-ci&lt;=? &quot;g&quot; &quot;G&quot;)                             &rArr; <code class="t">#t</code>
-(apply string&lt;=? (map string-foldcase '(&quot;g&quot; &quot;G&quot;))) &rArr; <code class="t">#t</code>
+<pre class="lisp-preformatted">(string-ci&lt;=? &quot;g&quot; &quot;G&quot;)                             &rArr; <span class="ok">#t</span>
+(apply string&lt;=? (map string-foldcase '(&quot;g&quot; &quot;G&quot;))) &rArr; <span class="ok">#t</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-ci&lt;?  &quot;G&quot; &quot;g&quot;)                             &rArr; <code class="code">#f</code>
-(apply string&lt;? (map string-foldcase '(&quot;G&quot; &quot;g&quot;)))  &rArr; <code class="code">#f</code>
+<pre class="lisp-preformatted">(string-ci&lt;?  &quot;G&quot; &quot;g&quot;)                             &rArr; <span class="false">#f</span>
+(apply string&lt;? (map string-foldcase '(&quot;G&quot; &quot;g&quot;)))  &rArr; <span class="false">#f</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-ci&gt;?  &quot;g&quot; &quot;G&quot;)                             &rArr; <code class="code">#f</code>
-(apply string&gt;? (map string-foldcase '(&quot;g&quot; &quot;G&quot;)))  &rArr; <code class="code">#f</code>
+<pre class="lisp-preformatted">(string-ci&gt;?  &quot;g&quot; &quot;G&quot;)                             &rArr; <span class="false">#f</span>
+(apply string&gt;? (map string-foldcase '(&quot;g&quot; &quot;G&quot;)))  &rArr; <span class="false">#f</span>
 </pre></div>
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dupcase"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-upcase</strong> <code class="def-code-arguments">string</code><a class="copiable-link" href="#index-string_002dupcase"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002ddowncase"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-downcase</strong> <code class="def-code-arguments">string</code><a class="copiable-link" href="#index-string_002ddowncase"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dfoldcase"><span class="category-def"><code class="t">(scheme char)</code>: </span><span><strong class="def-name">string-foldcase</strong> <code class="def-code-arguments">string</code><a class="copiable-link" href="#index-string_002dfoldcase"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_002dupcase"><span class="category-def">(scheme char): </span><span><strong class="def-name">string-upcase</strong> <code class="def-code-arguments">string</code><a class="copiable-link" href="#index-string_002dupcase"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002ddowncase"><span class="category-def">(scheme char): </span><span><strong class="def-name">string-downcase</strong> <code class="def-code-arguments">string</code><a class="copiable-link" href="#index-string_002ddowncase"> &para;</a></span></dt>
+<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dfoldcase"><span class="category-def">(scheme char): </span><span><strong class="def-name">string-foldcase</strong> <code class="def-code-arguments">string</code><a class="copiable-link" href="#index-string_002dfoldcase"> &para;</a></span></dt>
 <dd><p>These procedures apply the Unicode full string uppercasing, lowercasing,
 and case-folding algorithms to their arguments and return the result.
 In certain cases, the result differs in length from <var class="var">string</var>.  Note
 that language-sensitive mappings and foldings are not used.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-downcase &quot;&#x0388;&#x03C4;&#x03BF;&#x03C2;&quot;) &rArr; <code class="t">&quot;&#x03AD;&#x03C4;&#x03BF;&#x03C2;&quot;</code>
-(string-foldcase &quot;&#x0388;&#x03C4;&#x03BF;&#x03C2;&quot;) &rArr; <code class="t">&quot;&#x03AD;&#x03C4;&#x03BF;&#x03C3;&quot;</code>
-(string-upcase   &quot;&#x0388;&#x03C4;&#x03BF;&#x03C2;&quot;) &rArr; <code class="t">&quot;&#x0388;&#x03A4;&#x039F;&#x03A3;&quot;</code>
-(string-downcase &quot;&#x0388;&#x03A4;&#x039F;&#x03A3;&quot;) &rArr; <code class="t">&quot;&#x03AD;&#x03C4;&#x03BF;&#x03C3;&quot;</code>
-(string-foldcase &quot;&#x0388;&#x03A4;&#x039F;&#x03A3;&quot;) &rArr; <code class="t">&quot;&#x03AD;&#x03C4;&#x03BF;&#x03C3;&quot;</code>
+<pre class="lisp-preformatted">(string-downcase &quot;&#x0388;&#x03C4;&#x03BF;&#x03C2;&quot;) &rArr; <span class="ok">"&#x03AD;&#x03C4;&#x03BF;&#x03C2;"</span>
+(string-foldcase &quot;&#x0388;&#x03C4;&#x03BF;&#x03C2;&quot;) &rArr; <span class="ok">"&#x03AD;&#x03C4;&#x03BF;&#x03C3;"</span>
+(string-upcase   &quot;&#x0388;&#x03C4;&#x03BF;&#x03C2;&quot;) &rArr; <span class="ok">"&#x0388;&#x03A4;&#x039F;&#x03A3;"</span>
+(string-downcase &quot;&#x0388;&#x03A4;&#x039F;&#x03A3;&quot;) &rArr; <span class="ok">"&#x03AD;&#x03C4;&#x03BF;&#x03C3;"</span>
+(string-foldcase &quot;&#x0388;&#x03A4;&#x039F;&#x03A3;&quot;) &rArr; <span class="ok">"&#x03AD;&#x03C4;&#x03BF;&#x03C3;"</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-downcase &quot;Wei&szlig;&quot;)  &rArr; <code class="t">&quot;wei&szlig;&quot;</code>
-(string-foldcase &quot;Wei&szlig;&quot;)  &rArr; <code class="t">&quot;weiss&quot;</code>
-(string-upcase   &quot;Wei&szlig;&quot;)  &rArr; <code class="t">&quot;WEISS&quot;</code>
-(string-downcase &quot;WEISS&quot;) &rArr; <code class="t">&quot;weiss&quot;</code>
-(string-foldcase &quot;WEISS&quot;) &rArr; <code class="t">&quot;weiss&quot;</code>
+<pre class="lisp-preformatted">(string-downcase &quot;Wei&szlig;&quot;)  &rArr; <span class="ok">"wei&szlig;"</span>
+(string-foldcase &quot;Wei&szlig;&quot;)  &rArr; <span class="ok">"weiss"</span>
+(string-upcase   &quot;Wei&szlig;&quot;)  &rArr; <span class="ok">"WEISS"</span>
+(string-downcase &quot;WEISS&quot;) &rArr; <span class="ok">"weiss"</span>
+(string-foldcase &quot;WEISS&quot;) &rArr; <span class="ok">"weiss"</span>
 </pre></div>
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dappend"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-append</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_002dappend"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_002dappend"><span class="category-def">(scheme base): </span><span><strong class="def-name">string-append</strong> <code class="def-code-arguments">string&hellip;</code><a class="copiable-link" href="#index-string_002dappend"> &para;</a></span></dt>
 <dd>
 <p>Returns a newly allocated string whose characters are the concatenation
 of the characters in the given <var class="var">strings</var>.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-append)                     &rArr; <code class="t">&quot;&quot;</code>
-(string-append &quot;&quot;)                  &rArr; <code class="t">&quot;&quot;</code>
-(string-append &quot;hello&quot; &quot;world&quot;)     &rArr; <code class="t">&quot;helloworld&quot;</code>
-(string-append &quot;hello&quot; &quot;&quot; &quot;world&quot;)  &rArr; <code class="t">&quot;helloworld&quot;</code>
-(string-append &quot;hello &quot; &quot; world&quot;)   &rArr; <code class="t">&quot;hello  world&quot;</code>
-(string-append &quot;hello&quot; &quot; &quot; &quot;world&quot;) &rArr; <code class="t">&quot;hello world&quot;</code>
+<pre class="lisp-preformatted">(string-append)                     &rArr; <span class="ok">""</span>
+(string-append &quot;&quot;)                  &rArr; <span class="ok">""</span>
+(string-append &quot;hello&quot; &quot;world&quot;)     &rArr; <span class="ok">"helloworld"</span>
+(string-append &quot;hello&quot; &quot;&quot; &quot;world&quot;)  &rArr; <span class="ok">"helloworld"</span>
+(string-append &quot;hello &quot; &quot; world&quot;)   &rArr; <span class="ok">"hello  world"</span>
+(string-append &quot;hello&quot; &quot; &quot; &quot;world&quot;) &rArr; <span class="ok">"hello world"</span>
 </pre></div>
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002d_003elist"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-&gt;list</strong> <code class="def-code-arguments">string <code class="t">[</code>start <code class="t">[</code>end<code class="t">]</code><code class="t">]</code></code><a class="copiable-link" href="#index-string_002d_003elist"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_002d_003elist"><span class="category-def">(scheme base): </span><span><strong class="def-name">string-&gt;list</strong> <code class="def-code-arguments">string <span class="bracket">[</span>start <span class="bracket">[</span>end<span class="bracket">]</span><span class="bracket">]</span></code><a class="copiable-link" href="#index-string_002d_003elist"> &para;</a></span></dt>
 <dd><p>Returns a newly allocated list of characters in <var class="var">string</var>.  In the
 one-argument form, the returned list comprises all characters of
 <var class="var">string</var>.  In the two-argument form, the returned list comprises
@@ -1346,11 +1437,11 @@ inverses so far as <code class="code">equal?</code> is concerned.  If either <va
 satisfies <code class="code">range-exception?</code> is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-&gt;list &quot;scheme&quot;)     &rArr; <code class="t">(#\s #\c #\h #\e #\m #\e)</code>
-(string-&gt;list &quot;scheme&quot; 1)   &rArr; <code class="t">(#\c #\h #\e #\m #\e)</code>
-(string-&gt;list &quot;scheme&quot; 2 6) &rArr; <code class="t">(#\h #\e #\m #\e)</code>
-(string-&gt;list &quot;scheme&quot; 6)   &rArr; <code class="t">()</code>
-(string-&gt;list &quot;scheme&quot; 6 6) &rArr; <code class="t">()</code>
+<pre class="lisp-preformatted">(string-&gt;list &quot;scheme&quot;)     &rArr; <span class="ok">(#\s #\c #\h #\e #\m #\e)</span>
+(string-&gt;list &quot;scheme&quot; 1)   &rArr; <span class="ok">(#\c #\h #\e #\m #\e)</span>
+(string-&gt;list &quot;scheme&quot; 2 6) &rArr; <span class="ok">(#\h #\e #\m #\e)</span>
+(string-&gt;list &quot;scheme&quot; 6)   &rArr; <span class="ok">()</span>
+(string-&gt;list &quot;scheme&quot; 6 6) &rArr; <span class="ok">()</span>
 </pre></div>
 
 <div class="example lisp">
@@ -1360,7 +1451,7 @@ satisfies <code class="code">range-exception?</code> is raised.
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-list_002d_003estring"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">list-&gt;string</strong> <code class="def-code-arguments">list</code><a class="copiable-link" href="#index-list_002d_003estring"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-list_002d_003estring"><span class="category-def">(scheme base): </span><span><strong class="def-name">list-&gt;string</strong> <code class="def-code-arguments">list</code><a class="copiable-link" href="#index-list_002d_003estring"> &para;</a></span></dt>
 <dd><p>Returns a newly allocated string formed from the elements in <var class="var">list</var>.
 </p>
 <p>Order is preserved.  <code class="code">list-&gt;string</code> and <code class="code">string-&gt;list</code> and are
@@ -1369,14 +1460,14 @@ inverses so far as <code class="code">equal?</code> is concerned.  If any elemen
 is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(list-&gt;string (list))                       &rArr; <code class="t">&quot;&quot;</code>
-(list-&gt;string '(#\s #\c #\h #\e #\m #\e))   &rArr; <code class="t">&quot;scheme&quot;</code>
+<pre class="lisp-preformatted">(list-&gt;string (list))                       &rArr; <span class="ok">""</span>
+(list-&gt;string '(#\s #\c #\h #\e #\m #\e))   &rArr; <span class="ok">"scheme"</span>
 (list-&gt;string '(#\s #\c #\h #\e #\m #\e 2)) &rarr; <i class="i">type exception</i>
 </pre></div>
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dcopy"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-copy</strong> <code class="def-code-arguments">string <code class="t">[</code>start <code class="t">[</code>end<code class="t">]</code><code class="t">]</code></code><a class="copiable-link" href="#index-string_002dcopy"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_002dcopy"><span class="category-def">(scheme base): </span><span><strong class="def-name">string-copy</strong> <code class="def-code-arguments">string <span class="bracket">[</span>start <span class="bracket">[</span>end<span class="bracket">]</span><span class="bracket">]</span></code><a class="copiable-link" href="#index-string_002dcopy"> &para;</a></span></dt>
 <dd><p>Returns a newly allocated string whose value is a portion of
 <var class="var">string</var>.  In the one-argument form, the returned portion is all of
 <var class="var">string</var>.  In the two-argument form, the returned string is a copy
@@ -1393,13 +1484,13 @@ not a valid index of <var class="var">string</var>, an exception that satisfies
 <code class="code">range-exception?</code> is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-copy &quot;dwim&quot;)                          &rArr; <code class="t">&quot;dwim&quot;</code>
-(string-copy &quot;dwim&quot; 0)                        &rArr; <code class="t">&quot;dwim&quot;</code>
-(string-copy &quot;dwim&quot; 1)                        &rArr; <code class="t">&quot;wim&quot;</code>
-(string-copy &quot;dwim&quot; 1 1)                      &rArr; <code class="t">&quot;&quot;</code>
-(string-copy &quot;dwim&quot; 0 (string-length &quot;dwim&quot;)) &rArr; <code class="t">&quot;dwim&quot;</code>
-(eqv?     &quot;dwim&quot; (string-copy &quot;dwim&quot;))        &rArr; <code class="code">#f</code>
-(string=? &quot;dwim&quot; (string-copy &quot;dwim&quot;))        &rArr; <code class="t">#t</code>
+<pre class="lisp-preformatted">(string-copy &quot;dwim&quot;)                          &rArr; <span class="ok">"dwim"</span>
+(string-copy &quot;dwim&quot; 0)                        &rArr; <span class="ok">"dwim"</span>
+(string-copy &quot;dwim&quot; 1)                        &rArr; <span class="ok">"wim"</span>
+(string-copy &quot;dwim&quot; 1 1)                      &rArr; <span class="ok">""</span>
+(string-copy &quot;dwim&quot; 0 (string-length &quot;dwim&quot;)) &rArr; <span class="ok">"dwim"</span>
+(eqv?     &quot;dwim&quot; (string-copy &quot;dwim&quot;))        &rArr; <span class="false">#f</span>
+(string=? &quot;dwim&quot; (string-copy &quot;dwim&quot;))        &rArr; <span class="ok">#t</span>
 </pre></div>
 
 <div class="example lisp">
@@ -1411,7 +1502,7 @@ not a valid index of <var class="var">string</var>, an exception that satisfies
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dcopy_0021"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-copy!</strong> <code class="def-code-arguments">to-string at from-string <code class="t">[</code>start <code class="t">[</code>end<code class="t">]</code><code class="t">]</code></code><a class="copiable-link" href="#index-string_002dcopy_0021"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_002dcopy_0021"><span class="category-def">(scheme base): </span><span><strong class="def-name">string-copy!</strong> <code class="def-code-arguments">to-string at from-string <span class="bracket">[</span>start <span class="bracket">[</span>end<span class="bracket">]</span><span class="bracket">]</span></code><a class="copiable-link" href="#index-string_002dcopy_0021"> &para;</a></span></dt>
 <dd>
 <p>Mutates <var class="var">to-string</var> by copying a substring of <var class="var">from-string</var> into
 <var class="var">to-string</var>, beginning with index <var class="var">at</var> of <var class="var">to-string</var>.  In
@@ -1434,12 +1525,12 @@ must not overflow beyond the end of <var class="var">to-string</var>).
 (define b (string-copy &quot;abcde&quot;))
 (string-copy! b 1 a 0 2)
 
-b &rArr; <code class="t">&quot;a12de&quot;</code>
+b &rArr; <span class="ok">"a12de"</span>
 </pre></div>
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dfill_0021"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-fill!</strong> <code class="def-code-arguments">string char <code class="t">[</code>start <code class="t">[</code>end<code class="t">]</code><code class="t">]</code></code><a class="copiable-link" href="#index-string_002dfill_0021"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_002dfill_0021"><span class="category-def">(scheme base): </span><span><strong class="def-name">string-fill!</strong> <code class="def-code-arguments">string char <span class="bracket">[</span>start <span class="bracket">[</span>end<span class="bracket">]</span><span class="bracket">]</span></code><a class="copiable-link" href="#index-string_002dfill_0021"> &para;</a></span></dt>
 <dd><p>Mutates <var class="var">string</var> by overwriting some or all of its elements with
 <var class="var">char</var>.  In the two-argument form, each element is overwritten.  In
 the three-argument form, the elements from index <var class="var">start</var> (inclusive)
@@ -1458,14 +1549,14 @@ an exception that satisfies <code class="code">range-exception?</code> is raised
 (string-fill! b #\0 3)
 (string-fill! c #\0 3 4)
 
-a &rArr; <code class="t">&quot;00000&quot;</code>
-b &rArr; <code class="t">&quot;abc00&quot;</code>
-c &rArr; <code class="t">&quot;abc0e&quot;</code>
+a &rArr; <span class="ok">"00000"</span>
+b &rArr; <span class="ok">"abc00"</span>
+c &rArr; <span class="ok">"abc0e"</span>
 </pre></div>
 </dd></dl>
 
 <dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dset_0021"><span class="category-def"><code class="t">(scheme base)</code>: </span><span><strong class="def-name">string-set!</strong> <code class="def-code-arguments">string k char</code><a class="copiable-link" href="#index-string_002dset_0021"> &para;</a></span></dt>
+<dt class="deftypefn" id="index-string_002dset_0021"><span class="category-def">(scheme base): </span><span><strong class="def-name">string-set!</strong> <code class="def-code-arguments">string k char</code><a class="copiable-link" href="#index-string_002dset_0021"> &para;</a></span></dt>
 <dd><p>Mutates <var class="var">string</var> by storing <var class="var">char</var> in element <var class="var">k</var> of
 <var class="var">string</var>.
 </p>
@@ -1489,7 +1580,7 @@ satisfies <code class="code">range-exception?</code> is raised.
 <div class="example lisp">
 <pre class="lisp-preformatted">(define (g) &quot;***&quot;)
 (string-set! (g) 0 #\?) <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</i>
-(g) &rArr; <code class="t">&quot;?**&quot;</code>             <i class="slanted">;; current Gambit behavior</i> 
+(g) &rArr; <span class="ok">"?**"</span>             <i class="slanted">;; current Gambit behavior</i> 
 </pre></div>
 </dd></dl>
 
@@ -1640,8 +1731,9 @@ Next: <a href="#Index-of-procedures-and-syntactic-forms" accesskey="n" rel="next
 <tr><td></td><td class="printindex-index-entry index-entry-level-2"><a href="#index-list-constructors-make_002dlist"><code>make-list</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
 <tr><td></td><td class="printindex-index-entry index-entry-level-1"><code>mutator</code></td><td></td></tr>
 <tr><td></td><td class="printindex-index-entry index-entry-level-2"><a href="#index-list-mutator-list_002dset_0021"><code>list-set!</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry index-entry-level-1"><code>predicate</code></td><td></td></tr>
-<tr><td></td><td class="printindex-index-entry index-entry-level-2"><a href="#index-list-predicate-list_003f"><code>list?</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
+<tr><td></td><td class="printindex-index-entry index-entry-level-1"><code>predicates</code></td><td></td></tr>
+<tr><td></td><td class="printindex-index-entry index-entry-level-2"><a href="#index-list-predicates-list_003f"><code>list?</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
+<tr><td></td><td class="printindex-index-entry index-entry-level-2"><a href="#index-list-predicates-proper_002dlist_003f"><code>proper-list?</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
 <tr><td></td><td class="printindex-index-entry index-entry-level-1"><code>selectors</code></td><td></td></tr>
 <tr><td></td><td class="printindex-index-entry index-entry-level-2"><a href="#index-list-selectors-assoc"><code>assoc</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
 <tr><td></td><td class="printindex-index-entry index-entry-level-2"><a href="#index-list-selectors-assq"><code>assq</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
@@ -1766,6 +1858,7 @@ Previous: <a href="#Type-Index" accesskey="p" rel="prev">Type Index</a>, Up: <a 
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Index-of-procedures-and-syntactic-forms_fn_letter-P">P</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-pair_003f"><code>pair?</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-proper_002dlist_003f"><code>proper-list?</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Index-of-procedures-and-syntactic-forms_fn_letter-R">R</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-reverse"><code>reverse</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>

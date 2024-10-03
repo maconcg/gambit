@@ -28,7 +28,7 @@ Gambit
 ******
 
 Gambit is a complete implementation of the Scheme language aimed at
-portability, speed, and power.
+portability, reliability, and efficiency.
 
    For the most up-to-date information on Gambit and related resources,
 visit the Gambit home page (https://gambitscheme.org).  Please report
@@ -50,8 +50,8 @@ Gambit v4.9.5 (September 20, 2024).
 **************
 
 The Gambit programming system is a complete implementation of the Scheme
-language aimed at portability, reliability, and speed.  It features two
-main programs: ‘gsi’, the Gambit Scheme interpreter, and ‘gsc’, the
+language aimed at portability, reliability, and efficiency.  It features
+two main programs: ‘gsi’, the Gambit Scheme interpreter, and ‘gsc’, the
 Gambit Scheme compiler.
 
    In its default configuration, Gambit provides a superset of the
@@ -261,8 +261,10 @@ about pairs and lists.
 
           (eqv?   (cons + car) (cons + car)) ⇒ #f
           (equal? (cons + car) (cons + car)) ⇒ #t
-
           (eq? cons (cdr (cons cons cons))) ⇒ #t
+
+          (cons)    → wrong number of arguments exception
+          (cons 'a) → wrong number of arguments exception
 
  -- (scheme base): car pair
      Returns the contents of the cdr field of PAIR.  If an attempt is
@@ -272,7 +274,9 @@ about pairs and lists.
           (car '(a b c))     ⇒ a
           (car '((a) b c d)) ⇒ (a)
           (car '(1 . 2))     ⇒ 1
-          (car '())          → type exception
+
+          (car '())      → type exception
+          (car #(4 6 8)) → type exception
 
  -- (scheme base): cdr pair
      Returns the contents of the cdr field of PAIR.  If an attempt is
@@ -282,7 +286,9 @@ about pairs and lists.
           (cdr '(a b c))     ⇒ (b c)
           (cdr '((a) b c d)) ⇒ (b c d)
           (cdr '(1 . 2))     ⇒ 2
+
           (cdr '())          → type exception
+          (cdr #(4 6 8))     → type exception
 
  -- (scheme base): set-car! pair obj
      Mutates PAIR by storing OBJ in the car field of PAIR.
@@ -350,7 +356,6 @@ about pairs and lists.
           (caar (cdr l))       ⇒ c
           (car (car (cdr l)))  ⇒ c
           (cadddr l)           ⇒ (e (f) g)
-          (caaadr l)           → type exception
 
           (define circle (circular-list 'a 'b 'c))
           (car circle)    ⇒ a
@@ -358,13 +363,16 @@ about pairs and lists.
           (caddr circle)  ⇒ c
           (cadddr circle) ⇒ a
 
+          (cdar '(a . b))   → type exception
+          (cddr (list #\f)) → type exception
+
  -- (scheme base): null? obj
      Returns ‘#t’ if OBJ is the empty list.
 
           (null? '())    ⇒ #t
           (null? (list)) ⇒ #t
           (null? #\null) ⇒ #f
-          (null? null?)  ⇒ #f
+          (null? #!eof)  ⇒ #f
           (null? #f)     ⇒ #f
           (null? 0)      ⇒ #f
           (null? "")     ⇒ #f
@@ -372,16 +380,21 @@ about pairs and lists.
           (null? (void)) ⇒ #f
 
  -- (scheme base): list? obj
+ -- (gambit list): proper-list? obj
      Returns ‘#t’ if OBJ is a proper list (*note Pair and list
      jargon::).  By definition, a list of finite length is terminated by
      the empty list.
 
-          (list? '(a b c)) ⇒ #t
-          (list? '())      ⇒ #t
-          (list? '(a . b)) ⇒ #f
-          (list? list)     ⇒ #f
-          (list? "list")   ⇒ #f
-          (list? #(0 1 2)) ⇒ #f
+     ‘proper-list?’ is functionally equivalent to ‘list?’.
+
+          (list? '(a b c))              ⇒ #t
+          (list? '())                   ⇒ #t
+          (list? (list 0))              ⇒ #t
+          (list? '(a . b))              ⇒ #f
+          (list? list)                  ⇒ #f
+          (list? "list")                ⇒ #f
+          (list? #(0 1 2))              ⇒ #f
+          (list? (circular-list 0 1 2)) ⇒ #f
 
           (let ((x (list 'a)))
             (set-cdr! x x)
@@ -400,11 +413,13 @@ about pairs and lists.
      ‘type-exception?’ is raised.  If K is a negative exact integer, an
      exception that satisfies ‘range-exception?’ is raised.
 
-          (make-list 0)        ⇒ ()
-          (make-list 3 (list)) ⇒ (() () ())
+          (make-list 0)                        ⇒ ()
+          (make-list 3 (list))                 ⇒ (() () ())
+          (make-list 3 (vector))               ⇒ (#() #() #())
+          (make-list 2 (make-list 2 (vector))) ⇒ ((#() #()) (#() #()))
 
           (make-list 1.25) → type exception
-          (make-string -1) → range exception
+          (make-list -1)   → range exception
 
  -- (scheme base): list obj...
      Returns a newly allocated list consisting of its arguments.
@@ -513,19 +528,23 @@ about pairs and lists.
         • ‘member’ uses ‘equal?’ in the two-argument form.
         • ‘member’ uses COMPARE in the three-argument form.
 
-          (memq   101 '(100 101 102)) ⇒ (101 102) ;; R7RS says unspecified
+          (memq   101 '(100 101 102)) ⇒ (101 102) ;; R7RS: unspecified
           (memv   101 '(100 101 102)) ⇒ (101 102)
           (member 7 '(100 101 102) +) ⇒ (100 101 102)
-          (member 7 '(7 8 9) square)  → wrong number of arguments exception
 
           (memq   'a '(a b c))                    ⇒ (a b c)
-          (memq   'b '(a b c))                    ⇒ (b c)
-          (member 'b '(a b c) eq?)                ⇒ (b c)
           (memq   'a '(b c d))                    ⇒ #f
           (memq   (list 'a) '(b (a) c))           ⇒ #f
           (memq   'a '(a b c))                    ⇒ (a b c)
+          (memv   'b '(a b c))                    ⇒ (b c)
+          (memv 'b '(a b . c))                    ⇒ (b . c)
+          (member 'b '(a b c) eq?)                ⇒ (b c)
           (member (list 'a) '(b (a) c))           ⇒ ((a) c)
           (member "B" '("a" "b" "c") string-ci=?) ⇒ ("b" "c")
+          (member 7 '(7 8 9) (lambda x #f))       ⇒ #f
+
+          (memv 'c '(a b . c))      → type exception
+          (member 9 '(7 8 9) zero?) → wrong number of arguments exception
 
  -- (scheme base): assq obj alist
  -- (scheme base): assv obj alist
@@ -546,16 +565,38 @@ about pairs and lists.
         • ‘assoc’ uses ‘equal?’ in the two-argument form.
         • ‘assoc’ uses COMPARE in the three-argument form.
 
-          (define e '((a 1) (b 2) (c 3)))
+          (define p '((a 1) (b 2) (c 3)))
 
-          (assq 'a e)                            ⇒ (a 1)
-          (assq 'b e)                            ⇒ (b 2)
-          (assq 'd e)                            ⇒ #f
+          (assq 'a p)                            ⇒ (a 1)
+          (assq 'b p)                            ⇒ (b 2)
+          (assv 'd p)                            ⇒ #f
           (assq (list 'a) '(((a)) ((b)) ((c))))  ⇒ #f
           (assoc (list 'a) '(((a)) ((b)) ((c)))) ⇒ ((a))
           (assoc 2.0 '((1 1) (2 4) (3 9)) =)     ⇒ (2 4)
-          (assq 5 '((2 3) (5 7) (11 13)))        ⇒ unspecified
+          (assq 5 '((2 3) (5 7) (11 13)))        ⇒ (5 7) ;; R7RS: unspecified
           (assv 5 '((2 3) (5 7) (11 13)))        ⇒ (5 7)
+
+          (define i '((a . 1) (b . 2) (c . 3)))
+
+          (assq 'b i) ⇒ (a . 1)
+          (assv 'c i) ⇒ (c . 3)
+          (assq 'd p) ⇒ #f
+          (assv 'b '((a . 1) (b . 2) . (c . 3))) ⇒ (b . 2)
+
+          (assv 'c '((a . 1) (b . 2) . (c . 3))) → type exception
+
+          (define dc '(("red"    . "rouge")
+                       ("green"  . "vert")
+                       ("blue"   . "bleu")
+                       ("orange" . "orange")))
+
+          (define (f e)
+            (let ((f (assoc e dc string=?)))
+              (and f (cdr f))))
+
+          (f "green")  ⇒ "vert"
+          (f "orange") ⇒ "orange"
+          (f "purple") ⇒ #f
 
  -- (scheme base): list-copy obj
      Returns a newly allocated copy of the given OBJ if it is a list.
@@ -571,8 +612,23 @@ about pairs and lists.
 
           b ⇒ (3 8 2 8)
           a ⇒ (1 8 2 8)
-          (define circle (circular-list 0 1 2 3))
-          (list-copy circle) → infinite loop ;; not caught
+
+          (list-copy '(a b . c))                           ⇒ (a b . c)
+          (list-copy 'unchanged)                           ⇒ unchanged
+          (eqv? '() (list-copy '()))                       ⇒ #t
+          (eqv? list-copy ((lambda (x) x) list-copy))      ⇒ #t
+          (eqv? (lambda (x) x) (list-copy (lambda (x) x))) ⇒ #f
+
+          (define i (cons (string-copy "one") (string-copy "two")))
+          (define p (cons (car i) (cons (cdr i) '())))
+          (eqv? (cdr i) (cdr (list-copy i))) ⇒ #t
+          (eqv? (cdr p) (cdr (list-copy p))) ⇒ #f
+
+          (list-copy) → wrong number of arguments exception
+
+          (define c (circular-list 0 1 2))
+          (circular-list? c) ⇒ #t
+          (list-copy (circular-list 0 1 2)) → infinite loop ;; not caught
 
 5 Strings
 *********
@@ -873,7 +929,7 @@ General Index
 * car, car field:                        Pair and list jargon.
                                                               (line 190)
 * car, car procedure:                    Pair and list procedures.
-                                                              (line 266)
+                                                              (line 268)
 * car, take the car:                     Pair and list jargon.
                                                               (line 194)
 * cdr:                                   Pair and list jargon.
@@ -881,7 +937,7 @@ General Index
 * cdr, cdr field:                        Pair and list jargon.
                                                               (line 190)
 * cdr, cdr procedure:                    Pair and list procedures.
-                                                              (line 276)
+                                                              (line 280)
 * cdr, take the cdr:                     Pair and list jargon.
                                                               (line 194)
 * cons:                                  Pair and list jargon.
@@ -901,7 +957,7 @@ General Index
 * lists, the empty list:                 Pair and list jargon.
                                                               (line 174)
 * lists, list procedure:                 Pair and list procedures.
-                                                              (line 408)
+                                                              (line 423)
 * lists, list type:                      Pair and list jargon.
                                                               (line 204)
 * lists, proper lists:                   Pair and list jargon.
@@ -926,51 +982,53 @@ Type Index
 * empty list:                            Pair and list jargon.
                                                               (line 174)
 * empty list, predicate, null?:          Pair and list procedures.
-                                                              (line 360)
+                                                              (line 368)
 * list:                                  Pair and list jargon.
                                                               (line 204)
 * list, constructors, list:              Pair and list procedures.
-                                                              (line 408)
+                                                              (line 423)
 * list, constructors, list-copy:         Pair and list procedures.
-                                                              (line 559)
+                                                              (line 600)
 * list, constructors, make-list:         Pair and list procedures.
-                                                              (line 389)
+                                                              (line 402)
 * list, mutator, list-set!:              Pair and list procedures.
-                                                              (line 487)
-* list, predicate, list?:                Pair and list procedures.
-                                                              (line 373)
+                                                              (line 502)
+* list, predicates, list?:               Pair and list procedures.
+                                                              (line 381)
+* list, predicates, proper-list?:        Pair and list procedures.
+                                                              (line 381)
 * list, selectors, assoc:                Pair and list procedures.
-                                                              (line 529)
+                                                              (line 548)
 * list, selectors, assq:                 Pair and list procedures.
-                                                              (line 529)
+                                                              (line 548)
 * list, selectors, assv:                 Pair and list procedures.
-                                                              (line 529)
+                                                              (line 548)
 * list, selectors, list-ref:             Pair and list procedures.
-                                                              (line 478)
+                                                              (line 493)
 * list, selectors, list-tail:            Pair and list procedures.
-                                                              (line 460)
+                                                              (line 475)
 * list, selectors, member:               Pair and list procedures.
-                                                              (line 497)
+                                                              (line 512)
 * list, selectors, memq:                 Pair and list procedures.
-                                                              (line 497)
+                                                              (line 512)
 * list, selectors, memv:                 Pair and list procedures.
-                                                              (line 497)
+                                                              (line 512)
 * pair:                                  Pair and list jargon.
                                                               (line 183)
 * pair, constructor, cons:               Pair and list procedures.
                                                               (line 250)
 * pair, mutators, set-car!:              Pair and list procedures.
-                                                              (line 286)
+                                                              (line 292)
 * pair, mutators, set-cdr!:              Pair and list procedures.
-                                                              (line 299)
+                                                              (line 305)
 * pair, predicate, pair?:                Pair and list procedures.
                                                               (line 241)
 * pair, selectors, car:                  Pair and list procedures.
-                                                              (line 266)
+                                                              (line 268)
 * pair, selectors, cdr:                  Pair and list procedures.
-                                                              (line 276)
+                                                              (line 280)
 * pair, selectors, (scheme cxr):         Pair and list procedures.
-                                                              (line 312)
+                                                              (line 318)
 
 Index of procedures and syntactic forms
 ***************************************
@@ -978,130 +1036,132 @@ Index of procedures and syntactic forms
 * Menu:
 
 * append:                                Pair and list procedures.
-                                                              (line 426)
+                                                              (line 441)
 * assoc:                                 Pair and list procedures.
-                                                              (line 531)
+                                                              (line 550)
 * assq:                                  Pair and list procedures.
-                                                              (line 529)
+                                                              (line 548)
 * assv:                                  Pair and list procedures.
-                                                              (line 530)
+                                                              (line 549)
 * caaaar:                                Pair and list procedures.
-                                                              (line 324)
-* caaadr:                                Pair and list procedures.
-                                                              (line 325)
-* caaar:                                 Pair and list procedures.
-                                                              (line 316)
-* caadar:                                Pair and list procedures.
-                                                              (line 326)
-* caaddr:                                Pair and list procedures.
-                                                              (line 327)
-* caadr:                                 Pair and list procedures.
-                                                              (line 317)
-* caar:                                  Pair and list procedures.
-                                                              (line 312)
-* cadaar:                                Pair and list procedures.
-                                                              (line 328)
-* cadadr:                                Pair and list procedures.
-                                                              (line 329)
-* cadar:                                 Pair and list procedures.
-                                                              (line 318)
-* caddar:                                Pair and list procedures.
                                                               (line 330)
-* cadddr:                                Pair and list procedures.
+* caaadr:                                Pair and list procedures.
                                                               (line 331)
-* caddr:                                 Pair and list procedures.
-                                                              (line 319)
-* cadr:                                  Pair and list procedures.
-                                                              (line 313)
-* car:                                   Pair and list procedures.
-                                                              (line 266)
-* cdaaar:                                Pair and list procedures.
-                                                              (line 332)
-* cdaadr:                                Pair and list procedures.
-                                                              (line 333)
-* cdaar:                                 Pair and list procedures.
-                                                              (line 320)
-* cdadar:                                Pair and list procedures.
-                                                              (line 334)
-* cdaddr:                                Pair and list procedures.
-                                                              (line 335)
-* cdadr:                                 Pair and list procedures.
-                                                              (line 321)
-* cdar:                                  Pair and list procedures.
-                                                              (line 314)
-* cddaar:                                Pair and list procedures.
-                                                              (line 336)
-* cddadr:                                Pair and list procedures.
-                                                              (line 337)
-* cddar:                                 Pair and list procedures.
+* caaar:                                 Pair and list procedures.
                                                               (line 322)
-* cdddar:                                Pair and list procedures.
-                                                              (line 338)
-* cddddr:                                Pair and list procedures.
-                                                              (line 339)
-* cdddr:                                 Pair and list procedures.
+* caadar:                                Pair and list procedures.
+                                                              (line 332)
+* caaddr:                                Pair and list procedures.
+                                                              (line 333)
+* caadr:                                 Pair and list procedures.
                                                               (line 323)
+* caar:                                  Pair and list procedures.
+                                                              (line 318)
+* cadaar:                                Pair and list procedures.
+                                                              (line 334)
+* cadadr:                                Pair and list procedures.
+                                                              (line 335)
+* cadar:                                 Pair and list procedures.
+                                                              (line 324)
+* caddar:                                Pair and list procedures.
+                                                              (line 336)
+* cadddr:                                Pair and list procedures.
+                                                              (line 337)
+* caddr:                                 Pair and list procedures.
+                                                              (line 325)
+* cadr:                                  Pair and list procedures.
+                                                              (line 319)
+* car:                                   Pair and list procedures.
+                                                              (line 268)
+* cdaaar:                                Pair and list procedures.
+                                                              (line 338)
+* cdaadr:                                Pair and list procedures.
+                                                              (line 339)
+* cdaar:                                 Pair and list procedures.
+                                                              (line 326)
+* cdadar:                                Pair and list procedures.
+                                                              (line 340)
+* cdaddr:                                Pair and list procedures.
+                                                              (line 341)
+* cdadr:                                 Pair and list procedures.
+                                                              (line 327)
+* cdar:                                  Pair and list procedures.
+                                                              (line 320)
+* cddaar:                                Pair and list procedures.
+                                                              (line 342)
+* cddadr:                                Pair and list procedures.
+                                                              (line 343)
+* cddar:                                 Pair and list procedures.
+                                                              (line 328)
+* cdddar:                                Pair and list procedures.
+                                                              (line 344)
+* cddddr:                                Pair and list procedures.
+                                                              (line 345)
+* cdddr:                                 Pair and list procedures.
+                                                              (line 329)
 * cddr:                                  Pair and list procedures.
-                                                              (line 315)
+                                                              (line 321)
 * cdr:                                   Pair and list procedures.
-                                                              (line 276)
+                                                              (line 280)
 * cons:                                  Pair and list procedures.
                                                               (line 250)
 * length:                                Pair and list procedures.
-                                                              (line 416)
+                                                              (line 431)
 * list:                                  Pair and list procedures.
-                                                              (line 408)
-* list->string:                          String procedures.   (line 761)
+                                                              (line 423)
+* list->string:                          String procedures.   (line 817)
 * list-copy:                             Pair and list procedures.
-                                                              (line 559)
+                                                              (line 600)
 * list-ref:                              Pair and list procedures.
-                                                              (line 478)
+                                                              (line 493)
 * list-set!:                             Pair and list procedures.
-                                                              (line 487)
+                                                              (line 502)
 * list-tail:                             Pair and list procedures.
-                                                              (line 460)
+                                                              (line 475)
 * list?:                                 Pair and list procedures.
-                                                              (line 373)
+                                                              (line 381)
 * make-list:                             Pair and list procedures.
-                                                              (line 389)
-* make-string:                           String procedures.   (line 593)
+                                                              (line 402)
+* make-string:                           String procedures.   (line 649)
 * member:                                Pair and list procedures.
-                                                              (line 499)
+                                                              (line 514)
 * memq:                                  Pair and list procedures.
-                                                              (line 497)
+                                                              (line 512)
 * memv:                                  Pair and list procedures.
-                                                              (line 498)
+                                                              (line 513)
 * null?:                                 Pair and list procedures.
-                                                              (line 360)
+                                                              (line 368)
 * pair?:                                 Pair and list procedures.
                                                               (line 241)
+* proper-list?:                          Pair and list procedures.
+                                                              (line 382)
 * reverse:                               Pair and list procedures.
-                                                              (line 449)
+                                                              (line 464)
 * set-car!:                              Pair and list procedures.
-                                                              (line 286)
+                                                              (line 292)
 * set-cdr!:                              Pair and list procedures.
-                                                              (line 299)
-* string:                                String procedures.   (line 614)
-* string->list:                          String procedures.   (line 739)
-* string-append:                         String procedures.   (line 727)
-* string-ci<?:                           String procedures.   (line 683)
-* string-ci<=?:                          String procedures.   (line 685)
-* string-ci=?:                           String procedures.   (line 682)
-* string-ci>?:                           String procedures.   (line 684)
-* string-ci>=?:                          String procedures.   (line 686)
-* string-copy:                           String procedures.   (line 772)
-* string-copy!:                          String procedures.   (line 800)
-* string-downcase:                       String procedures.   (line 707)
-* string-fill!:                          String procedures.   (line 821)
-* string-foldcase:                       String procedures.   (line 708)
-* string-length:                         String procedures.   (line 623)
-* string-ref:                            String procedures.   (line 630)
-* string-set!:                           String procedures.   (line 843)
-* string-upcase:                         String procedures.   (line 706)
-* string?:                               String procedures.   (line 582)
-* string<?:                              String procedures.   (line 654)
-* string<=?:                             String procedures.   (line 656)
-* string=?:                              String procedures.   (line 640)
-* string>?:                              String procedures.   (line 655)
-* string>=?:                             String procedures.   (line 657)
+                                                              (line 305)
+* string:                                String procedures.   (line 670)
+* string->list:                          String procedures.   (line 795)
+* string-append:                         String procedures.   (line 783)
+* string-ci<?:                           String procedures.   (line 739)
+* string-ci<=?:                          String procedures.   (line 741)
+* string-ci=?:                           String procedures.   (line 738)
+* string-ci>?:                           String procedures.   (line 740)
+* string-ci>=?:                          String procedures.   (line 742)
+* string-copy:                           String procedures.   (line 828)
+* string-copy!:                          String procedures.   (line 856)
+* string-downcase:                       String procedures.   (line 763)
+* string-fill!:                          String procedures.   (line 877)
+* string-foldcase:                       String procedures.   (line 764)
+* string-length:                         String procedures.   (line 679)
+* string-ref:                            String procedures.   (line 686)
+* string-set!:                           String procedures.   (line 899)
+* string-upcase:                         String procedures.   (line 762)
+* string?:                               String procedures.   (line 638)
+* string<?:                              String procedures.   (line 710)
+* string<=?:                             String procedures.   (line 712)
+* string=?:                              String procedures.   (line 696)
+* string>?:                              String procedures.   (line 711)
+* string>=?:                             String procedures.   (line 713)
 

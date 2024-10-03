@@ -21,6 +21,13 @@ hr {
     border-color: %border%;
 }
 
+
+dl.first-deftypefn {
+    dt.deftypefn, dt.deftypefnx {
+        font-family: monospace;
+    }
+}
+
 dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     .i {
         color: %emphasis%;
@@ -29,13 +36,13 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
         color: %fg-dim%;
     }
     dd pre {
-        .code {
-            color: %false%;
-        }
         .slanted {
             color: %fg-dim%;
         }
-        .t {
+        span.false {
+            color: %false%;
+        }
+        span.ok {
             color: %fg-alt%;
         }
     }
@@ -45,7 +52,7 @@ dl.first-deftypefn {
     dt code.def-code-arguments, dd p var.var, dd li var.var {
         color: %arg%;
     }
-    dt code.def-code-arguments code.t {
+    dt code.def-code-arguments span.bracket {
         color:%fg-main%;
     }
 }

@@ -3,7 +3,7 @@
 @chapter Pair and list procedures
 
 @tindex pair @subentry predicate @subentry pair?
-@deftypefn @t{(scheme base)} @/ pair? obj
+@deftypefn {(scheme base)} @/ pair? obj
 Returns @code{#t} if @var{obj} is a pair.
 
 @lisp
@@ -17,7 +17,7 @@ Returns @code{#t} if @var{obj} is a pair.
 
 @cindex cons @subentry @code{cons} procedure
 @tindex pair @subentry constructor @subentry cons
-@deftypefn @t{(scheme base)} @/ cons @pari{obj} @parii{obj}
+@deftypefn {(scheme base)} @/ cons @pari{obj} @parii{obj}
 Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
 @varii{obj}.  The pair is guaranteed to be different (in the sense of
 @code{eqv?}) from every existing object.
@@ -33,16 +33,18 @@ Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
 @lisp
 (eqv?   (cons + car) (cons + car)) @value{false}
 (equal? (cons + car) (cons + car)) @value{true}
+(eq? cons (cdr (cons cons cons))) @value{true}
 @end lisp
 
 @lisp
-(eq? cons (cdr (cons cons cons))) @value{true}
+(cons)    @exception{wrong number of arguments}
+(cons 'a) @exception{wrong number of arguments}
 @end lisp
 @end deftypefn
 
 @cindex car @subentry @code{car} procedure
 @tindex pair @subentry selectors @subentry car
-@deftypefn @t{(scheme base)} @/ car pair
+@deftypefn {(scheme base)} @/ car pair
 Returns the contents of the cdr field of @var{pair}.  If an attempt is
 made to take the car of the empty list, an exception that satisfies
 @code{type-exception?} is raised.
@@ -51,13 +53,17 @@ made to take the car of the empty list, an exception that satisfies
 (car '(a b c))     @ok{a}
 (car '((a) b c d)) @ok{(a)}
 (car '(1 . 2))     @ok{1}
-(car '())          @exception{type}
+@end lisp
+
+@lisp
+(car '())      @exception{type}
+(car #(4 6 8)) @exception{type}
 @end lisp
 @end deftypefn
 
 @cindex cdr @subentry @code{cdr} procedure
 @tindex pair @subentry selectors @subentry cdr
-@deftypefn @t{(scheme base)} @/ cdr pair
+@deftypefn {(scheme base)} @/ cdr pair
 Returns the contents of the cdr field of @var{pair}.  If an attempt is
 made to take the cdr of the empty list, an exception that satisfies
 @code{type-exception?} is raised.
@@ -66,12 +72,16 @@ made to take the cdr of the empty list, an exception that satisfies
 (cdr '(a b c))     @ok{(b c)}
 (cdr '((a) b c d)) @ok{(b c d)}
 (cdr '(1 . 2))     @ok{2}
+@end lisp
+
+@lisp
 (cdr '())          @exception{type}
+(cdr #(4 6 8))     @exception{type}
 @end lisp
 @end deftypefn
 
 @tindex pair @subentry mutators @subentry set-car!
-@deftypefn @t{(scheme base)} @/ set-car! pair obj
+@deftypefn {(scheme base)} @/ set-car! pair obj
 Mutates @var{pair} by storing @var{obj} in the car field of @var{pair}.
 
 @lisp
@@ -90,7 +100,7 @@ Mutates @var{pair} by storing @var{obj} in the car field of @var{pair}.
 @end deftypefn
 
 @tindex pair @subentry mutators @subentry set-cdr!
-@deftypefn @t{(scheme base)} @/ set-cdr! pair obj
+@deftypefn {(scheme base)} @/ set-cdr! pair obj
 Mutates @var{pair} by storing @var{obj} in the cdr field of @var{pair}.
 
 @lisp
@@ -109,34 +119,34 @@ Mutates @var{pair} by storing @var{obj} in the cdr field of @var{pair}.
 @end deftypefn
 
 @tindex pair @subentry selectors @subentry (scheme cxr) @sortas{scheme cxr}
-@deftypefn  @t{(scheme cxr)} @/ caar pair
-@deftypefnx @t{(scheme cxr)} @/ cadr pair
-@deftypefnx @t{(scheme cxr)} @/ cdar pair
-@deftypefnx @t{(scheme cxr)} @/ cddr pair
-@deftypefnx @t{(scheme cxr)} @/ caaar pair
-@deftypefnx @t{(scheme cxr)} @/ caadr pair
-@deftypefnx @t{(scheme cxr)} @/ cadar pair
-@deftypefnx @t{(scheme cxr)} @/ caddr pair
-@deftypefnx @t{(scheme cxr)} @/ cdaar pair
-@deftypefnx @t{(scheme cxr)} @/ cdadr pair
-@deftypefnx @t{(scheme cxr)} @/ cddar pair
-@deftypefnx @t{(scheme cxr)} @/ cdddr pair
-@deftypefnx @t{(scheme cxr)} @/ caaaar pair
-@deftypefnx @t{(scheme cxr)} @/ caaadr pair
-@deftypefnx @t{(scheme cxr)} @/ caadar pair
-@deftypefnx @t{(scheme cxr)} @/ caaddr pair
-@deftypefnx @t{(scheme cxr)} @/ cadaar pair
-@deftypefnx @t{(scheme cxr)} @/ cadadr pair
-@deftypefnx @t{(scheme cxr)} @/ caddar pair
-@deftypefnx @t{(scheme cxr)} @/ cadddr pair
-@deftypefnx @t{(scheme cxr)} @/ cdaaar pair
-@deftypefnx @t{(scheme cxr)} @/ cdaadr pair
-@deftypefnx @t{(scheme cxr)} @/ cdadar pair
-@deftypefnx @t{(scheme cxr)} @/ cdaddr pair
-@deftypefnx @t{(scheme cxr)} @/ cddaar pair
-@deftypefnx @t{(scheme cxr)} @/ cddadr pair
-@deftypefnx @t{(scheme cxr)} @/ cdddar pair
-@deftypefnx @t{(scheme cxr)} @/ cddddr pair
+@deftypefn  {(scheme cxr)} @/ caar pair
+@deftypefnx {(scheme cxr)} @/ cadr pair
+@deftypefnx {(scheme cxr)} @/ cdar pair
+@deftypefnx {(scheme cxr)} @/ cddr pair
+@deftypefnx {(scheme cxr)} @/ caaar pair
+@deftypefnx {(scheme cxr)} @/ caadr pair
+@deftypefnx {(scheme cxr)} @/ cadar pair
+@deftypefnx {(scheme cxr)} @/ caddr pair
+@deftypefnx {(scheme cxr)} @/ cdaar pair
+@deftypefnx {(scheme cxr)} @/ cdadr pair
+@deftypefnx {(scheme cxr)} @/ cddar pair
+@deftypefnx {(scheme cxr)} @/ cdddr pair
+@deftypefnx {(scheme cxr)} @/ caaaar pair
+@deftypefnx {(scheme cxr)} @/ caaadr pair
+@deftypefnx {(scheme cxr)} @/ caadar pair
+@deftypefnx {(scheme cxr)} @/ caaddr pair
+@deftypefnx {(scheme cxr)} @/ cadaar pair
+@deftypefnx {(scheme cxr)} @/ cadadr pair
+@deftypefnx {(scheme cxr)} @/ caddar pair
+@deftypefnx {(scheme cxr)} @/ cadddr pair
+@deftypefnx {(scheme cxr)} @/ cdaaar pair
+@deftypefnx {(scheme cxr)} @/ cdaadr pair
+@deftypefnx {(scheme cxr)} @/ cdadar pair
+@deftypefnx {(scheme cxr)} @/ cdaddr pair
+@deftypefnx {(scheme cxr)} @/ cddaar pair
+@deftypefnx {(scheme cxr)} @/ cddadr pair
+@deftypefnx {(scheme cxr)} @/ cdddar pair
+@deftypefnx {(scheme cxr)} @/ cddddr pair
 These 28 procedures are compositions of @code{car} and @code{cdr}.
 
 @lisp
@@ -150,7 +160,6 @@ These 28 procedures are compositions of @code{car} and @code{cdr}.
 (caar (cdr l))       @ok{c}
 (car (car (cdr l)))  @ok{c}
 (cadddr l)           @ok{(e (f) g)}
-(caaadr l)           @exception{type}
 @end lisp
 
 @lisp
@@ -160,17 +169,22 @@ These 28 procedures are compositions of @code{car} and @code{cdr}.
 (caddr circle)  @ok{c}
 (cadddr circle) @ok{a}
 @end lisp
+
+@lisp
+(cdar '(a . b))   @exception{type}
+(cddr (list #\f)) @exception{type}
+@end lisp
 @end deftypefn
 
 @tindex empty list @subentry predicate @subentry null?
-@deftypefn @t{(scheme base)} @/ null? obj
+@deftypefn {(scheme base)} @/ null? obj
 Returns @code{#t} if @var{obj} is the empty list.
 
 @lisp
 (null? '())    @value{true}
 (null? (list)) @value{true}
 (null? #\null) @value{false}
-(null? null?)  @value{false}
+(null? #!eof)  @value{false}
 (null? #f)     @value{false}
 (null? 0)      @value{false}
 (null? "")     @value{false}
@@ -179,19 +193,25 @@ Returns @code{#t} if @var{obj} is the empty list.
 @end lisp
 @end deftypefn
 
-@tindex list @subentry predicate @subentry list?
-@deftypefn @t{(scheme base)} @/ list? obj
+@tindex list @subentry predicates @subentry list?
+@tindex list @subentry predicates @subentry proper-list?
+@deftypefn  {(scheme base)} @/ list? obj
+@deftypefnx {(gambit list)} @/ proper-list? obj
 Returns @code{#t} if @var{obj} is a proper list (@pxref{Pair and list
 jargon}).  By definition, a list of finite length is terminated by the
 empty list.
 
+@code{proper-list?} is functionally equivalent to @code{list?}.
+
 @lisp
-(list? '(a b c)) @value{true}
-(list? '())      @value{true}
-(list? '(a . b)) @value{false}
-(list? list)     @value{false}
-(list? "list")   @value{false}
-(list? #(0 1 2)) @value{false}
+(list? '(a b c))              @value{true}
+(list? '())                   @value{true}
+(list? (list 0))              @value{true}
+(list? '(a . b))              @value{false}
+(list? list)                  @value{false}
+(list? "list")                @value{false}
+(list? #(0 1 2))              @value{false}
+(list? (circular-list 0 1 2)) @value{false}
 @end lisp
 
 @lisp
@@ -202,7 +222,7 @@ empty list.
 @end deftypefn
 
 @tindex list @subentry constructors @subentry make-list
-@deftypefn  @t{(scheme base)} @/ make-list k @opt{fill}
+@deftypefn  {(scheme base)} @/ make-list k @opt{fill}
 Returns a newly allocated list of @var{k} elements.  In the one-argument
 form, each element is initialized to a default value.  In the
 two-argument form, each element is initialized to @var{fill}.
@@ -216,19 +236,21 @@ If @var{k} is not an exact integer, an exception that satisfies
 integer, an exception that satisfies @code{range-exception?} is raised.
 
 @lisp
-(make-list 0)        @ok{()}
-(make-list 3 (list)) @ok{(() () ())}
+(make-list 0)                        @ok{()}
+(make-list 3 (list))                 @ok{(() () ())}
+(make-list 3 (vector))               @ok{(#() #() #())}
+(make-list 2 (make-list 2 (vector))) @ok{((#() #()) (#() #()))}
 @end lisp
 
 @lisp
 (make-list 1.25) @exception{type}
-(make-string -1) @exception{range}
+(make-list -1)   @exception{range}
 @end lisp
 @end deftypefn
 
 @cindex lists @subentry @code{list} procedure
 @tindex list @subentry constructors @subentry list
-@deftypefn @t{(scheme base)} @/ list obj@dots{}
+@deftypefn {(scheme base)} @/ list obj@dots{}
 Returns a newly allocated list consisting of its arguments.
 
 @lisp
@@ -239,7 +261,7 @@ Returns a newly allocated list consisting of its arguments.
 @end lisp
 @end deftypefn
 
-@deftypefn @t{(scheme base)} @/ length list
+@deftypefn {(scheme base)} @/ length list
 Returns the length of @var{list}.
 
 @lisp
@@ -252,7 +274,7 @@ Returns the length of @var{list}.
 @end lisp
 @end deftypefn
 
-@deftypefn @t{(scheme base)} @/ append list@dots{} @opt{obj}
+@deftypefn {(scheme base)} @/ append list@dots{} @opt{obj}
 The zero-argument form returns the empty list.  The one-argument form
 returns its argument, whatever that argument's type.  Each argument
 except the last, if present, must be a list.
@@ -280,7 +302,7 @@ except that it shares structure with the last argument, @var{obj}.
 @end lisp
 @end deftypefn
 
-@deftypefn @t{(scheme base)} @/ reverse list
+@deftypefn {(scheme base)} @/ reverse list
 Returns a newly allocated list consisting of the elements of @var{list}
 in reverse order (excluding the terminating empty list).
 
@@ -297,7 +319,7 @@ in reverse order (excluding the terminating empty list).
 @end deftypefn
 
 @tindex list @subentry selectors @subentry list-tail
-@deftypefn @t{(scheme base)} @/ list-tail list k
+@deftypefn {(scheme base)} @/ list-tail list k
 Returns a copy of @var{list} obtained by omitting the first @var{k}
 elements.  If @var{list} is a proper list, a proper list is returned; if
 @var{list} is an improper list, an improper list is returned
@@ -321,7 +343,7 @@ elements, an exception that satisfies @code{range-exception?} is raised.
 @end deftypefn
 
 @tindex list @subentry selectors @subentry list-ref
-@deftypefn @t{(scheme base)} @/ list-ref list k
+@deftypefn {(scheme base)} @/ list-ref list k
 Returns element @var{k} of @var{list}.  Equivalent to @samp{(car
 (list-tail @slanted{list} @slanted{k}))}.  The @var{list} argument may
 be circular.
@@ -337,7 +359,7 @@ be circular.
 @end deftypefn
 
 @tindex list @subentry mutator @subentry list-set!
-@deftypefn @t{(scheme base)} @/ list-set! list k obj
+@deftypefn {(scheme base)} @/ list-set! list k obj
 Mutates @var{list} by storing @var{obj} in element @var{k} of
 @var{list}.  It is an error if @var{k} is not a valid index of
 @var{list}.
@@ -356,9 +378,9 @@ ls @ok{(one two three)}
 @tindex list @subentry selectors @subentry memq
 @tindex list @subentry selectors @subentry memv
 @tindex list @subentry selectors @subentry member
-@deftypefn  @t{(scheme base)} @/ memq   obj list
-@deftypefnx @t{(scheme base)} @/ memv   obj list
-@deftypefnx @t{(scheme base)} @/ member obj list @opt{compare}
+@deftypefn  {(scheme base)} @/ memq   obj list
+@deftypefnx {(scheme base)} @/ memv   obj list
+@deftypefnx {(scheme base)} @/ member obj list @opt{compare}
 Each procedure successively applies some test procedure to each element
 of @var{list} and returns the first sublist of @var{list} whose car
 satisfies that test procedure relative to @var{obj}.  They differ only
@@ -381,30 +403,36 @@ return a non-Boolean value.
 @end itemize
 
 @lisp
-(memq   101 '(100 101 102)) @ok{(101 102)} @aside{;; @value{R7RS} says unspecified}
+(memq   101 '(100 101 102)) @ok{(101 102)} @aside{;; @value{R7RS}: unspecified}
 (memv   101 '(100 101 102)) @ok{(101 102)}
 (member 7 '(100 101 102) +) @ok{(100 101 102)}
-(member 7 '(7 8 9) square)  @exception{wrong number of arguments}
 @end lisp
 
 @lisp
 (memq   'a '(a b c))                    @ok{(a b c)}
-(memq   'b '(a b c))                    @ok{(b c)}
-(member 'b '(a b c) eq?)                @ok{(b c)}
 (memq   'a '(b c d))                    @value{false}
 (memq   (list 'a) '(b (a) c))           @value{false}
 (memq   'a '(a b c))                    @ok{(a b c)}
+(memv   'b '(a b c))                    @ok{(b c)}
+(memv 'b '(a b . c))                    @ok{(b . c)}
+(member 'b '(a b c) eq?)                @ok{(b c)}
 (member (list 'a) '(b (a) c))           @ok{((a) c)}
 (member "B" '("a" "b" "c") string-ci=?) @ok{("b" "c")}
+(member 7 '(7 8 9) (lambda x #f))       @value{false}
+@end lisp
+
+@lisp
+(memv 'c '(a b . c))      @exception{type}
+(member 9 '(7 8 9) zero?) @exception{wrong number of arguments}
 @end lisp
 @end deftypefn
 
 @tindex list @subentry selectors @subentry assq
 @tindex list @subentry selectors @subentry assv
 @tindex list @subentry selectors @subentry assoc
-@deftypefn  @t{(scheme base)} @/ assq obj  alist
-@deftypefnx @t{(scheme base)} @/ assv obj  alist
-@deftypefnx @t{(scheme base)} @/ assoc obj alist @opt{compare}
+@deftypefn  {(scheme base)} @/ assq obj  alist
+@deftypefnx {(scheme base)} @/ assv obj  alist
+@deftypefnx {(scheme base)} @/ assoc obj alist @opt{compare}
 Each of these procedures successively applies some test procedure to the
 elements of @var{alist} and returns the first pair of @var{alist} whose
 car satisfies that test procedure relative to @var{obj} (``alist'' is
@@ -428,21 +456,49 @@ return a non-Boolean value.
 @end itemize
 
 @lisp
-(define e '((a 1) (b 2) (c 3)))
+(define p '((a 1) (b 2) (c 3)))
 
-(assq 'a e)                            @ok{(a 1)}
-(assq 'b e)                            @ok{(b 2)}
-(assq 'd e)                            @value{false}
+(assq 'a p)                            @ok{(a 1)}
+(assq 'b p)                            @ok{(b 2)}
+(assv 'd p)                            @value{false}
 (assq (list 'a) '(((a)) ((b)) ((c))))  @value{false}
 (assoc (list 'a) '(((a)) ((b)) ((c)))) @ok{((a))}
 (assoc 2.0 '((1 1) (2 4) (3 9)) =)     @ok{(2 4)}
-(assq 5 '((2 3) (5 7) (11 13)))        @ok{@i{unspecified}}
+(assq 5 '((2 3) (5 7) (11 13)))        @ok{(5 7)} @aside{;; @value{R7RS}: unspecified}
 (assv 5 '((2 3) (5 7) (11 13)))        @ok{(5 7)}
+@end lisp
+
+@lisp
+(define i '((a . 1) (b . 2) (c . 3)))
+
+(assq 'b i) @ok{(a . 1)}
+(assv 'c i) @ok{(c . 3)}
+(assq 'd p) @value{false}
+(assv 'b '((a . 1) (b . 2) . (c . 3))) @ok{(b . 2)}
+@end lisp
+
+@lisp
+(assv 'c '((a . 1) (b . 2) . (c . 3))) @exception{type}
+@end lisp
+
+@lisp
+(define dc '(("red"    . "rouge")
+             ("green"  . "vert")
+             ("blue"   . "bleu")
+             ("orange" . "orange")))
+
+(define (f e)
+  (let ((f (assoc e dc string=?)))
+    (and f (cdr f))))
+
+(f "green")  @ok{"vert"}
+(f "orange") @ok{"orange"}
+(f "purple") @value{false}
 @end lisp
 @end deftypefn
 
 @tindex list @subentry constructors @subentry list-copy
-@deftypefn @t{(scheme base)} @/ list-copy obj
+@deftypefn {(scheme base)} @/ list-copy obj
 Returns a newly allocated copy of the given @var{obj} if it is a list.
 Only the pairs themselves are copied; the cars of the result are the
 same (in the sense of @code{eqv?}) as the cars of @var{list}.  If
@@ -458,8 +514,29 @@ is returned unchanged.  It is an error if @var{obj} is a circular list.
 b @ok{(3 8 2 8)}
 a @ok{(1 8 2 8)}
 @end lisp
+
 @lisp
-(define circle (circular-list 0 1 2 3))
-(list-copy circle) @arrow{} @i{infinite loop} @aside{;; not caught}
+(list-copy '(a b . c))                           @ok{(a b . c)}
+(list-copy 'unchanged)                           @ok{unchanged}
+(eqv? '() (list-copy '()))                       @value{true}
+(eqv? list-copy ((lambda (x) x) list-copy))      @value{true}
+(eqv? (lambda (x) x) (list-copy (lambda (x) x))) @value{false}
+@end lisp
+
+@lisp
+(define i (cons (string-copy "one") (string-copy "two")))
+(define p (cons (car i) (cons (cdr i) '())))
+(eqv? (cdr i) (cdr (list-copy i))) @value{true}
+(eqv? (cdr p) (cdr (list-copy p))) @value{false}
+@end lisp
+
+@lisp
+(list-copy) @exception{wrong number of arguments}
+@end lisp
+
+@lisp
+(define c (circular-list 0 1 2))
+(circular-list? c) @value{true}
+(list-copy (circular-list 0 1 2)) @arrow{} @i{infinite loop} @aside{;; not caught}
 @end lisp
 @end deftypefn

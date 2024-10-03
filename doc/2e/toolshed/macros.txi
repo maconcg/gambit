@@ -35,13 +35,13 @@
 @end macro
 
 @macro ok {val}
-@inlinefmtifelse{html,@result{} @t{\val\},@result{} \val\}
+@result{} @inlinefmtifelse{html,@inlineraw{html,<span class="ok">\val\</span>},\val\}
 @end macro
 
 @alias aside = slanted
 
 @rmacro opt {arg}
-@inlinefmtifelse{html,@t{[}\arg\@t{]},[\arg\]}
+@inlinefmtifelse{html,@inlineraw{html,<span class="bracket">[</span>}\arg\@inlineraw{html,<span class="bracket">]</span>},[\arg\]}
 @end rmacro
 
 @macro quotedbl {text}
