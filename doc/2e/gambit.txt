@@ -50,8 +50,8 @@ Gambit v4.9.5 (September 20, 2024).
 **************
 
 The Gambit programming system is a complete implementation of the Scheme
-language aimed at portability, reliability, and efficiency.  It features
-two main programs: ‘gsi’, the Gambit Scheme interpreter, and ‘gsc’, the
+language aimed at portability, reliability, and speed.  It features two
+main programs: ‘gsi’, the Gambit Scheme interpreter, and ‘gsc’, the
 Gambit Scheme compiler.
 
    In its default configuration, Gambit provides a superset of the
