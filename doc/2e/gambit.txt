@@ -27,8 +27,8 @@ Index of procedures and syntactic forms
 Gambit
 ******
 
-Gambit is a complete implementation of the Scheme language aimed at
-portability, reliability, and efficiency.
+Gambit is a portable, reliable, and efficient implementation of the
+Scheme programming language.
 
    For the most up-to-date information on Gambit and related resources,
 visit the Gambit home page (https://gambitscheme.org).  Please report
