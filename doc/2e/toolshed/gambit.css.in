@@ -17,15 +17,7 @@ hr {
 }
 
 .chapter-level-extent pre {
-    background-color: %bg-dim%;
-    border-color: %border%;
-}
-
-
-dl.first-deftypefn {
-    dt.deftypefn, dt.deftypefnx {
-        font-family: monospace;
-    }
+    border-left-color: %fg-main%;
 }
 
 dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
@@ -33,7 +25,7 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
         color: %emphasis%;
     }
     dt span.category-def {
-        color: %fg-dim%;
+        color: %category-def%;
     }
     dd pre {
         .slanted {
@@ -43,20 +35,44 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
             color: %false%;
         }
         span.ok {
-            color: %fg-alt%;
+            color: %ok%;
         }
     }
 }
 
+dl.first-deftp {
+    background: linear-gradient(90deg, %bg-deftp%, 1px, %bg-dim%);
+}
+
 dl.first-deftypefn {
+    background: linear-gradient(90deg, %bg-deftypefn%, 1px, %bg-dim%);
+    span.sexp-paren {
+        color: %sexp-paren%;
+    }
+}
+
+dl.first-deftypevr {
+    background: linear-gradient(90deg, %bg-deftypevr%, 1px, %bg-dim%);
+}
+
+dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
+    border-top-color: %hr%;
     dt code.def-code-arguments, dd p var.var, dd li var.var {
-        color: %arg%;
+        color: %def-var%;
     }
     dt code.def-code-arguments span.bracket {
         color:%fg-main%;
     }
+    dd {
+        background-color: %bg-main%;
+    }
 }
+
 /* END COLORS */
+
+body {
+    font-family: sans-serif;
+}
 
 .top-level-extent, .chapter-level-extent, .appendix-level-extent {
     dd, .center, li, p:not(.nav-panel p) {
@@ -64,13 +80,57 @@ dl.first-deftypefn {
     }
 }
 
+dl.first-deftypefn {
+    dt.deftypefn, dt.deftypefnx {
+        font-family: monospace;
+        span.sexp-paren {
+            font-size: larger;
+        }    
+    }
+}
+
+dl.first-deftp, dl.first-deftypevr {
+    dt.deftp, dt.deftypevr {
+        strong.def-name {
+            font-family: inherit;
+        }
+    }
+}
+
+dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
+    max-width: 44em;
+    border-top-style: solid;
+    border-top-width: thin;
+    padding-top: 0.2em;
+    dt.deftp, dt.deftypefn, dt.deftypefnx, dt.deftypevr {
+        padding-left: 0.5em;
+        strong.def-name {
+            font-weight: normal;
+        }
+    }
+    dd {
+        margin-left: 0;
+        margin-top: 0.2em;
+        max-width: 100%;
+        padding-left: 2em;
+        padding-top: 1px;
+    }
+}
+
 .chapter-level-extent {
     dd p:not(.nav-panel p), p:not(.nav-panel p) {
         text-align: justify;
     }
-    pre {
-        border-style: solid;
-        padding: 0.3236em 0.2em;
+    div.example {
+        margin-left: 1.62em;
+    }
+        pre {
+            padding: 0 0 0 0.38em;
+            border-left-style: dotted;
+            border-left-width: thin;
+            font-size: 1.1278em;
+            font-weight: normal;
+        }
     }
 }
 

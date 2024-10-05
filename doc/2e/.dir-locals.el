@@ -1,2 +1,4 @@
-((nil . ((indent-tabs-mode . nil)))
+((auto-mode-alist . (("/makefile\\'" . makefile-mode)))
+ (nil . ((indent-tabs-mode . nil)))
+ (makefile-mode . ((fill-column . 79)))
  (texinfo-mode . ((fill-column . 72))))

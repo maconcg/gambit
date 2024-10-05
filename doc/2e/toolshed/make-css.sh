@@ -1,6 +1,34 @@
-# Colors are based on Protesilaos Stavrou's modus-themes.
-
 readonly template="${1:?}"
+
+# Light color scheme based on Protesilaos Stavrou's modus-operandi
+readonly l_bg_main='#ffffff' \
+         l_bg_dim='#f8f9fa' \
+         l_fg_main='#000000' \
+         l_fg_dim='#595959' \
+         l_fg_alt='#193668' \
+         l_border='#9f9f9f' \
+         l_red_faint='#7f0000' \
+         l_yellow_faint='#624416' \
+         l_blue_warmer='#3548cf' \
+         l_magenta='#721045' \
+         l_bg_red_subtle='#ffcfbf' \
+         l_bg_blue_subtle='#ccdfff' \
+         l_bg_yellow_subtle='#fff576'
+
+# Dark color scheme based on Protesilaos Stavrou's modus-vivendi
+readonly d_bg_main='#000000' \
+         d_bg_dim='#1e1e1e' \
+         d_fg_main='#ffffff' \
+         d_fg_dim='#989898' \
+         d_fg_alt='#c6daff' \
+         d_border='#646464' \
+         d_red_faint='#ff9580' \
+         d_yellow_faint='#d2b580' \
+         d_blue_warmer='#79a8ff' \
+         d_magenta='#feacd0' \
+         d_bg_red_subtle='#620f2a' \
+         d_bg_blue_subtle='#242679' \
+         d_bg_yellow_subtle='#4a4000'
 
 substitute() {
     sed -n "/^\/\* BEGIN COLORS \*\/\$/,/^\/\* END COLORS \*\/\$/ {
@@ -12,48 +40,63 @@ substitute() {
                     s/%bg-dim%/${bg_dim:?}/
                     s/%link%/${link:?}/
                     s/%link-visited%/${link_visited:?}/
-                    s/%arg%/${arg:?}/
-                    s/%border%/${border:?}/
+                    s/%def-var%/${def_var:?}/
                     s/%comment/${comment:?}/
                     s/%emphasis%/${emphasis:?}/
                     s/%false%/${false:?}/
                     s/%hr%/${hr:?}/
+                    s/%category-def%/${category_def:?}/
+                    s/%sexp-paren%/${sexp_paren:?}/
+                    s/%ok%/${ok:?}/
+                    s/%bg-deftp%/${bg_deftp:?}/
+                    s/%bg-deftypefn%/${bg_deftypefn:?}/
+                    s/%bg-deftypevr%/${bg_deftypevr:?}/
                     p
                 }
            }" "$template"
 }
 
-# Default, based on modus-operandi-tinted
-fg_main='#000000'
-fg_alt='#193668'
-fg_dim='#595959'
-bg_main='#fbf7f0'
-bg_dim='#efe9dd'
-link='#3548cf'
-link_visited='#721045'
-border='#9f9690'
-emphasis='#624416'
-false='#63192a'
-arg="$link_visited"
-comment="$fg_dim"
-hr="$border"
+# Default, based on modus-operandi
+bg_main="$l_bg_main"
+bg_dim="$l_bg_dim"
+fg_main="$l_fg_main"
+fg_dim="$l_fg_dim"
+fg_alt="$l_fg_alt"
+emphasis="$l_yellow_faint"
+link="$l_blue_warmer"
+link_visited="$link"
+false="$l_red_faint"
+def_var="$l_magenta"
+comment="$l_fg_dim"
+hr="$l_border"
+category_def="$l_fg_alt"
+sexp_paren="$l_fg_dim"
+ok="$l_fg_alt"
+bg_deftp="$l_bg_yellow_subtle"
+bg_deftypefn="$l_bg_blue_subtle"
+bg_deftypevr="$l_bg_red_subtle"
 
 substitute
 
-# Dark, based on modus-vivendi-tinted
-fg_main='#ffffff'
-fg_alt='#c6daff'
-fg_dim='#989898'
-bg_main='#0d0e1c'
-bg_dim='#1d2235'
-link='#79a8ff'
-link_visited='#feacd0'
-border='#61647a'
-emphasis='#d2b580'
-false='#f1b090'
-arg="$link_visited"
-comment="$fg_dim"
-hr="$border"
+# Dark mode
+bg_main="$d_bg_main"
+bg_dim="$d_bg_dim"
+fg_main="$d_fg_main"
+fg_dim="$d_fg_dim"
+fg_alt="$d_fg_alt"
+emphasis="$d_yellow_faint"
+link="$d_blue_warmer"
+link_visited="$link"
+false="$d_red_faint"
+def_var="$d_magenta"
+comment="$d_fg_dim"
+hr="$d_border"
+category_def="$d_fg_alt"
+sexp_paren="$d_fg_dim"
+ok="$d_fg_alt"
+bg_deftp="$d_bg_yellow_subtle"
+bg_deftypefn="$d_bg_blue_subtle"
+bg_deftypevr="$d_bg_red_subtle"
 
 echo
 echo '@media (prefers-color-scheme: dark) {'

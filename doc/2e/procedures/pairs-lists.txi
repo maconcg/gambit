@@ -3,7 +3,7 @@
 @chapter Pair and list procedures
 
 @tindex pair @subentry predicate @subentry pair?
-@deftypefn {(scheme base)} @/ pair? obj
+@deftypefn scheme/base @/ pair? obj
 Returns @code{#t} if @var{obj} is a pair.
 
 @lisp
@@ -17,7 +17,7 @@ Returns @code{#t} if @var{obj} is a pair.
 
 @cindex cons @subentry @code{cons} procedure
 @tindex pair @subentry constructor @subentry cons
-@deftypefn {(scheme base)} @/ cons @pari{obj} @parii{obj}
+@deftypefn scheme/base @/ cons @pari{obj} @parii{obj}
 Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
 @varii{obj}.  The pair is guaranteed to be different (in the sense of
 @code{eqv?}) from every existing object.
@@ -44,7 +44,7 @@ Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
 
 @cindex car @subentry @code{car} procedure
 @tindex pair @subentry selectors @subentry car
-@deftypefn {(scheme base)} @/ car pair
+@deftypefn scheme/base @/ car pair
 Returns the contents of the cdr field of @var{pair}.  If an attempt is
 made to take the car of the empty list, an exception that satisfies
 @code{type-exception?} is raised.
@@ -63,7 +63,7 @@ made to take the car of the empty list, an exception that satisfies
 
 @cindex cdr @subentry @code{cdr} procedure
 @tindex pair @subentry selectors @subentry cdr
-@deftypefn {(scheme base)} @/ cdr pair
+@deftypefn scheme/base @/ cdr pair
 Returns the contents of the cdr field of @var{pair}.  If an attempt is
 made to take the cdr of the empty list, an exception that satisfies
 @code{type-exception?} is raised.
@@ -75,78 +75,74 @@ made to take the cdr of the empty list, an exception that satisfies
 @end lisp
 
 @lisp
-(cdr '())          @exception{type}
-(cdr #(4 6 8))     @exception{type}
+(cdr '())      @exception{type}
+(cdr #(4 6 8)) @exception{type}
 @end lisp
 @end deftypefn
 
 @tindex pair @subentry mutators @subentry set-car!
-@deftypefn {(scheme base)} @/ set-car! pair obj
+@deftypefn scheme/base @/ set-car! pair obj
 Mutates @var{pair} by storing @var{obj} in the car field of @var{pair}.
 
 @lisp
 (define (f) (list 'not-a-constant-list))
 (set-car! (f) 3)
-
 (f) @ok{(not-a-constant-list)}
 @end lisp
 
 @lisp
 (define (g) '(constant-list))
 (set-car! (g) 3) @aside{;; @value{R7RS} says this is an error}
-
 (g) @ok{(3)}        @aside{;; current Gambit behavior}
 @end lisp
 @end deftypefn
 
 @tindex pair @subentry mutators @subentry set-cdr!
-@deftypefn {(scheme base)} @/ set-cdr! pair obj
+@deftypefn scheme/base @/ set-cdr! pair obj
 Mutates @var{pair} by storing @var{obj} in the cdr field of @var{pair}.
 
 @lisp
 (define (f) (list 'not-a-constant-list))
 (set-cdr! (f) 3)
-
 (f) @ok{(not-a-constant-list)}
 @end lisp
 
 @lisp
 (define (g) '(constant-list))
 (set-cdr! (g) 3)          @aside{;; @value{R7RS} says this is an error}
-
 (g) @ok{(constant-list . 3)} @aside{;; current Gambit behavior}
 @end lisp
 @end deftypefn
 
-@tindex pair @subentry selectors @subentry (scheme cxr) @sortas{scheme cxr}
-@deftypefn  {(scheme cxr)} @/ caar pair
-@deftypefnx {(scheme cxr)} @/ cadr pair
-@deftypefnx {(scheme cxr)} @/ cdar pair
-@deftypefnx {(scheme cxr)} @/ cddr pair
-@deftypefnx {(scheme cxr)} @/ caaar pair
-@deftypefnx {(scheme cxr)} @/ caadr pair
-@deftypefnx {(scheme cxr)} @/ cadar pair
-@deftypefnx {(scheme cxr)} @/ caddr pair
-@deftypefnx {(scheme cxr)} @/ cdaar pair
-@deftypefnx {(scheme cxr)} @/ cdadr pair
-@deftypefnx {(scheme cxr)} @/ cddar pair
-@deftypefnx {(scheme cxr)} @/ cdddr pair
-@deftypefnx {(scheme cxr)} @/ caaaar pair
-@deftypefnx {(scheme cxr)} @/ caaadr pair
-@deftypefnx {(scheme cxr)} @/ caadar pair
-@deftypefnx {(scheme cxr)} @/ caaddr pair
-@deftypefnx {(scheme cxr)} @/ cadaar pair
-@deftypefnx {(scheme cxr)} @/ cadadr pair
-@deftypefnx {(scheme cxr)} @/ caddar pair
-@deftypefnx {(scheme cxr)} @/ cadddr pair
-@deftypefnx {(scheme cxr)} @/ cdaaar pair
-@deftypefnx {(scheme cxr)} @/ cdaadr pair
-@deftypefnx {(scheme cxr)} @/ cdadar pair
-@deftypefnx {(scheme cxr)} @/ cdaddr pair
-@deftypefnx {(scheme cxr)} @/ cddaar pair
-@deftypefnx {(scheme cxr)} @/ cddadr pair
-@deftypefnx {(scheme cxr)} @/ cdddar pair
-@deftypefnx {(scheme cxr)} @/ cddddr pair
+@tindex pair @subentry selectors @subentry scheme/cxr
+@deftypefn  scheme/cxr @/ caar pair
+@deftypefnx scheme/cxr @/ cadr pair
+@deftypefnx scheme/cxr @/ cdar pair
+@deftypefnx scheme/cxr @/ cddr pair
+@deftypefnx scheme/cxr @/ caaar pair
+@deftypefnx scheme/cxr @/ caadr pair
+@deftypefnx scheme/cxr @/ cadar pair
+@deftypefnx scheme/cxr @/ caddr pair
+@deftypefnx scheme/cxr @/ cdaar pair
+@deftypefnx scheme/cxr @/ cdadr pair
+@deftypefnx scheme/cxr @/ cddar pair
+@deftypefnx scheme/cxr @/ cdddr pair
+@deftypefnx scheme/cxr @/ caaaar pair
+@deftypefnx scheme/cxr @/ caaadr pair
+@deftypefnx scheme/cxr @/ caadar pair
+@deftypefnx scheme/cxr @/ caaddr pair
+@deftypefnx scheme/cxr @/ cadaar pair
+@deftypefnx scheme/cxr @/ cadadr pair
+@deftypefnx scheme/cxr @/ caddar pair
+@deftypefnx scheme/cxr @/ cadddr pair
+@deftypefnx scheme/cxr @/ cdaaar pair
+@deftypefnx scheme/cxr @/ cdaadr pair
+@deftypefnx scheme/cxr @/ cdadar pair
+@deftypefnx scheme/cxr @/ cdaddr pair
+@deftypefnx scheme/cxr @/ cddaar pair
+@deftypefnx scheme/cxr @/ cddadr pair
+@deftypefnx scheme/cxr @/ cdddar pair
+@deftypefnx scheme/cxr @/ cddddr pair
 These 28 procedures are compositions of @code{car} and @code{cdr}.
 
 @lisp
@@ -177,7 +173,7 @@ These 28 procedures are compositions of @code{car} and @code{cdr}.
 @end deftypefn
 
 @tindex empty list @subentry predicate @subentry null?
-@deftypefn {(scheme base)} @/ null? obj
+@deftypefn scheme/base @/ null? obj
 Returns @code{#t} if @var{obj} is the empty list.
 
 @lisp
@@ -195,8 +191,8 @@ Returns @code{#t} if @var{obj} is the empty list.
 
 @tindex list @subentry predicates @subentry list?
 @tindex list @subentry predicates @subentry proper-list?
-@deftypefn  {(scheme base)} @/ list? obj
-@deftypefnx {(gambit list)} @/ proper-list? obj
+@deftypefn  scheme/base @/ list? obj
+@deftypefnx gambit/list @/ proper-list? obj
 Returns @code{#t} if @var{obj} is a proper list (@pxref{Pair and list
 jargon}).  By definition, a list of finite length is terminated by the
 empty list.
@@ -222,7 +218,7 @@ empty list.
 @end deftypefn
 
 @tindex list @subentry constructors @subentry make-list
-@deftypefn  {(scheme base)} @/ make-list k @opt{fill}
+@deftypefn scheme/base @/ make-list k @opt{fill}
 Returns a newly allocated list of @var{k} elements.  In the one-argument
 form, each element is initialized to a default value.  In the
 two-argument form, each element is initialized to @var{fill}.
@@ -250,7 +246,7 @@ integer, an exception that satisfies @code{range-exception?} is raised.
 
 @cindex lists @subentry @code{list} procedure
 @tindex list @subentry constructors @subentry list
-@deftypefn {(scheme base)} @/ list obj@dots{}
+@deftypefn scheme/base @/ list obj@dots{}
 Returns a newly allocated list consisting of its arguments.
 
 @lisp
@@ -261,7 +257,7 @@ Returns a newly allocated list consisting of its arguments.
 @end lisp
 @end deftypefn
 
-@deftypefn {(scheme base)} @/ length list
+@deftypefn scheme/base @/ length list
 Returns the length of @var{list}.
 
 @lisp
@@ -274,7 +270,7 @@ Returns the length of @var{list}.
 @end lisp
 @end deftypefn
 
-@deftypefn {(scheme base)} @/ append list@dots{} @opt{obj}
+@deftypefn scheme/base @/ append list@dots{} @opt{obj}
 The zero-argument form returns the empty list.  The one-argument form
 returns its argument, whatever that argument's type.  Each argument
 except the last, if present, must be a list.
@@ -302,7 +298,7 @@ except that it shares structure with the last argument, @var{obj}.
 @end lisp
 @end deftypefn
 
-@deftypefn {(scheme base)} @/ reverse list
+@deftypefn scheme/base @/ reverse list
 Returns a newly allocated list consisting of the elements of @var{list}
 in reverse order (excluding the terminating empty list).
 
@@ -319,7 +315,7 @@ in reverse order (excluding the terminating empty list).
 @end deftypefn
 
 @tindex list @subentry selectors @subentry list-tail
-@deftypefn {(scheme base)} @/ list-tail list k
+@deftypefn scheme/base @/ list-tail list k
 Returns a copy of @var{list} obtained by omitting the first @var{k}
 elements.  If @var{list} is a proper list, a proper list is returned; if
 @var{list} is an improper list, an improper list is returned
@@ -343,7 +339,7 @@ elements, an exception that satisfies @code{range-exception?} is raised.
 @end deftypefn
 
 @tindex list @subentry selectors @subentry list-ref
-@deftypefn {(scheme base)} @/ list-ref list k
+@deftypefn scheme/base @/ list-ref list k
 Returns element @var{k} of @var{list}.  Equivalent to @samp{(car
 (list-tail @slanted{list} @slanted{k}))}.  The @var{list} argument may
 be circular.
@@ -359,7 +355,7 @@ be circular.
 @end deftypefn
 
 @tindex list @subentry mutator @subentry list-set!
-@deftypefn {(scheme base)} @/ list-set! list k obj
+@deftypefn scheme/base @/ list-set! list k obj
 Mutates @var{list} by storing @var{obj} in element @var{k} of
 @var{list}.  It is an error if @var{k} is not a valid index of
 @var{list}.
@@ -378,9 +374,9 @@ ls @ok{(one two three)}
 @tindex list @subentry selectors @subentry memq
 @tindex list @subentry selectors @subentry memv
 @tindex list @subentry selectors @subentry member
-@deftypefn  {(scheme base)} @/ memq   obj list
-@deftypefnx {(scheme base)} @/ memv   obj list
-@deftypefnx {(scheme base)} @/ member obj list @opt{compare}
+@deftypefn  scheme/base @/ memq   obj list
+@deftypefnx scheme/base @/ memv   obj list
+@deftypefnx scheme/base @/ member obj list @opt{compare}
 Each procedure successively applies some test procedure to each element
 of @var{list} and returns the first sublist of @var{list} whose car
 satisfies that test procedure relative to @var{obj}.  They differ only
@@ -430,9 +426,9 @@ return a non-Boolean value.
 @tindex list @subentry selectors @subentry assq
 @tindex list @subentry selectors @subentry assv
 @tindex list @subentry selectors @subentry assoc
-@deftypefn  {(scheme base)} @/ assq obj  alist
-@deftypefnx {(scheme base)} @/ assv obj  alist
-@deftypefnx {(scheme base)} @/ assoc obj alist @opt{compare}
+@deftypefn  scheme/base @/ assq obj  alist
+@deftypefnx scheme/base @/ assv obj  alist
+@deftypefnx scheme/base @/ assoc obj alist @opt{compare}
 Each of these procedures successively applies some test procedure to the
 elements of @var{alist} and returns the first pair of @var{alist} whose
 car satisfies that test procedure relative to @var{obj} (``alist'' is
@@ -498,7 +494,7 @@ return a non-Boolean value.
 @end deftypefn
 
 @tindex list @subentry constructors @subentry list-copy
-@deftypefn {(scheme base)} @/ list-copy obj
+@deftypefn scheme/base @/ list-copy obj
 Returns a newly allocated copy of the given @var{obj} if it is a list.
 Only the pairs themselves are copied; the cars of the result are the
 same (in the sense of @code{eqv?}) as the cars of @var{list}.  If
