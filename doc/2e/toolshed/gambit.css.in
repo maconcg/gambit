@@ -126,6 +126,7 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
         div.example pre {
             border-left-style: dotted;
             border-left-width: thin;
+            font-size: 1.1em;
             padding-left: 0.3rem;
         }
     }
