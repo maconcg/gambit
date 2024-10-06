@@ -13,7 +13,7 @@ a:visited {
 }
 
 hr {
-    color: %hr%;
+    color: %border%;
 }
 
 .chapter-level-extent pre {
@@ -27,47 +27,51 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     dt span.category-def {
         color: %category-def%;
     }
-    dd pre {
-        .slanted {
-            color: %fg-dim%;
-        }
-        span.false {
-            color: %false%;
-        }
-        span.ok {
-            color: %ok%;
+    dd {
+        background-color: %bg-main%;
+        pre {
+            .slanted {
+                color: %fg-dim%;
+            }
+            span.false {
+                color: %false%;
+            }
+            span.ok {
+                color: %ok%;
+            }
         }
     }
 }
 
 dl.first-deftp {
-    background: linear-gradient(90deg, %bg-deftp%, 1px, %bg-dim%);
+    background-image: linear-gradient(160deg, %bg-deftp%a0, 6rem, %bg-deftp%2a 20rem),
+                      linear-gradient(160deg, %bg-dim%5f, 6rem, %bg-dim%d5 20rem);
 }
 
 dl.first-deftypefn {
-    background: linear-gradient(90deg, %bg-deftypefn%, 1px, %bg-dim%);
-    span.sexp-paren {
-        color: %sexp-paren%;
+    background-image: linear-gradient(160deg, %bg-deftypefn%a0, 6rem, %bg-deftypefn%2a 20rem),
+                      linear-gradient(160deg, %bg-dim%5f, 6rem, %bg-dim%d5 20rem);
+    dt.deftypefn, dt.deftypefnx {
+        span.sexp-paren {
+            color: %fg-dim%;
+        }
     }
 }
 
 dl.first-deftypevr {
-    background: linear-gradient(90deg, %bg-deftypevr%, 1px, %bg-dim%);
+    background-image: linear-gradient(160deg, %bg-deftypevr%a0, 6rem, %bg-deftypevr%2a 20rem),
+                      linear-gradient(160deg, %bg-dim%5f, 6rem, %bg-dim%d5 20rem);
 }
 
 dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
-    border-top-color: %hr%;
+    border-top-color: %border%;
     dt code.def-code-arguments, dd p var.var, dd li var.var {
         color: %def-var%;
     }
     dt code.def-code-arguments span.bracket {
         color:%fg-main%;
     }
-    dd {
-        background-color: %bg-main%;
-    }
 }
-
 /* END COLORS */
 
 body {
@@ -76,44 +80,7 @@ body {
 
 .top-level-extent, .chapter-level-extent, .appendix-level-extent {
     dd, .center, li, p:not(.nav-panel p) {
-        max-width: 40em;
-    }
-}
-
-dl.first-deftypefn {
-    dt.deftypefn, dt.deftypefnx {
-        font-family: monospace;
-        span.sexp-paren {
-            font-size: larger;
-        }    
-    }
-}
-
-dl.first-deftp, dl.first-deftypevr {
-    dt.deftp, dt.deftypevr {
-        strong.def-name {
-            font-family: inherit;
-        }
-    }
-}
-
-dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
-    max-width: 44em;
-    border-top-style: solid;
-    border-top-width: thin;
-    padding-top: 0.2em;
-    dt.deftp, dt.deftypefn, dt.deftypefnx, dt.deftypevr {
-        padding-left: 0.5em;
-        strong.def-name {
-            font-weight: normal;
-        }
-    }
-    dd {
-        margin-left: 0;
-        margin-top: 0.2em;
-        max-width: 100%;
-        padding-left: 2em;
-        padding-top: 1px;
+        width: 40rem;
     }
 }
 
@@ -121,22 +88,41 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     dd p:not(.nav-panel p), p:not(.nav-panel p) {
         text-align: justify;
     }
-    div.example {
-        margin-left: 1.62em;
-    }
-        pre {
-            padding: 0 0 0 0.38em;
-            border-left-style: dotted;
-            border-left-width: thin;
-            font-size: 1.1278em;
+}
+
+dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
+    border-top-style: solid;
+    border-top-width: thin;
+    padding-top: 0.1rem;
+    width: 44rem;
+    dt.deftp, dt.deftypefn, dt.deftypefnx, dt.deftypevr {
+        align-content: center;
+        padding-left: 0.3rem;
+        strong.def-name {
             font-weight: normal;
         }
     }
-}
-
-dl.first-deftypevr dt.deftypevr, dl.first-deftp dt.deftp {
-    span strong {
-        font-family: normal;
-        font-weight: normal;
+    dt.deftp, dt.deftypevr {
+        span, code, strong {
+            font-family: inherit;
+        }
+    }
+    dt.deftypefn, dt.deftypefnx {
+        font-family: monospace;
+    }
+    dd {
+        margin-left: 0;
+        margin-top: 0.1rem;
+        padding-left: 2rem;
+        width: 100%;
+        p {
+            margin-top: 0;
+            padding-top: 0.5rem;
+        }
+        div.example pre {
+            border-left-style: dotted;
+            border-left-width: thin;
+            padding-left: 0.3rem;
+        }
     }
 }

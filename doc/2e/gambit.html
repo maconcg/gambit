@@ -68,32 +68,40 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     dt span.category-def {
         color: #193668;
     }
-    dd pre {
-        .slanted {
-            color: #595959;
-        }
-        span.false {
-            color: #7f0000;
-        }
-        span.ok {
-            color: #193668;
+    dd {
+        background-color: #ffffff;
+        pre {
+            .slanted {
+                color: #595959;
+            }
+            span.false {
+                color: #193668;
+            }
+            span.ok {
+                color: #193668;
+            }
         }
     }
 }
 
 dl.first-deftp {
-    background: linear-gradient(90deg, #fff576, 1px, #f8f9fa);
+    background-image: linear-gradient(160deg, #f0e3c0a0, 6rem, #f0e3c02a 20rem),
+                      linear-gradient(160deg, #f8f9fa5f, 6rem, #f8f9fad5 20rem);
 }
 
 dl.first-deftypefn {
-    background: linear-gradient(90deg, #ccdfff, 1px, #f8f9fa);
-    span.sexp-paren {
-        color: #595959;
+    background-image: linear-gradient(160deg, #ccdfffa0, 6rem, #ccdfff2a 20rem),
+                      linear-gradient(160deg, #f8f9fa5f, 6rem, #f8f9fad5 20rem);
+    dt.deftypefn, dt.deftypefnx {
+        span.sexp-paren {
+            color: #595959;
+        }
     }
 }
 
 dl.first-deftypevr {
-    background: linear-gradient(90deg, #ffcfbf, 1px, #f8f9fa);
+    background-image: linear-gradient(160deg, #f1c8b5a0, 6rem, #f1c8b52a 20rem),
+                      linear-gradient(160deg, #f8f9fa5f, 6rem, #f8f9fad5 20rem);
 }
 
 dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
@@ -104,11 +112,7 @@ dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
     dt code.def-code-arguments span.bracket {
         color:#000000;
     }
-    dd {
-        background-color: #ffffff;
-    }
 }
-
 
 @media (prefers-color-scheme: dark) {
     body {
@@ -139,32 +143,40 @@ dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
         dt span.category-def {
             color: #c6daff;
         }
-        dd pre {
-            .slanted {
-                color: #989898;
-            }
-            span.false {
-                color: #ff9580;
-            }
-            span.ok {
-                color: #c6daff;
+        dd {
+            background-color: #000000;
+            pre {
+                .slanted {
+                    color: #989898;
+                }
+                span.false {
+                    color: #c6daff;
+                }
+                span.ok {
+                    color: #c6daff;
+                }
             }
         }
     }
     
     dl.first-deftp {
-        background: linear-gradient(90deg, #4a4000, 1px, #1e1e1e);
+        background-image: linear-gradient(160deg, #462f20a0, 6rem, #462f202a 20rem),
+                          linear-gradient(160deg, #1e1e1e5f, 6rem, #1e1e1ed5 20rem);
     }
     
     dl.first-deftypefn {
-        background: linear-gradient(90deg, #242679, 1px, #1e1e1e);
-        span.sexp-paren {
-            color: #989898;
+        background-image: linear-gradient(160deg, #242679a0, 6rem, #2426792a 20rem),
+                          linear-gradient(160deg, #1e1e1e5f, 6rem, #1e1e1ed5 20rem);
+        dt.deftypefn, dt.deftypefnx {
+            span.sexp-paren {
+                color: #989898;
+            }
         }
     }
     
     dl.first-deftypevr {
-        background: linear-gradient(90deg, #620f2a, 1px, #1e1e1e);
+        background-image: linear-gradient(160deg, #49191aa0, 6rem, #49191a2a 20rem),
+                          linear-gradient(160deg, #1e1e1e5f, 6rem, #1e1e1ed5 20rem);
     }
     
     dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
@@ -175,11 +187,7 @@ dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
         dt code.def-code-arguments span.bracket {
             color:#ffffff;
         }
-        dd {
-            background-color: #000000;
-        }
     }
-    
 }
 
 body {
@@ -188,44 +196,7 @@ body {
 
 .top-level-extent, .chapter-level-extent, .appendix-level-extent {
     dd, .center, li, p:not(.nav-panel p) {
-        max-width: 40em;
-    }
-}
-
-dl.first-deftypefn {
-    dt.deftypefn, dt.deftypefnx {
-        font-family: monospace;
-        span.sexp-paren {
-            font-size: larger;
-        }    
-    }
-}
-
-dl.first-deftp, dl.first-deftypevr {
-    dt.deftp, dt.deftypevr {
-        strong.def-name {
-            font-family: inherit;
-        }
-    }
-}
-
-dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
-    max-width: 44em;
-    border-top-style: solid;
-    border-top-width: thin;
-    padding-top: 0.2em;
-    dt.deftp, dt.deftypefn, dt.deftypefnx, dt.deftypevr {
-        padding-left: 0.5em;
-        strong.def-name {
-            font-weight: normal;
-        }
-    }
-    dd {
-        margin-left: 0;
-        margin-top: 0.2em;
-        max-width: 100%;
-        padding-left: 2em;
-        padding-top: 1px;
+        width: 40rem;
     }
 }
 
@@ -233,23 +204,42 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     dd p:not(.nav-panel p), p:not(.nav-panel p) {
         text-align: justify;
     }
-    div.example {
-        margin-left: 1.62em;
-    }
-        pre {
-            padding: 0 0 0 0.38em;
-            border-left-style: dotted;
-            border-left-width: thin;
-            font-size: 1.1278em;
+}
+
+dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
+    border-top-style: solid;
+    border-top-width: thin;
+    padding-top: 0.1rem;
+    width: 44rem;
+    dt.deftp, dt.deftypefn, dt.deftypefnx, dt.deftypevr {
+        align-content: center;
+        padding-left: 0.3rem;
+        strong.def-name {
             font-weight: normal;
         }
     }
-}
-
-dl.first-deftypevr dt.deftypevr, dl.first-deftp dt.deftp {
-    span strong {
-        font-family: normal;
-        font-weight: normal;
+    dt.deftp, dt.deftypevr {
+        span, code, strong {
+            font-family: inherit;
+        }
+    }
+    dt.deftypefn, dt.deftypefnx {
+        font-family: monospace;
+    }
+    dd {
+        margin-left: 0;
+        margin-top: 0.1rem;
+        padding-left: 2rem;
+        width: 100%;
+        p {
+            margin-top: 0;
+            padding-top: 0.5rem;
+        }
+        div.example pre {
+            border-left-style: dotted;
+            border-left-width: thin;
+            padding-left: 0.3rem;
+        }
     }
 }
 
@@ -260,8 +250,6 @@ dl.first-deftypevr dt.deftypevr, dl.first-deftp dt.deftp {
 </head>
 
 <body lang="en">
-
-
 
 
 

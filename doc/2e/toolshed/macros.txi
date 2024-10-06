@@ -47,11 +47,3 @@
 @macro quotedbl {text}
 @inlinefmtifelse{tex,``\text\'',@quotedblleft{}\text\@quotedblright{}}
 @end macro
-
-@macro startdef
-@inlineraw{html,<span class="gambit-definition">}
-@end macro
-
-@macro enddef
-@inlineraw{html,</span>}
-@end macro
