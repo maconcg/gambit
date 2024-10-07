@@ -1,6 +1,8 @@
 **/.stamp
-gambit-np.html
+gambit.incolor.txi
+gambit*.html
+procedures/*.incolor.txi
+toolshed/colorize-examples.sed
 toolshed/gambit.css
 *.info
-gambit-html/
-gambit-html-np/
+gambit-html*/

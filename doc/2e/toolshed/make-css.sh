@@ -1,5 +1,3 @@
-set -e -f -u
-
 readonly template="$1"
 
 . toolshed/modus-operandi-colors.sh

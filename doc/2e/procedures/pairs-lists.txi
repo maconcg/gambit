@@ -25,7 +25,7 @@ Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
 @lisp
 (cons 'a '())        @ok{(a)}
 (cons '(a) '(b c d)) @ok{((a) b c d)}
-(cons @string{a} '(b c))    @ok{("a" b c)}
+(cons "a" '(b c))    @ok{("a" b c)}
 (cons 'a 3)          @ok{(a . 3)}
 (cons '(a b) 'c)     @ok{((a b) . c)}
 @end lisp
@@ -85,13 +85,13 @@ made to take the cdr of the empty list, an exception that satisfies
 Mutates @var{pair} by storing @var{obj} in the car field of @var{pair}.
 
 @lisp
-(@syntax{define} (f) (list 'not-a-constant-list))
+(define (f) (list 'not-a-constant-list))
 (set-car! (f) 3)
 (f) @ok{(not-a-constant-list)}
 @end lisp
 
 @lisp
-(@syntax{define} (g) '(constant-list))
+(define (g) '(constant-list))
 (set-car! (g) 3) @aside{;; @value{R7RS} says this is an error}
 (g) @ok{(3)}        @aside{;; current Gambit behavior}
 @end lisp
@@ -102,13 +102,13 @@ Mutates @var{pair} by storing @var{obj} in the car field of @var{pair}.
 Mutates @var{pair} by storing @var{obj} in the cdr field of @var{pair}.
 
 @lisp
-(@syntax{define} (f) (list 'not-a-constant-list))
+(define (f) (list 'not-a-constant-list))
 (set-cdr! (f) 3)
 (f) @ok{(not-a-constant-list)}
 @end lisp
 
 @lisp
-(@syntax{define} (g) '(constant-list))
+(define (g) '(constant-list))
 (set-cdr! (g) 3)          @aside{;; @value{R7RS} says this is an error}
 (g) @ok{(constant-list . 3)} @aside{;; current Gambit behavior}
 @end lisp
@@ -146,7 +146,7 @@ Mutates @var{pair} by storing @var{obj} in the cdr field of @var{pair}.
 These 28 procedures are compositions of @code{car} and @code{cdr}.
 
 @lisp
-(@syntax{define} l '((a b) (c) d (e (f) g)))
+(define l '((a b) (c) d (e (f) g)))
 (cadr l)             @ok{(c)}
 (car (cdr l))        @ok{(c)}
 (cddr '(a b c . d))  @ok{(c . d)}
@@ -159,7 +159,7 @@ These 28 procedures are compositions of @code{car} and @code{cdr}.
 @end lisp
 
 @lisp
-(@syntax{define} circle (circular-list 'a 'b 'c))
+(define circle (circular-list 'a 'b 'c))
 (car circle)    @ok{a}
 (cadr circle)   @ok{b}
 (caddr circle)  @ok{c}
@@ -168,7 +168,7 @@ These 28 procedures are compositions of @code{car} and @code{cdr}.
 
 @lisp
 (cdar '(a . b))   @exception{type}
-(cddr (list @char{f})) @exception{type}
+(cddr (list #\f)) @exception{type}
 @end lisp
 @end deftypefn
 
@@ -179,11 +179,11 @@ Returns @code{#t} if @var{obj} is the empty list.
 @lisp
 (null? '())    @value{true}
 (null? (list)) @value{true}
-(null? @char{null}) @value{false}
+(null? #\null) @value{false}
 (null? #!eof)  @value{false}
 (null? #f)     @value{false}
 (null? 0)      @value{false}
-(null? @string{})     @value{false}
+(null? "")     @value{false}
 (null? #())    @value{false}
 (null? (void)) @value{false}
 @end lisp
@@ -205,13 +205,13 @@ empty list.
 (list? (list 0))              @value{true}
 (list? '(a . b))              @value{false}
 (list? list)                  @value{false}
-(list? @string{list})                @value{false}
+(list? "list")                @value{false}
 (list? #(0 1 2))              @value{false}
 (list? (circular-list 0 1 2)) @value{false}
 @end lisp
 
 @lisp
-(@syntax{let} ((x (list 'a)))
+(let ((x (list 'a)))
   (set-cdr! x x)
   (list? x)) @value{false}
 @end lisp
@@ -253,7 +253,7 @@ Returns a newly allocated list consisting of its arguments.
 (list 'a (+ 3 4) 'c)         @ok{(a 7 c)}
 (list)                       @ok{()}
 ((car (list list)) 'list)    @ok{(list)}
-(eqv? (list @char{l}) (list @char{l})) @value{false}
+(eqv? (list #\l) (list #\l)) @value{false}
 @end lisp
 @end deftypefn
 
@@ -261,7 +261,7 @@ Returns a newly allocated list consisting of its arguments.
 Returns the length of @var{list}.
 
 @lisp
-(@syntax{define} circle (circular-list 'x 'y 'z))
+(define circle (circular-list 'x 'y 'z))
 (length '(a b c))            @ok{3}
 (length '(a (b) (c d e)))    @ok{3}
 (length '())                 @ok{0}
@@ -291,7 +291,7 @@ except that it shares structure with the last argument, @var{obj}.
 @end lisp
 
 @lisp
-(@syntax{define} l (list 'f 'g 'h))
+(define l (list 'f 'g 'h))
 (eq?    l (append (append) l)) @value{true}
 (eq?    l (append l (append))) @value{false}
 (equal? l (append l (append))) @value{true}
@@ -308,7 +308,7 @@ in reverse order (excluding the terminating empty list).
 @end lisp
 
 @lisp
-(@syntax{define} l (list 'a 'b 'c))
+(define l (list 'a 'b 'c))
 (eq?    l (reverse (reverse l))) @value{false}
 (equal? l (reverse (reverse l))) @value{true}
 @end lisp
@@ -361,13 +361,13 @@ Mutates @var{list} by storing @var{obj} in element @var{k} of
 @var{list}.
 
 @lisp
-(@syntax{define} ls (list 'one 'two 'five!))
+(define ls (list 'one 'two 'five!))
 (list-set! ls 2 'three)
 ls @ok{(one two three)}
 @end lisp
 
 @lisp
-(list-set! '(0 1 2) 1 @string{oops}) @aside{;; @value{R7RS} says this is an error}
+(list-set! '(0 1 2) 1 "oops") @aside{;; @value{R7RS} says this is an error}
 @end lisp
 @end deftypefn
 
@@ -413,8 +413,8 @@ return a non-Boolean value.
 (memv   'b '(a b . c))                  @ok{(b . c)}
 (member 'b '(a b c) eq?)                @ok{(b c)}
 (member (list 'a) '(b (a) c))           @ok{((a) c)}
-(member @string{B} '(@string{a} @string{b} @string{c}) string-ci=?) @ok{("b" "c")}
-(member 7 '(7 8 9) (@syntax{lambda} x #f))       @value{false}
+(member "B" '("a" "b" "c") string-ci=?) @ok{("b" "c")}
+(member 7 '(7 8 9) (lambda x #f))       @value{false}
 @end lisp
 
 @lisp
@@ -452,7 +452,7 @@ return a non-Boolean value.
 @end itemize
 
 @lisp
-(@syntax{define} p '((a 1) (b 2) (c 3)))
+(define p '((a 1) (b 2) (c 3)))
 
 (assq 'a p)                            @ok{(a 1)}
 (assq 'b p)                            @ok{(b 2)}
@@ -465,7 +465,7 @@ return a non-Boolean value.
 @end lisp
 
 @lisp
-(@syntax{define} i '((a . 1) (b . 2) (c . 3)))
+(define i '((a . 1) (b . 2) (c . 3)))
 
 (assq 'b i) @ok{(a . 1)}
 (assv 'c i) @ok{(c . 3)}
@@ -478,18 +478,18 @@ return a non-Boolean value.
 @end lisp
 
 @lisp
-(@syntax{define} dc '((@string{red}    . @string{rouge})
-             (@string{green}  . @string{vert})
-             (@string{blue}   . @string{bleu})
-             (@string{orange} . @string{orange})))
+(define dc '(("red"    . "rouge")
+             ("green"  . "vert")
+             ("blue"   . "bleu")
+             ("orange" . "orange")))
 
-(@syntax{define} (f e)
-  (@syntax{let} ((f (assoc e dc string=?)))
+(define (f e)
+  (let ((f (assoc e dc string=?)))
     (and f (cdr f))))
 
-(f @string{green})  @ok{"vert"}
-(f @string{orange}) @ok{"orange"}
-(f @string{purple}) @value{false}
+(f "green")  @ok{"vert"}
+(f "orange") @ok{"orange"}
+(f "purple") @value{false}
 @end lisp
 @end deftypefn
 
@@ -503,8 +503,8 @@ the same in the sense of @code{eqv?}.  An @var{obj} which is not a list
 is returned unchanged.  It is an error if @var{obj} is a circular list.
 
 @lisp
-(@syntax{define} a '(1 8 2 8))    @aside{;; a may be immutable}
-(@syntax{define} b (list-copy a))
+(define a '(1 8 2 8))    @aside{;; a may be immutable}
+(define b (list-copy a))
 (set-car! b 3)           @aside{;; b is mutable}
 
 b @ok{(3 8 2 8)}
@@ -515,13 +515,13 @@ a @ok{(1 8 2 8)}
 (list-copy '(a b . c))                           @ok{(a b . c)}
 (list-copy 'unchanged)                           @ok{unchanged}
 (eqv? '() (list-copy '()))                       @value{true}
-(eqv? list-copy ((@syntax{lambda} (x) x) list-copy))      @value{true}
-(eqv? (@syntax{lambda} (x) x) (list-copy (@syntax{lambda} (x) x))) @value{false}
+(eqv? list-copy ((lambda (x) x) list-copy))      @value{true}
+(eqv? (lambda (x) x) (list-copy (lambda (x) x))) @value{false}
 @end lisp
 
 @lisp
-(@syntax{define} i (cons (string-copy @string{one}) (string-copy @string{two})))
-(@syntax{define} p (cons (car i) (cons (cdr i) '())))
+(define i (cons (string-copy "one") (string-copy "two")))
+(define p (cons (car i) (cons (cdr i) '())))
 (eqv? (cdr i) (cdr (list-copy i))) @value{true}
 (eqv? (cdr p) (cdr (list-copy p))) @value{false}
 @end lisp
@@ -531,7 +531,7 @@ a @ok{(1 8 2 8)}
 @end lisp
 
 @lisp
-(@syntax{define} c (circular-list 0 1 2))
+(define c (circular-list 0 1 2))
 (circular-list? c) @value{true}
 (list-copy (circular-list 0 1 2)) @arrow{} @i{infinite loop} @aside{;; not caught}
 @end lisp

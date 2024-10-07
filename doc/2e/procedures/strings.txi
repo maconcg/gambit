@@ -5,15 +5,15 @@
 Returns @code{#t} if @var{obj} is a string.
 
 @lisp
-(string? @string{}) @value{true}
-(string? @string{}) @value{true}
+(string? "")       @value{true}
+(string? (string)) @value{true}
 @end lisp
 
 @lisp
-(string? @char{a})                    @value{false}
+(string? #\a)                    @value{false}
 (string? 'string)                @value{false}
-(string? '(@char{c} @char{h} @char{a} @char{r} @char{s})) @value{false}
-(string? #(@char{c} @char{h} @char{a} @char{r} @char{s})) @value{false}
+(string? '(#\c #\h #\a #\r #\s)) @value{false}
+(string? #(#\c #\h #\a #\r #\s)) @value{false}
 @end lisp
 @end deftypefn
 
@@ -33,11 +33,11 @@ integer, an exception that satisfies @code{range-exception?} is raised.
 @lisp
 (make-string 0)                 @ok{""}
 (string-length (make-string 4)) @ok{4}
-(make-string 4 @char{g})             @ok{"gggg"}
+(make-string 4 #\g)             @ok{"gggg"}
 @end lisp
 
 @lisp
-(make-string 4 @string{g}) @exception{type}
+(make-string 4 "g") @exception{type}
 (make-string 4.5)   @exception{type}
 (make-string -1)    @exception{range}
 @end lisp
@@ -50,8 +50,8 @@ The order of the arguments is preserved.  Analogous to @code{list}
 
 @lisp
 (string)                               @ok{""}
-(string @char{G} @char{a} @char{m} @char{b} @char{i} @char{t})       @ok{"Gambit"}
-(apply string (string->list @string{Gambit})) @ok{"Gambit"}
+(string #\G #\a #\m #\b #\i #\t)       @ok{"Gambit"}
+(apply string (string->list "Gambit")) @ok{"Gambit"}
 @end lisp
 @end deftypefn
 
@@ -60,8 +60,8 @@ Returns the number of characters in @var{string}.
 
 @lisp
 (string-length (make-string 5)) @ok{5}
-(string-length @string{})              @ok{0}
-(string-length @string{lambda})        @ok{6}
+(string-length "")              @ok{0}
+(string-length "lambda")        @ok{6}
 @end lisp
 @end deftypefn
 
@@ -71,11 +71,11 @@ not a valid index of @var{string}, an exception that satisfies
 @code{range-exception?} is raised.
 
 @lisp
-(string-ref @string{zero-origin indexing} 0) @ok{#\z}
+(string-ref "zero-origin indexing" 0) @ok{#\z}
 @end lisp
 
 @lisp
-(@syntax{define} s @string{off by one})
+(define s "off by one")
 (string-ref s (- (string-length s) 1)) @ok{#\e}
 (string-ref s (string-length s))       @exception{range}
 @end lisp
@@ -89,12 +89,12 @@ Gambit extends the @value{R7RS} description of @code{string=?} to accept
 any number of arguments.
 
 @lisp
-(string=? @string{abc} (string @char{a} @char{b} @char{c})) @value{true}
-(string=? @string{abcd} @string{Abcd})              @value{false}
+(string=? "abc" (string #\a #\b #\c)) @value{true}
+(string=? "abcd" "Abcd")              @value{false}
 (string=?)                            @value{true}
 (string=? (string))                   @value{true}
-(string=? @string{a} @string{a} @string{a})                @value{true}
-(string=? @string{a} @char{a})                    @exception{type}
+(string=? "a" "a" "a")                @value{true}
+(string=? "a" #\a)                    @exception{type}
 @end lisp
 @end deftypefn
 
@@ -116,16 +116,16 @@ Gambit extends the @value{R7RS} descriptions of these procedures to
 accept any number of arguments.
 
 @lisp
-(string<=? @string{g} @string{g}) @value{false}
-(string>=? @string{g} @string{g}) @value{false}
-(string<?  @string{g} @string{g}) @value{false}
-(string>?  @string{g} @string{g}) @value{false}
+(string<=? "g" "g") @value{false}
+(string>=? "g" "g") @value{false}
+(string<?  "g" "g") @value{false}
+(string>?  "g" "g") @value{false}
 
-(string<? @string{G} @string{g})  @value{true}
-(string>? @string{G} @string{g})  @value{false}
+(string<? "G" "g")  @value{true}
+(string>? "G" "g")  @value{false}
 
-(string<? @string{gg} @string{g}) @value{false}
-(string>? @string{gg} @string{g}) @value{true}
+(string<? "gg" "g") @value{false}
+(string>? "gg" "g") @value{true}
 @end lisp
 @end deftypefn
 
@@ -139,28 +139,28 @@ applied to each @var{string} and then that predicate's non-@samp{-ci}
 counterpart were applied to those case-folded arguments.
 
 @lisp
-(string-ci=?  @string{G} @string{g})                             @value{true}
-(apply string=? (map string-foldcase '(@string{G} @string{g})))  @value{true}
+(string-ci=?  "G" "g")                             @value{true}
+(apply string=? (map string-foldcase '("G" "g")))  @value{true}
 @end lisp
 
 @lisp
-(string-ci>=? @string{G} @string{g})                             @value{true}
-(apply string<=? (map string-foldcase '(@string{G} @string{g}))) @value{true}
+(string-ci>=? "G" "g")                             @value{true}
+(apply string<=? (map string-foldcase '("G" "g"))) @value{true}
 @end lisp
 
 @lisp
-(string-ci<=? @string{g} @string{G})                             @value{true}
-(apply string<=? (map string-foldcase '(@string{g} @string{G}))) @value{true}
+(string-ci<=? "g" "G")                             @value{true}
+(apply string<=? (map string-foldcase '("g" "G"))) @value{true}
 @end lisp
 
 @lisp
-(string-ci<?  @string{G} @string{g})                             @value{false}
-(apply string<? (map string-foldcase '(@string{G} @string{g})))  @value{false}
+(string-ci<?  "G" "g")                             @value{false}
+(apply string<? (map string-foldcase '("G" "g")))  @value{false}
 @end lisp
 
 @lisp
-(string-ci>?  @string{g} @string{G})                             @value{false}
-(apply string>? (map string-foldcase '(@string{g} @string{G})))  @value{false}
+(string-ci>?  "g" "G")                             @value{false}
+(apply string>? (map string-foldcase '("g" "G")))  @value{false}
 @end lisp
 @end deftypefn
 
@@ -179,19 +179,19 @@ that language-sensitive mappings and foldings are not used.
 @set WeiB Wei@ss{}
 @set weiB wei@ss{}
 @lisp
-(string-downcase @string{@value{Etoc}}) @ok{"@value{etoc}"}
-(string-foldcase @string{@value{Etoc}}) @ok{"@value{etoo}"}
-(string-upcase   @string{@value{Etoc}}) @ok{"@value{ETOS}"}
-(string-downcase @string{@value{ETOS}}) @ok{"@value{etoo}"}
-(string-foldcase @string{@value{ETOS}}) @ok{"@value{etoo}"}
+(string-downcase "@value{Etoc}") @ok{"@value{etoc}"}
+(string-foldcase "@value{Etoc}") @ok{"@value{etoo}"}
+(string-upcase   "@value{Etoc}") @ok{"@value{ETOS}"}
+(string-downcase "@value{ETOS}") @ok{"@value{etoo}"}
+(string-foldcase "@value{ETOS}") @ok{"@value{etoo}"}
 @end lisp
 
 @lisp
-(string-downcase @string{@value{WeiB}})  @ok{"@value{weiB}"}
-(string-foldcase @string{@value{WeiB}})  @ok{"weiss"}
-(string-upcase   @string{@value{WeiB}})  @ok{"WEISS"}
-(string-downcase @string{WEISS}) @ok{"weiss"}
-(string-foldcase @string{WEISS}) @ok{"weiss"}
+(string-downcase "@value{WeiB}")  @ok{"@value{weiB}"}
+(string-foldcase "@value{WeiB}")  @ok{"weiss"}
+(string-upcase   "@value{WeiB}")  @ok{"WEISS"}
+(string-downcase "WEISS") @ok{"weiss"}
+(string-foldcase "WEISS") @ok{"weiss"}
 @end lisp
 @end deftypefn
 
@@ -202,11 +202,11 @@ of the characters in the given @var{strings}.
 
 @lisp
 (string-append)                    @ok{""}
-(string-append @string{})                 @ok{""}
-(string-append @string{hello} @string{world})    @ok{"helloworld"}
-(string-append @string{hello} @string{} @string{world}) @ok{"helloworld"}
-(string-append @string{hello } @string{ world})   @ok{"hello  world"}
-(string-append @string{hello} @string{ } @string{world}) @ok{"hello world"}
+(string-append "")                 @ok{""}
+(string-append "hello" "world")    @ok{"helloworld"}
+(string-append "hello" "" "world") @ok{"helloworld"}
+(string-append "hello " " world")   @ok{"hello  world"}
+(string-append "hello" " " "world") @ok{"hello world"}
 @end lisp
 @end deftypefn
 
@@ -225,16 +225,16 @@ inverses so far as @code{equal?} is concerned.  If either @var{start} or
 satisfies @code{range-exception?} is raised.
 
 @lisp
-(string->list @string{scheme})     @ok{(#\s #\c #\h #\e #\m #\e)}
-(string->list @string{scheme} 1)   @ok{(#\c #\h #\e #\m #\e)}
-(string->list @string{scheme} 2 6) @ok{(#\h #\e #\m #\e)}
-(string->list @string{scheme} 6)   @ok{()}
-(string->list @string{scheme} 6 6) @ok{()}
+(string->list "scheme")     @ok{(#\s #\c #\h #\e #\m #\e)}
+(string->list "scheme" 1)   @ok{(#\c #\h #\e #\m #\e)}
+(string->list "scheme" 2 6) @ok{(#\h #\e #\m #\e)}
+(string->list "scheme" 6)   @ok{()}
+(string->list "scheme" 6 6) @ok{()}
 @end lisp
 
 @lisp
-(string->list @string{scheme} 7)   @exception{range}
-(string->list @string{scheme} 3 7) @exception{range}
+(string->list "scheme" 7)   @exception{range}
+(string->list "scheme" 3 7) @exception{range}
 @end lisp
 @end deftypefn
 
@@ -248,8 +248,8 @@ is raised.
 
 @lisp
 (list->string (list))                       @ok{""}
-(list->string '(@char{s} @char{c} @char{h} @char{e} @char{m} @char{e}))   @ok{"scheme"}
-(list->string '(@char{s} @char{c} @char{h} @char{e} @char{m} @char{e} 2)) @exception{type}
+(list->string '(#\s #\c #\h #\e #\m #\e))   @ok{"scheme"}
+(list->string '(#\s #\c #\h #\e #\m #\e 2)) @exception{type}
 @end lisp
 @end deftypefn
 
@@ -270,20 +270,20 @@ not a valid index of @var{string}, an exception that satisfies
 @code{range-exception?} is raised.
 
 @lisp
-(string-copy @string{dwim})                          @ok{"dwim"}
-(string-copy @string{dwim} 0)                        @ok{"dwim"}
-(string-copy @string{dwim} 1)                        @ok{"wim"}
-(string-copy @string{dwim} 1 1)                      @ok{""}
-(string-copy @string{dwim} 0 (string-length @string{dwim})) @ok{"dwim"}
-(eqv?     @string{dwim} (string-copy @string{dwim}))        @value{false}
-(string=? @string{dwim} (string-copy @string{dwim}))        @value{true}
+(string-copy "dwim")                          @ok{"dwim"}
+(string-copy "dwim" 0)                        @ok{"dwim"}
+(string-copy "dwim" 1)                        @ok{"wim"}
+(string-copy "dwim" 1 1)                      @ok{""}
+(string-copy "dwim" 0 (string-length "dwim")) @ok{"dwim"}
+(eqv?     "dwim" (string-copy "dwim"))        @value{false}
+(string=? "dwim" (string-copy "dwim"))        @value{true}
 @end lisp
 
 @lisp
-(string-copy @string{dwim} 5)    @exception{range}
-(string-copy @string{dwim} -1 3) @exception{range}
-(string-copy @string{dwim} 2 5)  @exception{range}
-(string-copy @string{dwim} 2.5)  @exception{type}
+(string-copy "dwim" 5)    @exception{range}
+(string-copy "dwim" -1 3) @exception{range}
+(string-copy "dwim" 2 5)  @exception{range}
+(string-copy "dwim" 2.5)  @exception{type}
 @end lisp
 @end deftypefn
 
@@ -306,8 +306,8 @@ satisfies @code{range-exception?} is raised.  If @samp{(- (string-length
 must not overflow beyond the end of @var{to-string}).
 
 @lisp
-(@syntax{define} a @string{12345})
-(@syntax{define} b (string-copy @string{abcde}))
+(define a "12345")
+(define b (string-copy "abcde"))
 (string-copy! b 1 a 0 2)
 b @ok{"a12de"}
 @end lisp
@@ -325,12 +325,12 @@ If either @var{start} or @var{end} is not a valid index of @var{string},
 an exception that satisfies @code{range-exception?} is raised.
 
 @lisp
-(@syntax{define} a (string-copy @string{abcde}))
-(@syntax{define} b (string-copy a))
-(@syntax{define} c (string-copy b))
-(string-fill! a @char{0})
-(string-fill! b @char{0} 3)
-(string-fill! c @char{0} 3 4)
+(define a (string-copy "abcde"))
+(define b (string-copy a))
+(define c (string-copy b))
+(string-fill! a #\0)
+(string-fill! b #\0 3)
+(string-fill! c #\0 3 4)
 a @ok{"00000"}
 b @ok{"abc00"}
 c @ok{"abc0e"}
@@ -348,19 +348,19 @@ an exception that satisfies @code{type-exception?} is raised.  If
 satisfies @code{range-exception?} is raised.
 
 @lisp
-(@syntax{define} (f) (make-string 3 @char{*}))
-(string-set! (f) 0 @char{?}) @aside{;; ok}
-(string-set! (f) 5 @char{?})   @exception{range}
-(string-set! (f) 1.1 @char{?}) @exception{type}
+(define (f) (make-string 3 #\*))
+(string-set! (f) 0 #\?) @aside{;; ok}
+(string-set! (f) 5 #\?)   @exception{range}
+(string-set! (f) 1.1 #\?) @exception{type}
 @end lisp
 
 @lisp
-(string-set! (symbol->string 'immutable) 0 @char{?}) @exception{type}
+(string-set! (symbol->string 'immutable) 0 #\?) @exception{type}
 @end lisp
 
 @lisp
-(@syntax{define} (g) @string{***})
-(string-set! (g) 0 @char{?}) @aside{;; @value{R7RS} says this is an error}
+(define (g) "***")
+(string-set! (g) 0 #\?) @aside{;; @value{R7RS} says this is an error}
 (g) @ok{"?**"}             @aside{;; current Gambit behavior} 
 @end lisp
 @end deftypefn

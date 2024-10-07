@@ -1221,7 +1221,7 @@ return a non-Boolean value.
 
 (<span class="syntax">define</span> (f e)
   (<span class="syntax">let</span> ((f (assoc e dc string=?)))
-    (and f (cdr f))))
+    (<span class="syntax">and</span> f (cdr f))))
 
 (f <span class="string">"green"</span>)  &rArr; <span class="ok">"vert"</span>
 (f <span class="string">"orange"</span>) &rArr; <span class="ok">"orange"</span>
@@ -1299,8 +1299,8 @@ Up: <a href="#Strings" accesskey="u" rel="up">Strings</a> &nbsp; [<a href="#SEC_
 <dd><p>Returns <code class="code">#t</code> if <var class="var">obj</var> is a string.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string? <span class="string">""</span>) &rArr; <span class="ok">#t</span>
-(string? <span class="string">""</span>) &rArr; <span class="ok">#t</span>
+<pre class="lisp-preformatted">(string? <span class="string">""</span>)       &rArr; <span class="ok">#t</span>
+(string? (string)) &rArr; <span class="ok">#t</span>
 </pre></div>
 
 <div class="example lisp">
