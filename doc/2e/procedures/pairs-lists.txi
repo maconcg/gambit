@@ -37,8 +37,8 @@ Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
 @end lisp
 
 @lisp
-(cons)    @exception{wrong number of arguments}
-(cons 'a) @exception{wrong number of arguments}
+(cons)    @exception{wrong-number-of-arguments}
+(cons 'a) @exception{wrong-number-of-arguments}
 @end lisp
 @end deftypefn
 
@@ -419,7 +419,7 @@ return a non-Boolean value.
 
 @lisp
 (memv 'c '(a b . c))      @exception{type}
-(member 9 '(7 8 9) zero?) @exception{wrong number of arguments}
+(member 9 '(7 8 9) zero?) @exception{wrong-number-of-arguments}
 @end lisp
 @end deftypefn
 
@@ -527,7 +527,7 @@ a @ok{(1 8 2 8)}
 @end lisp
 
 @lisp
-(list-copy) @exception{wrong number of arguments}
+(list-copy) @exception{wrong-number-of-arguments}
 @end lisp
 
 @lisp

@@ -263,8 +263,8 @@ about pairs and lists.
           (equal? (cons + car) (cons + car)) ⇒ #t
           (eq? cons (cdr (cons cons cons)))  ⇒ #t
 
-          (cons)    → wrong number of arguments exception
-          (cons 'a) → wrong number of arguments exception
+          (cons)    → wrong-number-of-arguments exception
+          (cons 'a) → wrong-number-of-arguments exception
 
  -- scheme/base: car pair
      Returns the contents of the cdr field of PAIR.  If an attempt is
@@ -540,7 +540,7 @@ about pairs and lists.
           (member 7 '(7 8 9) (lambda x #f))       ⇒ #f
 
           (memv 'c '(a b . c))      → type exception
-          (member 9 '(7 8 9) zero?) → wrong number of arguments exception
+          (member 9 '(7 8 9) zero?) → wrong-number-of-arguments exception
 
  -- scheme/base: assq obj alist
  -- scheme/base: assv obj alist
@@ -620,7 +620,7 @@ about pairs and lists.
           (eqv? (cdr i) (cdr (list-copy i))) ⇒ #t
           (eqv? (cdr p) (cdr (list-copy p))) ⇒ #f
 
-          (list-copy) → wrong number of arguments exception
+          (list-copy) → wrong-number-of-arguments exception
 
           (define c (circular-list 0 1 2))
           (circular-list? c) ⇒ #t

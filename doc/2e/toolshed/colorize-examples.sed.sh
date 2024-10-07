@@ -39,20 +39,21 @@ syntax-rules
 unless
 when'
 
-# We only want to colorize the text to the left of @ok{.
+printf '%s\n' '/^@lisp$/,/^@end lisp$/ {'
 
-# Store the bit to the right of @ok{ in the hold space and then use a
-# substitution on the pattern space to remove the bit to the right of
-# @ok{.
-printf '%s\n\n' '/^@lisp$/,/^@end lisp$/ {
-    /@ok{/ {
+# We only want to colorize the text to the left of @ok/@exception.
+# Store all text to the right of "@ok{" in the hold space, then use a
+# substitution to remove that text from the pattern space.
+for macro in ok exception; do
+    printf '    %s\n' "/@$macro{/ {
         h
         x
-        s/^.*@ok{//
+        s/^.*@$macro{//
         x
-    }'
+    }"
+done
 
-# Colorize chars.
+# Wrap each character in @char{}.
 printf '%s\n\n' '    /#\\/ {
         s/#\\\([[:graph:]]\)$/@char{\1}/g
         s/#\\\([[:graph:]]\)\([])[:blank:]]\)/@char{\1}\2/g
@@ -62,7 +63,7 @@ printf '%s\n\n' '    /#\\/ {
         s/#\\\(x[[:xdigit:]]\{1,\}\)\([])[:blank:]]\)/@char{\1}\2/g
     }'
 
-# Colorize special syntactic forms.
+# Wrap each special syntactic form in @syntax{}.
 for form in $syntax; do
     case "$form" in
         *\**) s="${form%%\**}\\*${form##*\*}" ;;
@@ -74,7 +75,7 @@ for form in $syntax; do
            "s/\(([[:blank:]]*\)$s\([])[:blank:]]\)/\1@syntax{$s}\2/g"
 done
 
-# Colorize strings.
+# Wrap each "string" in @string{}.
 printf '    %s\n\n' 's/"\([^"]*\)"/@string{\1}/g'
 
 # Add back the part we've been keeping in the hold space.
@@ -84,6 +85,6 @@ printf '    %s\n' '/@ok{/ {
         s/\n//
     }'
 
-# Add comment span last so it can be to the right ok @ok{}.
+# Wrap comments last so they may occur to the right of @ok/@exception.
 printf '    %s\n' 's/\([[:blank:]]\);\(.*\)$/\1@codecomment{;\2}/
 }'
