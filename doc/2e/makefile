@@ -3,9 +3,9 @@ css-arg := --css-include=${gambit-css}
 html-sources := gambit.txi ${gambit-css}
 make-css := toolshed/make-css.sh
 
-pp-parenthesize := toolshed/parenthesize.sed
-pp-scripts := ${pp-parenthesize}
-pp-sed-args := -f ${pp-parenthesize}
+pp-defs := toolshed/pp-defs.sed
+pp-scripts := ${pp-defs}
+pp-sed-args := -f ${pp-defs}
 
 html-modules-dir := gambit-html
 html-modules-np-dir := gambit-html-np
@@ -45,7 +45,7 @@ ${html-modules-np-dir}/.stamp: ${html-sources}
 	texi2any -o ${html-modules-np-dir}/ --html ${css-arg} gambit.txi
 	touch $@
 
-${html-modules-dir}/.stamp: ${html-modules-np-dir}/.stamp ${pp-sed-scripts}
+${html-modules-dir}/.stamp: ${html-modules-np-dir}/.stamp ${pp-scripts}
 	mkdir -p ${html-modules-dir}
 	for h in ${html-modules-np-dir}/*.html; do\
 		sed ${pp-sed-args} "$$h" > ${html-modules-dir}/"$${h#*/}";\
@@ -55,7 +55,7 @@ ${html-modules-dir}/.stamp: ${html-modules-np-dir}/.stamp ${pp-sed-scripts}
 gambit-np.html: ${html-sources}
 	texi2any -o $@ --html ${css-arg} --no-split gambit.txi
 
-gambit.html: gambit-np.html ${pp-sed-scripts}
+gambit.html: gambit-np.html ${pp-scripts}
 	sed ${pp-sed-args} gambit-np.html > $@
 
 gambit.info: gambit.txi

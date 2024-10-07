@@ -94,13 +94,13 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
 }
 
 dl.first-deftp {
-    background-image: linear-gradient(160deg, #f0e3c0a0, 6rem, #f0e3c02a 20rem),
-                      linear-gradient(160deg, #f9f9f95f, 6rem, #f9f9f9d5 20rem);
+    background-color: #f2f2f290;
+    background-image: linear-gradient(90deg, #f0e3c06f, #f0e3c03f 35%);
 }
 
 dl.first-deftypefn {
-    background-image: linear-gradient(160deg, #ccdfffa0, 6rem, #ccdfff2a 20rem),
-                      linear-gradient(160deg, #f9f9f95f, 6rem, #f9f9f9d5 20rem);
+    background-color: #f2f2f290;
+    background-image: linear-gradient(90deg, #ccdfff6f, #ccdfff3f 35%);
     dt.deftypefn, dt.deftypefnx {
         span.sexp-paren {
             color: #595959;
@@ -109,8 +109,8 @@ dl.first-deftypefn {
 }
 
 dl.first-deftypevr {
-    background-image: linear-gradient(160deg, #f1c8b5a0, 6rem, #f1c8b52a 20rem),
-                      linear-gradient(160deg, #f9f9f95f, 6rem, #f9f9f9d5 20rem);
+    background-color: #f2f2f290;
+    background-image: linear-gradient(90deg, #f1c8b56f, #f1c8b53f 35%);
 }
 
 dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
@@ -178,13 +178,13 @@ dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
     }
     
     dl.first-deftp {
-        background-image: linear-gradient(160deg, #462f20a0, 6rem, #462f202a 20rem),
-                          linear-gradient(160deg, #1e1e1e5f, 6rem, #1e1e1ed5 20rem);
+        background-color: #1e1e1e90;
+        background-image: linear-gradient(90deg, #462f207f, #462f2060 35%);
     }
     
     dl.first-deftypefn {
-        background-image: linear-gradient(160deg, #242679a0, 6rem, #2426792a 20rem),
-                          linear-gradient(160deg, #1e1e1e5f, 6rem, #1e1e1ed5 20rem);
+        background-color: #1e1e1e90;
+        background-image: linear-gradient(90deg, #2426797f, #24267960 35%);
         dt.deftypefn, dt.deftypefnx {
             span.sexp-paren {
                 color: #989898;
@@ -193,8 +193,8 @@ dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
     }
     
     dl.first-deftypevr {
-        background-image: linear-gradient(160deg, #49191aa0, 6rem, #49191a2a 20rem),
-                          linear-gradient(160deg, #1e1e1e5f, 6rem, #1e1e1ed5 20rem);
+        background-color: #1e1e1e90;
+        background-image: linear-gradient(90deg, #49191a7f, #49191a60 35%);
     }
     
     dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
@@ -206,10 +206,6 @@ dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
             color:#ffffff;
         }
     }
-}
-
-body {
-    font-family: sans-serif;
 }
 
 strong.def-name {
@@ -1370,8 +1366,11 @@ not a valid index of <var class="var">string</var>, an exception that satisfies
 <code class="code">range-exception?</code> is raised.
 </p>
 <div class="example lisp">
+<pre class="lisp-preformatted">(string-ref <span class="string">"zero-origin indexing"</span> 0) &rArr; <span class="ok">#\z</span>
+</pre></div>
+
+<div class="example lisp">
 <pre class="lisp-preformatted">(<span class="syntax">define</span> s <span class="string">"off by one"</span>)
-(string-ref <span class="string">"zero-origin indexing"</span> 0)  &rArr; <span class="ok">#\z</span>
 (string-ref s (- (string-length s) 1)) &rArr; <span class="ok">#\e</span>
 (string-ref s (string-length s))       &rarr; <i class="i">range exception</i>
 </pre></div>

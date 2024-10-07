@@ -53,13 +53,13 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
 }
 
 dl.first-deftp {
-    background-image: linear-gradient(160deg, %bg-deftp%a0, 6rem, %bg-deftp%2a 20rem),
-                      linear-gradient(160deg, %bg-dim%5f, 6rem, %bg-dim%d5 20rem);
+    background-color: %bg-dim%90;
+    background-image: linear-gradient(90deg, %bg-deftp-l%, %bg-deftp-r% 35%);
 }
 
 dl.first-deftypefn {
-    background-image: linear-gradient(160deg, %bg-deftypefn%a0, 6rem, %bg-deftypefn%2a 20rem),
-                      linear-gradient(160deg, %bg-dim%5f, 6rem, %bg-dim%d5 20rem);
+    background-color: %bg-dim%90;
+    background-image: linear-gradient(90deg, %bg-deftypefn-l%, %bg-deftypefn-r% 35%);
     dt.deftypefn, dt.deftypefnx {
         span.sexp-paren {
             color: %fg-dim%;
@@ -68,8 +68,8 @@ dl.first-deftypefn {
 }
 
 dl.first-deftypevr {
-    background-image: linear-gradient(160deg, %bg-deftypevr%a0, 6rem, %bg-deftypevr%2a 20rem),
-                      linear-gradient(160deg, %bg-dim%5f, 6rem, %bg-dim%d5 20rem);
+    background-color: %bg-dim%90;
+    background-image: linear-gradient(90deg, %bg-deftypevr-l%, %bg-deftypevr-r% 35%);
 }
 
 dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
@@ -82,10 +82,6 @@ dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
     }
 }
 /* END COLORS */
-
-body {
-    font-family: sans-serif;
-}
 
 strong.def-name {
     font-size: large;

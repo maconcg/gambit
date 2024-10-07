@@ -71,8 +71,11 @@ not a valid index of @var{string}, an exception that satisfies
 @code{range-exception?} is raised.
 
 @lisp
+(string-ref @string{zero-origin indexing} 0) @ok{#\z}
+@end lisp
+
+@lisp
 (@syntax{define} s @string{off by one})
-(string-ref @string{zero-origin indexing} 0)  @ok{#\z}
 (string-ref s (- (string-length s) 1)) @ok{#\e}
 (string-ref s (string-length s))       @exception{range}
 @end lisp

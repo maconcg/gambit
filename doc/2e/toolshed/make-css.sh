@@ -149,16 +149,19 @@ readonly v_bg_main='#000000' \
 substitute() {
     sed -n "/^\/\* BEGIN COLORS \*\/\$/,/^\/\* END COLORS \*\/\$/ {
                 /^\/\*/! {
-                    s/%bg-deftp%/${bg_deftp:?}/g
-                    s/%bg-deftypefn%/${bg_deftypefn:?}/g
-                    s/%bg-deftypevr%/${bg_deftypevr:?}/g
-                    s/%bg-dim%/${bg_dim:?}/g
+                    s/%bg-deftp-l%/${bg_deftp_l:?}/
+                    s/%bg-deftp-r%/${bg_deftp_r:?}/
+                    s/%bg-deftypefn-l%/${bg_deftypefn_l:?}/
+                    s/%bg-deftypefn-r%/${bg_deftypefn_r:?}/
+                    s/%bg-deftypevr-l%/${bg_deftypevr_l:?}/
+                    s/%bg-deftypevr-r%/${bg_deftypevr_r:?}/
+                    s/%bg-dim%/${bg_dim:?}/
                     s/%bg-inactive%/${bg_inactive:?}/
                     s/%bg-main%/${bg_main:?}/
                     s/%fg-alt%/${fg_alt:?}/
                     s/%fg-dim%/${fg_dim:?}/
                     s/%fg-main%/${fg_main:?}/
-                    s/%border%/${border:?}/g
+                    s/%border%/${border:?}/
                     s/%category-def%/${category_def:?}/
                     s/%char%/${char:?}/
                     s/%comment/${comment:?}/
@@ -177,10 +180,13 @@ substitute() {
 }
 
 # Light mode (default)
-bg_deftp="$o_bg_ochre"
-bg_deftypefn="$o_bg_blue_subtle"
-bg_deftypevr="$o_bg_clay"
-bg_dim='#f9f9f9'
+bg_deftp_l="$o_bg_ochre"6f
+bg_deftp_r="$o_bg_ochre"3f
+bg_deftypefn_l="$o_bg_blue_subtle"6f
+bg_deftypefn_r="$o_bg_blue_subtle"3f
+bg_deftypevr_l="$o_bg_clay"6f
+bg_deftypevr_r="$o_bg_clay"3f
+bg_dim="$o_bg_dim"
 bg_inactive="$o_bg_inactive"
 bg_main="$o_bg_main"
 fg_alt="$o_fg_alt"
@@ -203,9 +209,12 @@ syntax="$o_magenta_cooler"
 substitute
 
 # Dark mode
-bg_deftp="$v_bg_ochre"
-bg_deftypefn="$v_bg_blue_subtle"
-bg_deftypevr="$v_bg_clay"
+bg_deftp_l="$v_bg_ochre"7f
+bg_deftp_r="$v_bg_ochre"60
+bg_deftypefn_l="$v_bg_blue_subtle"7f
+bg_deftypefn_r="$v_bg_blue_subtle"60
+bg_deftypevr_l="$v_bg_clay"7f
+bg_deftypevr_r="$v_bg_clay"60
 bg_dim="$v_bg_dim"
 bg_inactive="$v_bg_inactive"
 bg_main="$v_bg_main"

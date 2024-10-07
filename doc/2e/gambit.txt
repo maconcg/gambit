@@ -685,8 +685,9 @@ about pairs and lists.
      index of STRING, an exception that satisfies ‘range-exception?’ is
      raised.
 
+          (string-ref "zero-origin indexing" 0) ⇒ #\z
+
           (define s "off by one")
-          (string-ref "zero-origin indexing" 0)  ⇒ #\z
           (string-ref s (- (string-length s) 1)) ⇒ #\e
           (string-ref s (string-length s))       → range exception
 
@@ -1103,7 +1104,7 @@ Index of procedures and syntactic forms
                                                               (line 427)
 * list:                                  Pair and list procedures.
                                                               (line 419)
-* list->string:                          String procedures.   (line 813)
+* list->string:                          String procedures.   (line 814)
 * list-copy:                             Pair and list procedures.
                                                               (line 596)
 * list-ref:                              Pair and list procedures.
@@ -1136,26 +1137,26 @@ Index of procedures and syntactic forms
 * set-cdr!:                              Pair and list procedures.
                                                               (line 303)
 * string:                                String procedures.   (line 666)
-* string->list:                          String procedures.   (line 791)
-* string-append:                         String procedures.   (line 779)
-* string-ci<?:                           String procedures.   (line 735)
-* string-ci<=?:                          String procedures.   (line 737)
-* string-ci=?:                           String procedures.   (line 734)
-* string-ci>?:                           String procedures.   (line 736)
-* string-ci>=?:                          String procedures.   (line 738)
-* string-copy:                           String procedures.   (line 824)
-* string-copy!:                          String procedures.   (line 852)
-* string-downcase:                       String procedures.   (line 759)
-* string-fill!:                          String procedures.   (line 872)
-* string-foldcase:                       String procedures.   (line 760)
+* string->list:                          String procedures.   (line 792)
+* string-append:                         String procedures.   (line 780)
+* string-ci<?:                           String procedures.   (line 736)
+* string-ci<=?:                          String procedures.   (line 738)
+* string-ci=?:                           String procedures.   (line 735)
+* string-ci>?:                           String procedures.   (line 737)
+* string-ci>=?:                          String procedures.   (line 739)
+* string-copy:                           String procedures.   (line 825)
+* string-copy!:                          String procedures.   (line 853)
+* string-downcase:                       String procedures.   (line 760)
+* string-fill!:                          String procedures.   (line 873)
+* string-foldcase:                       String procedures.   (line 761)
 * string-length:                         String procedures.   (line 675)
 * string-ref:                            String procedures.   (line 682)
-* string-set!:                           String procedures.   (line 893)
-* string-upcase:                         String procedures.   (line 758)
+* string-set!:                           String procedures.   (line 894)
+* string-upcase:                         String procedures.   (line 759)
 * string?:                               String procedures.   (line 634)
-* string<?:                              String procedures.   (line 706)
-* string<=?:                             String procedures.   (line 708)
-* string=?:                              String procedures.   (line 692)
-* string>?:                              String procedures.   (line 707)
-* string>=?:                             String procedures.   (line 709)
+* string<?:                              String procedures.   (line 707)
+* string<=?:                             String procedures.   (line 709)
+* string=?:                              String procedures.   (line 693)
+* string>?:                              String procedures.   (line 708)
+* string>=?:                             String procedures.   (line 710)
 
