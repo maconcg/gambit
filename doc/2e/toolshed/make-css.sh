@@ -149,75 +149,82 @@ readonly v_bg_main='#000000' \
 substitute() {
     sed -n "/^\/\* BEGIN COLORS \*\/\$/,/^\/\* END COLORS \*\/\$/ {
                 /^\/\*/! {
-                    s/%bg-main%/${bg_main:?}/
-                    s/%bg-dim%/${bg_dim:?}/g
-                    s/%bg-inactive%/${bg_inactive:?}/
-                    s/%fg-main%/${fg_main:?}/
-                    s/%fg-alt%/${fg_alt:?}/
-                    s/%fg-dim%/${fg_dim:?}/
-                    s/%link%/${link:?}/
-                    s/%link-visited%/${link_visited:?}/
-                    s/%def-var%/${def_var:?}/
-                    s/%comment/${comment:?}/
-                    s/%emphasis%/${emphasis:?}/
-                    s/%false%/${false:?}/
-                    s/%border%/${border:?}/g
-                    s/%category-def%/${category_def:?}/
-                    s/%sexp-paren%/${sexp_paren:?}/
-                    s/%ok%/${ok:?}/
                     s/%bg-deftp%/${bg_deftp:?}/g
                     s/%bg-deftypefn%/${bg_deftypefn:?}/g
                     s/%bg-deftypevr%/${bg_deftypevr:?}/g
+                    s/%bg-dim%/${bg_dim:?}/g
+                    s/%bg-inactive%/${bg_inactive:?}/
+                    s/%bg-main%/${bg_main:?}/
+                    s/%fg-alt%/${fg_alt:?}/
+                    s/%fg-dim%/${fg_dim:?}/
+                    s/%fg-main%/${fg_main:?}/
+                    s/%border%/${border:?}/g
+                    s/%category-def%/${category_def:?}/
+                    s/%char%/${char:?}/
+                    s/%comment/${comment:?}/
+                    s/%def-var%/${def_var:?}/
+                    s/%emphasis%/${emphasis:?}/
+                    s/%false%/${false:?}/
+                    s/%link%/${link:?}/
+                    s/%link-visited%/${link_visited:?}/
+                    s/%ok%/${ok:?}/
+                    s/%sexp-paren%/${sexp_paren:?}/
+                    s/%string%/${string:?}/
+                    s/%syntax%/${syntax:?}/
                     p
                 }
            }" "$template"
 }
 
 # Light mode (default)
-bg_main="$o_bg_main"
-# bg_dim="$o_bg_dim"
-# bg_dim='#f3f9fa'
-bg_dim='#f9f9f9'
-bg_inactive="$o_bg_inactive"
-fg_main="$o_fg_main"
-fg_dim="$o_fg_dim"
-fg_alt="$o_fg_alt"
-emphasis="$o_yellow_faint"
-link="$o_blue_warmer"
-link_visited="$link"
-false="$o_fg_alt"
-def_var="$o_magenta"
-comment="$o_fg_dim"
-border="$o_border"
-category_def="$o_fg_alt"
-sexp_paren="$o_fg_dim"
-ok="$o_fg_alt"
 bg_deftp="$o_bg_ochre"
 bg_deftypefn="$o_bg_blue_subtle"
 bg_deftypevr="$o_bg_clay"
+bg_dim='#f9f9f9'
+bg_inactive="$o_bg_inactive"
+bg_main="$o_bg_main"
+fg_alt="$o_fg_alt"
+fg_dim="$o_fg_dim"
+fg_main="$o_fg_main"
+border="$o_border"
+category_def="$o_fg_alt"
+char="$o_red_faint"
+comment="$o_fg_dim"
+def_var="$o_magenta"
+emphasis="$o_yellow_faint"
+false="$o_fg_alt"
+link="$o_blue_warmer"
+link_visited="$link"
+ok="$o_fg_alt"
+sexp_paren="$o_fg_dim"
+string="$o_green_cooler"
+syntax="$o_magenta_cooler"
 
 substitute
 
 # Dark mode
-bg_main="$v_bg_main"
-bg_dim="$v_bg_dim"
-bg_inactive="$v_bg_inactive"
-fg_main="$v_fg_main"
-fg_dim="$v_fg_dim"
-fg_alt="$v_fg_alt"
-emphasis="$v_yellow_faint"
-link="$v_blue_warmer"
-link_visited="$link"
-false="$v_fg_alt"
-def_var="$v_magenta"
-comment="$v_fg_dim"
-border="$v_border"
-category_def="$v_fg_alt"
-sexp_paren="$v_fg_dim"
-ok="$v_fg_alt"
 bg_deftp="$v_bg_ochre"
 bg_deftypefn="$v_bg_blue_subtle"
 bg_deftypevr="$v_bg_clay"
+bg_dim="$v_bg_dim"
+bg_inactive="$v_bg_inactive"
+bg_main="$v_bg_main"
+fg_alt="$v_fg_alt"
+fg_dim="$v_fg_dim"
+fg_main="$v_fg_main"
+border="$v_border"
+category_def="$v_fg_alt"
+char="$v_red_faint"
+comment="$v_fg_dim"
+def_var="$v_magenta"
+emphasis="$v_yellow_faint"
+false="$v_fg_alt"
+link="$v_blue_warmer"
+link_visited="$link"
+ok="$v_fg_alt"
+sexp_paren="$v_fg_dim"
+string="$v_green_cooler"
+syntax="$v_magenta_cooler"
 
 echo
 echo '@media (prefers-color-scheme: dark) {'

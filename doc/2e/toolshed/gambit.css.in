@@ -33,11 +33,20 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
             .slanted {
                 color: %fg-dim%;
             }
+            span.char {
+                color: %char%;
+            }
             span.false {
                 color: %false%;
             }
             span.ok {
                 color: %ok%;
+            }
+            span.string {
+                color: %string%;
+            }
+            span.syntax {
+                color: %syntax%;
             }
         }
     }

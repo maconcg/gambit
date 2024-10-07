@@ -47,3 +47,15 @@
 @macro quotedbl {text}
 @inlinefmtifelse{tex,``\text\'',@quotedblleft{}\text\@quotedblright{}}
 @end macro
+
+@macro syntax {stx}
+@inlinefmtifelse{html,@inlineraw{html,<span class="syntax">\stx\</span>},\stx\}
+@end macro
+
+@macro char {chr}
+@inlinefmtifelse{html,@inlineraw{html,<span class="char">@hashchar{}@backslashchar{}\chr\</span>},@hashchar{}@backslashchar{}\chr\}
+@end macro
+
+@macro string {str}
+@inlinefmtifelse{html,@inlineraw{html,<span class="string">"\str\"</span>},"\str\"}
+@end macro
