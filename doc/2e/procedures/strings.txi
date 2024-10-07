@@ -79,8 +79,8 @@ not a valid index of @var{string}, an exception that satisfies
 @end deftypefn
 
 @deftypefn scheme/base @/ string=? string@dots{}
-Returns @code{#t} if all of @var{string} arguments are the same length
-and contain exactly the same characters in the same positions.
+Returns @code{#t} if all @var{string} arguments are the same length and
+contain exactly the same characters in the same positions.
 
 Gambit extends the @value{R7RS} description of @code{string=?} to accept
 any number of arguments.

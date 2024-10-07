@@ -691,7 +691,7 @@ about pairs and lists.
           (string-ref s (string-length s))       → range exception
 
  -- scheme/base: string=? string...
-     Returns ‘#t’ if all of STRING arguments are the same length and
+     Returns ‘#t’ if all STRING arguments are the same length and
      contain exactly the same characters in the same positions.
 
      Gambit extends the R7RS description of ‘string=?’ to accept any
