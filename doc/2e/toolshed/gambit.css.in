@@ -128,11 +128,14 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
             margin-top: 0;
             padding-top: 0.5rem;
         }
-        div.example pre {
-            border-left-style: dotted;
-            border-left-width: thin;
-            font-size: 1.1em;
-            padding-left: 0.3rem;
+        div.example {
+            margin-left: 1.6rem;
+            pre {
+                border-left-style: dotted;
+                border-left-width: thin;
+                font-size: 1.1em;
+                padding-left: 0.4rem;
+            }
         }
     }
 }
