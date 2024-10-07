@@ -5,15 +5,15 @@
 Returns @code{#t} if @var{obj} is a string.
 
 @lisp
-(string? "")       @value{true}
-(string? (string)) @value{true}
+(string? "")       @ok{#t}
+(string? (string)) @ok{#t}
 @end lisp
 
 @lisp
-(string? #\a)                    @value{false}
-(string? 'string)                @value{false}
-(string? '(#\c #\h #\a #\r #\s)) @value{false}
-(string? #(#\c #\h #\a #\r #\s)) @value{false}
+(string? #\a)                    @ok{#f}
+(string? 'string)                @ok{#f}
+(string? '(#\c #\h #\a #\r #\s)) @ok{#f}
+(string? #(#\c #\h #\a #\r #\s)) @ok{#f}
 @end lisp
 @end deftypefn
 
@@ -89,11 +89,11 @@ Gambit extends the @value{R7RS} description of @code{string=?} to accept
 any number of arguments.
 
 @lisp
-(string=? "abc" (string #\a #\b #\c)) @value{true}
-(string=? "abcd" "Abcd")              @value{false}
-(string=?)                            @value{true}
-(string=? (string))                   @value{true}
-(string=? "a" "a" "a")                @value{true}
+(string=? "abc" (string #\a #\b #\c)) @ok{#t}
+(string=? "abcd" "Abcd")              @ok{#f}
+(string=?)                            @ok{#t}
+(string=? (string))                   @ok{#t}
+(string=? "a" "a" "a")                @ok{#t}
 (string=? "a" #\a)                    @exception{type}
 @end lisp
 @end deftypefn
@@ -116,16 +116,16 @@ Gambit extends the @value{R7RS} descriptions of these procedures to
 accept any number of arguments.
 
 @lisp
-(string<=? "g" "g") @value{false}
-(string>=? "g" "g") @value{false}
-(string<?  "g" "g") @value{false}
-(string>?  "g" "g") @value{false}
+(string<=? "g" "g") @ok{#f}
+(string>=? "g" "g") @ok{#f}
+(string<?  "g" "g") @ok{#f}
+(string>?  "g" "g") @ok{#f}
 
-(string<? "G" "g")  @value{true}
-(string>? "G" "g")  @value{false}
+(string<? "G" "g")  @ok{#t}
+(string>? "G" "g")  @ok{#f}
 
-(string<? "gg" "g") @value{false}
-(string>? "gg" "g") @value{true}
+(string<? "gg" "g") @ok{#f}
+(string>? "gg" "g") @ok{#t}
 @end lisp
 @end deftypefn
 
@@ -139,28 +139,28 @@ applied to each @var{string} and then that predicate's non-@samp{-ci}
 counterpart were applied to those case-folded arguments.
 
 @lisp
-(string-ci=?  "G" "g")                             @value{true}
-(apply string=? (map string-foldcase '("G" "g")))  @value{true}
+(string-ci=?  "G" "g")                             @ok{#t}
+(apply string=? (map string-foldcase '("G" "g")))  @ok{#t}
 @end lisp
 
 @lisp
-(string-ci>=? "G" "g")                             @value{true}
-(apply string<=? (map string-foldcase '("G" "g"))) @value{true}
+(string-ci>=? "G" "g")                             @ok{#t}
+(apply string<=? (map string-foldcase '("G" "g"))) @ok{#t}
 @end lisp
 
 @lisp
-(string-ci<=? "g" "G")                             @value{true}
-(apply string<=? (map string-foldcase '("g" "G"))) @value{true}
+(string-ci<=? "g" "G")                             @ok{#t}
+(apply string<=? (map string-foldcase '("g" "G"))) @ok{#t}
 @end lisp
 
 @lisp
-(string-ci<?  "G" "g")                             @value{false}
-(apply string<? (map string-foldcase '("G" "g")))  @value{false}
+(string-ci<?  "G" "g")                             @ok{#f}
+(apply string<? (map string-foldcase '("G" "g")))  @ok{#f}
 @end lisp
 
 @lisp
-(string-ci>?  "g" "G")                             @value{false}
-(apply string>? (map string-foldcase '("g" "G")))  @value{false}
+(string-ci>?  "g" "G")                             @ok{#f}
+(apply string>? (map string-foldcase '("g" "G")))  @ok{#f}
 @end lisp
 @end deftypefn
 
@@ -275,8 +275,8 @@ not a valid index of @var{string}, an exception that satisfies
 (string-copy "dwim" 1)                        @ok{"wim"}
 (string-copy "dwim" 1 1)                      @ok{""}
 (string-copy "dwim" 0 (string-length "dwim")) @ok{"dwim"}
-(eqv?     "dwim" (string-copy "dwim"))        @value{false}
-(string=? "dwim" (string-copy "dwim"))        @value{true}
+(eqv?     "dwim" (string-copy "dwim"))        @ok{#f}
+(string=? "dwim" (string-copy "dwim"))        @ok{#t}
 @end lisp
 
 @lisp

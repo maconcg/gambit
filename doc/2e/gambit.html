@@ -296,8 +296,6 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
 
 
 
-
-
 <div class="top-level-extent" id="Top">
 <div class="nav-panel">
 <p>
@@ -733,9 +731,9 @@ Previous: <a href="#Pair-and-list-jargon" accesskey="p" rel="prev">Pair and list
 <div class="example lisp">
 <pre class="lisp-preformatted">(pair? '(a . b)) &rArr; <span class="ok">#t</span>
 (pair? '(a b c)) &rArr; <span class="ok">#t</span>
-(pair? '())      &rArr; <span class="false">#f</span>
-(pair? '(() ())) &rArr; <span class="false">#f</span>
-(pair? '#(a b))  &rArr; <span class="false">#f</span>
+(pair? '())      &rArr; <span class="ok">#f</span>
+(pair? '(() ())) &rArr; <span class="ok">#f</span>
+(pair? '#(a b))  &rArr; <span class="ok">#f</span>
 </pre></div>
 </dd></dl>
 
@@ -756,7 +754,7 @@ Previous: <a href="#Pair-and-list-jargon" accesskey="p" rel="prev">Pair and list
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(eqv?   (cons + car) (cons + car)) &rArr; <span class="false">#f</span>
+<pre class="lisp-preformatted">(eqv?   (cons + car) (cons + car)) &rArr; <span class="ok">#f</span>
 (equal? (cons + car) (cons + car)) &rArr; <span class="ok">#t</span>
 (eq? cons (cdr (cons cons cons)))  &rArr; <span class="ok">#t</span>
 </pre></div>
@@ -910,13 +908,13 @@ made to take the cdr of the empty list, an exception that satisfies
 <div class="example lisp">
 <pre class="lisp-preformatted">(null? '())    &rArr; <span class="ok">#t</span>
 (null? (list)) &rArr; <span class="ok">#t</span>
-(null? <span class="char">#\null</span>) &rArr; <span class="false">#f</span>
-(null? #!eof)  &rArr; <span class="false">#f</span>
-(null? #f)     &rArr; <span class="false">#f</span>
-(null? 0)      &rArr; <span class="false">#f</span>
-(null? <span class="string">""</span>)     &rArr; <span class="false">#f</span>
-(null? #())    &rArr; <span class="false">#f</span>
-(null? (void)) &rArr; <span class="false">#f</span>
+(null? <span class="char">#\null</span>) &rArr; <span class="ok">#f</span>
+(null? #!eof)  &rArr; <span class="ok">#f</span>
+(null? #f)     &rArr; <span class="ok">#f</span>
+(null? 0)      &rArr; <span class="ok">#f</span>
+(null? <span class="string">""</span>)     &rArr; <span class="ok">#f</span>
+(null? #())    &rArr; <span class="ok">#f</span>
+(null? (void)) &rArr; <span class="ok">#f</span>
 </pre></div>
 </dd></dl>
 
@@ -934,17 +932,17 @@ empty list.
 <pre class="lisp-preformatted">(list? '(a b c))              &rArr; <span class="ok">#t</span>
 (list? '())                   &rArr; <span class="ok">#t</span>
 (list? (list 0))              &rArr; <span class="ok">#t</span>
-(list? '(a . b))              &rArr; <span class="false">#f</span>
-(list? list)                  &rArr; <span class="false">#f</span>
-(list? <span class="string">"list"</span>)                &rArr; <span class="false">#f</span>
-(list? #(0 1 2))              &rArr; <span class="false">#f</span>
-(list? (circular-list 0 1 2)) &rArr; <span class="false">#f</span>
+(list? '(a . b))              &rArr; <span class="ok">#f</span>
+(list? list)                  &rArr; <span class="ok">#f</span>
+(list? <span class="string">"list"</span>)                &rArr; <span class="ok">#f</span>
+(list? #(0 1 2))              &rArr; <span class="ok">#f</span>
+(list? (circular-list 0 1 2)) &rArr; <span class="ok">#f</span>
 </pre></div>
 
 <div class="example lisp">
 <pre class="lisp-preformatted">(<span class="syntax">let</span> ((x (list 'a)))
   (set-cdr! x x)
-  (list? x)) &rArr; <span class="false">#f</span>
+  (list? x)) &rArr; <span class="ok">#f</span>
 </pre></div>
 </dd></dl>
 
@@ -986,7 +984,7 @@ integer, an exception that satisfies <code class="code">range-exception?</code> 
 <pre class="lisp-preformatted">(list 'a (+ 3 4) 'c)         &rArr; <span class="ok">(a 7 c)</span>
 (list)                       &rArr; <span class="ok">()</span>
 ((car (list list)) 'list)    &rArr; <span class="ok">(list)</span>
-(eqv? (list <span class="char">#\l</span>) (list <span class="char">#\l</span>)) &rArr; <span class="false">#f</span>
+(eqv? (list <span class="char">#\l</span>) (list <span class="char">#\l</span>)) &rArr; <span class="ok">#f</span>
 </pre></div>
 </dd></dl>
 
@@ -1028,7 +1026,7 @@ except that it shares structure with the last argument, <var class="var">obj</va
 <div class="example lisp">
 <pre class="lisp-preformatted">(<span class="syntax">define</span> l (list 'f 'g 'h))
 (eq?    l (append (append) l)) &rArr; <span class="ok">#t</span>
-(eq?    l (append l (append))) &rArr; <span class="false">#f</span>
+(eq?    l (append l (append))) &rArr; <span class="ok">#f</span>
 (equal? l (append l (append))) &rArr; <span class="ok">#t</span>
 </pre></div>
 </dd></dl>
@@ -1045,7 +1043,7 @@ in reverse order (excluding the terminating empty list).
 
 <div class="example lisp">
 <pre class="lisp-preformatted">(<span class="syntax">define</span> l (list 'a 'b 'c))
-(eq?    l (reverse (reverse l))) &rArr; <span class="false">#f</span>
+(eq?    l (reverse (reverse l))) &rArr; <span class="ok">#f</span>
 (equal? l (reverse (reverse l))) &rArr; <span class="ok">#t</span>
 </pre></div>
 </dd></dl>
@@ -1142,15 +1140,15 @@ return a non-Boolean value.
 
 <div class="example lisp">
 <pre class="lisp-preformatted">(memq   'a '(a b c))                    &rArr; <span class="ok">(a b c)</span>
-(memq   'a '(b c d))                    &rArr; <span class="false">#f</span>
-(memq   (list 'a) '(b (a) c))           &rArr; <span class="false">#f</span>
+(memq   'a '(b c d))                    &rArr; <span class="ok">#f</span>
+(memq   (list 'a) '(b (a) c))           &rArr; <span class="ok">#f</span>
 (memq   'a '(a b c))                    &rArr; <span class="ok">(a b c)</span>
 (memv   'b '(a b c))                    &rArr; <span class="ok">(b c)</span>
 (memv   'b '(a b . c))                  &rArr; <span class="ok">(b . c)</span>
 (member 'b '(a b c) eq?)                &rArr; <span class="ok">(b c)</span>
 (member (list 'a) '(b (a) c))           &rArr; <span class="ok">((a) c)</span>
 (member <span class="string">"B"</span> '(<span class="string">"a"</span> <span class="string">"b"</span> <span class="string">"c"</span>) string-ci=?) &rArr; <span class="ok">("b" "c")</span>
-(member 7 '(7 8 9) (<span class="syntax">lambda</span> x #f))       &rArr; <span class="false">#f</span>
+(member 7 '(7 8 9) (<span class="syntax">lambda</span> x #f))       &rArr; <span class="ok">#f</span>
 </pre></div>
 
 <div class="example lisp">
@@ -1189,8 +1187,8 @@ return a non-Boolean value.
 
 (assq 'a p)                            &rArr; <span class="ok">(a 1)</span>
 (assq 'b p)                            &rArr; <span class="ok">(b 2)</span>
-(assv 'd p)                            &rArr; <span class="false">#f</span>
-(assq (list 'a) '(((a)) ((b)) ((c))))  &rArr; <span class="false">#f</span>
+(assv 'd p)                            &rArr; <span class="ok">#f</span>
+(assq (list 'a) '(((a)) ((b)) ((c))))  &rArr; <span class="ok">#f</span>
 (assoc (list 'a) '(((a)) ((b)) ((c)))) &rArr; <span class="ok">((a))</span>
 (assoc 2.0 '((1 1) (2 4) (3 9)) =)     &rArr; <span class="ok">(2 4)</span>
 (assq 5 '((2 3) (5 7) (11 13)))        &rArr; <span class="ok">(5 7)</span> <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr>: unspecified</i>
@@ -1202,7 +1200,7 @@ return a non-Boolean value.
 
 (assq 'b i) &rArr; <span class="ok">(a . 1)</span>
 (assv 'c i) &rArr; <span class="ok">(c . 3)</span>
-(assq 'd p) &rArr; <span class="false">#f</span>
+(assq 'd p) &rArr; <span class="ok">#f</span>
 (assv 'b '((a . 1) (b . 2) . (c . 3))) &rArr; <span class="ok">(b . 2)</span>
 </pre></div>
 
@@ -1222,7 +1220,7 @@ return a non-Boolean value.
 
 (f <span class="string">"green"</span>)  &rArr; <span class="ok">"vert"</span>
 (f <span class="string">"orange"</span>) &rArr; <span class="ok">"orange"</span>
-(f <span class="string">"purple"</span>) &rArr; <span class="false">#f</span>
+(f <span class="string">"purple"</span>) &rArr; <span class="ok">#f</span>
 </pre></div>
 </dd></dl>
 
@@ -1250,14 +1248,14 @@ a &rArr; <span class="ok">(1 8 2 8)</span>
 (list-copy 'unchanged)                           &rArr; <span class="ok">unchanged</span>
 (eqv? '() (list-copy '()))                       &rArr; <span class="ok">#t</span>
 (eqv? list-copy ((<span class="syntax">lambda</span> (x) x) list-copy))      &rArr; <span class="ok">#t</span>
-(eqv? (<span class="syntax">lambda</span> (x) x) (list-copy (<span class="syntax">lambda</span> (x) x))) &rArr; <span class="false">#f</span>
+(eqv? (<span class="syntax">lambda</span> (x) x) (list-copy (<span class="syntax">lambda</span> (x) x))) &rArr; <span class="ok">#f</span>
 </pre></div>
 
 <div class="example lisp">
 <pre class="lisp-preformatted">(<span class="syntax">define</span> i (cons (string-copy <span class="string">"one"</span>) (string-copy <span class="string">"two"</span>)))
 (<span class="syntax">define</span> p (cons (car i) (cons (cdr i) '())))
 (eqv? (cdr i) (cdr (list-copy i))) &rArr; <span class="ok">#t</span>
-(eqv? (cdr p) (cdr (list-copy p))) &rArr; <span class="false">#f</span>
+(eqv? (cdr p) (cdr (list-copy p))) &rArr; <span class="ok">#f</span>
 </pre></div>
 
 <div class="example lisp">
@@ -1301,10 +1299,10 @@ Up: <a href="#Strings" accesskey="u" rel="up">Strings</a> &nbsp; [<a href="#SEC_
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string? <span class="char">#\a</span>)                    &rArr; <span class="false">#f</span>
-(string? 'string)                &rArr; <span class="false">#f</span>
-(string? '(<span class="char">#\c</span> <span class="char">#\h</span> <span class="char">#\a</span> <span class="char">#\r</span> <span class="char">#\s</span>)) &rArr; <span class="false">#f</span>
-(string? #(<span class="char">#\c</span> <span class="char">#\h</span> <span class="char">#\a</span> <span class="char">#\r</span> <span class="char">#\s</span>)) &rArr; <span class="false">#f</span>
+<pre class="lisp-preformatted">(string? <span class="char">#\a</span>)                    &rArr; <span class="ok">#f</span>
+(string? 'string)                &rArr; <span class="ok">#f</span>
+(string? '(<span class="char">#\c</span> <span class="char">#\h</span> <span class="char">#\a</span> <span class="char">#\r</span> <span class="char">#\s</span>)) &rArr; <span class="ok">#f</span>
+(string? #(<span class="char">#\c</span> <span class="char">#\h</span> <span class="char">#\a</span> <span class="char">#\r</span> <span class="char">#\s</span>)) &rArr; <span class="ok">#f</span>
 </pre></div>
 </dd></dl>
 
@@ -1386,7 +1384,7 @@ any number of arguments.
 </p>
 <div class="example lisp">
 <pre class="lisp-preformatted">(string=? <span class="string">"abc"</span> (string <span class="char">#\a</span> <span class="char">#\b</span> <span class="char">#\c</span>)) &rArr; <span class="ok">#t</span>
-(string=? <span class="string">"abcd"</span> <span class="string">"Abcd"</span>)              &rArr; <span class="false">#f</span>
+(string=? <span class="string">"abcd"</span> <span class="string">"Abcd"</span>)              &rArr; <span class="ok">#f</span>
 (string=?)                            &rArr; <span class="ok">#t</span>
 (string=? (string))                   &rArr; <span class="ok">#t</span>
 (string=? <span class="string">"a"</span> <span class="string">"a"</span> <span class="string">"a"</span>)                &rArr; <span class="ok">#t</span>
@@ -1413,15 +1411,15 @@ if and only if they do not satisfy <code class="code">string&gt;?</code>.  They 
 accept any number of arguments.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string&lt;=? <span class="string">"g"</span> <span class="string">"g"</span>) &rArr; <span class="false">#f</span>
-(string&gt;=? <span class="string">"g"</span> <span class="string">"g"</span>) &rArr; <span class="false">#f</span>
-(string&lt;?  <span class="string">"g"</span> <span class="string">"g"</span>) &rArr; <span class="false">#f</span>
-(string&gt;?  <span class="string">"g"</span> <span class="string">"g"</span>) &rArr; <span class="false">#f</span>
+<pre class="lisp-preformatted">(string&lt;=? <span class="string">"g"</span> <span class="string">"g"</span>) &rArr; <span class="ok">#f</span>
+(string&gt;=? <span class="string">"g"</span> <span class="string">"g"</span>) &rArr; <span class="ok">#f</span>
+(string&lt;?  <span class="string">"g"</span> <span class="string">"g"</span>) &rArr; <span class="ok">#f</span>
+(string&gt;?  <span class="string">"g"</span> <span class="string">"g"</span>) &rArr; <span class="ok">#f</span>
 
 (string&lt;? <span class="string">"G"</span> <span class="string">"g"</span>)  &rArr; <span class="ok">#t</span>
-(string&gt;? <span class="string">"G"</span> <span class="string">"g"</span>)  &rArr; <span class="false">#f</span>
+(string&gt;? <span class="string">"G"</span> <span class="string">"g"</span>)  &rArr; <span class="ok">#f</span>
 
-(string&lt;? <span class="string">"gg"</span> <span class="string">"g"</span>) &rArr; <span class="false">#f</span>
+(string&lt;? <span class="string">"gg"</span> <span class="string">"g"</span>) &rArr; <span class="ok">#f</span>
 (string&gt;? <span class="string">"gg"</span> <span class="string">"g"</span>) &rArr; <span class="ok">#t</span>
 </pre></div>
 </dd></dl>
@@ -1452,13 +1450,13 @@ counterpart were applied to those case-folded arguments.
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-ci&lt;?  <span class="string">"G"</span> <span class="string">"g"</span>)                             &rArr; <span class="false">#f</span>
-(apply string&lt;? (map string-foldcase '(<span class="string">"G"</span> <span class="string">"g"</span>)))  &rArr; <span class="false">#f</span>
+<pre class="lisp-preformatted">(string-ci&lt;?  <span class="string">"G"</span> <span class="string">"g"</span>)                             &rArr; <span class="ok">#f</span>
+(apply string&lt;? (map string-foldcase '(<span class="string">"G"</span> <span class="string">"g"</span>)))  &rArr; <span class="ok">#f</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-ci&gt;?  <span class="string">"g"</span> <span class="string">"G"</span>)                             &rArr; <span class="false">#f</span>
-(apply string&gt;? (map string-foldcase '(<span class="string">"g"</span> <span class="string">"G"</span>)))  &rArr; <span class="false">#f</span>
+<pre class="lisp-preformatted">(string-ci&gt;?  <span class="string">"g"</span> <span class="string">"G"</span>)                             &rArr; <span class="ok">#f</span>
+(apply string&gt;? (map string-foldcase '(<span class="string">"g"</span> <span class="string">"G"</span>)))  &rArr; <span class="ok">#f</span>
 </pre></div>
 </dd></dl>
 
@@ -1572,7 +1570,7 @@ not a valid index of <var class="var">string</var>, an exception that satisfies
 (string-copy <span class="string">"dwim"</span> 1)                        &rArr; <span class="ok">"wim"</span>
 (string-copy <span class="string">"dwim"</span> 1 1)                      &rArr; <span class="ok">""</span>
 (string-copy <span class="string">"dwim"</span> 0 (string-length <span class="string">"dwim"</span>)) &rArr; <span class="ok">"dwim"</span>
-(eqv?     <span class="string">"dwim"</span> (string-copy <span class="string">"dwim"</span>))        &rArr; <span class="false">#f</span>
+(eqv?     <span class="string">"dwim"</span> (string-copy <span class="string">"dwim"</span>))        &rArr; <span class="ok">#f</span>
 (string=? <span class="string">"dwim"</span> (string-copy <span class="string">"dwim"</span>))        &rArr; <span class="ok">#t</span>
 </pre></div>
 

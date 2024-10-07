@@ -7,11 +7,11 @@
 Returns @code{#t} if @var{obj} is a pair.
 
 @lisp
-(pair? '(a . b)) @value{true}
-(pair? '(a b c)) @value{true}
-(pair? '())      @value{false}
-(pair? '(() ())) @value{false}
-(pair? '#(a b))  @value{false}
+(pair? '(a . b)) @ok{#t}
+(pair? '(a b c)) @ok{#t}
+(pair? '())      @ok{#f}
+(pair? '(() ())) @ok{#f}
+(pair? '#(a b))  @ok{#f}
 @end lisp
 @end deftypefn
 
@@ -31,9 +31,9 @@ Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
 @end lisp
 
 @lisp
-(eqv?   (cons + car) (cons + car)) @value{false}
-(equal? (cons + car) (cons + car)) @value{true}
-(eq? cons (cdr (cons cons cons)))  @value{true}
+(eqv?   (cons + car) (cons + car)) @ok{#f}
+(equal? (cons + car) (cons + car)) @ok{#t}
+(eq? cons (cdr (cons cons cons)))  @ok{#t}
 @end lisp
 
 @lisp
@@ -177,15 +177,15 @@ These 28 procedures are compositions of @code{car} and @code{cdr}.
 Returns @code{#t} if @var{obj} is the empty list.
 
 @lisp
-(null? '())    @value{true}
-(null? (list)) @value{true}
-(null? #\null) @value{false}
-(null? #!eof)  @value{false}
-(null? #f)     @value{false}
-(null? 0)      @value{false}
-(null? "")     @value{false}
-(null? #())    @value{false}
-(null? (void)) @value{false}
+(null? '())    @ok{#t}
+(null? (list)) @ok{#t}
+(null? #\null) @ok{#f}
+(null? #!eof)  @ok{#f}
+(null? #f)     @ok{#f}
+(null? 0)      @ok{#f}
+(null? "")     @ok{#f}
+(null? #())    @ok{#f}
+(null? (void)) @ok{#f}
 @end lisp
 @end deftypefn
 
@@ -200,20 +200,20 @@ empty list.
 @code{proper-list?} is functionally equivalent to @code{list?}.
 
 @lisp
-(list? '(a b c))              @value{true}
-(list? '())                   @value{true}
-(list? (list 0))              @value{true}
-(list? '(a . b))              @value{false}
-(list? list)                  @value{false}
-(list? "list")                @value{false}
-(list? #(0 1 2))              @value{false}
-(list? (circular-list 0 1 2)) @value{false}
+(list? '(a b c))              @ok{#t}
+(list? '())                   @ok{#t}
+(list? (list 0))              @ok{#t}
+(list? '(a . b))              @ok{#f}
+(list? list)                  @ok{#f}
+(list? "list")                @ok{#f}
+(list? #(0 1 2))              @ok{#f}
+(list? (circular-list 0 1 2)) @ok{#f}
 @end lisp
 
 @lisp
 (let ((x (list 'a)))
   (set-cdr! x x)
-  (list? x)) @value{false}
+  (list? x)) @ok{#f}
 @end lisp
 @end deftypefn
 
@@ -253,7 +253,7 @@ Returns a newly allocated list consisting of its arguments.
 (list 'a (+ 3 4) 'c)         @ok{(a 7 c)}
 (list)                       @ok{()}
 ((car (list list)) 'list)    @ok{(list)}
-(eqv? (list #\l) (list #\l)) @value{false}
+(eqv? (list #\l) (list #\l)) @ok{#f}
 @end lisp
 @end deftypefn
 
@@ -292,9 +292,9 @@ except that it shares structure with the last argument, @var{obj}.
 
 @lisp
 (define l (list 'f 'g 'h))
-(eq?    l (append (append) l)) @value{true}
-(eq?    l (append l (append))) @value{false}
-(equal? l (append l (append))) @value{true}
+(eq?    l (append (append) l)) @ok{#t}
+(eq?    l (append l (append))) @ok{#f}
+(equal? l (append l (append))) @ok{#t}
 @end lisp
 @end deftypefn
 
@@ -309,8 +309,8 @@ in reverse order (excluding the terminating empty list).
 
 @lisp
 (define l (list 'a 'b 'c))
-(eq?    l (reverse (reverse l))) @value{false}
-(equal? l (reverse (reverse l))) @value{true}
+(eq?    l (reverse (reverse l))) @ok{#f}
+(equal? l (reverse (reverse l))) @ok{#t}
 @end lisp
 @end deftypefn
 
@@ -406,15 +406,15 @@ return a non-Boolean value.
 
 @lisp
 (memq   'a '(a b c))                    @ok{(a b c)}
-(memq   'a '(b c d))                    @value{false}
-(memq   (list 'a) '(b (a) c))           @value{false}
+(memq   'a '(b c d))                    @ok{#f}
+(memq   (list 'a) '(b (a) c))           @ok{#f}
 (memq   'a '(a b c))                    @ok{(a b c)}
 (memv   'b '(a b c))                    @ok{(b c)}
 (memv   'b '(a b . c))                  @ok{(b . c)}
 (member 'b '(a b c) eq?)                @ok{(b c)}
 (member (list 'a) '(b (a) c))           @ok{((a) c)}
 (member "B" '("a" "b" "c") string-ci=?) @ok{("b" "c")}
-(member 7 '(7 8 9) (lambda x #f))       @value{false}
+(member 7 '(7 8 9) (lambda x #f))       @ok{#f}
 @end lisp
 
 @lisp
@@ -456,8 +456,8 @@ return a non-Boolean value.
 
 (assq 'a p)                            @ok{(a 1)}
 (assq 'b p)                            @ok{(b 2)}
-(assv 'd p)                            @value{false}
-(assq (list 'a) '(((a)) ((b)) ((c))))  @value{false}
+(assv 'd p)                            @ok{#f}
+(assq (list 'a) '(((a)) ((b)) ((c))))  @ok{#f}
 (assoc (list 'a) '(((a)) ((b)) ((c)))) @ok{((a))}
 (assoc 2.0 '((1 1) (2 4) (3 9)) =)     @ok{(2 4)}
 (assq 5 '((2 3) (5 7) (11 13)))        @ok{(5 7)} @aside{;; @value{R7RS}: unspecified}
@@ -469,7 +469,7 @@ return a non-Boolean value.
 
 (assq 'b i) @ok{(a . 1)}
 (assv 'c i) @ok{(c . 3)}
-(assq 'd p) @value{false}
+(assq 'd p) @ok{#f}
 (assv 'b '((a . 1) (b . 2) . (c . 3))) @ok{(b . 2)}
 @end lisp
 
@@ -489,7 +489,7 @@ return a non-Boolean value.
 
 (f "green")  @ok{"vert"}
 (f "orange") @ok{"orange"}
-(f "purple") @value{false}
+(f "purple") @ok{#f}
 @end lisp
 @end deftypefn
 
@@ -514,16 +514,16 @@ a @ok{(1 8 2 8)}
 @lisp
 (list-copy '(a b . c))                           @ok{(a b . c)}
 (list-copy 'unchanged)                           @ok{unchanged}
-(eqv? '() (list-copy '()))                       @value{true}
-(eqv? list-copy ((lambda (x) x) list-copy))      @value{true}
-(eqv? (lambda (x) x) (list-copy (lambda (x) x))) @value{false}
+(eqv? '() (list-copy '()))                       @ok{#t}
+(eqv? list-copy ((lambda (x) x) list-copy))      @ok{#t}
+(eqv? (lambda (x) x) (list-copy (lambda (x) x))) @ok{#f}
 @end lisp
 
 @lisp
 (define i (cons (string-copy "one") (string-copy "two")))
 (define p (cons (car i) (cons (cdr i) '())))
-(eqv? (cdr i) (cdr (list-copy i))) @value{true}
-(eqv? (cdr p) (cdr (list-copy p))) @value{false}
+(eqv? (cdr i) (cdr (list-copy i))) @ok{#t}
+(eqv? (cdr p) (cdr (list-copy p))) @ok{#f}
 @end lisp
 
 @lisp
@@ -532,7 +532,7 @@ a @ok{(1 8 2 8)}
 
 @lisp
 (define c (circular-list 0 1 2))
-(circular-list? c) @value{true}
+(circular-list? c) @ok{#t}
 (list-copy (circular-list 0 1 2)) @arrow{} @i{infinite loop} @aside{;; not caught}
 @end lisp
 @end deftypefn

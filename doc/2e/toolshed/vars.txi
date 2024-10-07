@@ -13,10 +13,6 @@
 
 @set RNRS @inlinefmtifelse{info,@acronym{RNRS},@inlinefmtifelse{plaintext,@acronym{RNRS},@acronym{R@sup{n}RS}}}
 
-@set true @ok{#t}
-
-@set false @result{} @inlinefmtifelse{html,@inlineraw{html,<span class="false">#f</span>},#f}
-
 @set void @r{@i{void}}
 
 @set apache @url{https://www.apache.org/licenses/, Apache License@comma{} version 2.0}
