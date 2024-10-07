@@ -198,10 +198,10 @@ Returns a newly allocated string whose characters are the concatenation
 of the characters in the given @var{strings}.
 
 @lisp
-(string-append)                     @ok{""}
-(string-append @string{})                  @ok{""}
-(string-append @string{hello} @string{world})     @ok{"helloworld"}
-(string-append @string{hello} @string{} @string{world})  @ok{"helloworld"}
+(string-append)                    @ok{""}
+(string-append @string{})                 @ok{""}
+(string-append @string{hello} @string{world})    @ok{"helloworld"}
+(string-append @string{hello} @string{} @string{world}) @ok{"helloworld"}
 (string-append @string{hello } @string{ world})   @ok{"hello  world"}
 (string-append @string{hello} @string{ } @string{world}) @ok{"hello world"}
 @end lisp
