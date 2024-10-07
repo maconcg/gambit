@@ -52,7 +52,6 @@ printf '%s\n\n' '/^@lisp$/,/^@end lisp$/ {
         x
     }'
 
-
 # Colorize chars.
 printf '%s\n\n' '    /#\\/ {
         s/#\\\([[:graph:]]\)$/@char{\1}/g
