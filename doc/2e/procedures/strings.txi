@@ -349,7 +349,7 @@ satisfies @code{range-exception?} is raised.
 
 @lisp
 (define (f) (make-string 3 #\*))
-(string-set! (f) 0 #\?) @aside{;; ok}
+(string-set! (f) 0 #\?) ;; ok
 (string-set! (f) 5 #\?)   @exception{range}
 (string-set! (f) 1.1 #\?) @exception{type}
 @end lisp
@@ -360,7 +360,7 @@ satisfies @code{range-exception?} is raised.
 
 @lisp
 (define (g) "***")
-(string-set! (g) 0 #\?) @aside{;; @value{R7RS} says this is an error}
-(g) @ok{"?**"}             @aside{;; current Gambit behavior} 
+(string-set! (g) 0 #\?) ;; @value{R7RS} says this is an error
+(g) @ok{"?**"}             ;; current Gambit behavior 
 @end lisp
 @end deftypefn

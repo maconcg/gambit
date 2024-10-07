@@ -30,8 +30,9 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     dd {
         background-color: %bg-main%;
         pre {
-            .slanted {
+            span.codecomment {
                 color: %fg-dim%;
+                font-style: oblique;
             }
             span.char {
                 color: %char%;

@@ -59,3 +59,7 @@
 @macro string {str}
 @inlinefmtifelse{html,@inlineraw{html,<span class="string">"\str\"</span>},"\str\"}
 @end macro
+
+@macro codecomment {cmt}
+@inlinefmtifelse{html,@inlineraw{html,<span class="codecomment">\cmt\</span>},\cmt\}
+@end macro

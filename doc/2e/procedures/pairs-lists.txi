@@ -92,8 +92,8 @@ Mutates @var{pair} by storing @var{obj} in the car field of @var{pair}.
 
 @lisp
 (define (g) '(constant-list))
-(set-car! (g) 3) @aside{;; @value{R7RS} says this is an error}
-(g) @ok{(3)}        @aside{;; current Gambit behavior}
+(set-car! (g) 3) ;; @value{R7RS} says this is an error
+(g) @ok{(3)}        ;; current Gambit behavior
 @end lisp
 @end deftypefn
 
@@ -109,8 +109,8 @@ Mutates @var{pair} by storing @var{obj} in the cdr field of @var{pair}.
 
 @lisp
 (define (g) '(constant-list))
-(set-cdr! (g) 3)          @aside{;; @value{R7RS} says this is an error}
-(g) @ok{(constant-list . 3)} @aside{;; current Gambit behavior}
+(set-cdr! (g) 3)          ;; @value{R7RS} says this is an error
+(g) @ok{(constant-list . 3)} ;; current Gambit behavior
 @end lisp
 @end deftypefn
 
@@ -266,7 +266,7 @@ Returns the length of @var{list}.
 (length '(a (b) (c d e)))    @ok{3}
 (length '())                 @ok{0}
 (length (cdr (make-list 5))) @ok{4}
-(length circle)              @arrow{} @i{infinite loop} @aside{;; not caught}
+(length circle)              @arrow{} @i{infinite loop} ;; not caught
 @end lisp
 @end deftypefn
 
@@ -286,8 +286,8 @@ except that it shares structure with the last argument, @var{obj}.
 (append '(x) '(y))       @ok{(x y)}
 (append '(a) '(b c d))   @ok{(a b c d)}
 (append '(a (b)) '((c))) @ok{(a (b) (c))}
-(append '(a b) '(c . d)) @ok{(a b c . d)} @aside{;; lacking propriety}
-(append '() 'a)          @ok{a} @aside{;; egregiously lacking propriety}
+(append '(a b) '(c . d)) @ok{(a b c . d)} ;; lacking propriety
+(append '() 'a)          @ok{a} ;; egregiously lacking propriety
 @end lisp
 
 @lisp
@@ -328,8 +328,8 @@ elements, an exception that satisfies @code{range-exception?} is raised.
 @lisp
 (list-tail '(a b c) 1)   @ok{(b c)}
 (list-tail '(a b c) 3)   @ok{()}
-(list-tail '(a b . c) 1) @ok{(b . c)} @aside{;; impropriety}
-(list-tail '(a b . c) 2) @ok{c} @aside{;; abject impropriety}
+(list-tail '(a b . c) 1) @ok{(b . c)} ;; impropriety
+(list-tail '(a b . c) 2) @ok{c} ;; abject impropriety
 @end lisp
 
 @lisp
@@ -350,7 +350,7 @@ be circular.
 @end lisp
 
 @lisp
-(list-ref (circular-list 'a 'b) 3) @ok{b} @aside{;; @value{R7RS} says this is an error}
+(list-ref (circular-list 'a 'b) 3) @ok{b} ;; @value{R7RS} says this is an error
 @end lisp
 @end deftypefn
 
@@ -367,7 +367,7 @@ ls @ok{(one two three)}
 @end lisp
 
 @lisp
-(list-set! '(0 1 2) 1 "oops") @aside{;; @value{R7RS} says this is an error}
+(list-set! '(0 1 2) 1 "oops") ;; @value{R7RS} says this is an error
 @end lisp
 @end deftypefn
 
@@ -399,7 +399,7 @@ return a non-Boolean value.
 @end itemize
 
 @lisp
-(memq   101 '(100 101 102)) @ok{(101 102)} @aside{;; @value{R7RS}: unspecified}
+(memq   101 '(100 101 102)) @ok{(101 102)} ;; @value{R7RS}: unspecified
 (memv   101 '(100 101 102)) @ok{(101 102)}
 (member 7 '(100 101 102) +) @ok{(100 101 102)}
 @end lisp
@@ -460,7 +460,7 @@ return a non-Boolean value.
 (assq (list 'a) '(((a)) ((b)) ((c))))  @ok{#f}
 (assoc (list 'a) '(((a)) ((b)) ((c)))) @ok{((a))}
 (assoc 2.0 '((1 1) (2 4) (3 9)) =)     @ok{(2 4)}
-(assq 5 '((2 3) (5 7) (11 13)))        @ok{(5 7)} @aside{;; @value{R7RS}: unspecified}
+(assq 5 '((2 3) (5 7) (11 13)))        @ok{(5 7)} ;; @value{R7RS}: unspecified
 (assv 5 '((2 3) (5 7) (11 13)))        @ok{(5 7)}
 @end lisp
 
@@ -503,9 +503,9 @@ the same in the sense of @code{eqv?}.  An @var{obj} which is not a list
 is returned unchanged.  It is an error if @var{obj} is a circular list.
 
 @lisp
-(define a '(1 8 2 8))    @aside{;; a may be immutable}
+(define a '(1 8 2 8))    ;; a may be immutable
 (define b (list-copy a))
-(set-car! b 3)           @aside{;; b is mutable}
+(set-car! b 3)           ;; b is mutable
 
 b @ok{(3 8 2 8)}
 a @ok{(1 8 2 8)}
@@ -533,6 +533,6 @@ a @ok{(1 8 2 8)}
 @lisp
 (define c (circular-list 0 1 2))
 (circular-list? c) @ok{#t}
-(list-copy (circular-list 0 1 2)) @arrow{} @i{infinite loop} @aside{;; not caught}
+(list-copy (circular-list 0 1 2)) @arrow{} @i{infinite loop} ;; not caught
 @end lisp
 @end deftypefn

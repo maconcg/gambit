@@ -82,5 +82,8 @@ printf '    %s\n' '/@ok{/ {
         s/@ok{.*$/@ok{/
         G
         s/\n//
-    }
+    }'
+
+# Add comment span last so it can be to the right ok @ok{}.
+printf '    %s\n' 's/\([[:blank:]]\);\(.*\)$/\1@codecomment{;\2}/
 }'

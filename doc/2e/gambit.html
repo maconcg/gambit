@@ -71,8 +71,9 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     dd {
         background-color: #ffffff;
         pre {
-            .slanted {
+            span.codecomment {
                 color: #595959;
+                font-style: oblique;
             }
             span.char {
                 color: #7f0000;
@@ -155,8 +156,9 @@ dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
         dd {
             background-color: #000000;
             pre {
-                .slanted {
+                span.codecomment {
                     color: #989898;
+                    font-style: oblique;
                 }
                 span.char {
                     color: #ff9580;
@@ -269,6 +271,7 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
 </head>
 
 <body lang="en">
+
 
 
 
@@ -818,8 +821,8 @@ made to take the cdr of the empty list, an exception that satisfies
 
 <div class="example lisp">
 <pre class="lisp-preformatted">(<span class="syntax">define</span> (g) '(constant-list))
-(set-car! (g) 3) <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</i>
-(g) &rArr; <span class="ok">(3)</span>        <i class="slanted">;; current Gambit behavior</i>
+(set-car! (g) 3) <span class="codecomment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</span>
+(g) &rArr; <span class="ok">(3)</span>        <span class="codecomment">;; current Gambit behavior</span>
 </pre></div>
 </dd></dl>
 
@@ -836,8 +839,8 @@ made to take the cdr of the empty list, an exception that satisfies
 
 <div class="example lisp">
 <pre class="lisp-preformatted">(<span class="syntax">define</span> (g) '(constant-list))
-(set-cdr! (g) 3)          <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</i>
-(g) &rArr; <span class="ok">(constant-list . 3)</span> <i class="slanted">;; current Gambit behavior</i>
+(set-cdr! (g) 3)          <span class="codecomment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</span>
+(g) &rArr; <span class="ok">(constant-list . 3)</span> <span class="codecomment">;; current Gambit behavior</span>
 </pre></div>
 </dd></dl>
 
@@ -998,7 +1001,7 @@ integer, an exception that satisfies <code class="code">range-exception?</code> 
 (length '(a (b) (c d e)))    &rArr; <span class="ok">3</span>
 (length '())                 &rArr; <span class="ok">0</span>
 (length (cdr (make-list 5))) &rArr; <span class="ok">4</span>
-(length circle)              &rarr; <i class="i">infinite loop</i> <i class="slanted">;; not caught</i>
+(length circle)              &rarr; <i class="i">infinite loop</i> <span class="codecomment">;; not caught</span>
 </pre></div>
 </dd></dl>
 
@@ -1019,8 +1022,8 @@ except that it shares structure with the last argument, <var class="var">obj</va
 <pre class="lisp-preformatted">(append '(x) '(y))       &rArr; <span class="ok">(x y)</span>
 (append '(a) '(b c d))   &rArr; <span class="ok">(a b c d)</span>
 (append '(a (b)) '((c))) &rArr; <span class="ok">(a (b) (c))</span>
-(append '(a b) '(c . d)) &rArr; <span class="ok">(a b c . d)</span> <i class="slanted">;; lacking propriety</i>
-(append '() 'a)          &rArr; <span class="ok">a</span> <i class="slanted">;; egregiously lacking propriety</i>
+(append '(a b) '(c . d)) &rArr; <span class="ok">(a b c . d)</span> <span class="codecomment">;; lacking propriety</span>
+(append '() 'a)          &rArr; <span class="ok">a</span> <span class="codecomment">;; egregiously lacking propriety</span>
 </pre></div>
 
 <div class="example lisp">
@@ -1063,8 +1066,8 @@ elements, an exception that satisfies <code class="code">range-exception?</code>
 <div class="example lisp">
 <pre class="lisp-preformatted">(list-tail '(a b c) 1)   &rArr; <span class="ok">(b c)</span>
 (list-tail '(a b c) 3)   &rArr; <span class="ok">()</span>
-(list-tail '(a b . c) 1) &rArr; <span class="ok">(b . c)</span> <i class="slanted">;; impropriety</i>
-(list-tail '(a b . c) 2) &rArr; <span class="ok">c</span> <i class="slanted">;; abject impropriety</i>
+(list-tail '(a b . c) 1) &rArr; <span class="ok">(b . c)</span> <span class="codecomment">;; impropriety</span>
+(list-tail '(a b . c) 2) &rArr; <span class="ok">c</span> <span class="codecomment">;; abject impropriety</span>
 </pre></div>
 
 <div class="example lisp">
@@ -1086,7 +1089,7 @@ be circular.
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(list-ref (circular-list 'a 'b) 3) &rArr; <span class="ok">b</span> <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</i>
+<pre class="lisp-preformatted">(list-ref (circular-list 'a 'b) 3) &rArr; <span class="ok">b</span> <span class="codecomment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</span>
 </pre></div>
 </dd></dl>
 
@@ -1104,7 +1107,7 @@ ls &rArr; <span class="ok">(one two three)</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(list-set! '(0 1 2) 1 <span class="string">"oops"</span>) <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</i>
+<pre class="lisp-preformatted">(list-set! '(0 1 2) 1 <span class="string">"oops"</span>) <span class="codecomment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</span>
 </pre></div>
 </dd></dl>
 
@@ -1133,7 +1136,7 @@ return a non-Boolean value.
 </li></ul>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(memq   101 '(100 101 102)) &rArr; <span class="ok">(101 102)</span> <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr>: unspecified</i>
+<pre class="lisp-preformatted">(memq   101 '(100 101 102)) &rArr; <span class="ok">(101 102)</span> <span class="codecomment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr>: unspecified</span>
 (memv   101 '(100 101 102)) &rArr; <span class="ok">(101 102)</span>
 (member 7 '(100 101 102) +) &rArr; <span class="ok">(100 101 102)</span>
 </pre></div>
@@ -1191,7 +1194,7 @@ return a non-Boolean value.
 (assq (list 'a) '(((a)) ((b)) ((c))))  &rArr; <span class="ok">#f</span>
 (assoc (list 'a) '(((a)) ((b)) ((c)))) &rArr; <span class="ok">((a))</span>
 (assoc 2.0 '((1 1) (2 4) (3 9)) =)     &rArr; <span class="ok">(2 4)</span>
-(assq 5 '((2 3) (5 7) (11 13)))        &rArr; <span class="ok">(5 7)</span> <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr>: unspecified</i>
+(assq 5 '((2 3) (5 7) (11 13)))        &rArr; <span class="ok">(5 7)</span> <span class="codecomment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr>: unspecified</span>
 (assv 5 '((2 3) (5 7) (11 13)))        &rArr; <span class="ok">(5 7)</span>
 </pre></div>
 
@@ -1235,9 +1238,9 @@ the same in the sense of <code class="code">eqv?</code>.  An <var class="var">ob
 is returned unchanged.  It is an error if <var class="var">obj</var> is a circular list.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> a '(1 8 2 8))    <i class="slanted">;; a may be immutable</i>
+<pre class="lisp-preformatted">(<span class="syntax">define</span> a '(1 8 2 8))    <span class="codecomment">;; a may be immutable</span>
 (<span class="syntax">define</span> b (list-copy a))
-(set-car! b 3)           <i class="slanted">;; b is mutable</i>
+(set-car! b 3)           <span class="codecomment">;; b is mutable</span>
 
 b &rArr; <span class="ok">(3 8 2 8)</span>
 a &rArr; <span class="ok">(1 8 2 8)</span>
@@ -1265,7 +1268,7 @@ a &rArr; <span class="ok">(1 8 2 8)</span>
 <div class="example lisp">
 <pre class="lisp-preformatted">(<span class="syntax">define</span> c (circular-list 0 1 2))
 (circular-list? c) &rArr; <span class="ok">#t</span>
-(list-copy (circular-list 0 1 2)) &rarr; <i class="i">infinite loop</i> <i class="slanted">;; not caught</i>
+(list-copy (circular-list 0 1 2)) &rarr; <i class="i">infinite loop</i> <span class="codecomment">;; not caught</span>
 </pre></div>
 </dd></dl>
 
@@ -1647,7 +1650,7 @@ satisfies <code class="code">range-exception?</code> is raised.
 </p>
 <div class="example lisp">
 <pre class="lisp-preformatted">(<span class="syntax">define</span> (f) (make-string 3 <span class="char">#\*</span>))
-(string-set! (f) 0 <span class="char">#\?</span>) <i class="slanted">;; ok</i>
+(string-set! (f) 0 <span class="char">#\?</span>) <span class="codecomment">;; ok</span>
 (string-set! (f) 5 <span class="char">#\?</span>)   &rarr; <i class="i">range exception</i>
 (string-set! (f) 1.1 <span class="char">#\?</span>) &rarr; <i class="i">type exception</i>
 </pre></div>
@@ -1658,8 +1661,8 @@ satisfies <code class="code">range-exception?</code> is raised.
 
 <div class="example lisp">
 <pre class="lisp-preformatted">(<span class="syntax">define</span> (g) <span class="string">"***"</span>)
-(string-set! (g) 0 <span class="char">#\?</span>) <i class="slanted">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</i>
-(g) &rArr; <span class="ok">"?**"</span>             <i class="slanted">;; current Gambit behavior</i> 
+(string-set! (g) 0 <span class="char">#\?</span>) <span class="codecomment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</span>
+(g) &rArr; <span class="ok">"?**"</span>             <span class="codecomment">;; current Gambit behavior </span>
 </pre></div>
 </dd></dl>
 
