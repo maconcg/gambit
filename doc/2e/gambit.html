@@ -1154,7 +1154,7 @@ return a non-Boolean value.
 (member 'b '(a b c) eq?)                &rArr; <span class="ok">(b c)</span>
 (member (list 'a) '(b (a) c))           &rArr; <span class="ok">((a) c)</span>
 (member <span class="string">"B"</span> '(<span class="string">"a"</span> <span class="string">"b"</span> <span class="string">"c"</span>) string-ci=?) &rArr; <span class="ok">("b" "c")</span>
-(member 7 '(7 8 9) (lambda x #f))       &rArr; <span class="false">#f</span>
+(member 7 '(7 8 9) (<span class="syntax">lambda</span> x #f))       &rArr; <span class="false">#f</span>
 </pre></div>
 
 <div class="example lisp">
@@ -1253,8 +1253,8 @@ a &rArr; <span class="ok">(1 8 2 8)</span>
 <pre class="lisp-preformatted">(list-copy '(a b . c))                           &rArr; <span class="ok">(a b . c)</span>
 (list-copy 'unchanged)                           &rArr; <span class="ok">unchanged</span>
 (eqv? '() (list-copy '()))                       &rArr; <span class="ok">#t</span>
-(eqv? list-copy ((lambda (x) x) list-copy))      &rArr; <span class="ok">#t</span>
-(eqv? (lambda (x) x) (list-copy (lambda (x) x))) &rArr; <span class="false">#f</span>
+(eqv? list-copy ((<span class="syntax">lambda</span> (x) x) list-copy))      &rArr; <span class="ok">#t</span>
+(eqv? (<span class="syntax">lambda</span> (x) x) (list-copy (<span class="syntax">lambda</span> (x) x))) &rArr; <span class="false">#f</span>
 </pre></div>
 
 <div class="example lisp">

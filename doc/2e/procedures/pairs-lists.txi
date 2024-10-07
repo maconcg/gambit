@@ -414,7 +414,7 @@ return a non-Boolean value.
 (member 'b '(a b c) eq?)                @ok{(b c)}
 (member (list 'a) '(b (a) c))           @ok{((a) c)}
 (member @string{B} '(@string{a} @string{b} @string{c}) string-ci=?) @ok{("b" "c")}
-(member 7 '(7 8 9) (lambda x #f))       @value{false}
+(member 7 '(7 8 9) (@syntax{lambda} x #f))       @value{false}
 @end lisp
 
 @lisp
@@ -515,8 +515,8 @@ a @ok{(1 8 2 8)}
 (list-copy '(a b . c))                           @ok{(a b . c)}
 (list-copy 'unchanged)                           @ok{unchanged}
 (eqv? '() (list-copy '()))                       @value{true}
-(eqv? list-copy ((lambda (x) x) list-copy))      @value{true}
-(eqv? (lambda (x) x) (list-copy (lambda (x) x))) @value{false}
+(eqv? list-copy ((@syntax{lambda} (x) x) list-copy))      @value{true}
+(eqv? (@syntax{lambda} (x) x) (list-copy (@syntax{lambda} (x) x))) @value{false}
 @end lisp
 
 @lisp
