@@ -1,5 +1,6 @@
 \input texinfo
 
+@include toolshed/today.txi
 @include toolshed/macros.txi
 @include toolshed/vars.txi
 @include toolshed/copying.txi
@@ -17,7 +18,8 @@
 @titlepage
 @title Gambit
 @subtitle for version @value{VERSION}, @value{UPDATED}
-@author A.U. Thor (@email{bug@@gambitscheme.org})
+@author Marc Feeley
+@author Second edition revisions by Macon Gambill
 @page
 @vskip 0pt plus 1filll
 @insertcopying

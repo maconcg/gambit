@@ -2,7 +2,7 @@
 This is the Gambit Scheme manual, @value{EDITION} edition.  It documents
 Gambit v@value{VERSION} (@value{UPDATED}).
 
-Not officially copyright @copyright{} 1994--2024 by Marc Feeley et al.
+Copyright @copyright{} 1994--2022 Marc Feeley et al.
 
 @quotation
 The Gambit system, version @value{VERSION}, is licensed under two licenses:

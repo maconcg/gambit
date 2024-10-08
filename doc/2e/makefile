@@ -10,14 +10,15 @@ html-modular-phonies := html-modules html-pristine-modules html-css-modules \
 
 html-all-phonies := ${html-monolithic-phonies} ${html-modular-phonies}
 
-.PHONY: default all all-html html-all clean clean-intermediate mostlyclean \
-        info txt ${html-all-phonies}
+.PHONY: default all all-html html-all all-html-monoliths html-monoliths-all \
+ all-html-modules html-all-modules all-monoliths monoliths-all clean \
+ clean-intermediate mostlyclean info txt ${html-monolithic-phonies} \
+ ${html-modular-phonies}
 
 all: info all-html txt
-
-all-html html-all: ${html-all-phonies}
+all-html html-all: all-html-monoliths all-html-modules
 all-html-monoliths html-all-monoliths: ${html-monolithic-phonies}
-all-html-modules html-all-modules: ${html-monolithic-phonies}
+all-html-modules html-all-modules: ${html-modular-phonies}
 all-monoliths monoliths-all: info txt all-html-monoliths
 
 clean: clean-intermediate
@@ -31,8 +32,13 @@ clean-intermediate mostlyclean:
 		gambit-css-color-parens.html toolshed/gambit.css \
 		toolshed/colorize.sed
 
-gambit.txi: prose/* procedures/*.txi toolshed/*.txi toolshed/licenses/*
-	touch $@
+gambit.txi: prose/* procedures/*.txi \
+            toolshed/copying.txi toolshed/macros.txi \
+            toolshed/today.txi toolshed/vars.txi \
+            toolshed/licenses/LICENSE-2.0.txt \
+            toolshed/licenses/lgpl-2.1.texi
+gambit.txi: 
+	test -f $@ && touch $@
 
 info: gambit.info
 gambit.info: gambit.txi
@@ -84,9 +90,6 @@ gambit-css-color-parens.html: gambit-css-color.html toolshed/parenthesize-defs.s
 gambit-spans.txi: gambit.txi procedures/c/.stamp
 	sed 's/^\(@include[[:blank:]]\{1,\}procedures\/\)/\1c\//' gambit.txi > $@
 
-toolshed/colorize.sed: toolshed/colorize.sed.sh toolshed/data/syntax-words
-	sh -efu toolshed/colorize.sed.sh > $@
-
 procedures/c/.stamp: procedures/c/pairs-lists.txi \
                      procedures/c/strings.txi
 	touch $@
@@ -99,10 +102,16 @@ procedures/c/strings.txi: procedures/strings.txi toolshed/colorize.sed
 	test -d procedures/c || mkdir procedures/c
 	sed -f toolshed/colorize.sed procedures/strings.txi > $@
 
+toolshed/today.txi:
+	echo "@set TODAY $$(date +'%B %d, %Y')" > $@
+
+toolshed/colorize.sed: toolshed/colorize.sed.sh toolshed/data/syntax-words
+	sh -efu toolshed/colorize.sed.sh > $@
+
 toolshed/gambit.css: toolshed/gambit.css.in toolshed/make-css.sh
 	sh -efu toolshed/make-css.sh toolshed/gambit.css.in > $@
 
-toolshed/make-css.sh: toolshed/data/modus-*-colors.sh
+toolshed/make-css.sh: toolshed/data/*-colors.sh
 
 html-pristine-modules: html-pristine/.stamp
 html-pristine/.stamp: gambit.txi

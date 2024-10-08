@@ -1,5 +1,5 @@
 @set EDITION revised
-@set UPDATED September 20, 2024
+@set UPDATED @value{TODAY}
 @set VERSION 4.9.5
 
 @set HOMEPAGEURL https://gambitscheme.org
