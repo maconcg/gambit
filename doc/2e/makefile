@@ -8,14 +8,14 @@ html-modular-phonies := html-modules html-pristine-modules html-css-modules \
                         html-parens-modules html-css-modules \
                         html-css-parens-modules html-css-color-modules
 
-html-phonies := ${html-monolithic-phonies} ${html-modular-phonies}
+html-all-phonies := ${html-monolithic-phonies} ${html-modular-phonies}
 
 .PHONY: default all all-html html-all clean clean-intermediate mostlyclean \
-        info txt ${html-phonies}
+        info txt ${html-all-phonies}
 
 all: info all-html txt
 
-all-html html-all: ${html-phonies}
+all-html html-all: ${html-all-phonies}
 all-html-monoliths html-all-monoliths: ${html-monolithic-phonies}
 all-html-modules html-all-modules: ${html-monolithic-phonies}
 all-monoliths monoliths-all: info txt all-html-monoliths
