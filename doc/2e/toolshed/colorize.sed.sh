@@ -42,7 +42,7 @@ done
 # Wrap each "string" in @string{}.
 printf '    %s\n\n' \
        's/\\"/@backslashchar{}@U{0022}/g' \
-       's/"\([^"]*\)"/@string{\1}/g'
+       's/"\([^"]*\)"/@string{"\1"}/g'
 
 # Dim most parens/similar syntactic tokens.
 printf '    %s\n' \
