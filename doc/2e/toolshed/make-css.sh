@@ -72,12 +72,12 @@ syntax="$mo_magenta_cooler"
 substitute
 
 # Dark mode
-bg_deftp_l="$mv_bg_ochre"6f
-bg_deftp_r="$mv_bg_ochre"3f
+bg_deftp_l="$mv_bg_ochre"bf
+bg_deftp_r="$mv_bg_ochre"9f
 bg_deftypefn_l="$mv_bg_blue_subtle"6f
 bg_deftypefn_r="$mv_bg_blue_subtle"3f
-bg_deftypevr_l="$mv_bg_clay"6f
-bg_deftypevr_r="$mv_bg_clay"3f
+bg_deftypevr_l="$mv_bg_clay"af
+bg_deftypevr_r="$mv_bg_clay"8f
 bg_dim="$mv_bg_dim"
 bg_inactive="$mv_bg_inactive"
 bg_main="$mv_bg_main"
