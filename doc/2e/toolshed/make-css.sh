@@ -1,7 +1,7 @@
 readonly template="$1"
 
-. toolshed/modus-operandi-colors.sh
-. toolshed/modus-vivendi-colors.sh
+. toolshed/data/modus-operandi-colors.sh
+. toolshed/data/modus-vivendi-colors.sh
 
 substitute() {
     sed -n "/^\/\* BEGIN COLORS \*\/\$/,/^\/\* END COLORS \*\/\$/ {

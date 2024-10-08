@@ -8,9 +8,11 @@ Gambit v4.9.5 (September 20, 2024).
 
 Not officially copyright © 1994-2024 by Marc Feeley et al.
 
-The Gambit system, version 4.9.5, is licensed under two
-licenses: the https://www.apache.org/licenses/ (Apache License, version 2.0), and the https://www.gnu.org/licenses/ (GNU Lesser General Public License, version 2.1).  You may choose
-which of these two licenses to abide by.
+The Gambit system, version 4.9.5, is licensed under two licenses:
+the https://www.apache.org/licenses/ (Apache License, version
+2.0), and the https://www.gnu.org/licenses/ (GNU Lesser General Public
+License, version 2.1).  You may choose which of these two licenses
+to abide by.
  -->
 <title>Gambit Scheme, revised edition</title>
 
@@ -336,7 +338,6 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
 
 
 
-
 <div class="top-level-extent" id="Top">
 <div class="nav-panel">
 <p>
@@ -357,9 +358,11 @@ Gambit v4.9.5 (September 20, 2024).
 <p>Not officially copyright &copy; 1994&ndash;2024 by Marc Feeley et al.
 </p>
 <blockquote class="quotation">
-<p>The Gambit system, version 4.9.5, is licensed under two
-licenses: the <a class="url" href="https://www.apache.org/licenses/">Apache License, version 2.0</a>, and the <a class="url" href="https://www.gnu.org/licenses/">GNU Lesser General Public License, version 2.1</a>.  You may choose
-which of these two licenses to abide by.
+<p>The Gambit system, version 4.9.5, is licensed under two licenses:
+the <a class="url" href="https://www.apache.org/licenses/">Apache License, version
+2.0</a>, and the <a class="url" href="https://www.gnu.org/licenses/">GNU Lesser General Public
+License, version 2.1</a>.  You may choose which of these two licenses
+to abide by.
 
 </p></blockquote>
 
@@ -370,38 +373,15 @@ which of these two licenses to abide by.
 
 <ul class="toc-numbered-mark">
   <li><a id="toc-Introduction-1" href="#Introduction">1 Introduction</a></li>
-  <li><a id="toc-The-Gambit-system-1" href="#The-Gambit-system">2 The Gambit system</a>
+  <li><a id="toc-Pairs-and-lists-1" href="#Pairs-and-lists">2 Pairs and lists</a>
   <ul class="toc-numbered-mark">
-    <li><a id="toc-Invoking-Gambit-1" href="#Invoking-Gambit">2.1 Invoking Gambit</a>
-    <ul class="toc-numbered-mark">
-      <li><a id="toc-Argument-processing-1" href="#Argument-processing">2.1.1 Argument processing</a></li>
-      <li><a id="toc-Interactive-mode-1" href="#Interactive-mode">2.1.2 Interactive mode</a></li>
-      <li><a id="toc-Batch-mode-1" href="#Batch-mode">2.1.3 Batch mode</a></li>
-      <li><a id="toc-Module-management-mode-1" href="#Module-management-mode">2.1.4 Module management mode</a></li>
-      <li><a id="toc-Scheme-scripts-1" href="#Scheme-scripts">2.1.5 Scheme scripts</a></li>
-    </ul></li>
-    <li><a id="toc-gsc-1" href="#gsc">2.2 gsc</a>
-    <ul class="toc-numbered-mark">
-      <li><a id="toc-Invoking-gsc-1" href="#Invoking-gsc">2.2.1 Invoking gsc</a></li>
-      <li><a id="toc-gsc-declarations-1" href="#gsc-declarations">2.2.2 gsc declarations</a></li>
-      <li><a id="toc-Link-files-1" href="#Link-files">2.2.3 Link files</a></li>
-    </ul></li>
+    <li><a id="toc-Overview-of-pairs-and-lists-1" href="#Overview-of-pairs-and-lists">2.1 Overview of pairs and lists</a></li>
+    <li><a id="toc-Pair-and-list-jargon-1" href="#Pair-and-list-jargon">2.2 Pair and list jargon</a></li>
+    <li><a id="toc-Pair-and-list-procedures-1" href="#Pair-and-list-procedures">2.3 Pair and list procedures</a></li>
   </ul></li>
-  <li><a id="toc-Debugging-1" href="#Debugging">3 Debugging</a>
+  <li><a id="toc-Strings-1" href="#Strings">3 Strings</a>
   <ul class="toc-numbered-mark">
-    <li><a id="toc-Debugging-model-1" href="#Debugging-model">3.1 Debugging model</a></li>
-    <li><a id="toc-Debugging-commands-1" href="#Debugging-commands">3.2 Debugging commands</a></li>
-    <li><a id="toc-Debugging-example-1" href="#Debugging-example">3.3 Debugging example</a></li>
-  </ul></li>
-  <li><a id="toc-Pairs-and-lists-1" href="#Pairs-and-lists">4 Pairs and lists</a>
-  <ul class="toc-numbered-mark">
-    <li><a id="toc-Overview-of-pairs-and-lists-1" href="#Overview-of-pairs-and-lists">4.1 Overview of pairs and lists</a></li>
-    <li><a id="toc-Pair-and-list-jargon-1" href="#Pair-and-list-jargon">4.2 Pair and list jargon</a></li>
-    <li><a id="toc-Pair-and-list-procedures-1" href="#Pair-and-list-procedures">4.3 Pair and list procedures</a></li>
-  </ul></li>
-  <li><a id="toc-Strings-1" href="#Strings">5 Strings</a>
-  <ul class="toc-numbered-mark">
-    <li><a id="toc-String-procedures-1" href="#String-procedures">5.1 String procedures</a></li>
+    <li><a id="toc-String-procedures-1" href="#String-procedures">3.1 String procedures</a></li>
   </ul></li>
   <li><a id="toc-General-Index-1" href="#General-Index" rel="index">General Index</a></li>
   <li><a id="toc-Type-Index-1" href="#Type-Index" rel="index">Type Index</a></li>
@@ -413,7 +393,7 @@ which of these two licenses to abide by.
 <div class="chapter-level-extent" id="Introduction">
 <div class="nav-panel">
 <p>
-Next: <a href="#The-Gambit-system" accesskey="n" rel="next">The Gambit system</a>, Previous: <a href="#Top" accesskey="p" rel="prev">Gambit</a>, Up: <a href="#Top" accesskey="u" rel="up">Gambit</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="#Pairs-and-lists" accesskey="n" rel="next">Pairs and lists</a>, Previous: <a href="#Top" accesskey="p" rel="prev">Gambit</a>, Up: <a href="#Top" accesskey="u" rel="up">Gambit</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <h2 class="chapter" id="Introduction-1"><span>1 Introduction<a class="copiable-link" href="#Introduction-1"> &para;</a></span></h2>
 
@@ -444,7 +424,8 @@ languages include C and JavaScript.
 </p>
 <p>The C target is the most mature, generating efficient C code that lets
 Gambit run on any platform for which a C compiler is available.  With
-appropriate declarations in the Scheme source code (see <a class="pxref" href="#gsc-declarations">gsc declarations</a>), the resulting programs run roughly as fast as
+appropriate declarations in the Scheme source code (reference gsc
+declarations here), the resulting programs run roughly as fast as
 functionally equivalent programs built from hand-written C.
 </p>
 <p>Most of the Gambit system, including <code class="t">gsi</code> and <code class="t">gsc</code>
@@ -452,189 +433,12 @@ itself, is written in Scheme and compiled using <code class="t">gsc</code>.
 </p>
 <hr>
 </div>
-<div class="chapter-level-extent" id="The-Gambit-system">
-<div class="nav-panel">
-<p>
-Next: <a href="#Debugging" accesskey="n" rel="next">Debugging</a>, Previous: <a href="#Introduction" accesskey="p" rel="prev">Introduction</a>, Up: <a href="#Top" accesskey="u" rel="up">Gambit</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
-</div>
-<h2 class="chapter" id="The-Gambit-system-1"><span>2 The Gambit system<a class="copiable-link" href="#The-Gambit-system-1"> &para;</a></span></h2>
-<p>This chapter desrcibes the Gambit system, including installation,
-program invocation, and filesystem usage.
-</p>
-<ul class="mini-toc">
-<li><a href="#Invoking-Gambit" accesskey="1">Invoking Gambit</a></li>
-<li><a href="#gsc" accesskey="2">gsc</a></li>
-</ul>
-<hr>
-<div class="section-level-extent" id="Invoking-Gambit">
-<div class="nav-panel">
-<p>
-Next: <a href="#gsc" accesskey="n" rel="next">gsc</a>, Up: <a href="#The-Gambit-system" accesskey="u" rel="up">The Gambit system</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
-</div>
-<h3 class="section chapter-level-set-section" id="Invoking-Gambit-1"><span>2.1 Invoking Gambit<a class="copiable-link" href="#Invoking-Gambit-1"> &para;</a></span></h3>
-<p>This node is about invoking Gambit, covering features common to
-<code class="command">gsc</code> and <code class="command">gsi</code> (and <code class="command">gsi</code>&rsquo;s various symlinks).
-<code class="command">gsc</code>-specific features are covered elsewhere.
-</p>
-<ul class="mini-toc">
-<li><a href="#Argument-processing" accesskey="1">Argument processing</a></li>
-<li><a href="#Interactive-mode" accesskey="2">Interactive mode</a></li>
-<li><a href="#Batch-mode" accesskey="3">Batch mode</a></li>
-<li><a href="#Module-management-mode" accesskey="4">Module management mode</a></li>
-<li><a href="#Scheme-scripts" accesskey="5">Scheme scripts</a></li>
-</ul>
-<hr>
-<div class="subsection-level-extent" id="Argument-processing">
-<div class="nav-panel">
-<p>
-Next: <a href="#Interactive-mode" accesskey="n" rel="next">Interactive mode</a>, Up: <a href="#Invoking-Gambit" accesskey="u" rel="up">Invoking Gambit</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
-</div>
-<h4 class="subsection section-level-set-subsection" id="Argument-processing-1"><span>2.1.1 Argument processing<a class="copiable-link" href="#Argument-processing-1"> &para;</a></span></h4>
-<p>This node covers how Gambit processes command line arguments, and how
-those arguments may be used to choose a mode of operation (interactive,
-batch, module management, etc.).
-</p>
-<hr>
-</div>
-<div class="subsection-level-extent" id="Interactive-mode">
-<div class="nav-panel">
-<p>
-Next: <a href="#Batch-mode" accesskey="n" rel="next">Batch mode</a>, Previous: <a href="#Argument-processing" accesskey="p" rel="prev">Argument processing</a>, Up: <a href="#Invoking-Gambit" accesskey="u" rel="up">Invoking Gambit</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
-</div>
-<h4 class="subsection section-level-set-subsection" id="Interactive-mode-1"><span>2.1.2 Interactive mode<a class="copiable-link" href="#Interactive-mode-1"> &para;</a></span></h4>
-<p>This node is about interacting with Gambit via the <abbr class="acronym" title="read-eval-print loop">REPL</abbr> (read-eval-print loop).
-</p>
-<hr>
-</div>
-<div class="subsection-level-extent" id="Batch-mode">
-<div class="nav-panel">
-<p>
-Next: <a href="#Module-management-mode" accesskey="n" rel="next">Module management mode</a>, Previous: <a href="#Interactive-mode" accesskey="p" rel="prev">Interactive mode</a>, Up: <a href="#Invoking-Gambit" accesskey="u" rel="up">Invoking Gambit</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
-</div>
-<h4 class="subsection section-level-set-subsection" id="Batch-mode-1"><span>2.1.3 Batch mode<a class="copiable-link" href="#Batch-mode-1"> &para;</a></span></h4>
-<p>This node is about batch mode.
-</p>
-<hr>
-</div>
-<div class="subsection-level-extent" id="Module-management-mode">
-<div class="nav-panel">
-<p>
-Next: <a href="#Scheme-scripts" accesskey="n" rel="next">Scheme scripts</a>, Previous: <a href="#Batch-mode" accesskey="p" rel="prev">Batch mode</a>, Up: <a href="#Invoking-Gambit" accesskey="u" rel="up">Invoking Gambit</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
-</div>
-<h4 class="subsection section-level-set-subsection" id="Module-management-mode-1"><span>2.1.4 Module management mode<a class="copiable-link" href="#Module-management-mode-1"> &para;</a></span></h4>
-<p>This node is about module management mode.
-</p>
-<hr>
-</div>
-<div class="subsection-level-extent" id="Scheme-scripts">
-<div class="nav-panel">
-<p>
-Previous: <a href="#Module-management-mode" accesskey="p" rel="prev">Module management mode</a>, Up: <a href="#Invoking-Gambit" accesskey="u" rel="up">Invoking Gambit</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
-</div>
-<h4 class="subsection section-level-set-subsection" id="Scheme-scripts-1"><span>2.1.5 Scheme scripts<a class="copiable-link" href="#Scheme-scripts-1"> &para;</a></span></h4>
-<p>This node is about using Gambit as a script interpreter.  It will cover
-shebangs, the &lsquo;<samp class="samp">main</samp>&rsquo; procedure, etc.
-</p><hr>
-</div>
-</div>
-<div class="section-level-extent" id="gsc">
-<div class="nav-panel">
-<p>
-Previous: <a href="#Invoking-Gambit" accesskey="p" rel="prev">Invoking Gambit</a>, Up: <a href="#The-Gambit-system" accesskey="u" rel="up">The Gambit system</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
-</div>
-<h3 class="section chapter-level-set-section" id="gsc-1"><span>2.2 gsc<a class="copiable-link" href="#gsc-1"> &para;</a></span></h3>
-<p>This node is about features unique to Gambit&rsquo;s compiler, <code class="command">gsc</code>.
-</p>
-<ul class="mini-toc">
-<li><a href="#Invoking-gsc" accesskey="1">Invoking gsc</a></li>
-<li><a href="#gsc-declarations" accesskey="2">gsc declarations</a></li>
-<li><a href="#Link-files" accesskey="3">Link files</a></li>
-</ul>
-<hr>
-<div class="subsection-level-extent" id="Invoking-gsc">
-<div class="nav-panel">
-<p>
-Next: <a href="#gsc-declarations" accesskey="n" rel="next">gsc declarations</a>, Up: <a href="#gsc" accesskey="u" rel="up">gsc</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
-</div>
-<h4 class="subsection section-level-set-subsection" id="Invoking-gsc-1"><span>2.2.1 Invoking gsc<a class="copiable-link" href="#Invoking-gsc-1"> &para;</a></span></h4>
-<p>This node is about invoking <code class="command">gsc</code>.  It will focus on features
-not available via <code class="command">gsi</code>.
-</p>
-<hr>
-</div>
-<div class="subsection-level-extent" id="gsc-declarations">
-<div class="nav-panel">
-<p>
-Next: <a href="#Link-files" accesskey="n" rel="next">Link files</a>, Previous: <a href="#Invoking-gsc" accesskey="p" rel="prev">Invoking gsc</a>, Up: <a href="#gsc" accesskey="u" rel="up">gsc</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
-</div>
-<h4 class="subsection section-level-set-subsection" id="gsc-declarations-1"><span>2.2.2 gsc declarations<a class="copiable-link" href="#gsc-declarations-1"> &para;</a></span></h4>
-<p>This node is about <code class="command">gsc</code> declarations.
-</p>
-<hr>
-</div>
-<div class="subsection-level-extent" id="Link-files">
-<div class="nav-panel">
-<p>
-Previous: <a href="#gsc-declarations" accesskey="p" rel="prev">gsc declarations</a>, Up: <a href="#gsc" accesskey="u" rel="up">gsc</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
-</div>
-<h4 class="subsection section-level-set-subsection" id="Link-files-1"><span>2.2.3 Link files<a class="copiable-link" href="#Link-files-1"> &para;</a></span></h4>
-<p>This node is about link files.
-</p>
-<hr>
-</div>
-</div>
-</div>
-<div class="chapter-level-extent" id="Debugging">
-<div class="nav-panel">
-<p>
-Next: <a href="#Pairs-and-lists" accesskey="n" rel="next">Pairs and lists</a>, Previous: <a href="#The-Gambit-system" accesskey="p" rel="prev">The Gambit system</a>, Up: <a href="#Top" accesskey="u" rel="up">Gambit</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
-</div>
-<h2 class="chapter" id="Debugging-1"><span>3 Debugging<a class="copiable-link" href="#Debugging-1"> &para;</a></span></h2>
-<p>This node gives an overview of Gambit&rsquo;s debugging facilities.
-</p>
-<ul class="mini-toc">
-<li><a href="#Debugging-model" accesskey="1">Debugging model</a></li>
-<li><a href="#Debugging-commands" accesskey="2">Debugging commands</a></li>
-<li><a href="#Debugging-example" accesskey="3">Debugging example</a></li>
-</ul>
-<hr>
-<div class="section-level-extent" id="Debugging-model">
-<div class="nav-panel">
-<p>
-Next: <a href="#Debugging-commands" accesskey="n" rel="next">Debugging commands</a>, Up: <a href="#Debugging" accesskey="u" rel="up">Debugging</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
-</div>
-<h3 class="section" id="Debugging-model-1"><span>3.1 Debugging model<a class="copiable-link" href="#Debugging-model-1"> &para;</a></span></h3>
-<p>This node is about Gambit&rsquo;s debugging model.
-</p>
-<hr>
-</div>
-<div class="section-level-extent" id="Debugging-commands">
-<div class="nav-panel">
-<p>
-Next: <a href="#Debugging-example" accesskey="n" rel="next">Debugging example</a>, Previous: <a href="#Debugging-model" accesskey="p" rel="prev">Debugging model</a>, Up: <a href="#Debugging" accesskey="u" rel="up">Debugging</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
-</div>
-<h3 class="section" id="Debugging-commands-1"><span>3.2 Debugging commands<a class="copiable-link" href="#Debugging-commands-1"> &para;</a></span></h3>
-<p>This node is about debugging commands.
-</p>
-<hr>
-</div>
-<div class="section-level-extent" id="Debugging-example">
-<div class="nav-panel">
-<p>
-Previous: <a href="#Debugging-commands" accesskey="p" rel="prev">Debugging commands</a>, Up: <a href="#Debugging" accesskey="u" rel="up">Debugging</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
-</div>
-<h3 class="section" id="Debugging-example-1"><span>3.3 Debugging example<a class="copiable-link" href="#Debugging-example-1"> &para;</a></span></h3>
-<p>This node presents an example debugging session.
-</p>
-<hr>
-</div>
-</div>
 <div class="chapter-level-extent" id="Pairs-and-lists">
 <div class="nav-panel">
 <p>
-Next: <a href="#Strings" accesskey="n" rel="next">Strings</a>, Previous: <a href="#Debugging" accesskey="p" rel="prev">Debugging</a>, Up: <a href="#Top" accesskey="u" rel="up">Gambit</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="#Strings" accesskey="n" rel="next">Strings</a>, Previous: <a href="#Introduction" accesskey="p" rel="prev">Introduction</a>, Up: <a href="#Top" accesskey="u" rel="up">Gambit</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<h2 class="chapter" id="Pairs-and-lists-1"><span>4 Pairs and lists<a class="copiable-link" href="#Pairs-and-lists-1"> &para;</a></span></h2>
+<h2 class="chapter" id="Pairs-and-lists-1"><span>2 Pairs and lists<a class="copiable-link" href="#Pairs-and-lists-1"> &para;</a></span></h2>
 <ul class="mini-toc">
 <li><a href="#Overview-of-pairs-and-lists" accesskey="1">Overview of pairs and lists</a></li>
 <li><a href="#Pair-and-list-jargon" accesskey="2">Pair and list jargon</a></li>
@@ -646,7 +450,7 @@ Next: <a href="#Strings" accesskey="n" rel="next">Strings</a>, Previous: <a href
 <p>
 Next: <a href="#Pair-and-list-jargon" accesskey="n" rel="next">Pair and list jargon</a>, Up: <a href="#Pairs-and-lists" accesskey="u" rel="up">Pairs and lists</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<h3 class="section chapter-level-set-section" id="Overview-of-pairs-and-lists-1"><span>4.1 Overview of pairs and lists<a class="copiable-link" href="#Overview-of-pairs-and-lists-1"> &para;</a></span></h3>
+<h3 class="section chapter-level-set-section" id="Overview-of-pairs-and-lists-1"><span>2.1 Overview of pairs and lists<a class="copiable-link" href="#Overview-of-pairs-and-lists-1"> &para;</a></span></h3>
 <p>This section may eventually provide introductory/high-level information
 about pairs and lists.
 </p>
@@ -657,7 +461,7 @@ about pairs and lists.
 <p>
 Next: <a href="#Pair-and-list-procedures" accesskey="n" rel="next">Pair and list procedures</a>, Previous: <a href="#Overview-of-pairs-and-lists" accesskey="p" rel="prev">Overview of pairs and lists</a>, Up: <a href="#Pairs-and-lists" accesskey="u" rel="up">Pairs and lists</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<h3 class="section chapter-level-set-section" id="Pair-and-list-jargon-1"><span>4.2 Pair and list jargon<a class="copiable-link" href="#Pair-and-list-jargon-1"> &para;</a></span></h3>
+<h3 class="section chapter-level-set-section" id="Pair-and-list-jargon-1"><span>2.2 Pair and list jargon<a class="copiable-link" href="#Pair-and-list-jargon-1"> &para;</a></span></h3>
 
 <a class="index-entry-id" id="index-lists-the-empty-list"></a>
 <dl class="first-deftp">
@@ -763,7 +567,7 @@ is typically used only to represent <i class="slanted">pairs</i> that are not
 <p>
 Previous: <a href="#Pair-and-list-jargon" accesskey="p" rel="prev">Pair and list jargon</a>, Up: <a href="#Pairs-and-lists" accesskey="u" rel="up">Pairs and lists</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<h3 class="section chapter-level-set-section" id="Pair-and-list-procedures-1"><span>4.3 Pair and list procedures<a class="copiable-link" href="#Pair-and-list-procedures-1"> &para;</a></span></h3>
+<h3 class="section chapter-level-set-section" id="Pair-and-list-procedures-1"><span>2.3 Pair and list procedures<a class="copiable-link" href="#Pair-and-list-procedures-1"> &para;</a></span></h3>
 
 <a class="index-entry-id" id="index-pair-predicate-pair_003f"></a>
 <dl class="first-deftypefn">
@@ -1328,7 +1132,7 @@ a &rArr; <span class="ok">(1 8 2 8)</span>
 <p>
 Next: <a href="#General-Index" accesskey="n" rel="next">General Index</a>, Previous: <a href="#Pairs-and-lists" accesskey="p" rel="prev">Pairs and lists</a>, Up: <a href="#Top" accesskey="u" rel="up">Gambit</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<h2 class="chapter" id="Strings-1"><span>5 Strings<a class="copiable-link" href="#Strings-1"> &para;</a></span></h2>
+<h2 class="chapter" id="Strings-1"><span>3 Strings<a class="copiable-link" href="#Strings-1"> &para;</a></span></h2>
 <ul class="mini-toc">
 <li><a href="#String-procedures" accesskey="1">String procedures</a></li>
 </ul>
@@ -1338,7 +1142,7 @@ Next: <a href="#General-Index" accesskey="n" rel="next">General Index</a>, Previ
 <p>
 Up: <a href="#Strings" accesskey="u" rel="up">Strings</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
 </div>
-<h3 class="section chapter-level-set-section" id="String-procedures-1"><span>5.1 String procedures<a class="copiable-link" href="#String-procedures-1"> &para;</a></span></h3>
+<h3 class="section chapter-level-set-section" id="String-procedures-1"><span>3.1 String procedures<a class="copiable-link" href="#String-procedures-1"> &para;</a></span></h3>
 
 <dl class="first-deftypefn">
 <dt class="deftypefn" id="index-string_003f"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">string?</strong> <code class="def-code-arguments">obj</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_003f"> &para;</a></span></dt>

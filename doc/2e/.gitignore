@@ -8,7 +8,7 @@ html/
 procedures/c/
 **/.stamp
 gambit-*.html
-gambit.incolor.txi
+gambit-spans.txi
 gambit.info
 toolshed/colorize.sed
 toolshed/gambit.css

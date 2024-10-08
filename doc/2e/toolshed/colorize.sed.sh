@@ -1,4 +1,4 @@
-readonly syntax="$(<toolshed/keywords/syntax)"
+readonly syntax="$(<toolshed/data/syntax-words)"
 
 # We only want to colorize the text to the left of @ok/@exception.
 # Store all text to the right of "@ok{" in the hold space, then use a

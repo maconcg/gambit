@@ -5,9 +5,11 @@ Gambit v@value{VERSION} (@value{UPDATED}).
 Not officially copyright @copyright{} 1994--2024 by Marc Feeley et al.
 
 @quotation
-The Gambit system, version @value{VERSION}, is licensed under two
-licenses: the @value{apache}, and the @value{lgpl}.  You may choose
-which of these two licenses to abide by.
+The Gambit system, version @value{VERSION}, is licensed under two licenses:
+the @url{https://www.apache.org/licenses/,Apache License@comma{} version
+2.0}, and the @url{https://www.gnu.org/licenses/,GNU Lesser General Public
+License@comma{} version 2.1}.  You may choose which of these two licenses
+to abide by.
 @inlinefmtifelse{html,@/,@inlinefmtifelse{plaintext,@/,@inlinefmtifelse{xml,@/,A
 copy of each license is included in this document.}}}
 @end quotation

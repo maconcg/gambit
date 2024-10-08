@@ -1,4 +1,5 @@
 @node Introduction
+@nodedescription A high-level overview of Gambit.
 @chapter Introduction
 
 @pindex gsc
@@ -34,8 +35,8 @@ languages include C and JavaScript.
 
 The C target is the most mature, generating efficient C code that lets
 Gambit run on any platform for which a C compiler is available.  With
-appropriate declarations in the Scheme source code (@pxref{gsc
-declarations}), the resulting programs run roughly as fast as
+appropriate declarations in the Scheme source code (reference gsc
+declarations here), the resulting programs run roughly as fast as
 functionally equivalent programs built from hand-written C.
 
 Most of the Gambit system, including @t{gsi} and @t{gsc}

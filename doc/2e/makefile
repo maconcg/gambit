@@ -25,13 +25,13 @@ clean: clean-intermediate
 	rm -f gambit.info gambit.txt gambit.html gambit-parens.html \
 		gambit-css.html gambit-css-parens.html
 
-mostlyclean clean-intermediate:
+clean-intermediate mostlyclean:
 	rm -fr html-pristine/ html-css-color/ html-css-color-parens/ procedures/c/
-	rm -f gambit.incolor.txi gambit-pristine.html gambit-css-color.html \
+	rm -f gambit-spans.txi gambit-pristine.html gambit-css-color.html \
 		gambit-css-color-parens.html toolshed/gambit.css \
 		toolshed/colorize.sed
 
-gambit.txi: body/* procedures/*.txi toolshed/*.t*
+gambit.txi: prose/* procedures/*.txi toolshed/*.txi toolshed/licenses/*
 	touch $@
 
 info: gambit.info
@@ -73,18 +73,18 @@ gambit-css-parens.html: gambit-css.html toolshed/parenthesize-defs.sed
 	sed -f toolshed/parenthesize-defs.sed gambit-css.html > $@
 
 html-css-color-monolith: gambit-css-color.html
-gambit-css-color.html: gambit.incolor.txi toolshed/gambit.css
+gambit-css-color.html: gambit-spans.txi toolshed/gambit.css
 	texi2any -o $@ --html --css-include=toolshed/gambit.css --no-split \
-		gambit.incolor.txi
+		gambit-spans.txi
 
 html-css-color-parens-monolith: gambit-css-color-parens.html
 gambit-css-color-parens.html: gambit-css-color.html toolshed/parenthesize-defs.sed
 	sed -f toolshed/parenthesize-defs.sed gambit-css-color.html > $@
 
-gambit.incolor.txi: gambit.txi procedures/c/.stamp
-	sed '/^@include/s/ procedures\// procedures\/c\//' gambit.txi > $@
+gambit-spans.txi: gambit.txi procedures/c/.stamp
+	sed 's/^\(@include[[:blank:]]\{1,\}procedures\/\)/\1c\//' gambit.txi > $@
 
-toolshed/colorize.sed: toolshed/colorize.sed.sh toolshed/keywords/syntax
+toolshed/colorize.sed: toolshed/colorize.sed.sh toolshed/data/syntax-words
 	sh -efu toolshed/colorize.sed.sh > $@
 
 procedures/c/.stamp: procedures/c/pairs-lists.txi \
@@ -101,6 +101,8 @@ procedures/c/strings.txi: procedures/strings.txi toolshed/colorize.sed
 
 toolshed/gambit.css: toolshed/gambit.css.in toolshed/make-css.sh
 	sh -efu toolshed/make-css.sh toolshed/gambit.css.in > $@
+
+toolshed/make-css.sh: toolshed/data/modus-*-colors.sh
 
 html-pristine-modules: html-pristine/.stamp
 html-pristine/.stamp: gambit.txi
@@ -123,8 +125,8 @@ html-css/.stamp: gambit.txi toolshed/gambit.css
 	touch $@
 
 html-css-color-modules: html-css-color/.stamp
-html-css-color/.stamp: gambit.incolor.txi toolshed/gambit.css
-	texi2any -o html-css-color --html --css-ref=gambit.css gambit.incolor.txi
+html-css-color/.stamp: gambit-spans.txi toolshed/gambit.css
+	texi2any -o html-css-color --html --css-ref=gambit.css gambit-spans.txi
 	cp toolshed/gambit.css html-css-color/gambit.css
 	touch $@
 
