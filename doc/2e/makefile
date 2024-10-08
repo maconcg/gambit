@@ -1,10 +1,14 @@
 default: info html-monolith txt
 
-html-phonies := html html-modules html-monolith html-pristine-modules \
- html-pristine-monolith html-css-modules html-css-monolith html-parens-modules \
- html-parens-monolith html-css-modules html-css-monolith \
- html-css-parens-modules html-css-parens-monolith html-css-color-modules \
- html-css-color-monolith
+html-monolithic-phonies := html-monolith html-pristine-monolith \
+                           html-parens-monolith html-css-monolith \
+                           html-css-parens-monolith html-css-color-monolith
+
+html-modular-phonies := html-modules html-pristine-modules html-css-modules \
+                        html-parens-modules html-css-modules \
+                        html-css-parens-modules html-css-color-modules
+
+html-phonies := ${html-monolithic-phonies} ${html-modular-phonies}
 
 .PHONY: default all all-html html-all clean clean-intermediate mostlyclean \
         info txt ${html-phonies}
@@ -12,6 +16,9 @@ html-phonies := html html-modules html-monolith html-pristine-modules \
 all: info all-html txt
 
 all-html html-all: ${html-phonies}
+all-html-monoliths html-all-monoliths: ${html-monolithic-phonies}
+all-html-modules html-all-modules: ${html-monolithic-phonies}
+all-monoliths monoliths-all: info txt all-html-monoliths
 
 clean: clean-intermediate
 	rm -fr html/ html-parens/ html-css/ html-css-parens/
