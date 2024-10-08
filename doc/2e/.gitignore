@@ -7,9 +7,10 @@ html-css-color-parens/
 html/
 procedures/c/
 **/.stamp
-gambit-*.html
-gambit-spans.txi
-gambit.info
 toolshed/colorize.sed
 toolshed/gambit.css
 toolshed/today.txi
+makefile
+gambit-*.html
+gambit-spans.txi
+gambit.info
