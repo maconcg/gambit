@@ -23,18 +23,23 @@ hr {
 dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     border-top-color: %border%;
     dt {
-        code.def-code-arguments, dd p var.var, dd li var.var {
+        code.def-code-arguments {
             color: %def-var%;
         }
         span.category-def {
             color: %category-def%;
         }
         code.def-code-arguments span.bracket {
-            color:%fg-main%;
+            color:%fg-alt%;
         }
     }
     dd {
         background-color: %bg-main%;
+        p, li {
+            var.var {
+                color: %def-var%;
+            }
+        }
         pre {
             span.code-comment {
                 color: %code-comment%;
