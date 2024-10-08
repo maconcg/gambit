@@ -5,8 +5,11 @@
 Returns @code{#t} if @var{obj} is a string.
 
 @lisp
-(string? "")       @ok{#t}
-(string? (string)) @ok{#t}
+(string? "")            @ok{#t}
+(string? "es\"cape")    @ok{#t}
+(string? "\"escapes\"") @ok{#t}
+(string? "\x0061;")     @ok{#t}
+(string? (string))      @ok{#t}
 @end lisp
 
 @lisp
@@ -288,7 +291,6 @@ not a valid index of @var{string}, an exception that satisfies
 @end deftypefn
 
 @deftypefn scheme/base @/ string-copy! to-string at from-string @opt{start @opt{end}}
-
 Mutates @var{to-string} by copying a substring of @var{from-string} into
 @var{to-string}, beginning with index @var{at} of @var{to-string}.  In
 the three-argument form, all of @var{from-string} is copied.  In the

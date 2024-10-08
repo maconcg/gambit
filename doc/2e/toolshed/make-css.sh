@@ -21,14 +21,17 @@ substitute() {
                     s/%border%/$border/
                     s/%category-def%/$category_def/
                     s/%char%/$char/
-                    s/%comment/$comment/
+                    s/%code-comment%/$code_comment/
                     s/%def-var%/$def_var/
                     s/%emphasis%/$emphasis/
+                    s/%exception%/$exception/
                     s/%false%/$false/
                     s/%link%/$link/
                     s/%link-visited%/$link_visited/
                     s/%ok%/$ok/
+                    s/%problem%/$problem/
                     s/%sexp-paren%/$sexp_paren/
+                    s/%sharp%/$sharp/
                     s/%string%/$string/
                     s/%syntax%/$syntax/
                     p
@@ -51,15 +54,18 @@ fg_dim="$mo_fg_dim"
 fg_main="$mo_fg_main"
 border="$mo_border"
 category_def="$mo_fg_alt"
-char="$mo_red_faint"
-comment="$mo_fg_dim"
+char="$mo_identifier"
+code_comment="$mo_yellow_faint"
 def_var="$mo_magenta"
 emphasis="$mo_yellow_faint"
+exception="$mo_red_warmer"
 false="$mo_fg_alt"
 link="$mo_blue_warmer"
 link_visited="$link"
-ok="$mo_fg_alt"
+ok="$mo_slate"
+problem="$mo_bg_prominent_warning"
 sexp_paren="$mo_fg_dim"
+sharp="$mo_red_faint"
 string="$mo_green_cooler"
 syntax="$mo_magenta_cooler"
 
@@ -80,15 +86,18 @@ fg_dim="$mv_fg_dim"
 fg_main="$mv_fg_main"
 border="$mv_border"
 category_def="$mv_fg_alt"
-char="$mv_red_faint"
-comment="$mv_fg_dim"
+char="$mv_identifier"
+code_comment="$mv_yellow_faint"
 def_var="$mv_magenta"
 emphasis="$mv_yellow_faint"
+exception="$mv_red_warmer"
 false="$mv_fg_alt"
 link="$mv_blue_warmer"
 link_visited="$link"
-ok="$mv_fg_alt"
+ok="$mv_slate"
+problem="$mv_bg_prominent_warning"
 sexp_paren="$mv_fg_dim"
+sharp="$mv_red_faint"
 string="$mv_green_cooler"
 syntax="$mv_magenta_cooler"
 

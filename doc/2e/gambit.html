@@ -62,27 +62,38 @@ hr {
 }
 
 dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
-    .i {
-        color: #624416;
-    }
-    dt span.category-def {
-        color: #193668;
+    border-top-color: #9f9f9f;
+    dt {
+        code.def-code-arguments, dd p var.var, dd li var.var {
+            color: #721045;
+        }
+        span.category-def {
+            color: #193668;
+        }
+        code.def-code-arguments span.bracket {
+            color:#000000;
+        }
     }
     dd {
         background-color: #ffffff;
         pre {
-            span.codecomment {
-                color: #595959;
-                font-style: oblique;
+            span.code-comment {
+                color: #624416;
             }
             span.char {
-                color: #7f0000;
+                color: #7a4f2f;
             }
             span.false {
                 color: #193668;
             }
             span.ok {
-                color: #193668;
+                color: #2f3f83;
+            }
+            span.problem {
+                background-color: #f3d000;
+            }
+            span.sharp {
+                color: #7f0000;
             }
             span.string {
                 color: #00663f;
@@ -94,6 +105,12 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     }
 }
 
+dl.first-deftp, dl.first-deftypevr {
+    p i.slanted {
+        color: #624416;
+    }
+}
+
 dl.first-deftp {
     background-color: #f2f2f290;
     background-image: linear-gradient(90deg, #f0e3c06f, #f0e3c03f 35%);
@@ -102,9 +119,14 @@ dl.first-deftp {
 dl.first-deftypefn {
     background-color: #f2f2f290;
     background-image: linear-gradient(90deg, #ccdfff6f, #ccdfff3f 35%);
-    dt.deftypefn, dt.deftypefnx {
-        span.sexp-paren {
-            color: #595959;
+    span.sexp-paren {
+        color: #595959;
+    }
+    dd pre {
+        span.exception {
+            font-style: oblique;
+            font-size: 1rem;
+            color: #972500;
         }
     }
 }
@@ -112,16 +134,6 @@ dl.first-deftypefn {
 dl.first-deftypevr {
     background-color: #f2f2f290;
     background-image: linear-gradient(90deg, #f1c8b56f, #f1c8b53f 35%);
-}
-
-dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
-    border-top-color: #9f9f9f;
-    dt code.def-code-arguments, dd p var.var, dd li var.var {
-        color: #721045;
-    }
-    dt code.def-code-arguments span.bracket {
-        color:#000000;
-    }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -147,27 +159,38 @@ dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
     }
     
     dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
-        .i {
-            color: #d2b580;
-        }
-        dt span.category-def {
-            color: #c6daff;
+        border-top-color: #646464;
+        dt {
+            code.def-code-arguments, dd p var.var, dd li var.var {
+                color: #feacd0;
+            }
+            span.category-def {
+                color: #c6daff;
+            }
+            code.def-code-arguments span.bracket {
+                color:#ffffff;
+            }
         }
         dd {
             background-color: #000000;
             pre {
-                span.codecomment {
-                    color: #989898;
-                    font-style: oblique;
+                span.code-comment {
+                    color: #d2b580;
                 }
                 span.char {
-                    color: #ff9580;
+                    color: #d2b580;
                 }
                 span.false {
                     color: #c6daff;
                 }
                 span.ok {
-                    color: #c6daff;
+                    color: #76afbf;
+                }
+                span.problem {
+                    background-color: #7a6100;
+                }
+                span.sharp {
+                    color: #ff9580;
                 }
                 span.string {
                     color: #00c06f;
@@ -179,6 +202,12 @@ dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
         }
     }
     
+    dl.first-deftp, dl.first-deftypevr {
+        p i.slanted {
+            color: #d2b580;
+        }
+    }
+    
     dl.first-deftp {
         background-color: #1e1e1e90;
         background-image: linear-gradient(90deg, #462f206f, #462f203f 35%);
@@ -187,9 +216,14 @@ dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
     dl.first-deftypefn {
         background-color: #1e1e1e90;
         background-image: linear-gradient(90deg, #2426796f, #2426793f 35%);
-        dt.deftypefn, dt.deftypefnx {
-            span.sexp-paren {
-                color: #989898;
+        span.sexp-paren {
+            color: #989898;
+        }
+        dd pre {
+            span.exception {
+                font-style: oblique;
+                font-size: 1rem;
+                color: #ff6b55;
             }
         }
     }
@@ -197,16 +231,6 @@ dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
     dl.first-deftypevr {
         background-color: #1e1e1e90;
         background-image: linear-gradient(90deg, #49191a6f, #49191a3f 35%);
-    }
-    
-    dl.first-deftypefn, dl.first-deftp, dl.first-deftypevr {
-        border-top-color: #646464;
-        dt code.def-code-arguments, dd p var.var, dd li var.var {
-            color: #feacd0;
-        }
-        dt code.def-code-arguments span.bracket {
-            color:#ffffff;
-        }
     }
 }
 
@@ -259,6 +283,9 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
                 border-left-width: thin;
                 font-size: 1.1em;
                 padding-left: 0.4rem;
+                span.code-comment {
+                    font-style: oblique;
+                }
             }
         }
     }
@@ -271,6 +298,7 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
 </head>
 
 <body lang="en">
+
 
 
 
@@ -629,7 +657,7 @@ Next: <a href="#Pair-and-list-procedures" accesskey="n" rel="next">Pair and list
 newly allocated (reference goes here).  The predicate <code class="code">null?</code>  may
 be used to determine whether an object is the empty list (see <a class="pxref" href="#Pair-and-list-procedures">Pair and list procedures</a>).
 </p>
-<p>The empty list is a <i class="i">list</i>.
+<p>The empty list is a <i class="slanted">list</i>.
 </p></dd></dl>
 
 <a class="index-entry-id" id="index-cons"></a>
@@ -652,70 +680,71 @@ referred to as its &ldquo;cdr field&rdquo; or just its &ldquo;cdr&rdquo;.
 </p>
 <a class="index-entry-id" id="index-car-take-the-car"></a>
 <a class="index-entry-id" id="index-cdr-take-the-cdr"></a>
-<p>&ldquo;Take the car of <i class="slanted">p</i>&rdquo; means &ldquo;use <code class="code">car</code> to
-select the first field of <i class="slanted">p</i>&rdquo;.  &ldquo;Take the cdr of
-<i class="slanted">p</i>&rdquo; means &ldquo;use <code class="code">cdr</code> to select the second field
-of <i class="slanted">p</i>&rdquo;.
+<p>&ldquo;Take the car of <i class="i">p</i>&rdquo; means &ldquo;use <code class="code">car</code> to
+select the first field of <i class="i">p</i>&rdquo;.  &ldquo;Take the cdr of <i class="i">p</i>&rdquo;
+means &ldquo;use <code class="code">cdr</code> to select the second field of <i class="i">p</i>&rdquo;.
 </p>
 <a class="index-entry-id" id="index-cons-cons-onto"></a>
-<p>&ldquo;Cons <i class="slanted">a</i> onto <i class="slanted">b</i>&rdquo; means &ldquo;use
-<code class="code">cons</code> to construct a pair whose first field contains <i class="slanted">a</i>
-and whose second field contains <i class="slanted">b</i>&rdquo;.
+<p>&ldquo;Cons <i class="i">a</i> onto <i class="i">b</i>&rdquo; means &ldquo;use <code class="code">cons</code> to
+construct a pair whose first field contains <i class="i">a</i> and whose second field
+contains <i class="i">b</i>&rdquo;.
 </p>
-<p><i class="i">The empty list</i> is not a pair.  A pair is a <i class="i">list</i> if and only if
-its cdr is a <i class="i">list</i>.
+<p><i class="slanted">The empty list</i> is not a pair.  A pair is a <i class="slanted">list</i> if
+and only if its cdr is a <i class="slanted">list</i>.
 </p></dd></dl>
 
 <a class="index-entry-id" id="index-lists-list-type"></a>
 <dl class="first-deftp">
 <dt class="deftp" id="index-list-1"><span class="category-def"><abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> type: </span><span><strong class="def-name">list</strong><a class="copiable-link" href="#index-list-1"> &para;</a></span></dt>
 <dd><a class="index-entry-id" id="index-lists-termination-of-lists"></a>
-<p>A list is either <i class="i">the empty list</i> or a <i class="i">pair</i> whose cdr is a list.
-This implies a list must have finite length and be terminated by <i class="i">the
-empty list</i>.  The predicate <code class="code">list?</code> may be used to determine
-whether an object is a list (see <a class="pxref" href="#Pair-and-list-procedures">Pair and list procedures</a>).
+<p>A list is either <i class="slanted">the empty list</i> or a <i class="slanted">pair</i> whose cdr
+is a list.  This implies a list must have finite length and be
+terminated by <i class="slanted">the empty list</i>.  The predicate <code class="code">list?</code> may
+be used to determine whether an object is a list (see <a class="pxref" href="#Pair-and-list-procedures">Pair and list procedures</a>).
 </p>
-<p>With the exception of <i class="i">the empty list</i>, every list is a <i class="i">pair</i>.
+<p>With the exception of <i class="slanted">the empty list</i>, every list is a
+<i class="slanted">pair</i>.
 </p></dd></dl>
 
 <a class="index-entry-id" id="index-lists-proper-lists"></a>
 <dl class="first-deftypevr">
 <dt class="deftypevr" id="index-proper-list"><span class="category-def">colloquialism: </span><span><strong class="def-name">proper list</strong><a class="copiable-link" href="#index-proper-list"> &para;</a></span></dt>
-<dd><p>&ldquo;Proper list&rdquo; is a widely-used synonym for <i class="i">list</i> (see
+<dd><p>&ldquo;Proper list&rdquo; is a widely-used synonym for <i class="slanted">list</i> (see
 above).  Because it&rsquo;s a synonym, there&rsquo;s technically no need for the
 qualifier.  But in practice, people often refer to list-like objects
-that are not <i class="i">lists</i> as &ldquo;improper lists&rdquo;.  The qualifier
+that are not <i class="slanted">lists</i> as &ldquo;improper lists&rdquo;.  The qualifier
 &ldquo;proper&rdquo; is therefore used to emphasize that an object is a
-Scheme <i class="i">list</i> that satisfies <code class="code">list?</code>.
+Scheme <i class="slanted">list</i> that satisfies <code class="code">list?</code>.
 </p></dd></dl>
 
 <a class="index-entry-id" id="index-pairs-improper-lists"></a>
 <dl class="first-deftypevr">
 <dt class="deftypevr" id="index-improper-list"><span class="category-def">colloquialism: </span><span><strong class="def-name">improper list</strong><a class="copiable-link" href="#index-improper-list"> &para;</a></span></dt>
-<dd><p>&ldquo;Improper list&rdquo; is sometimes used to describe a <i class="i">pair</i> whose
-cdr is not a <i class="i">list</i>.  This means that, despite its name, an
-&ldquo;improper list&rdquo; is not a <i class="i">list</i> under Scheme&rsquo;s formal
-definition.  In contexts where the term &ldquo;improper list&rdquo;
-appears, <i class="i">lists</i> are often referred to as &ldquo;proper lists&rdquo; to
-emphasize the distinction.
+<dd><p>&ldquo;Improper list&rdquo; is sometimes used to describe a <i class="slanted">pair</i>
+whose cdr is not a <i class="slanted">list</i>.  This means that, despite its name,
+an &ldquo;improper list&rdquo; is not a <i class="slanted">list</i> under Scheme&rsquo;s
+formal definition.  In contexts where the term &ldquo;improper list&rdquo;
+appears, <i class="slanted">lists</i> are often referred to as &ldquo;proper
+lists&rdquo; to emphasize the distinction.
 </p></dd></dl>
 
 <a class="index-entry-id" id="index-pairs-dotted-pairs"></a>
 <dl class="first-deftypevr">
 <dt class="deftypevr" id="index-dotted-pair"><span class="category-def">colloquialism: </span><span><strong class="def-name">dotted pair</strong><a class="copiable-link" href="#index-dotted-pair"> &para;</a></span></dt>
-<dd><p>&ldquo;Dotted pair&rdquo; is sometimes used as a synonym for <i class="i">pair</i>.
-&ldquo;Dotted&rdquo; refers to the common external representation of a
-<i class="i">pair</i> in which the last element is preceded by a period (&lsquo;<samp class="samp">.</samp>&rsquo;,
-which resembles a dot).  This &ldquo;dotted notation&rdquo; may technically
-be used to represent any <i class="i">pair</i>, but is typically used only to
-represent <i class="i">pairs</i> that are not <i class="i">lists</i>.
+<dd><p>&ldquo;Dotted pair&rdquo; is sometimes used as a synonym for
+<i class="slanted">pair</i>.  &ldquo;Dotted&rdquo; refers to the common external
+representation of a <i class="slanted">pair</i> in which the last element is preceded
+by a period (&lsquo;<samp class="samp">.</samp>&rsquo;, which resembles a dot).  This &ldquo;dotted
+notation&rdquo; may technically be used to represent any <i class="slanted">pair</i>, but
+is typically used only to represent <i class="slanted">pairs</i> that are not
+<i class="slanted">lists</i>.
 </p></dd></dl>
 
 <a class="index-entry-id" id="index-lists-association-lists"></a>
 <dl class="first-deftypevr">
 <dt class="deftypevr" id="index-association-list"><span class="category-def">colloquialism: </span><span><strong class="def-name">association list</strong><a class="copiable-link" href="#index-association-list"> &para;</a></span></dt>
 <dd><p>An &ldquo;association list&rdquo; (or &ldquo;alist&rdquo;, for short) is a
-<i class="i">list</i> of <i class="i">pairs</i>.
+<i class="slanted">list</i> of <i class="slanted">pairs</i>.
 </p></dd></dl>
 <hr>
 </div>
@@ -731,12 +760,16 @@ Previous: <a href="#Pair-and-list-jargon" accesskey="p" rel="prev">Pair and list
 <dt class="deftypefn" id="index-pair_003f"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">pair?</strong> <code class="def-code-arguments">obj</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-pair_003f"> &para;</a></span></dt>
 <dd><p>Returns <code class="code">#t</code> if <var class="var">obj</var> is a pair.
 </p>
+<p>&lsquo;(a ,(+ 1 2) ,@(map abs &rsquo;(4 -5 6)) b)  &rArr; <span class="ok">(a 3 4 5 6 b)</span>
+&lsquo;(( foo ,(- 10 3)) ,@(cdr &rsquo;(c)) . ,(car &rsquo;(cons))) &rArr; <span class="ok">((foo 7) . cons)</span>
+&lsquo;#(10 5 ,(sqrt 4) ,@(map sqrt &rsquo;(16 9)) 8) &rArr; <span class="ok">#(10 5 2 4 3 8)</span>
+</p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(pair? '(a . b)) &rArr; <span class="ok">#t</span>
-(pair? '(a b c)) &rArr; <span class="ok">#t</span>
-(pair? '())      &rArr; <span class="ok">#f</span>
-(pair? '(() ())) &rArr; <span class="ok">#f</span>
-(pair? '#(a b))  &rArr; <span class="ok">#f</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>pair? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a . b<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>pair? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>pair? <span class="sexp-paren">&#x0027;</span>&#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span>      &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>pair? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0029;</span> &#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>pair? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">#&#x0028;</span>a b<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#f</span>
 </pre></div>
 </dd></dl>
 
@@ -749,22 +782,22 @@ Previous: <a href="#Pair-and-list-jargon" accesskey="p" rel="prev">Pair and list
 <code class="code">eqv?</code>) from every existing object.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(cons 'a '())        &rArr; <span class="ok">(a)</span>
-(cons '(a) '(b c d)) &rArr; <span class="ok">((a) b c d)</span>
-(cons <span class="string">"a"</span> '(b c))    &rArr; <span class="ok">("a" b c)</span>
-(cons 'a 3)          &rArr; <span class="ok">(a . 3)</span>
-(cons '(a b) 'c)     &rArr; <span class="ok">((a b) . c)</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>cons <span class="sexp-paren">&#x0027;</span>a <span class="sexp-paren">&#x0027;</span>&#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span>        &rArr; <span class="ok">(a)</span>
+<span class="sexp-paren">&#x0028;</span>cons <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>b c d<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">((a) b c d)</span>
+<span class="sexp-paren">&#x0028;</span>cons <span class="string">"a"</span> <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>b c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>    &rArr; <span class="ok">("a" b c)</span>
+<span class="sexp-paren">&#x0028;</span>cons <span class="sexp-paren">&#x0027;</span>a 3<span class="sexp-paren">&#x0029;</span>          &rArr; <span class="ok">(a . 3)</span>
+<span class="sexp-paren">&#x0028;</span>cons <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0027;</span>c<span class="sexp-paren">&#x0029;</span>     &rArr; <span class="ok">((a b) . c)</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(eqv?   (cons + car) (cons + car)) &rArr; <span class="ok">#f</span>
-(equal? (cons + car) (cons + car)) &rArr; <span class="ok">#t</span>
-(eq? cons (cdr (cons cons cons)))  &rArr; <span class="ok">#t</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>eqv?   <span class="sexp-paren">&#x0028;</span>cons + car<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>cons + car<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>equal? <span class="sexp-paren">&#x0028;</span>cons + car<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>cons + car<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>eq? cons <span class="sexp-paren">&#x0028;</span>cdr <span class="sexp-paren">&#x0028;</span>cons cons cons<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#t</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(cons)    &rarr; <i class="i">wrong-number-of-arguments exception</i>
-(cons 'a) &rarr; <i class="i">wrong-number-of-arguments exception</i>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>cons<span class="sexp-paren">&#x0029;</span>    &rarr; <span class="exception">wrong-number-of-arguments exception</span>
+<span class="sexp-paren">&#x0028;</span>cons <span class="sexp-paren">&#x0027;</span>a<span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">wrong-number-of-arguments exception</span>
 </pre></div>
 </dd></dl>
 
@@ -777,14 +810,14 @@ made to take the car of the empty list, an exception that satisfies
 <code class="code">type-exception?</code> is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(car '(a b c))     &rArr; <span class="ok">a</span>
-(car '((a) b c d)) &rArr; <span class="ok">(a)</span>
-(car '(1 . 2))     &rArr; <span class="ok">1</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>car <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>     &rArr; <span class="ok">a</span>
+<span class="sexp-paren">&#x0028;</span>car <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>a<span class="sexp-paren">&#x0029;</span> b c d<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(a)</span>
+<span class="sexp-paren">&#x0028;</span>car <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>1 . 2<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>     &rArr; <span class="ok">1</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(car '())      &rarr; <i class="i">type exception</i>
-(car #(4 6 8)) &rarr; <i class="i">type exception</i>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>car <span class="sexp-paren">&#x0027;</span>&#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span>      &rarr; <span class="exception">type exception</span>
+<span class="sexp-paren">&#x0028;</span>car <span class="sexp-paren">#&#x0028;</span>4 6 8<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">type exception</span>
 </pre></div>
 </dd></dl>
 
@@ -797,14 +830,14 @@ made to take the cdr of the empty list, an exception that satisfies
 <code class="code">type-exception?</code> is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(cdr '(a b c))     &rArr; <span class="ok">(b c)</span>
-(cdr '((a) b c d)) &rArr; <span class="ok">(b c d)</span>
-(cdr '(1 . 2))     &rArr; <span class="ok">2</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>cdr <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>     &rArr; <span class="ok">(b c)</span>
+<span class="sexp-paren">&#x0028;</span>cdr <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>a<span class="sexp-paren">&#x0029;</span> b c d<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(b c d)</span>
+<span class="sexp-paren">&#x0028;</span>cdr <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>1 . 2<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>     &rArr; <span class="ok">2</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(cdr '())      &rarr; <i class="i">type exception</i>
-(cdr #(4 6 8)) &rarr; <i class="i">type exception</i>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>cdr <span class="sexp-paren">&#x0027;</span>&#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span>      &rarr; <span class="exception">type exception</span>
+<span class="sexp-paren">&#x0028;</span>cdr <span class="sexp-paren">#&#x0028;</span>4 6 8<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">type exception</span>
 </pre></div>
 </dd></dl>
 
@@ -814,15 +847,15 @@ made to take the cdr of the empty list, an exception that satisfies
 <dd><p>Mutates <var class="var">pair</var> by storing <var class="var">obj</var> in the car field of <var class="var">pair</var>.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> (f) (list 'not-a-constant-list))
-(set-car! (f) 3)
-(f) &rArr; <span class="ok">(not-a-constant-list)</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> <span class="sexp-paren">&#x0028;</span>f<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>list <span class="sexp-paren">&#x0027;</span>not-a-constant-list<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>set-car! <span class="sexp-paren">&#x0028;</span>f<span class="sexp-paren">&#x0029;</span> 3<span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>f<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(not-a-constant-list)</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> (g) '(constant-list))
-(set-car! (g) 3) <span class="codecomment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</span>
-(g) &rArr; <span class="ok">(3)</span>        <span class="codecomment">;; current Gambit behavior</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> <span class="sexp-paren">&#x0028;</span>g<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>constant-list<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>set-car! <span class="sexp-paren">&#x0028;</span>g<span class="sexp-paren">&#x0029;</span> 3<span class="sexp-paren">&#x0029;</span> <span class="code-comment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</span>
+<span class="sexp-paren">&#x0028;</span>g<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(3)</span>        <span class="code-comment">;; current Gambit behavior</span>
 </pre></div>
 </dd></dl>
 
@@ -832,15 +865,15 @@ made to take the cdr of the empty list, an exception that satisfies
 <dd><p>Mutates <var class="var">pair</var> by storing <var class="var">obj</var> in the cdr field of <var class="var">pair</var>.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> (f) (list 'not-a-constant-list))
-(set-cdr! (f) 3)
-(f) &rArr; <span class="ok">(not-a-constant-list)</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> <span class="sexp-paren">&#x0028;</span>f<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>list <span class="sexp-paren">&#x0027;</span>not-a-constant-list<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>set-cdr! <span class="sexp-paren">&#x0028;</span>f<span class="sexp-paren">&#x0029;</span> 3<span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>f<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(not-a-constant-list)</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> (g) '(constant-list))
-(set-cdr! (g) 3)          <span class="codecomment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</span>
-(g) &rArr; <span class="ok">(constant-list . 3)</span> <span class="codecomment">;; current Gambit behavior</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> <span class="sexp-paren">&#x0028;</span>g<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>constant-list<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>set-cdr! <span class="sexp-paren">&#x0028;</span>g<span class="sexp-paren">&#x0029;</span> 3<span class="sexp-paren">&#x0029;</span>          <span class="code-comment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</span>
+<span class="sexp-paren">&#x0028;</span>g<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(constant-list . 3)</span> <span class="code-comment">;; current Gambit behavior</span>
 </pre></div>
 </dd></dl>
 
@@ -877,29 +910,29 @@ made to take the cdr of the empty list, an exception that satisfies
 <dd><p>These 28 procedures are compositions of <code class="code">car</code> and <code class="code">cdr</code>.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> l '((a b) (c) d (e (f) g)))
-(cadr l)             &rArr; <span class="ok">(c)</span>
-(car (cdr l))        &rArr; <span class="ok">(c)</span>
-(cddr '(a b c . d))  &rArr; <span class="ok">(c . d)</span>
-(cdddr '(a b c . d)) &rArr; <span class="ok">d</span>
-(cdadr l)            &rArr; <span class="ok">()</span>
-(cdar (cdr l))       &rArr; <span class="ok">()</span>
-(caar (cdr l))       &rArr; <span class="ok">c</span>
-(car (car (cdr l)))  &rArr; <span class="ok">c</span>
-(cadddr l)           &rArr; <span class="ok">(e (f) g)</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> l <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>a b<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>c<span class="sexp-paren">&#x0029;</span> d <span class="sexp-paren">&#x0028;</span>e <span class="sexp-paren">&#x0028;</span>f<span class="sexp-paren">&#x0029;</span> g<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>cadr l<span class="sexp-paren">&#x0029;</span>             &rArr; <span class="ok">(c)</span>
+<span class="sexp-paren">&#x0028;</span>car <span class="sexp-paren">&#x0028;</span>cdr l<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>        &rArr; <span class="ok">(c)</span>
+<span class="sexp-paren">&#x0028;</span>cddr <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c . d<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">(c . d)</span>
+<span class="sexp-paren">&#x0028;</span>cdddr <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c . d<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">d</span>
+<span class="sexp-paren">&#x0028;</span>cdadr l<span class="sexp-paren">&#x0029;</span>            &rArr; <span class="ok">()</span>
+<span class="sexp-paren">&#x0028;</span>cdar <span class="sexp-paren">&#x0028;</span>cdr l<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>       &rArr; <span class="ok">()</span>
+<span class="sexp-paren">&#x0028;</span>caar <span class="sexp-paren">&#x0028;</span>cdr l<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>       &rArr; <span class="ok">c</span>
+<span class="sexp-paren">&#x0028;</span>car <span class="sexp-paren">&#x0028;</span>car <span class="sexp-paren">&#x0028;</span>cdr l<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">c</span>
+<span class="sexp-paren">&#x0028;</span>cadddr l<span class="sexp-paren">&#x0029;</span>           &rArr; <span class="ok">(e (f) g)</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> circle (circular-list 'a 'b 'c))
-(car circle)    &rArr; <span class="ok">a</span>
-(cadr circle)   &rArr; <span class="ok">b</span>
-(caddr circle)  &rArr; <span class="ok">c</span>
-(cadddr circle) &rArr; <span class="ok">a</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> circle <span class="sexp-paren">&#x0028;</span>circular-list <span class="sexp-paren">&#x0027;</span>a <span class="sexp-paren">&#x0027;</span>b <span class="sexp-paren">&#x0027;</span>c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>car circle<span class="sexp-paren">&#x0029;</span>    &rArr; <span class="ok">a</span>
+<span class="sexp-paren">&#x0028;</span>cadr circle<span class="sexp-paren">&#x0029;</span>   &rArr; <span class="ok">b</span>
+<span class="sexp-paren">&#x0028;</span>caddr circle<span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">c</span>
+<span class="sexp-paren">&#x0028;</span>cadddr circle<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">a</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(cdar '(a . b))   &rarr; <i class="i">type exception</i>
-(cddr (list <span class="char">#\f</span>)) &rarr; <i class="i">type exception</i>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>cdar <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a . b<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>   &rarr; <span class="exception">type exception</span>
+<span class="sexp-paren">&#x0028;</span>cddr <span class="sexp-paren">&#x0028;</span>list <span class="char">#\f</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">type exception</span>
 </pre></div>
 </dd></dl>
 
@@ -909,15 +942,16 @@ made to take the cdr of the empty list, an exception that satisfies
 <dd><p>Returns <code class="code">#t</code> if <var class="var">obj</var> is the empty list.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(null? '())    &rArr; <span class="ok">#t</span>
-(null? (list)) &rArr; <span class="ok">#t</span>
-(null? <span class="char">#\null</span>) &rArr; <span class="ok">#f</span>
-(null? #!eof)  &rArr; <span class="ok">#f</span>
-(null? #f)     &rArr; <span class="ok">#f</span>
-(null? 0)      &rArr; <span class="ok">#f</span>
-(null? <span class="string">""</span>)     &rArr; <span class="ok">#f</span>
-(null? #())    &rArr; <span class="ok">#f</span>
-(null? (void)) &rArr; <span class="ok">#f</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>null? <span class="sexp-paren">&#x0027;</span>&#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span>    &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>null? <span class="sexp-paren">&#x0028;</span>list<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>null? <span class="char">#\null</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>null? <span class="sharp">#&#x0021;eof</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>null? <span class="sharp">#&#x0021;void</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>null? #f<span class="sexp-paren">&#x0029;</span>     &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>null? 0<span class="sexp-paren">&#x0029;</span>      &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>null? <span class="string">""</span><span class="sexp-paren">&#x0029;</span>     &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>null? #&#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span>    &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>null? #u8&#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#f</span>
 </pre></div>
 </dd></dl>
 
@@ -932,20 +966,20 @@ empty list.
 <p><code class="code">proper-list?</code> is functionally equivalent to <code class="code">list?</code>.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(list? '(a b c))              &rArr; <span class="ok">#t</span>
-(list? '())                   &rArr; <span class="ok">#t</span>
-(list? (list 0))              &rArr; <span class="ok">#t</span>
-(list? '(a . b))              &rArr; <span class="ok">#f</span>
-(list? list)                  &rArr; <span class="ok">#f</span>
-(list? <span class="string">"list"</span>)                &rArr; <span class="ok">#f</span>
-(list? #(0 1 2))              &rArr; <span class="ok">#f</span>
-(list? (circular-list 0 1 2)) &rArr; <span class="ok">#f</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>list? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>              &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>list? <span class="sexp-paren">&#x0027;</span>&#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span>                   &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>list? <span class="sexp-paren">&#x0028;</span>list 0<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>              &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>list? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a . b<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>              &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>list? list<span class="sexp-paren">&#x0029;</span>                  &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>list? <span class="string">"list"</span><span class="sexp-paren">&#x0029;</span>                &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>list? <span class="sexp-paren">#&#x0028;</span>0 1 2<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>              &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>list? <span class="sexp-paren">&#x0028;</span>circular-list 0 1 2<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">let</span> ((x (list 'a)))
-  (set-cdr! x x)
-  (list? x)) &rArr; <span class="ok">#f</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">let</span> <span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>x <span class="sexp-paren">&#x0028;</span>list <span class="sexp-paren">&#x0027;</span>a<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+  <span class="sexp-paren">&#x0028;</span>set-cdr! x x<span class="sexp-paren">&#x0029;</span>
+  <span class="sexp-paren">&#x0028;</span>list? x<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
 </pre></div>
 </dd></dl>
 
@@ -965,15 +999,15 @@ use the two-argument form.
 integer, an exception that satisfies <code class="code">range-exception?</code> is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(make-list 0)                        &rArr; <span class="ok">()</span>
-(make-list 3 (list))                 &rArr; <span class="ok">(() () ())</span>
-(make-list 3 (vector))               &rArr; <span class="ok">(#() #() #())</span>
-(make-list 2 (make-list 2 (vector))) &rArr; <span class="ok">((#() #()) (#() #()))</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>make-list 0<span class="sexp-paren">&#x0029;</span>                        &rArr; <span class="ok">()</span>
+<span class="sexp-paren">&#x0028;</span>make-list 3 <span class="sexp-paren">&#x0028;</span>list<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>                 &rArr; <span class="ok">(() () ())</span>
+<span class="sexp-paren">&#x0028;</span>make-list 3 <span class="sexp-paren">&#x0028;</span>vector<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>               &rArr; <span class="ok">(#() #() #())</span>
+<span class="sexp-paren">&#x0028;</span>make-list 2 <span class="sexp-paren">&#x0028;</span>make-list 2 <span class="sexp-paren">&#x0028;</span>vector<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">((#() #()) (#() #()))</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(make-list 1.25) &rarr; <i class="i">type exception</i>
-(make-list -1)   &rarr; <i class="i">range exception</i>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>make-list 1.25<span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">type exception</span>
+<span class="sexp-paren">&#x0028;</span>make-list -1<span class="sexp-paren">&#x0029;</span>   &rarr; <span class="exception">range exception</span>
 </pre></div>
 </dd></dl>
 
@@ -984,10 +1018,15 @@ integer, an exception that satisfies <code class="code">range-exception?</code> 
 <dd><p>Returns a newly allocated list consisting of its arguments.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(list 'a (+ 3 4) 'c)         &rArr; <span class="ok">(a 7 c)</span>
-(list)                       &rArr; <span class="ok">()</span>
-((car (list list)) 'list)    &rArr; <span class="ok">(list)</span>
-(eqv? (list <span class="char">#\l</span>) (list <span class="char">#\l</span>)) &rArr; <span class="ok">#f</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>list <span class="sexp-paren">&#x0027;</span>a <span class="sexp-paren">&#x0028;</span>+ 3 4<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0027;</span>c<span class="sexp-paren">&#x0029;</span>         &rArr; <span class="ok">(a 7 c)</span>
+<span class="sexp-paren">&#x0028;</span>list<span class="sexp-paren">&#x0029;</span>                       &rArr; <span class="ok">()</span>
+<span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>car <span class="sexp-paren">&#x0028;</span>list list<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0027;</span>list<span class="sexp-paren">&#x0029;</span>    &rArr; <span class="ok">(list)</span>
+<span class="sexp-paren">&#x0028;</span>eqv? <span class="sexp-paren">&#x0028;</span>list <span class="char">#\l</span><span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>list <span class="char">#\l</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
+</pre></div>
+
+<div class="example lisp">
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0060;</span><span class="sexp-paren">&#x0028;</span>list <span class="sexp-paren">,</span><span class="sexp-paren">&#x0028;</span>+ 1 2<span class="sexp-paren">&#x0029;</span> 4<span class="sexp-paren">&#x0029;</span>                     &rArr; <span class="ok">(list 3 4)</span>
+<span class="sexp-paren">&#x0028;</span><span class="syntax">let</span> <span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>name <span class="sexp-paren">&#x0027;</span>a<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0060;</span><span class="sexp-paren">&#x0028;</span>list <span class="sexp-paren">,</span>name <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">,</span>name<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(list a (quote a))</span>
 </pre></div>
 </dd></dl>
 
@@ -996,12 +1035,12 @@ integer, an exception that satisfies <code class="code">range-exception?</code> 
 <dd><p>Returns the length of <var class="var">list</var>.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> circle (circular-list 'x 'y 'z))
-(length '(a b c))            &rArr; <span class="ok">3</span>
-(length '(a (b) (c d e)))    &rArr; <span class="ok">3</span>
-(length '())                 &rArr; <span class="ok">0</span>
-(length (cdr (make-list 5))) &rArr; <span class="ok">4</span>
-(length circle)              &rarr; <i class="i">infinite loop</i> <span class="codecomment">;; not caught</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> circle <span class="sexp-paren">&#x0028;</span>circular-list <span class="sexp-paren">&#x0027;</span>x <span class="sexp-paren">&#x0027;</span>y <span class="sexp-paren">&#x0027;</span>z<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>length <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>            &rArr; <span class="ok">3</span>
+<span class="sexp-paren">&#x0028;</span>length <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a <span class="sexp-paren">&#x0028;</span>b<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>c d e<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>    &rArr; <span class="ok">3</span>
+<span class="sexp-paren">&#x0028;</span>length <span class="sexp-paren">&#x0027;</span>&#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span>                 &rArr; <span class="ok">0</span>
+<span class="sexp-paren">&#x0028;</span>length <span class="sexp-paren">&#x0028;</span>cdr <span class="sexp-paren">&#x0028;</span>make-list 5<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">4</span>
+<span class="sexp-paren">&#x0028;</span>length circle<span class="sexp-paren">&#x0029;</span>              &rarr; <span class="problem">infinite loop</span>
 </pre></div>
 </dd></dl>
 
@@ -1019,18 +1058,18 @@ an improper list is returned if if <var class="var">obj</var> is not a proper li
 except that it shares structure with the last argument, <var class="var">obj</var>.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(append '(x) '(y))       &rArr; <span class="ok">(x y)</span>
-(append '(a) '(b c d))   &rArr; <span class="ok">(a b c d)</span>
-(append '(a (b)) '((c))) &rArr; <span class="ok">(a (b) (c))</span>
-(append '(a b) '(c . d)) &rArr; <span class="ok">(a b c . d)</span> <span class="codecomment">;; lacking propriety</span>
-(append '() 'a)          &rArr; <span class="ok">a</span> <span class="codecomment">;; egregiously lacking propriety</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>append <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>x<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>y<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>       &rArr; <span class="ok">(x y)</span>
+<span class="sexp-paren">&#x0028;</span>append <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>b c d<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>   &rArr; <span class="ok">(a b c d)</span>
+<span class="sexp-paren">&#x0028;</span>append <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a <span class="sexp-paren">&#x0028;</span>b<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(a (b) (c))</span>
+<span class="sexp-paren">&#x0028;</span>append <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>c . d<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(a b c . d)</span> <span class="code-comment">;; lacking propriety</span>
+<span class="sexp-paren">&#x0028;</span>append <span class="sexp-paren">&#x0027;</span>&#x0028;&#x0029; <span class="sexp-paren">&#x0027;</span>a<span class="sexp-paren">&#x0029;</span>          &rArr; <span class="ok">a</span> <span class="code-comment">;; egregiously lacking propriety</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> l (list 'f 'g 'h))
-(eq?    l (append (append) l)) &rArr; <span class="ok">#t</span>
-(eq?    l (append l (append))) &rArr; <span class="ok">#f</span>
-(equal? l (append l (append))) &rArr; <span class="ok">#t</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> l <span class="sexp-paren">&#x0028;</span>list <span class="sexp-paren">&#x0027;</span>f <span class="sexp-paren">&#x0027;</span>g <span class="sexp-paren">&#x0027;</span>h<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>eq?    l <span class="sexp-paren">&#x0028;</span>append <span class="sexp-paren">&#x0028;</span>append<span class="sexp-paren">&#x0029;</span> l<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>eq?    l <span class="sexp-paren">&#x0028;</span>append l <span class="sexp-paren">&#x0028;</span>append<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>equal? l <span class="sexp-paren">&#x0028;</span>append l <span class="sexp-paren">&#x0028;</span>append<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
 </pre></div>
 </dd></dl>
 
@@ -1040,14 +1079,14 @@ except that it shares structure with the last argument, <var class="var">obj</va
 in reverse order (excluding the terminating empty list).
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(reverse '(a b c))             &rArr; <span class="ok">(c b a)</span>
-(reverse '(a (b c) d (e (f)))) &rArr; <span class="ok">((e (f)) d (b c) a)</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>reverse <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>             &rArr; <span class="ok">(c b a)</span>
+<span class="sexp-paren">&#x0028;</span>reverse <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a <span class="sexp-paren">&#x0028;</span>b c<span class="sexp-paren">&#x0029;</span> d <span class="sexp-paren">&#x0028;</span>e <span class="sexp-paren">&#x0028;</span>f<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">((e (f)) d (b c) a)</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> l (list 'a 'b 'c))
-(eq?    l (reverse (reverse l))) &rArr; <span class="ok">#f</span>
-(equal? l (reverse (reverse l))) &rArr; <span class="ok">#t</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> l <span class="sexp-paren">&#x0028;</span>list <span class="sexp-paren">&#x0027;</span>a <span class="sexp-paren">&#x0027;</span>b <span class="sexp-paren">&#x0027;</span>c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>eq?    l <span class="sexp-paren">&#x0028;</span>reverse <span class="sexp-paren">&#x0028;</span>reverse l<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>equal? l <span class="sexp-paren">&#x0028;</span>reverse <span class="sexp-paren">&#x0028;</span>reverse l<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
 </pre></div>
 </dd></dl>
 
@@ -1064,15 +1103,15 @@ elements.  If <var class="var">list</var> is a proper list, a proper list is ret
 elements, an exception that satisfies <code class="code">range-exception?</code> is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(list-tail '(a b c) 1)   &rArr; <span class="ok">(b c)</span>
-(list-tail '(a b c) 3)   &rArr; <span class="ok">()</span>
-(list-tail '(a b . c) 1) &rArr; <span class="ok">(b . c)</span> <span class="codecomment">;; impropriety</span>
-(list-tail '(a b . c) 2) &rArr; <span class="ok">c</span> <span class="codecomment">;; abject impropriety</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>list-tail <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c<span class="sexp-paren">&#x0029;</span> 1<span class="sexp-paren">&#x0029;</span>   &rArr; <span class="ok">(b c)</span>
+<span class="sexp-paren">&#x0028;</span>list-tail <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c<span class="sexp-paren">&#x0029;</span> 3<span class="sexp-paren">&#x0029;</span>   &rArr; <span class="ok">()</span>
+<span class="sexp-paren">&#x0028;</span>list-tail <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b . c<span class="sexp-paren">&#x0029;</span> 1<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(b . c)</span> <span class="code-comment">;; impropriety</span>
+<span class="sexp-paren">&#x0028;</span>list-tail <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b . c<span class="sexp-paren">&#x0029;</span> 2<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">c</span> <span class="code-comment">;; abject impropriety</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(list-tail '(a b c) 1.1) &rarr; <i class="i">type exception</i>
-(list-tail '(a b c) 4)   &rarr; <i class="i">range exception</i>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>list-tail <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c<span class="sexp-paren">&#x0029;</span> 1.1<span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">type exception</span>
+<span class="sexp-paren">&#x0028;</span>list-tail <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c<span class="sexp-paren">&#x0029;</span> 4<span class="sexp-paren">&#x0029;</span>   &rarr; <span class="exception">range exception</span>
 </pre></div>
 </dd></dl>
 
@@ -1084,12 +1123,12 @@ elements, an exception that satisfies <code class="code">range-exception?</code>
 be circular.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(list-ref '(a b c d) 2)                   &rArr; <span class="ok">c</span>
-(list-ref '(a b c d) (exact (round 1.8))) &rArr; <span class="ok">c</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>list-ref <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c d<span class="sexp-paren">&#x0029;</span> 2<span class="sexp-paren">&#x0029;</span>                   &rArr; <span class="ok">c</span>
+<span class="sexp-paren">&#x0028;</span>list-ref <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c d<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>exact <span class="sexp-paren">&#x0028;</span>round 1.8<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">c</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(list-ref (circular-list 'a 'b) 3) &rArr; <span class="ok">b</span> <span class="codecomment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>list-ref <span class="sexp-paren">&#x0028;</span>circular-list <span class="sexp-paren">&#x0027;</span>a <span class="sexp-paren">&#x0027;</span>b<span class="sexp-paren">&#x0029;</span> 3<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">b</span> <span class="code-comment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</span>
 </pre></div>
 </dd></dl>
 
@@ -1101,13 +1140,13 @@ be circular.
 <var class="var">list</var>.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> ls (list 'one 'two 'five!))
-(list-set! ls 2 'three)
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> ls <span class="sexp-paren">&#x0028;</span>list <span class="sexp-paren">&#x0027;</span>one <span class="sexp-paren">&#x0027;</span>two <span class="sexp-paren">&#x0027;</span>five!<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>list-set! ls 2 <span class="sexp-paren">&#x0027;</span>three<span class="sexp-paren">&#x0029;</span>
 ls &rArr; <span class="ok">(one two three)</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(list-set! '(0 1 2) 1 <span class="string">"oops"</span>) <span class="codecomment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>list-set! <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>0 1 2<span class="sexp-paren">&#x0029;</span> 1 <span class="string">"oops"</span><span class="sexp-paren">&#x0029;</span> <span class="code-comment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</span>
 </pre></div>
 </dd></dl>
 
@@ -1136,27 +1175,27 @@ return a non-Boolean value.
 </li></ul>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(memq   101 '(100 101 102)) &rArr; <span class="ok">(101 102)</span> <span class="codecomment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr>: unspecified</span>
-(memv   101 '(100 101 102)) &rArr; <span class="ok">(101 102)</span>
-(member 7 '(100 101 102) +) &rArr; <span class="ok">(100 101 102)</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>memq   101 <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>100 101 102<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(101 102)</span> <span class="code-comment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr>: unspecified</span>
+<span class="sexp-paren">&#x0028;</span>memv   101 <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>100 101 102<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(101 102)</span>
+<span class="sexp-paren">&#x0028;</span>member 7 <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>100 101 102<span class="sexp-paren">&#x0029;</span> +<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(100 101 102)</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(memq   'a '(a b c))                    &rArr; <span class="ok">(a b c)</span>
-(memq   'a '(b c d))                    &rArr; <span class="ok">#f</span>
-(memq   (list 'a) '(b (a) c))           &rArr; <span class="ok">#f</span>
-(memq   'a '(a b c))                    &rArr; <span class="ok">(a b c)</span>
-(memv   'b '(a b c))                    &rArr; <span class="ok">(b c)</span>
-(memv   'b '(a b . c))                  &rArr; <span class="ok">(b . c)</span>
-(member 'b '(a b c) eq?)                &rArr; <span class="ok">(b c)</span>
-(member (list 'a) '(b (a) c))           &rArr; <span class="ok">((a) c)</span>
-(member <span class="string">"B"</span> '(<span class="string">"a"</span> <span class="string">"b"</span> <span class="string">"c"</span>) string-ci=?) &rArr; <span class="ok">("b" "c")</span>
-(member 7 '(7 8 9) (<span class="syntax">lambda</span> x #f))       &rArr; <span class="ok">#f</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>memq   <span class="sexp-paren">&#x0027;</span>a <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>                    &rArr; <span class="ok">(a b c)</span>
+<span class="sexp-paren">&#x0028;</span>memq   <span class="sexp-paren">&#x0027;</span>a <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>b c d<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>                    &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>memq   <span class="sexp-paren">&#x0028;</span>list <span class="sexp-paren">&#x0027;</span>a<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>b <span class="sexp-paren">&#x0028;</span>a<span class="sexp-paren">&#x0029;</span> c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>           &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>memq   <span class="sexp-paren">&#x0027;</span>a <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>                    &rArr; <span class="ok">(a b c)</span>
+<span class="sexp-paren">&#x0028;</span>memv   <span class="sexp-paren">&#x0027;</span>b <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>                    &rArr; <span class="ok">(b c)</span>
+<span class="sexp-paren">&#x0028;</span>memv   <span class="sexp-paren">&#x0027;</span>b <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b . c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>                  &rArr; <span class="ok">(b . c)</span>
+<span class="sexp-paren">&#x0028;</span>member <span class="sexp-paren">&#x0027;</span>b <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c<span class="sexp-paren">&#x0029;</span> eq?<span class="sexp-paren">&#x0029;</span>                &rArr; <span class="ok">(b c)</span>
+<span class="sexp-paren">&#x0028;</span>member <span class="sexp-paren">&#x0028;</span>list <span class="sexp-paren">&#x0027;</span>a<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>b <span class="sexp-paren">&#x0028;</span>a<span class="sexp-paren">&#x0029;</span> c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>           &rArr; <span class="ok">((a) c)</span>
+<span class="sexp-paren">&#x0028;</span>member <span class="string">"B"</span> <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="string">"a"</span> <span class="string">"b"</span> <span class="string">"c"</span><span class="sexp-paren">&#x0029;</span> string-ci=?<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">("b" "c")</span>
+<span class="sexp-paren">&#x0028;</span>member 7 <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>7 8 9<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span><span class="syntax">lambda</span> x #f<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>       &rArr; <span class="ok">#f</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(memv 'c '(a b . c))      &rarr; <i class="i">type exception</i>
-(member 9 '(7 8 9) zero?) &rarr; <i class="i">wrong-number-of-arguments exception</i>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>memv <span class="sexp-paren">&#x0027;</span>c <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b . c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>      &rarr; <span class="exception">type exception</span>
+<span class="sexp-paren">&#x0028;</span>member 9 <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>7 8 9<span class="sexp-paren">&#x0029;</span> zero?<span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">wrong-number-of-arguments exception</span>
 </pre></div>
 </dd></dl>
 
@@ -1186,44 +1225,44 @@ return a non-Boolean value.
 </li></ul>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> p '((a 1) (b 2) (c 3)))
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> p <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>a 1<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>b 2<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>c 3<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
 
-(assq 'a p)                            &rArr; <span class="ok">(a 1)</span>
-(assq 'b p)                            &rArr; <span class="ok">(b 2)</span>
-(assv 'd p)                            &rArr; <span class="ok">#f</span>
-(assq (list 'a) '(((a)) ((b)) ((c))))  &rArr; <span class="ok">#f</span>
-(assoc (list 'a) '(((a)) ((b)) ((c)))) &rArr; <span class="ok">((a))</span>
-(assoc 2.0 '((1 1) (2 4) (3 9)) =)     &rArr; <span class="ok">(2 4)</span>
-(assq 5 '((2 3) (5 7) (11 13)))        &rArr; <span class="ok">(5 7)</span> <span class="codecomment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr>: unspecified</span>
-(assv 5 '((2 3) (5 7) (11 13)))        &rArr; <span class="ok">(5 7)</span>
+<span class="sexp-paren">&#x0028;</span>assq <span class="sexp-paren">&#x0027;</span>a p<span class="sexp-paren">&#x0029;</span>                            &rArr; <span class="ok">(a 1)</span>
+<span class="sexp-paren">&#x0028;</span>assq <span class="sexp-paren">&#x0027;</span>b p<span class="sexp-paren">&#x0029;</span>                            &rArr; <span class="ok">(b 2)</span>
+<span class="sexp-paren">&#x0028;</span>assv <span class="sexp-paren">&#x0027;</span>d p<span class="sexp-paren">&#x0029;</span>                            &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>assq <span class="sexp-paren">&#x0028;</span>list <span class="sexp-paren">&#x0027;</span>a<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>a<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>b<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>assoc <span class="sexp-paren">&#x0028;</span>list <span class="sexp-paren">&#x0027;</span>a<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>a<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>b<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">((a))</span>
+<span class="sexp-paren">&#x0028;</span>assoc 2.0 <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>1 1<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>2 4<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>3 9<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> =<span class="sexp-paren">&#x0029;</span>     &rArr; <span class="ok">(2 4)</span>
+<span class="sexp-paren">&#x0028;</span>assq 5 <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>2 3<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>5 7<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>11 13<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>        &rArr; <span class="ok">(5 7)</span> <span class="code-comment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr>: unspecified</span>
+<span class="sexp-paren">&#x0028;</span>assv 5 <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>2 3<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>5 7<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>11 13<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>        &rArr; <span class="ok">(5 7)</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> i '((a . 1) (b . 2) (c . 3)))
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> i <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>a . 1<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>b . 2<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>c . 3<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
 
-(assq 'b i) &rArr; <span class="ok">(a . 1)</span>
-(assv 'c i) &rArr; <span class="ok">(c . 3)</span>
-(assq 'd p) &rArr; <span class="ok">#f</span>
-(assv 'b '((a . 1) (b . 2) . (c . 3))) &rArr; <span class="ok">(b . 2)</span>
+<span class="sexp-paren">&#x0028;</span>assq <span class="sexp-paren">&#x0027;</span>b i<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(a . 1)</span>
+<span class="sexp-paren">&#x0028;</span>assv <span class="sexp-paren">&#x0027;</span>c i<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(c . 3)</span>
+<span class="sexp-paren">&#x0028;</span>assq <span class="sexp-paren">&#x0027;</span>d p<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>assv <span class="sexp-paren">&#x0027;</span>b <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>a . 1<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>b . 2<span class="sexp-paren">&#x0029;</span> . <span class="sexp-paren">&#x0028;</span>c . 3<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(b . 2)</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(assv 'c '((a . 1) (b . 2) . (c . 3))) &rarr; <i class="i">type exception</i>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>assv <span class="sexp-paren">&#x0027;</span>c <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>a . 1<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>b . 2<span class="sexp-paren">&#x0029;</span> . <span class="sexp-paren">&#x0028;</span>c . 3<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">type exception</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> dc '((<span class="string">"red"</span>    . <span class="string">"rouge"</span>)
-             (<span class="string">"green"</span>  . <span class="string">"vert"</span>)
-             (<span class="string">"blue"</span>   . <span class="string">"bleu"</span>)
-             (<span class="string">"orange"</span> . <span class="string">"orange"</span>)))
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> dc <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span><span class="string">"red"</span>    . <span class="string">"rouge"</span><span class="sexp-paren">&#x0029;</span>
+             <span class="sexp-paren">&#x0028;</span><span class="string">"green"</span>  . <span class="string">"vert"</span><span class="sexp-paren">&#x0029;</span>
+             <span class="sexp-paren">&#x0028;</span><span class="string">"blue"</span>   . <span class="string">"bleu"</span><span class="sexp-paren">&#x0029;</span>
+             <span class="sexp-paren">&#x0028;</span><span class="string">"orange"</span> . <span class="string">"orange"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
 
-(<span class="syntax">define</span> (f e)
-  (<span class="syntax">let</span> ((f (assoc e dc string=?)))
-    (<span class="syntax">and</span> f (cdr f))))
+<span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> <span class="sexp-paren">&#x0028;</span>f e<span class="sexp-paren">&#x0029;</span>
+  <span class="sexp-paren">&#x0028;</span><span class="syntax">let</span> <span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>f <span class="sexp-paren">&#x0028;</span>assoc e dc string=?<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+    <span class="sexp-paren">&#x0028;</span><span class="syntax">and</span> f <span class="sexp-paren">&#x0028;</span>cdr f<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
 
-(f <span class="string">"green"</span>)  &rArr; <span class="ok">"vert"</span>
-(f <span class="string">"orange"</span>) &rArr; <span class="ok">"orange"</span>
-(f <span class="string">"purple"</span>) &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>f <span class="string">"green"</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">"vert"</span>
+<span class="sexp-paren">&#x0028;</span>f <span class="string">"orange"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"orange"</span>
+<span class="sexp-paren">&#x0028;</span>f <span class="string">"purple"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
 </pre></div>
 </dd></dl>
 
@@ -1238,37 +1277,37 @@ the same in the sense of <code class="code">eqv?</code>.  An <var class="var">ob
 is returned unchanged.  It is an error if <var class="var">obj</var> is a circular list.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> a '(1 8 2 8))    <span class="codecomment">;; a may be immutable</span>
-(<span class="syntax">define</span> b (list-copy a))
-(set-car! b 3)           <span class="codecomment">;; b is mutable</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> a <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>1 8 2 8<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>    <span class="code-comment">;; a may be immutable</span>
+<span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> b <span class="sexp-paren">&#x0028;</span>list-copy a<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>set-car! b 3<span class="sexp-paren">&#x0029;</span>           <span class="code-comment">;; b is mutable</span>
 
 b &rArr; <span class="ok">(3 8 2 8)</span>
 a &rArr; <span class="ok">(1 8 2 8)</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(list-copy '(a b . c))                           &rArr; <span class="ok">(a b . c)</span>
-(list-copy 'unchanged)                           &rArr; <span class="ok">unchanged</span>
-(eqv? '() (list-copy '()))                       &rArr; <span class="ok">#t</span>
-(eqv? list-copy ((<span class="syntax">lambda</span> (x) x) list-copy))      &rArr; <span class="ok">#t</span>
-(eqv? (<span class="syntax">lambda</span> (x) x) (list-copy (<span class="syntax">lambda</span> (x) x))) &rArr; <span class="ok">#f</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>list-copy <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b . c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>                           &rArr; <span class="ok">(a b . c)</span>
+<span class="sexp-paren">&#x0028;</span>list-copy <span class="sexp-paren">&#x0027;</span>unchanged<span class="sexp-paren">&#x0029;</span>                           &rArr; <span class="ok">unchanged</span>
+<span class="sexp-paren">&#x0028;</span>eqv? <span class="sexp-paren">&#x0027;</span>&#x0028;&#x0029; <span class="sexp-paren">&#x0028;</span>list-copy <span class="sexp-paren">&#x0027;</span>&#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>                       &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>eqv? list-copy <span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span><span class="syntax">lambda</span> <span class="sexp-paren">&#x0028;</span>x<span class="sexp-paren">&#x0029;</span> x<span class="sexp-paren">&#x0029;</span> list-copy<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>      &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>eqv? <span class="sexp-paren">&#x0028;</span><span class="syntax">lambda</span> <span class="sexp-paren">&#x0028;</span>x<span class="sexp-paren">&#x0029;</span> x<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>list-copy <span class="sexp-paren">&#x0028;</span><span class="syntax">lambda</span> <span class="sexp-paren">&#x0028;</span>x<span class="sexp-paren">&#x0029;</span> x<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> i (cons (string-copy <span class="string">"one"</span>) (string-copy <span class="string">"two"</span>)))
-(<span class="syntax">define</span> p (cons (car i) (cons (cdr i) '())))
-(eqv? (cdr i) (cdr (list-copy i))) &rArr; <span class="ok">#t</span>
-(eqv? (cdr p) (cdr (list-copy p))) &rArr; <span class="ok">#f</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> i <span class="sexp-paren">&#x0028;</span>cons <span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"one"</span><span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"two"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> p <span class="sexp-paren">&#x0028;</span>cons <span class="sexp-paren">&#x0028;</span>car i<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>cons <span class="sexp-paren">&#x0028;</span>cdr i<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0027;</span>&#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>eqv? <span class="sexp-paren">&#x0028;</span>cdr i<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>cdr <span class="sexp-paren">&#x0028;</span>list-copy i<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>eqv? <span class="sexp-paren">&#x0028;</span>cdr p<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>cdr <span class="sexp-paren">&#x0028;</span>list-copy p<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(list-copy) &rarr; <i class="i">wrong-number-of-arguments exception</i>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>list-copy<span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">wrong-number-of-arguments exception</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> c (circular-list 0 1 2))
-(circular-list? c) &rArr; <span class="ok">#t</span>
-(list-copy (circular-list 0 1 2)) &rarr; <i class="i">infinite loop</i> <span class="codecomment">;; not caught</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> c <span class="sexp-paren">&#x0028;</span>circular-list 0 1 2<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>circular-list? c<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>list-copy <span class="sexp-paren">&#x0028;</span>circular-list 0 1 2<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rarr; <span class="problem">infinite loop</span>
 </pre></div>
 </dd></dl>
 
@@ -1297,15 +1336,18 @@ Up: <a href="#Strings" accesskey="u" rel="up">Strings</a> &nbsp; [<a href="#SEC_
 <dd><p>Returns <code class="code">#t</code> if <var class="var">obj</var> is a string.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string? <span class="string">""</span>)       &rArr; <span class="ok">#t</span>
-(string? (string)) &rArr; <span class="ok">#t</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string? <span class="string">""</span><span class="sexp-paren">&#x0029;</span>            &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>string? <span class="string">"es\&#x0022;cape"</span><span class="sexp-paren">&#x0029;</span>    &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>string? <span class="string">"\&#x0022;escapes\&#x0022;"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>string? <span class="string">"\x0061;"</span><span class="sexp-paren">&#x0029;</span>     &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>string? <span class="sexp-paren">&#x0028;</span>string<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>      &rArr; <span class="ok">#t</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string? <span class="char">#\a</span>)                    &rArr; <span class="ok">#f</span>
-(string? 'string)                &rArr; <span class="ok">#f</span>
-(string? '(<span class="char">#\c</span> <span class="char">#\h</span> <span class="char">#\a</span> <span class="char">#\r</span> <span class="char">#\s</span>)) &rArr; <span class="ok">#f</span>
-(string? #(<span class="char">#\c</span> <span class="char">#\h</span> <span class="char">#\a</span> <span class="char">#\r</span> <span class="char">#\s</span>)) &rArr; <span class="ok">#f</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string? <span class="char">#\a</span><span class="sexp-paren">&#x0029;</span>                    &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>string? <span class="sexp-paren">&#x0027;</span>string<span class="sexp-paren">&#x0029;</span>                &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>string? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="char">#\c</span> <span class="char">#\h</span> <span class="char">#\a</span> <span class="char">#\r</span> <span class="char">#\s</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>string? <span class="sexp-paren">#&#x0028;</span><span class="char">#\c</span> <span class="char">#\h</span> <span class="char">#\a</span> <span class="char">#\r</span> <span class="char">#\s</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
 </pre></div>
 </dd></dl>
 
@@ -1324,15 +1366,15 @@ use the two-argument form.
 integer, an exception that satisfies <code class="code">range-exception?</code> is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(make-string 0)                 &rArr; <span class="ok">""</span>
-(string-length (make-string 4)) &rArr; <span class="ok">4</span>
-(make-string 4 <span class="char">#\g</span>)             &rArr; <span class="ok">"gggg"</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>make-string 0<span class="sexp-paren">&#x0029;</span>                 &rArr; <span class="ok">""</span>
+<span class="sexp-paren">&#x0028;</span>string-length <span class="sexp-paren">&#x0028;</span>make-string 4<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">4</span>
+<span class="sexp-paren">&#x0028;</span>make-string 4 <span class="char">#\g</span><span class="sexp-paren">&#x0029;</span>             &rArr; <span class="ok">"gggg"</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(make-string 4 <span class="string">"g"</span>) &rarr; <i class="i">type exception</i>
-(make-string 4.5)   &rarr; <i class="i">type exception</i>
-(make-string -1)    &rarr; <i class="i">range exception</i>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>make-string 4 <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">type exception</span>
+<span class="sexp-paren">&#x0028;</span>make-string 4.5<span class="sexp-paren">&#x0029;</span>   &rarr; <span class="exception">type exception</span>
+<span class="sexp-paren">&#x0028;</span>make-string -1<span class="sexp-paren">&#x0029;</span>    &rarr; <span class="exception">range exception</span>
 </pre></div>
 </dd></dl>
 
@@ -1343,9 +1385,9 @@ The order of the arguments is preserved.  Analogous to <code class="code">list</
 (see <a class="pxref" href="#Pair-and-list-procedures">Pair and list procedures</a>).
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string)                               &rArr; <span class="ok">""</span>
-(string <span class="char">#\G</span> <span class="char">#\a</span> <span class="char">#\m</span> <span class="char">#\b</span> <span class="char">#\i</span> <span class="char">#\t</span>)       &rArr; <span class="ok">"Gambit"</span>
-(apply string (string-&gt;list <span class="string">"Gambit"</span>)) &rArr; <span class="ok">"Gambit"</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string<span class="sexp-paren">&#x0029;</span>                               &rArr; <span class="ok">""</span>
+<span class="sexp-paren">&#x0028;</span>string <span class="char">#\G</span> <span class="char">#\a</span> <span class="char">#\m</span> <span class="char">#\b</span> <span class="char">#\i</span> <span class="char">#\t</span><span class="sexp-paren">&#x0029;</span>       &rArr; <span class="ok">"Gambit"</span>
+<span class="sexp-paren">&#x0028;</span>apply string <span class="sexp-paren">&#x0028;</span>string-&gt;list <span class="string">"Gambit"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"Gambit"</span>
 </pre></div>
 </dd></dl>
 
@@ -1354,9 +1396,9 @@ The order of the arguments is preserved.  Analogous to <code class="code">list</
 <dd><p>Returns the number of characters in <var class="var">string</var>.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-length (make-string 5)) &rArr; <span class="ok">5</span>
-(string-length <span class="string">""</span>)              &rArr; <span class="ok">0</span>
-(string-length <span class="string">"lambda"</span>)        &rArr; <span class="ok">6</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-length <span class="sexp-paren">&#x0028;</span>make-string 5<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">5</span>
+<span class="sexp-paren">&#x0028;</span>string-length <span class="string">""</span><span class="sexp-paren">&#x0029;</span>              &rArr; <span class="ok">0</span>
+<span class="sexp-paren">&#x0028;</span>string-length <span class="string">"lambda"</span><span class="sexp-paren">&#x0029;</span>        &rArr; <span class="ok">6</span>
 </pre></div>
 </dd></dl>
 
@@ -1367,13 +1409,13 @@ not a valid index of <var class="var">string</var>, an exception that satisfies
 <code class="code">range-exception?</code> is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-ref <span class="string">"zero-origin indexing"</span> 0) &rArr; <span class="ok">#\z</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-ref <span class="string">"zero-origin indexing"</span> 0<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#\z</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> s <span class="string">"off by one"</span>)
-(string-ref s (- (string-length s) 1)) &rArr; <span class="ok">#\e</span>
-(string-ref s (string-length s))       &rarr; <i class="i">range exception</i>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> s <span class="string">"off by one"</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>string-ref s <span class="sexp-paren">&#x0028;</span>- <span class="sexp-paren">&#x0028;</span>string-length s<span class="sexp-paren">&#x0029;</span> 1<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#\e</span>
+<span class="sexp-paren">&#x0028;</span>string-ref s <span class="sexp-paren">&#x0028;</span>string-length s<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>       &rarr; <span class="exception">range exception</span>
 </pre></div>
 </dd></dl>
 
@@ -1386,12 +1428,12 @@ contain exactly the same characters in the same positions.
 any number of arguments.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string=? <span class="string">"abc"</span> (string <span class="char">#\a</span> <span class="char">#\b</span> <span class="char">#\c</span>)) &rArr; <span class="ok">#t</span>
-(string=? <span class="string">"abcd"</span> <span class="string">"Abcd"</span>)              &rArr; <span class="ok">#f</span>
-(string=?)                            &rArr; <span class="ok">#t</span>
-(string=? (string))                   &rArr; <span class="ok">#t</span>
-(string=? <span class="string">"a"</span> <span class="string">"a"</span> <span class="string">"a"</span>)                &rArr; <span class="ok">#t</span>
-(string=? <span class="string">"a"</span> <span class="char">#\a</span>)                    &rarr; <i class="i">type exception</i>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string=? <span class="string">"abc"</span> <span class="sexp-paren">&#x0028;</span>string <span class="char">#\a</span> <span class="char">#\b</span> <span class="char">#\c</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>string=? <span class="string">"abcd"</span> <span class="string">"Abcd"</span><span class="sexp-paren">&#x0029;</span>              &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>string=?<span class="sexp-paren">&#x0029;</span>                            &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>string=? <span class="sexp-paren">&#x0028;</span>string<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>                   &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>string=? <span class="string">"a"</span> <span class="string">"a"</span> <span class="string">"a"</span><span class="sexp-paren">&#x0029;</span>                &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>string=? <span class="string">"a"</span> <span class="char">#\a</span><span class="sexp-paren">&#x0029;</span>                    &rarr; <span class="exception">type exception</span>
 </pre></div>
 </dd></dl>
 
@@ -1414,16 +1456,16 @@ if and only if they do not satisfy <code class="code">string&gt;?</code>.  They 
 accept any number of arguments.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string&lt;=? <span class="string">"g"</span> <span class="string">"g"</span>) &rArr; <span class="ok">#f</span>
-(string&gt;=? <span class="string">"g"</span> <span class="string">"g"</span>) &rArr; <span class="ok">#f</span>
-(string&lt;?  <span class="string">"g"</span> <span class="string">"g"</span>) &rArr; <span class="ok">#f</span>
-(string&gt;?  <span class="string">"g"</span> <span class="string">"g"</span>) &rArr; <span class="ok">#f</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string&lt;=? <span class="string">"g"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>string&gt;=? <span class="string">"g"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>string&lt;?  <span class="string">"g"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>string&gt;?  <span class="string">"g"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
 
-(string&lt;? <span class="string">"G"</span> <span class="string">"g"</span>)  &rArr; <span class="ok">#t</span>
-(string&gt;? <span class="string">"G"</span> <span class="string">"g"</span>)  &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>string&lt;? <span class="string">"G"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>string&gt;? <span class="string">"G"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#f</span>
 
-(string&lt;? <span class="string">"gg"</span> <span class="string">"g"</span>) &rArr; <span class="ok">#f</span>
-(string&gt;? <span class="string">"gg"</span> <span class="string">"g"</span>) &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>string&lt;? <span class="string">"gg"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>string&gt;? <span class="string">"gg"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
 </pre></div>
 </dd></dl>
 
@@ -1438,28 +1480,28 @@ applied to each <var class="var">string</var> and then that predicate&rsquo;s no
 counterpart were applied to those case-folded arguments.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-ci=?  <span class="string">"G"</span> <span class="string">"g"</span>)                             &rArr; <span class="ok">#t</span>
-(apply string=? (map string-foldcase '(<span class="string">"G"</span> <span class="string">"g"</span>)))  &rArr; <span class="ok">#t</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-ci=?  <span class="string">"G"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span>                             &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>apply string=? <span class="sexp-paren">&#x0028;</span>map string-foldcase <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="string">"G"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#t</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-ci&gt;=? <span class="string">"G"</span> <span class="string">"g"</span>)                             &rArr; <span class="ok">#t</span>
-(apply string&lt;=? (map string-foldcase '(<span class="string">"G"</span> <span class="string">"g"</span>))) &rArr; <span class="ok">#t</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-ci&gt;=? <span class="string">"G"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span>                             &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>apply string&lt;=? <span class="sexp-paren">&#x0028;</span>map string-foldcase <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="string">"G"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-ci&lt;=? <span class="string">"g"</span> <span class="string">"G"</span>)                             &rArr; <span class="ok">#t</span>
-(apply string&lt;=? (map string-foldcase '(<span class="string">"g"</span> <span class="string">"G"</span>))) &rArr; <span class="ok">#t</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-ci&lt;=? <span class="string">"g"</span> <span class="string">"G"</span><span class="sexp-paren">&#x0029;</span>                             &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>apply string&lt;=? <span class="sexp-paren">&#x0028;</span>map string-foldcase <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="string">"g"</span> <span class="string">"G"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-ci&lt;?  <span class="string">"G"</span> <span class="string">"g"</span>)                             &rArr; <span class="ok">#f</span>
-(apply string&lt;? (map string-foldcase '(<span class="string">"G"</span> <span class="string">"g"</span>)))  &rArr; <span class="ok">#f</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-ci&lt;?  <span class="string">"G"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span>                             &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>apply string&lt;? <span class="sexp-paren">&#x0028;</span>map string-foldcase <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="string">"G"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#f</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-ci&gt;?  <span class="string">"g"</span> <span class="string">"G"</span>)                             &rArr; <span class="ok">#f</span>
-(apply string&gt;? (map string-foldcase '(<span class="string">"g"</span> <span class="string">"G"</span>)))  &rArr; <span class="ok">#f</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-ci&gt;?  <span class="string">"g"</span> <span class="string">"G"</span><span class="sexp-paren">&#x0029;</span>                             &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>apply string&gt;? <span class="sexp-paren">&#x0028;</span>map string-foldcase <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="string">"g"</span> <span class="string">"G"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#f</span>
 </pre></div>
 </dd></dl>
 
@@ -1473,19 +1515,19 @@ In certain cases, the result differs in length from <var class="var">string</var
 that language-sensitive mappings and foldings are not used.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-downcase <span class="string">"&#x0388;&#x03C4;&#x03BF;&#x03C2;"</span>) &rArr; <span class="ok">"&#x03AD;&#x03C4;&#x03BF;&#x03C2;"</span>
-(string-foldcase <span class="string">"&#x0388;&#x03C4;&#x03BF;&#x03C2;"</span>) &rArr; <span class="ok">"&#x03AD;&#x03C4;&#x03BF;&#x03C3;"</span>
-(string-upcase   <span class="string">"&#x0388;&#x03C4;&#x03BF;&#x03C2;"</span>) &rArr; <span class="ok">"&#x0388;&#x03A4;&#x039F;&#x03A3;"</span>
-(string-downcase <span class="string">"&#x0388;&#x03A4;&#x039F;&#x03A3;"</span>) &rArr; <span class="ok">"&#x03AD;&#x03C4;&#x03BF;&#x03C3;"</span>
-(string-foldcase <span class="string">"&#x0388;&#x03A4;&#x039F;&#x03A3;"</span>) &rArr; <span class="ok">"&#x03AD;&#x03C4;&#x03BF;&#x03C3;"</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-downcase <span class="string">"&#x0388;&#x03C4;&#x03BF;&#x03C2;"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"&#x03AD;&#x03C4;&#x03BF;&#x03C2;"</span>
+<span class="sexp-paren">&#x0028;</span>string-foldcase <span class="string">"&#x0388;&#x03C4;&#x03BF;&#x03C2;"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"&#x03AD;&#x03C4;&#x03BF;&#x03C3;"</span>
+<span class="sexp-paren">&#x0028;</span>string-upcase   <span class="string">"&#x0388;&#x03C4;&#x03BF;&#x03C2;"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"&#x0388;&#x03A4;&#x039F;&#x03A3;"</span>
+<span class="sexp-paren">&#x0028;</span>string-downcase <span class="string">"&#x0388;&#x03A4;&#x039F;&#x03A3;"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"&#x03AD;&#x03C4;&#x03BF;&#x03C3;"</span>
+<span class="sexp-paren">&#x0028;</span>string-foldcase <span class="string">"&#x0388;&#x03A4;&#x039F;&#x03A3;"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"&#x03AD;&#x03C4;&#x03BF;&#x03C3;"</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-downcase <span class="string">"Wei&szlig;"</span>)  &rArr; <span class="ok">"wei&szlig;"</span>
-(string-foldcase <span class="string">"Wei&szlig;"</span>)  &rArr; <span class="ok">"weiss"</span>
-(string-upcase   <span class="string">"Wei&szlig;"</span>)  &rArr; <span class="ok">"WEISS"</span>
-(string-downcase <span class="string">"WEISS"</span>) &rArr; <span class="ok">"weiss"</span>
-(string-foldcase <span class="string">"WEISS"</span>) &rArr; <span class="ok">"weiss"</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-downcase <span class="string">"Wei&szlig;"</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">"wei&szlig;"</span>
+<span class="sexp-paren">&#x0028;</span>string-foldcase <span class="string">"Wei&szlig;"</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">"weiss"</span>
+<span class="sexp-paren">&#x0028;</span>string-upcase   <span class="string">"Wei&szlig;"</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">"WEISS"</span>
+<span class="sexp-paren">&#x0028;</span>string-downcase <span class="string">"WEISS"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"weiss"</span>
+<span class="sexp-paren">&#x0028;</span>string-foldcase <span class="string">"WEISS"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"weiss"</span>
 </pre></div>
 </dd></dl>
 
@@ -1496,12 +1538,12 @@ that language-sensitive mappings and foldings are not used.
 of the characters in the given <var class="var">strings</var>.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-append)                    &rArr; <span class="ok">""</span>
-(string-append <span class="string">""</span>)                 &rArr; <span class="ok">""</span>
-(string-append <span class="string">"hello"</span> <span class="string">"world"</span>)    &rArr; <span class="ok">"helloworld"</span>
-(string-append <span class="string">"hello"</span> <span class="string">""</span> <span class="string">"world"</span>) &rArr; <span class="ok">"helloworld"</span>
-(string-append <span class="string">"hello "</span> <span class="string">"world"</span>)   &rArr; <span class="ok">"hello  world"</span>
-(string-append <span class="string">"hello"</span> <span class="string">""</span> <span class="string">"world"</span>) &rArr; <span class="ok">"hello world"</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-append<span class="sexp-paren">&#x0029;</span>                    &rArr; <span class="ok">""</span>
+<span class="sexp-paren">&#x0028;</span>string-append <span class="string">""</span><span class="sexp-paren">&#x0029;</span>                 &rArr; <span class="ok">""</span>
+<span class="sexp-paren">&#x0028;</span>string-append <span class="string">"hello"</span> <span class="string">"world"</span><span class="sexp-paren">&#x0029;</span>    &rArr; <span class="ok">"helloworld"</span>
+<span class="sexp-paren">&#x0028;</span>string-append <span class="string">"hello"</span> <span class="string">""</span> <span class="string">"world"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"helloworld"</span>
+<span class="sexp-paren">&#x0028;</span>string-append <span class="string">"hello "</span> <span class="string">"world"</span><span class="sexp-paren">&#x0029;</span>   &rArr; <span class="ok">"hello  world"</span>
+<span class="sexp-paren">&#x0028;</span>string-append <span class="string">"hello"</span> <span class="string">""</span> <span class="string">"world"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"hello world"</span>
 </pre></div>
 </dd></dl>
 
@@ -1521,16 +1563,16 @@ inverses so far as <code class="code">equal?</code> is concerned.  If either <va
 satisfies <code class="code">range-exception?</code> is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-&gt;list <span class="string">"scheme"</span>)     &rArr; <span class="ok">(#\s #\c #\h #\e #\m #\e)</span>
-(string-&gt;list <span class="string">"scheme"</span> 1)   &rArr; <span class="ok">(#\c #\h #\e #\m #\e)</span>
-(string-&gt;list <span class="string">"scheme"</span> 2 6) &rArr; <span class="ok">(#\h #\e #\m #\e)</span>
-(string-&gt;list <span class="string">"scheme"</span> 6)   &rArr; <span class="ok">()</span>
-(string-&gt;list <span class="string">"scheme"</span> 6 6) &rArr; <span class="ok">()</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-&gt;list <span class="string">"scheme"</span><span class="sexp-paren">&#x0029;</span>     &rArr; <span class="ok">(#\s #\c #\h #\e #\m #\e)</span>
+<span class="sexp-paren">&#x0028;</span>string-&gt;list <span class="string">"scheme"</span> 1<span class="sexp-paren">&#x0029;</span>   &rArr; <span class="ok">(#\c #\h #\e #\m #\e)</span>
+<span class="sexp-paren">&#x0028;</span>string-&gt;list <span class="string">"scheme"</span> 2 6<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(#\h #\e #\m #\e)</span>
+<span class="sexp-paren">&#x0028;</span>string-&gt;list <span class="string">"scheme"</span> 6<span class="sexp-paren">&#x0029;</span>   &rArr; <span class="ok">()</span>
+<span class="sexp-paren">&#x0028;</span>string-&gt;list <span class="string">"scheme"</span> 6 6<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">()</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-&gt;list <span class="string">"scheme"</span> 7)   &rarr; <i class="i">range exception</i>
-(string-&gt;list <span class="string">"scheme"</span> 3 7) &rarr; <i class="i">range exception</i>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-&gt;list <span class="string">"scheme"</span> 7<span class="sexp-paren">&#x0029;</span>   &rarr; <span class="exception">range exception</span>
+<span class="sexp-paren">&#x0028;</span>string-&gt;list <span class="string">"scheme"</span> 3 7<span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">range exception</span>
 </pre></div>
 </dd></dl>
 
@@ -1544,9 +1586,9 @@ inverses so far as <code class="code">equal?</code> is concerned.  If any elemen
 is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(list-&gt;string (list))                       &rArr; <span class="ok">""</span>
-(list-&gt;string '(<span class="char">#\s</span> <span class="char">#\c</span> <span class="char">#\h</span> <span class="char">#\e</span> <span class="char">#\m</span> <span class="char">#\e</span>))   &rArr; <span class="ok">"scheme"</span>
-(list-&gt;string '(<span class="char">#\s</span> <span class="char">#\c</span> <span class="char">#\h</span> <span class="char">#\e</span> <span class="char">#\m</span> <span class="char">#\e</span> 2)) &rarr; <i class="i">type exception</i>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>list-&gt;string <span class="sexp-paren">&#x0028;</span>list<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>                       &rArr; <span class="ok">""</span>
+<span class="sexp-paren">&#x0028;</span>list-&gt;string <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="char">#\s</span> <span class="char">#\c</span> <span class="char">#\h</span> <span class="char">#\e</span> <span class="char">#\m</span> <span class="char">#\e</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>   &rArr; <span class="ok">"scheme"</span>
+<span class="sexp-paren">&#x0028;</span>list-&gt;string <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="char">#\s</span> <span class="char">#\c</span> <span class="char">#\h</span> <span class="char">#\e</span> <span class="char">#\m</span> <span class="char">#\e</span> 2<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">type exception</span>
 </pre></div>
 </dd></dl>
 
@@ -1568,27 +1610,26 @@ not a valid index of <var class="var">string</var>, an exception that satisfies
 <code class="code">range-exception?</code> is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-copy <span class="string">"dwim"</span>)                          &rArr; <span class="ok">"dwim"</span>
-(string-copy <span class="string">"dwim"</span> 0)                        &rArr; <span class="ok">"dwim"</span>
-(string-copy <span class="string">"dwim"</span> 1)                        &rArr; <span class="ok">"wim"</span>
-(string-copy <span class="string">"dwim"</span> 1 1)                      &rArr; <span class="ok">""</span>
-(string-copy <span class="string">"dwim"</span> 0 (string-length <span class="string">"dwim"</span>)) &rArr; <span class="ok">"dwim"</span>
-(eqv?     <span class="string">"dwim"</span> (string-copy <span class="string">"dwim"</span>))        &rArr; <span class="ok">#f</span>
-(string=? <span class="string">"dwim"</span> (string-copy <span class="string">"dwim"</span>))        &rArr; <span class="ok">#t</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span><span class="sexp-paren">&#x0029;</span>                          &rArr; <span class="ok">"dwim"</span>
+<span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span> 0<span class="sexp-paren">&#x0029;</span>                        &rArr; <span class="ok">"dwim"</span>
+<span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span> 1<span class="sexp-paren">&#x0029;</span>                        &rArr; <span class="ok">"wim"</span>
+<span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span> 1 1<span class="sexp-paren">&#x0029;</span>                      &rArr; <span class="ok">""</span>
+<span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span> 0 <span class="sexp-paren">&#x0028;</span>string-length <span class="string">"dwim"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"dwim"</span>
+<span class="sexp-paren">&#x0028;</span>eqv?     <span class="string">"dwim"</span> <span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>        &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>string=? <span class="string">"dwim"</span> <span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>        &rArr; <span class="ok">#t</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-copy <span class="string">"dwim"</span> 5)    &rarr; <i class="i">range exception</i>
-(string-copy <span class="string">"dwim"</span> -1 3) &rarr; <i class="i">range exception</i>
-(string-copy <span class="string">"dwim"</span> 2 5)  &rarr; <i class="i">range exception</i>
-(string-copy <span class="string">"dwim"</span> 2.5)  &rarr; <i class="i">type exception</i>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span> 5<span class="sexp-paren">&#x0029;</span>    &rarr; <span class="exception">range exception</span>
+<span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span> -1 3<span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">range exception</span>
+<span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span> 2 5<span class="sexp-paren">&#x0029;</span>  &rarr; <span class="exception">range exception</span>
+<span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span> 2.5<span class="sexp-paren">&#x0029;</span>  &rarr; <span class="exception">type exception</span>
 </pre></div>
 </dd></dl>
 
 <dl class="first-deftypefn">
 <dt class="deftypefn" id="index-string_002dcopy_0021"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">string-copy!</strong> <code class="def-code-arguments">to-string at from-string <span class="bracket">[</span>start <span class="bracket">[</span>end<span class="bracket">]</span><span class="bracket">]</span></code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_002dcopy_0021"> &para;</a></span></dt>
-<dd>
-<p>Mutates <var class="var">to-string</var> by copying a substring of <var class="var">from-string</var> into
+<dd><p>Mutates <var class="var">to-string</var> by copying a substring of <var class="var">from-string</var> into
 <var class="var">to-string</var>, beginning with index <var class="var">at</var> of <var class="var">to-string</var>.  In
 the three-argument form, all of <var class="var">from-string</var> is copied.  In the
 four-argument form, the value of &lsquo;<samp class="samp">(string-copy
@@ -1605,9 +1646,9 @@ satisfies <code class="code">range-exception?</code> is raised.  If &lsquo;<samp
 must not overflow beyond the end of <var class="var">to-string</var>).
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> a <span class="string">"12345"</span>)
-(<span class="syntax">define</span> b (string-copy <span class="string">"abcde"</span>))
-(string-copy! b 1 a 0 2)
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> a <span class="string">"12345"</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> b <span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"abcde"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>string-copy! b 1 a 0 2<span class="sexp-paren">&#x0029;</span>
 b &rArr; <span class="ok">"a12de"</span>
 </pre></div>
 </dd></dl>
@@ -1625,12 +1666,12 @@ form, the elements from index <var class="var">start</var> (inclusive) to index 
 an exception that satisfies <code class="code">range-exception?</code> is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> a (string-copy <span class="string">"abcde"</span>))
-(<span class="syntax">define</span> b (string-copy a))
-(<span class="syntax">define</span> c (string-copy b))
-(string-fill! a <span class="char">#\0</span>)
-(string-fill! b <span class="char">#\0</span> 3)
-(string-fill! c <span class="char">#\0</span> 3 4)
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> a <span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"abcde"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> b <span class="sexp-paren">&#x0028;</span>string-copy a<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> c <span class="sexp-paren">&#x0028;</span>string-copy b<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>string-fill! a <span class="char">#\0</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>string-fill! b <span class="char">#\0</span> 3<span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>string-fill! c <span class="char">#\0</span> 3 4<span class="sexp-paren">&#x0029;</span>
 a &rArr; <span class="ok">"00000"</span>
 b &rArr; <span class="ok">"abc00"</span>
 c &rArr; <span class="ok">"abc0e"</span>
@@ -1649,20 +1690,20 @@ an exception that satisfies <code class="code">type-exception?</code> is raised.
 satisfies <code class="code">range-exception?</code> is raised.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> (f) (make-string 3 <span class="char">#\*</span>))
-(string-set! (f) 0 <span class="char">#\?</span>) <span class="codecomment">;; ok</span>
-(string-set! (f) 5 <span class="char">#\?</span>)   &rarr; <i class="i">range exception</i>
-(string-set! (f) 1.1 <span class="char">#\?</span>) &rarr; <i class="i">type exception</i>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> <span class="sexp-paren">&#x0028;</span>f<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>make-string 3 <span class="char">#\*</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>string-set! <span class="sexp-paren">&#x0028;</span>f<span class="sexp-paren">&#x0029;</span> 0 <span class="char">#\?</span><span class="sexp-paren">&#x0029;</span> <span class="code-comment">;; ok</span>
+<span class="sexp-paren">&#x0028;</span>string-set! <span class="sexp-paren">&#x0028;</span>f<span class="sexp-paren">&#x0029;</span> 5 <span class="char">#\?</span><span class="sexp-paren">&#x0029;</span>   &rarr; <span class="exception">range exception</span>
+<span class="sexp-paren">&#x0028;</span>string-set! <span class="sexp-paren">&#x0028;</span>f<span class="sexp-paren">&#x0029;</span> 1.1 <span class="char">#\?</span><span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">type exception</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(string-set! (symbol-&gt;string 'immutable) 0 <span class="char">#\?</span>) &rarr; <i class="i">type exception</i>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-set! <span class="sexp-paren">&#x0028;</span>symbol-&gt;string <span class="sexp-paren">&#x0027;</span>immutable<span class="sexp-paren">&#x0029;</span> 0 <span class="char">#\?</span><span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">type exception</span>
 </pre></div>
 
 <div class="example lisp">
-<pre class="lisp-preformatted">(<span class="syntax">define</span> (g) <span class="string">"***"</span>)
-(string-set! (g) 0 <span class="char">#\?</span>) <span class="codecomment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</span>
-(g) &rArr; <span class="ok">"?**"</span>             <span class="codecomment">;; current Gambit behavior </span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> <span class="sexp-paren">&#x0028;</span>g<span class="sexp-paren">&#x0029;</span> <span class="string">"***"</span><span class="sexp-paren">&#x0029;</span>
+<span class="sexp-paren">&#x0028;</span>string-set! <span class="sexp-paren">&#x0028;</span>g<span class="sexp-paren">&#x0029;</span> 0 <span class="char">#\?</span><span class="sexp-paren">&#x0029;</span> <span class="code-comment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</span>
+<span class="sexp-paren">&#x0028;</span>g<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"?**"</span>             <span class="code-comment">;; current Gambit behavior </span>
 </pre></div>
 </dd></dl>
 
@@ -1744,7 +1785,7 @@ Next: <a href="#Type-Index" accesskey="n" rel="next">Type Index</a>, Previous: <
 <tr><td></td><td class="printindex-index-entry">pairs</td><td></td></tr>
 <tr><td></td><td class="printindex-index-entry index-entry-level-1"><a href="#index-pairs-dotted-pairs">dotted pairs</a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
 <tr><td></td><td class="printindex-index-entry index-entry-level-1"><a href="#index-pairs-improper-lists">improper lists</a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
-<tr><td></td><td class="printindex-index-entry index-entry-level-1"><a href="#index-pairs-pair-type"><i class="i">pair</i> type</a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
+<tr><td></td><td class="printindex-index-entry index-entry-level-1"><a href="#index-pairs-pair-type"><i class="slanted">pair</i> type</a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-proper-list">proper list</a></td><td class="printindex-index-section"><a href="#Pair-and-list-jargon">Pair and list jargon</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="General-Index_cp_letter-R">R</th></tr>

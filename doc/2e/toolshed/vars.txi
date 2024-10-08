@@ -13,8 +13,6 @@
 
 @set RNRS @inlinefmtifelse{info,@acronym{RNRS},@inlinefmtifelse{plaintext,@acronym{RNRS},@acronym{R@sup{n}RS}}}
 
-@set void @r{@i{void}}
-
 @set apache @url{https://www.apache.org/licenses/, Apache License@comma{} version 2.0}
 
 @set lgpl @url{https://www.gnu.org/licenses/,GNU Lesser General Public License@comma{} version 2.1}

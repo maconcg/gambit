@@ -39,19 +39,16 @@ syntax-rules
 unless
 when'
 
-printf '%s\n' '/^@lisp$/,/^@end lisp$/ {'
-
 # We only want to colorize the text to the left of @ok/@exception.
 # Store all text to the right of "@ok{" in the hold space, then use a
 # substitution to remove that text from the pattern space.
-for macro in ok exception; do
-    printf '    %s\n' "/@$macro{/ {
+printf '%s\n' '/^@lisp$/,/^@end lisp$/ {
+    /@ok{/ {
         h
         x
-        s/^.*@$macro{//
+        s/^.*@ok{//
         x
-    }"
-done
+    }'
 
 # Wrap each character in @char{}.
 printf '%s\n\n' '    /#\\/ {
@@ -62,6 +59,12 @@ printf '%s\n\n' '    /#\\/ {
         s/#\\\(x[[:xdigit:]]\{1,\}\)$/@char{\1}/g
         s/#\\\(x[[:xdigit:]]\{1,\}\)\([])[:blank:]]\)/@char{\1}\2/g
     }'
+
+# Wrap each #!sharp identifier in @sharp{}.
+for s in eof key optional rest void; do
+    printf '%s\n%s\n' "s/^#!$s/@sharp{@hashchar{}@U{0021}$s}/" \
+           "s/\(['([:blank:]]\)#!$s/\1@sharp{@hashchar{}@U{0021}$s}/g"
+done
 
 # Wrap each special syntactic form in @syntax{}.
 for form in $syntax; do
@@ -76,7 +79,25 @@ for form in $syntax; do
 done
 
 # Wrap each "string" in @string{}.
-printf '    %s\n\n' 's/"\([^"]*\)"/@string{\1}/g'
+printf '    %s\n\n' \
+       's/\\"/@backslashchar{}@U{0022}/g' \
+       's/"\([^"]*\)"/@string{\1}/g'
+
+printf '    %s\n' \
+       's/^#u8([[:blank:]]*)/@hashchar{}u8@U{0028}@U{0029}/g' \
+       's/^#([[:blank:]]*)/@hashchar{}@U{0028}@U{0029}/g' \
+       's/^([[:blank:]]*)/@U{0028}@U{0029}/g' \
+       "s/\([,\`'[:blank:]]\)#u8([[:blank:]]*)/\1@hashchar{}u8@U{0028}@U{0029}/g" \
+       "s/\([,\`'[:blank:]]\)#([[:blank:]]*)/\1@hashchar{}@U{0028}@U{0029}/g" \
+       "s/\([,\`'[:blank:]]\)([[:blank:]]*)/\1@U{0028}@U{0029}/g" \
+       "s/'/@paren{@U{0027}}/g" \
+       's/#u8(/@paren{@hashchar{}u8@U{0028}}/g' \
+       's/#(/@paren{@hashchar{}@U{0028}}/g' \
+       's/(/@paren{@U{0028}}/g' \
+       's/)/@paren{@U{0029}}/g' \
+       's/`/@paren{@U{0060}}/g' \
+       's/,/@paren{@comma{}}/g' \
+       's/@atchar{}/@paren{@atchar{}}/g'
 
 # Add back the part we've been keeping in the hold space.
 printf '    %s\n' '/@ok{/ {

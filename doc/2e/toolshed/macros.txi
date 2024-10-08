@@ -31,14 +31,12 @@
 @end macro
 
 @macro exception {kind}
-@arrow{} @i{\kind\ exception}
+@arrow{} @inlinefmtifelse{html,@inlineraw{html,<span class="exception">\kind\ exception</span>},\kind\ exception}
 @end macro
 
 @macro ok {val}
 @result{} @inlinefmtifelse{html,@inlineraw{html,<span class="ok">\val\</span>},\val\}
 @end macro
-
-@alias aside = slanted
 
 @rmacro opt {arg}
 @inlinefmtifelse{html,@inlineraw{html,<span class="bracket">[</span>}\arg\@inlineraw{html,<span class="bracket">]</span>},[\arg\]}
@@ -61,5 +59,17 @@
 @end macro
 
 @macro codecomment {cmt}
-@inlinefmtifelse{html,@inlineraw{html,<span class="codecomment">\cmt\</span>},\cmt\}
+@inlinefmtifelse{html,@inlineraw{html,<span class="code-comment">\cmt\</span>},\cmt\}
+@end macro
+
+@macro paren {p}
+@inlinefmtifelse{html,@inlineraw{html,<span class="sexp-paren">\p\</span>},\p\}
+@end macro
+
+@macro problem {p}
+@arrow{} @inlinefmtifelse{html,@inlineraw{html,<span class="problem">\p\</span>},\p\}
+@end macro
+
+@macro sharp {s}
+@inlinefmtifelse{html,@inlineraw{html,<span class="sharp">\s\</span>},\s\}
 @end macro
