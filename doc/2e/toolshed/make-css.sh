@@ -66,7 +66,7 @@ ok="$mo_slate"
 problem="$mo_bg_prominent_warning"
 sexp_paren="$mo_fg_dim"
 sharp="$mo_red_faint"
-string="$mo_green_cooler"
+string="$mo_green"
 syntax="$mo_magenta_cooler"
 
 substitute
@@ -98,7 +98,7 @@ ok="$mv_slate"
 problem="$mv_bg_prominent_warning"
 sexp_paren="$mv_fg_dim"
 sharp="$mv_red_faint"
-string="$mv_green_cooler"
+string="$mv_green"
 syntax="$mv_magenta_cooler"
 
 echo
