@@ -1,15 +1,19 @@
 default: info html txt
 
-.PHONY: clean default html info txt html-modules-pristine               \
- html-modules-parens-only html-modules-color-only html-modules          \
+.PHONY: clean clean-intermediate default html info txt html-modules-pristine    \
+ html-modules-parens-only html-modules-color-only html-modules                  \
  html-monolith-parens-only html-monolith-color-only html-monolith
 
-clean:
-	rm -fr gambit-html/ gambit-html-pristine/ gambit-html-parens-only/ \
-		gambit-html-color-only/ gambit.html gambit-pristine.html   \
-		gambit-parens-only.html gambit-color-only.html gambit.txt  \
-		gambit.info gambit.incolor.txi procedures/*.incolor.txi    \
-		toolshed/gambit.css toolshed/colorize-examples.sed
+clean: clean-intermediate
+	rm -fr gambit-html/ gambit-html-pristine/ gambit-html-parens-only/
+	rm -f gambit.html gambit-pristine.html gambit-parens-only.html  \
+		gambit.txt gambit.info
+
+clean-intermediate:
+	rm -fr gambit-html-color-only/
+	rm -f gambit-color-only.html gambit.incolor.txi         \
+		procedures/*.incolor.txi toolshed/gambit.css    \
+		toolshed/colorize-examples.sed
 
 gambit.txi: body/* procedures/*.txi toolshed/*.t*
 	touch $@
