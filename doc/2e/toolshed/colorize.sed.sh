@@ -44,6 +44,7 @@ printf '    %s\n\n' \
        's/\\"/@backslashchar{}@U{0022}/g' \
        's/"\([^"]*\)"/@string{\1}/g'
 
+# Dim most parens/similar syntactic tokens.
 printf '    %s\n' \
        's/^#u8(\([[:blank:]]*\))/@hashchar{}u8@U{0028}\1@U{0029}/g' \
        's/^#(\([[:blank:]]*\))/@hashchar{}@U{0028}\1@U{0029}/g' \
