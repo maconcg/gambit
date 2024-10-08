@@ -6,20 +6,21 @@ html-phonies := html html-modules html-monolith html-pristine-modules \
  html-css-parens-modules html-css-parens-monolith html-css-color-modules \
  html-css-color-monolith
 
-.PHONY: default all all-html clean clean-intermediate info txt ${html-phonies}
+.PHONY: default all all-html html-all clean clean-intermediate mostlyclean \
+        info txt ${html-phonies}
 
 all: info all-html txt
 
-all-html: ${html-phonies}
+all-html html-all: ${html-phonies}
 
 clean: clean-intermediate
 	rm -fr html/ html-parens/ html-css/ html-css-parens/
 	rm -f gambit.info gambit.txt gambit.html gambit-parens.html \
 		gambit-css.html gambit-css-parens.html
 
-clean-intermediate:
+mostlyclean clean-intermediate:
 	rm -fr html-pristine/ html-css-color/ html-css-color-parens/ procedures/c
-	rm -f gambit-pristine.html gambit-css-color.html \
+	rm -f gambit.incolor.txi gambit-pristine.html gambit-css-color.html \
 		gambit-css-color-parens.html toolshed/gambit.css \
 		toolshed/colorize.sed
 
