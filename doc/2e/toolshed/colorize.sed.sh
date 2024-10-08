@@ -1,43 +1,4 @@
-readonly syntax='
-and
-begin
-case
-case-lambda
-cond
-cond-expand
-define
-define-library
-define-record-type
-define-syntax
-define-values
-delay
-delay-force
-do
-error
-guard
-if
-import
-include
-include-ci
-lambda
-let
-let*
-let*-values
-let-syntax
-let-values
-letrec
-letrec*
-letrec-syntax
-load
-or
-parameterize
-quasiquote
-quote
-set!
-syntax-error
-syntax-rules
-unless
-when'
+readonly syntax="$(<toolshed/keywords/syntax)"
 
 # We only want to colorize the text to the left of @ok/@exception.
 # Store all text to the right of "@ok{" in the hold space, then use a
@@ -84,12 +45,12 @@ printf '    %s\n\n' \
        's/"\([^"]*\)"/@string{\1}/g'
 
 printf '    %s\n' \
-       's/^#u8([[:blank:]]*)/@hashchar{}u8@U{0028}@U{0029}/g' \
-       's/^#([[:blank:]]*)/@hashchar{}@U{0028}@U{0029}/g' \
-       's/^([[:blank:]]*)/@U{0028}@U{0029}/g' \
-       "s/\([,\`'[:blank:]]\)#u8([[:blank:]]*)/\1@hashchar{}u8@U{0028}@U{0029}/g" \
-       "s/\([,\`'[:blank:]]\)#([[:blank:]]*)/\1@hashchar{}@U{0028}@U{0029}/g" \
-       "s/\([,\`'[:blank:]]\)([[:blank:]]*)/\1@U{0028}@U{0029}/g" \
+       's/^#u8(\([[:blank:]]*\))/@hashchar{}u8@U{0028}\1@U{0029}/g' \
+       's/^#(\([[:blank:]]*\))/@hashchar{}@U{0028}\1@U{0029}/g' \
+       's/^(\([[:blank:]]*\))/@U{0028}\1@U{0029}/g' \
+       "s/\([,\`'([:blank:][]\)#u8(\([[:blank:]]*\))/\1@hashchar{}u8@U{0028}\2@U{0029}/g" \
+       "s/\([,\`'([:blank:][]\)#(\([[:blank:]]*\))/\1@hashchar{}@U{0028}\2@U{0029}/g" \
+       "s/\([,\`'([:blank:][]\)(\([[:blank:]]*\))/\1@U{0028}\2@U{0029}/g" \
        "s/'/@paren{@U{0027}}/g" \
        's/#u8(/@paren{@hashchar{}u8@U{0028}}/g' \
        's/#(/@paren{@hashchar{}@U{0028}}/g' \

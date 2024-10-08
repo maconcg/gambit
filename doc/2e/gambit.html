@@ -770,16 +770,14 @@ Previous: <a href="#Pair-and-list-jargon" accesskey="p" rel="prev">Pair and list
 <dt class="deftypefn" id="index-pair_003f"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">pair?</strong> <code class="def-code-arguments">obj</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-pair_003f"> &para;</a></span></dt>
 <dd><p>Returns <code class="code">#t</code> if <var class="var">obj</var> is a pair.
 </p>
-<p>&lsquo;(a ,(+ 1 2) ,@(map abs &rsquo;(4 -5 6)) b)  &rArr; <span class="ok">(a 3 4 5 6 b)</span>
-&lsquo;(( foo ,(- 10 3)) ,@(cdr &rsquo;(c)) . ,(car &rsquo;(cons))) &rArr; <span class="ok">((foo 7) . cons)</span>
-&lsquo;#(10 5 ,(sqrt 4) ,@(map sqrt &rsquo;(16 9)) 8) &rArr; <span class="ok">#(10 5 2 4 3 8)</span>
-</p>
+
 <div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>pair? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a . b<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
-<span class="sexp-paren">&#x0028;</span>pair? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
-<span class="sexp-paren">&#x0028;</span>pair? <span class="sexp-paren">&#x0027;</span>&#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span>      &rArr; <span class="ok">#f</span>
-<span class="sexp-paren">&#x0028;</span>pair? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0029;</span> &#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
-<span class="sexp-paren">&#x0028;</span>pair? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">#&#x0028;</span>a b<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#f</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>pair? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a . b<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>pair? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>pair? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>&#x0028;&#x0029; &#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>pair? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>#&#x0028;&#x0029; &#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>pair? <span class="sexp-paren">&#x0027;</span>&#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span>       &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>pair? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">#&#x0028;</span>a b<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>   &rArr; <span class="ok">#f</span>
 </pre></div>
 </dd></dl>
 
@@ -953,6 +951,7 @@ made to take the cdr of the empty list, an exception that satisfies
 </p>
 <div class="example lisp">
 <pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>null? <span class="sexp-paren">&#x0027;</span>&#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span>    &rArr; <span class="ok">#t</span>
+<span class="sexp-paren">&#x0028;</span>null? <span class="sexp-paren">&#x0027;</span>&#x0028;  &#x0029;<span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#t</span>
 <span class="sexp-paren">&#x0028;</span>null? <span class="sexp-paren">&#x0028;</span>list<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
 <span class="sexp-paren">&#x0028;</span>null? <span class="char">#\null</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
 <span class="sexp-paren">&#x0028;</span>null? <span class="sharp">#&#x0021;eof</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#f</span>
@@ -1548,10 +1547,10 @@ that language-sensitive mappings and foldings are not used.
 of the characters in the given <var class="var">strings</var>.
 </p>
 <div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-append<span class="sexp-paren">&#x0029;</span>                    &rArr; <span class="ok">""</span>
-<span class="sexp-paren">&#x0028;</span>string-append <span class="string">""</span><span class="sexp-paren">&#x0029;</span>                 &rArr; <span class="ok">""</span>
-<span class="sexp-paren">&#x0028;</span>string-append <span class="string">"hello"</span> <span class="string">"world"</span><span class="sexp-paren">&#x0029;</span>    &rArr; <span class="ok">"helloworld"</span>
-<span class="sexp-paren">&#x0028;</span>string-append <span class="string">"hello"</span> <span class="string">""</span> <span class="string">"world"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"helloworld"</span>
+<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-append<span class="sexp-paren">&#x0029;</span>                     &rArr; <span class="ok">""</span>
+<span class="sexp-paren">&#x0028;</span>string-append <span class="string">""</span><span class="sexp-paren">&#x0029;</span>                  &rArr; <span class="ok">""</span>
+<span class="sexp-paren">&#x0028;</span>string-append <span class="string">"hello"</span> <span class="string">"world"</span><span class="sexp-paren">&#x0029;</span>     &rArr; <span class="ok">"helloworld"</span>
+<span class="sexp-paren">&#x0028;</span>string-append <span class="string">"hello"</span> <span class="string">""</span> <span class="string">"world"</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">"helloworld"</span>
 <span class="sexp-paren">&#x0028;</span>string-append <span class="string">"hello "</span> <span class="string">"world"</span><span class="sexp-paren">&#x0029;</span>   &rArr; <span class="ok">"hello  world"</span>
 <span class="sexp-paren">&#x0028;</span>string-append <span class="string">"hello"</span> <span class="string">""</span> <span class="string">"world"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"hello world"</span>
 </pre></div>

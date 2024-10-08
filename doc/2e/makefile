@@ -1,19 +1,27 @@
-default: info html txt
+default: info html-monolith txt
 
-.PHONY: clean clean-intermediate default html info txt html-modules-pristine    \
- html-modules-parens-only html-modules-color-only html-modules                  \
- html-monolith-parens-only html-monolith-color-only html-monolith
+html-phonies := html html-modules html-monolith html-pristine-modules \
+ html-pristine-monolith html-css-modules html-css-monolith html-parens-modules \
+ html-parens-monolith html-css-modules html-css-monolith \
+ html-css-parens-modules html-css-parens-monolith html-css-color-modules \
+ html-css-color-monolith
+
+.PHONY: default all all-html clean clean-intermediate info txt ${html-phonies}
+
+all: info all-html txt
+
+all-html: ${html-phonies}
 
 clean: clean-intermediate
-	rm -fr gambit-html/ gambit-html-pristine/ gambit-html-parens-only/
-	rm -f gambit.html gambit-pristine.html gambit-parens-only.html  \
-		gambit.txt gambit.info
+	rm -fr html/ html-parens/ html-css/ html-css-parens/
+	rm -f gambit.info gambit.txt gambit.html gambit-parens.html \
+		gambit-css.html gambit-css-parens.html
 
 clean-intermediate:
-	rm -fr gambit-html-color-only/
-	rm -f gambit-color-only.html gambit.incolor.txi         \
-		procedures/*.incolor.txi toolshed/gambit.css    \
-		toolshed/colorize-examples.sed
+	rm -fr html-pristine/ html-css-color/ html-css-color-parens/ procedures/c
+	rm -f gambit-pristine.html gambit-css-color.html \
+		gambit-css-color-parens.html toolshed/gambit.css \
+		toolshed/colorize.sed
 
 gambit.txi: body/* procedures/*.txi toolshed/*.t*
 	touch $@
@@ -28,67 +36,106 @@ gambit.txt: gambit.txi
 
 html: html-monolith
 html-monolith: gambit.html
-gambit.html: gambit-color-only.html toolshed/parenthesize-defs.sed
-	sed -f toolshed/parenthesize-defs.sed gambit-color-only.html > $@
+gambit.html: gambit-css-color-parens.html
+	ln -f gambit-css-color-parens.html $@
 
-gambit-color-only.html: gambit.incolor.txi toolshed/gambit.css
-	texi2any -o $@ --html --css-include=toolshed/gambit.css --no-split \
-		gambit.incolor.txi
+html-modules: html/.stamp
+html/.stamp: html-css-color-parens/.stamp
+	test -d html/ || mkdir html/
+	for f in html-css-color-parens/*.html html-css-color/*.css; do\
+		ln -f "$$f" html/"$${f#*/}";\
+	done
+	touch $@
 
-gambit-parens-only.html: gambit-pristine.html toolshed/parenthesize-defs.sed
+html-pristine-monolith: gambit-pristine.html
+gambit-pristine.html: gambit.txi toolshed/gambit.css
+	texi2any -o $@ --html --no-split gambit.txi
+
+html-parens-monolith: gambit-parens.html
+gambit-parens.html: gambit-pristine.html toolshed/parenthesize-defs.sed
 	sed -f toolshed/parenthesize-defs.sed gambit-pristine.html > $@
 
-gambit-pristine.html: gambit.txi toolshed/gambit.css
+html-css-monolith: gambit-css.html
+gambit-css.html: gambit.txi toolshed/gambit.css
 	texi2any -o $@ --html --css-include=toolshed/gambit.css --no-split \
 		gambit.txi
 
-gambit.incolor.txi: gambit.txi procedures/pairs-lists.incolor.txi \
-                    procedures/strings.incolor.txi
-	sed '/^@include  *procedures\//s/\.txi$$/.incolor.txi/' gambit.txi > $@
+html-css-parens-monolith: gambit-css-parens.html
+gambit-css-parens.html: gambit-css.html toolshed/parenthesize-defs.sed
+	sed -f toolshed/parenthesize-defs.sed gambit-css.html > $@
 
-toolshed/colorize-examples.sed: toolshed/colorize-examples.sed.sh
-	sh -efu toolshed/colorize-examples.sed.sh > $@
+html-css-color-monolith: gambit-css-color.html
+gambit-css-color.html: gambit.incolor.txi toolshed/gambit.css
+	texi2any -o $@ --html --css-include=toolshed/gambit.css --no-split \
+		gambit.incolor.txi
 
-procedures/strings.incolor.txi: procedures/strings.txi \
-                                toolshed/colorize-examples.sed
-	sed -f toolshed/colorize-examples.sed procedures/strings.txi > $@
+html-css-color-parens-monolith: gambit-css-color-parens.html
+gambit-css-color-parens.html: gambit-css-color.html toolshed/parenthesize-defs.sed
+	sed -f toolshed/parenthesize-defs.sed gambit-css-color.html > $@
 
-procedures/pairs-lists.incolor.txi: procedures/pairs-lists.txi \
-                                    toolshed/colorize-examples.sed
-	sed -f toolshed/colorize-examples.sed procedures/pairs-lists.txi > $@
+gambit.incolor.txi: gambit.txi procedures/c/.stamp
+	sed '/^@include/s/ procedures\// procedures\/c\//' gambit.txi > $@
+
+toolshed/colorize.sed: toolshed/colorize.sed.sh toolshed/keywords/syntax
+	sh -efu toolshed/colorize.sed.sh > $@
+
+procedures/c/.stamp: procedures/c/pairs-lists.txi \
+                     procedures/c/strings.txi
+	touch $@
+
+procedures/c/pairs-lists.txi: procedures/pairs-lists.txi toolshed/colorize.sed
+	test -d procedures/c || mkdir procedures/c
+	sed -f toolshed/colorize.sed procedures/pairs-lists.txi > $@
+
+procedures/c/strings.txi: procedures/strings.txi toolshed/colorize.sed
+	test -d procedures/c || mkdir procedures/c
+	sed -f toolshed/colorize.sed procedures/strings.txi > $@
 
 toolshed/gambit.css: toolshed/gambit.css.in toolshed/make-css.sh
 	sh -efu toolshed/make-css.sh toolshed/gambit.css.in > $@
 
-html-modules-pristine: gambit-html-pristine/.stamp
-
-gambit-html-pristine/.stamp: gambit.txi toolshed/gambit.css
-	texi2any -o gambit-html-pristine \
-		--html --css-include=toolshed/gambit.css gambit.txi
+html-pristine-modules: html-pristine/.stamp
+html-pristine/.stamp: gambit.txi
+	texi2any -o html-pristine --html gambit.txi
 	touch $@
 
-html-modules-color-only: gambit-html-color-only/.stamp
-gambit-html-color-only/.stamp: gambit.incolor.txi toolshed/gambit.css
-	texi2any -o gambit-html-color-only \
-		--html --css-include=toolshed/gambit.css gambit.incolor.txi
-	touch $@
-
-html-modules-parens-only: gambit-html-parens-only/.stamp
-gambit-html-parens-only/.stamp: gambit-html-pristine/.stamp \
-                                toolshed/parenthesize-defs.sed
-	mkdir -p gambit-html-parens-only
-	for h in gambit-html-pristine/*.html; do\
+html-parens-modules: html-parens/.stamp
+html-parens/.stamp: html-pristine/.stamp toolshed/parenthesize-defs.sed
+	test -d html-parens/ || mkdir html-parens/
+	for h in html-pristine/*.html; do\
 		sed -f toolshed/parenthesize-defs.sed "$$h"\
-		> gambit-html-parens-only/"$${h#*/}";\
+			> html-parens/"$${h#*/}";\
 	done
 	touch $@
 
-html-modules: gambit-html/.stamp
-gambit-html/.stamp: gambit-html-color-only/.stamp \
-                    toolshed/parenthesize-defs.sed
-	mkdir -p gambit-html
-	for h in gambit-html-color-only/*.html; do\
+html-css-modules: html-css/.stamp
+html-css/.stamp: gambit.txi toolshed/gambit.css
+	texi2any -o html-css --html --css-ref=gambit.css gambit.txi
+	cp toolshed/gambit.css html-css/gambit.css
+	touch $@
+
+html-css-color-modules: html-css-color/.stamp
+html-css-color/.stamp: gambit.incolor.txi toolshed/gambit.css
+	texi2any -o html-css-color --html --css-ref=gambit.css gambit.incolor.txi
+	cp toolshed/gambit.css html-css-color/gambit.css
+	touch $@
+
+html-css-parens-modules: html-css-parens/.stamp
+html-css-parens/.stamp: html-css/.stamp toolshed/parenthesize-defs.sed
+	test -d html-css-parens/ || mkdir html-css-parens/
+	for h in html-css/*.html; do\
 		sed -f toolshed/parenthesize-defs.sed "$$h"\
-			> gambit-html/"$${h#*/}";\
+			> html-css-parens/"$${h#*/}";\
 	done
+	cp html-css/*.css html-css-parens/
+	touch $@
+
+html-css-color-parens-modules: html-css-color-parens/.stamp
+html-css-color-parens/.stamp: html-css-color/.stamp toolshed/parenthesize-defs.sed
+	test -d html-css-color-parens/ || mkdir html-css-color-parens/
+	for h in html-css-color/*.html; do\
+		sed -f toolshed/parenthesize-defs.sed "$$h"\
+			> html-css-color-parens/"$${h#*/}";\
+	done
+	cp html-css-color/*.css html-css-color-parens/
 	touch $@

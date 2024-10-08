@@ -7,16 +7,17 @@
 Returns @code{#t} if @var{obj} is a pair.
 
 @c Once a section exists, move these examples to quasiquote.
-`(a ,(+ 1 2) ,@atchar{}(map abs '(4 -5 6)) b)  @ok{(a 3 4 5 6 b)}
-`(( foo ,(- 10 3)) ,@atchar{}(cdr '(c)) . ,(car '(cons))) @ok{((foo 7) . cons)}
-`#(10 5 ,(sqrt 4) ,@atchar{}(map sqrt '(16 9)) 8) @ok{#(10 5 2 4 3 8)}
+@c `(a ,(+ 1 2) ,@atchar{}(map abs '(4 -5 6)) b)  @ok{(a 3 4 5 6 b)}
+@c `(( foo ,(- 10 3)) ,@atchar{}(cdr '(c)) . ,(car '(cons))) @ok{((foo 7) . cons)}
+@c `#(10 5 ,(sqrt 4) ,@atchar{}(map sqrt '(16 9)) 8) @ok{#(10 5 2 4 3 8)}
 
 @lisp
-(pair? '(a . b)) @ok{#t}
-(pair? '(a b c)) @ok{#t}
-(pair? '())      @ok{#f}
-(pair? '(() ())) @ok{#f}
-(pair? '#(a b))  @ok{#f}
+(pair? '(a . b))  @ok{#t}
+(pair? '(a b c))  @ok{#t}
+(pair? '(() ()))  @ok{#t}
+(pair? '(#() ())) @ok{#t}
+(pair? '())       @ok{#f}
+(pair? '#(a b))   @ok{#f}
 @end lisp
 @end deftypefn
 
@@ -183,6 +184,7 @@ Returns @code{#t} if @var{obj} is the empty list.
 
 @lisp
 (null? '())    @ok{#t}
+(null? '(  ))  @ok{#t}
 (null? (list)) @ok{#t}
 (null? #\null) @ok{#f}
 (null? #!eof)  @ok{#f}
