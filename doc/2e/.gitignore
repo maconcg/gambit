@@ -10,6 +10,7 @@ procedures/c/
 toolshed/colorize.sed
 toolshed/gambit.css
 toolshed/today.txi
+GNUmakefile
 makefile
 gambit-*.html
 gambit-spans.txi
