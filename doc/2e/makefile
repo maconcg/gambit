@@ -26,7 +26,7 @@ clean: clean-intermediate
 		gambit-css.html gambit-css-parens.html
 
 mostlyclean clean-intermediate:
-	rm -fr html-pristine/ html-css-color/ html-css-color-parens/ procedures/c
+	rm -fr html-pristine/ html-css-color/ html-css-color-parens/ procedures/c/
 	rm -f gambit.incolor.txi gambit-pristine.html gambit-css-color.html \
 		gambit-css-color-parens.html toolshed/gambit.css \
 		toolshed/colorize.sed
