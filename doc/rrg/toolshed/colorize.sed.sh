@@ -2,8 +2,8 @@
 readonly syntax="$(<toolshed/data/syntax-words)"
 
 # We only want to colorize the text to the left of @ok/@exception.
-# Store all text to the right of "@ok{" in the hold space, then use a
-# substitution to remove that text from the pattern space.
+# Store all text to the right of "@ok{" in the hold space; at the end,
+# use a substitution to remove that text from the pattern space.
 printf '%s\n' '/^@lisp$/,/^@end lisp$/ {
     /@ok{/ {
         h
