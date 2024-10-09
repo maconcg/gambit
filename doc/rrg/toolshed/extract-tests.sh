@@ -6,12 +6,24 @@ while read -r line; do
         @deftypefn[[:blank:]]*)
             count=0
             line=${line#@deftypefn[[:blank:]]}
-            line=${line##[[:blank:]]}
+            trim=${line#[[:blank:]]}
+            while [ ${#line} -gt ${#trim} ]; do
+                line=$trim
+                trim=${trim#[[:blank:]]}
+            done
             lib=${line%%[[:blank:]]*}
             name=${line#$lib}
-            name=${name##[[:blank:]]}
-            name=${name##@/}
-            name=${name##[[:blank:]]}
+            trim=${name#[[:blank:]]}
+            while [ ${#name} -gt ${#trim} ]; do
+                name=$trim
+                trim=${trim#[[:blank:]]}
+            done
+            name=${name#@/}
+            trim=${name#[[:blank:]]}
+            while [ ${#name} -gt ${#trim} ]; do
+                name=$trim
+                trim=${trim#[[:blank:]]}
+            done
             name=${name%%[[:blank:]]*}
             test -d "$testdir"/"${lib:?}" || mkdir -p "$testdir"/"$lib" ;;
         @lisp)
