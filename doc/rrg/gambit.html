@@ -3,8 +3,8 @@
 <!-- Created by GNU Texinfo 7.1.1, https://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<!-- This is the Gambit Scheme manual, revised edition.  It documents
-Gambit v4.9.5 (October 08, 2024).
+<!-- This is the Revised report on Gambit (built October 08, 2024).
+It documents Gambit v4.9.5.
 
 Copyright © 1994-2022 Marc Feeley et al.
 
@@ -14,10 +14,10 @@ the https://www.apache.org/licenses/ (Apache License, version
 License, version 2.1).  You may choose which of these two licenses
 to abide by.
  -->
-<title>Gambit Scheme, revised edition</title>
+<title>Gambit manual</title>
 
-<meta name="description" content="Gambit Scheme, revised edition">
-<meta name="keywords" content="Gambit Scheme, revised edition">
+<meta name="description" content="Gambit manual">
+<meta name="keywords" content="Gambit manual">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="texi2any">
@@ -57,6 +57,10 @@ a:visited {
 
 hr {
     color: #9f9f9f;
+}
+
+span.todo {
+    background-color: #ff8f88;
 }
 
 .chapter-level-extent pre {
@@ -159,6 +163,10 @@ dl.first-deftypevr {
     
     hr {
         color: #646464;
+    }
+    
+    span.todo {
+        background-color: #9d1f1f;
     }
     
     .chapter-level-extent pre {
@@ -338,6 +346,7 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
 
 
 
+
 <div class="top-level-extent" id="Top">
 <div class="nav-panel">
 <p>
@@ -352,8 +361,8 @@ Scheme programming language.
 visit the <a class="url" href="https://gambitscheme.org">Gambit home page</a>.  Please report
 issues via <a class="url" href="https://github.com/gambit/gambit">the Gambit repository on GitHub</a>.
 </p>
-<p>This is the Gambit Scheme manual, revised edition.  It documents
-Gambit v4.9.5 (October 08, 2024).
+<p>This is the Revised report on Gambit (built October 08, 2024).
+It documents Gambit v4.9.5.
 </p>
 <p>Copyright &copy; 1994&ndash;2022 Marc Feeley et al.
 </p>
@@ -378,10 +387,6 @@ to abide by.
     <li><a id="toc-Overview-of-pairs-and-lists-1" href="#Overview-of-pairs-and-lists">2.1 Overview of pairs and lists</a></li>
     <li><a id="toc-Pair-and-list-jargon-1" href="#Pair-and-list-jargon">2.2 Pair and list jargon</a></li>
     <li><a id="toc-Pair-and-list-procedures-1" href="#Pair-and-list-procedures">2.3 Pair and list procedures</a></li>
-  </ul></li>
-  <li><a id="toc-Strings-1" href="#Strings">3 Strings</a>
-  <ul class="toc-numbered-mark">
-    <li><a id="toc-String-procedures-1" href="#String-procedures">3.1 String procedures</a></li>
   </ul></li>
   <li><a id="toc-General-Index-1" href="#General-Index" rel="index">General Index</a></li>
   <li><a id="toc-Type-Index-1" href="#Type-Index" rel="index">Type Index</a></li>
@@ -424,9 +429,9 @@ languages include C and JavaScript.
 </p>
 <p>The C target is the most mature, generating efficient C code that lets
 Gambit run on any platform for which a C compiler is available.  With
-appropriate declarations in the Scheme source code (reference gsc
-declarations here), the resulting programs run roughly as fast as
-functionally equivalent programs built from hand-written C.
+appropriate declarations in the Scheme source code (<span class="todo"><small class="sc">TODO</small>:</span> reference
+goes here), the resulting programs run roughly as fast as functionally
+equivalent programs built from hand-written C.
 </p>
 <p>Most of the Gambit system, including <code class="t">gsi</code> and <code class="t">gsc</code>
 itself, is written in Scheme and compiled using <code class="t">gsc</code>.
@@ -436,7 +441,7 @@ itself, is written in Scheme and compiled using <code class="t">gsc</code>.
 <div class="chapter-level-extent" id="Pairs-and-lists">
 <div class="nav-panel">
 <p>
-Next: <a href="#Strings" accesskey="n" rel="next">Strings</a>, Previous: <a href="#Introduction" accesskey="p" rel="prev">Introduction</a>, Up: <a href="#Top" accesskey="u" rel="up">Gambit</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="#General-Index" accesskey="n" rel="next">General Index</a>, Previous: <a href="#Introduction" accesskey="p" rel="prev">Introduction</a>, Up: <a href="#Top" accesskey="u" rel="up">Gambit</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <h2 class="chapter" id="Pairs-and-lists-1"><span>2 Pairs and lists<a class="copiable-link" href="#Pairs-and-lists-1"> &para;</a></span></h2>
 <ul class="mini-toc">
@@ -468,8 +473,9 @@ Next: <a href="#Pair-and-list-procedures" accesskey="n" rel="next">Pair and list
 <dt class="deftp" id="index-empty-list"><span class="category-def"><abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> type: </span><span><strong class="def-name">empty list</strong><a class="copiable-link" href="#index-empty-list"> &para;</a></span></dt>
 <dd><p>The empty list is a unique object whose external representation is
 &lsquo;<samp class="samp">()</samp>&rsquo;.  Because the empty list is a unique object, it can never be
-newly allocated (reference goes here).  The predicate <code class="code">null?</code>  may
-be used to determine whether an object is the empty list (see <a class="pxref" href="#Pair-and-list-procedures">Pair and list procedures</a>).
+newly allocated (<span class="todo"><small class="sc">TODO</small>:</span> reference goes here).  The predicate
+<code class="code">null?</code>  may be used to determine whether an object is the empty
+list (see <a class="pxref" href="#Pair-and-list-procedures">Pair and list procedures</a>).
 </p>
 <p>The empty list is a <i class="slanted">list</i>.
 </p></dd></dl>
@@ -574,7 +580,6 @@ Previous: <a href="#Pair-and-list-jargon" accesskey="p" rel="prev">Pair and list
 <dt class="deftypefn" id="index-pair_003f"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">pair?</strong> <code class="def-code-arguments">obj</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-pair_003f"> &para;</a></span></dt>
 <dd><p>Returns <code class="code">#t</code> if <var class="var">obj</var> is a pair.
 </p>
-
 <div class="example lisp">
 <pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>pair? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a . b<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#t</span>
 <span class="sexp-paren">&#x0028;</span>pair? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>a b c<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#t</span>
@@ -764,7 +769,7 @@ made to take the cdr of the empty list, an exception that satisfies
 <span class="sexp-paren">&#x0028;</span>null? 0<span class="sexp-paren">&#x0029;</span>      &rArr; <span class="ok">#f</span>
 <span class="sexp-paren">&#x0028;</span>null? <span class="string">""</span><span class="sexp-paren">&#x0029;</span>     &rArr; <span class="ok">#f</span>
 <span class="sexp-paren">&#x0028;</span>null? #&#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span>    &rArr; <span class="ok">#f</span>
-<span class="sexp-paren">&#x0028;</span>null? #u8&#x0028;&#x0029;<span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#f</span>
+<span class="sexp-paren">&#x0028;</span>null? #u8&#x0028; &#x0029;<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
 </pre></div>
 </dd></dl>
 
@@ -1039,7 +1044,6 @@ return a non-Boolean value.
 
 <div class="example lisp">
 <pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> p <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>a 1<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>b 2<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>c 3<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
-
 <span class="sexp-paren">&#x0028;</span>assq <span class="sexp-paren">&#x0027;</span>a p<span class="sexp-paren">&#x0029;</span>                            &rArr; <span class="ok">(a 1)</span>
 <span class="sexp-paren">&#x0028;</span>assq <span class="sexp-paren">&#x0027;</span>b p<span class="sexp-paren">&#x0029;</span>                            &rArr; <span class="ok">(b 2)</span>
 <span class="sexp-paren">&#x0028;</span>assv <span class="sexp-paren">&#x0027;</span>d p<span class="sexp-paren">&#x0029;</span>                            &rArr; <span class="ok">#f</span>
@@ -1052,7 +1056,6 @@ return a non-Boolean value.
 
 <div class="example lisp">
 <pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> i <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="sexp-paren">&#x0028;</span>a . 1<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>b . 2<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>c . 3<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
-
 <span class="sexp-paren">&#x0028;</span>assq <span class="sexp-paren">&#x0027;</span>b i<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(a . 1)</span>
 <span class="sexp-paren">&#x0028;</span>assv <span class="sexp-paren">&#x0027;</span>c i<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(c . 3)</span>
 <span class="sexp-paren">&#x0028;</span>assq <span class="sexp-paren">&#x0027;</span>d p<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
@@ -1093,7 +1096,6 @@ is returned unchanged.  It is an error if <var class="var">obj</var> is a circul
 <pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> a <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span>1 8 2 8<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>    <span class="code-comment">;; a may be immutable</span>
 <span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> b <span class="sexp-paren">&#x0028;</span>list-copy a<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
 <span class="sexp-paren">&#x0028;</span>set-car! b 3<span class="sexp-paren">&#x0029;</span>           <span class="code-comment">;; b is mutable</span>
-
 b &rArr; <span class="ok">(3 8 2 8)</span>
 a &rArr; <span class="ok">(1 8 2 8)</span>
 </pre></div>
@@ -1127,406 +1129,10 @@ a &rArr; <span class="ok">(1 8 2 8)</span>
 <hr>
 </div>
 </div>
-<div class="chapter-level-extent" id="Strings">
-<div class="nav-panel">
-<p>
-Next: <a href="#General-Index" accesskey="n" rel="next">General Index</a>, Previous: <a href="#Pairs-and-lists" accesskey="p" rel="prev">Pairs and lists</a>, Up: <a href="#Top" accesskey="u" rel="up">Gambit</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
-</div>
-<h2 class="chapter" id="Strings-1"><span>3 Strings<a class="copiable-link" href="#Strings-1"> &para;</a></span></h2>
-<ul class="mini-toc">
-<li><a href="#String-procedures" accesskey="1">String procedures</a></li>
-</ul>
-<hr>
-<div class="section-level-extent" id="String-procedures">
-<div class="nav-panel">
-<p>
-Up: <a href="#Strings" accesskey="u" rel="up">Strings</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
-</div>
-<h3 class="section chapter-level-set-section" id="String-procedures-1"><span>3.1 String procedures<a class="copiable-link" href="#String-procedures-1"> &para;</a></span></h3>
-
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_003f"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">string?</strong> <code class="def-code-arguments">obj</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_003f"> &para;</a></span></dt>
-<dd><p>Returns <code class="code">#t</code> if <var class="var">obj</var> is a string.
-</p>
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string? <span class="string">""</span><span class="sexp-paren">&#x0029;</span>            &rArr; <span class="ok">#t</span>
-<span class="sexp-paren">&#x0028;</span>string? <span class="string">"es\&#x0022;cape"</span><span class="sexp-paren">&#x0029;</span>    &rArr; <span class="ok">#t</span>
-<span class="sexp-paren">&#x0028;</span>string? <span class="string">"\&#x0022;escapes\&#x0022;"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
-<span class="sexp-paren">&#x0028;</span>string? <span class="string">"\x0061;"</span><span class="sexp-paren">&#x0029;</span>     &rArr; <span class="ok">#t</span>
-<span class="sexp-paren">&#x0028;</span>string? <span class="sexp-paren">&#x0028;</span>string<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>      &rArr; <span class="ok">#t</span>
-</pre></div>
-
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string? <span class="char">#\a</span><span class="sexp-paren">&#x0029;</span>                    &rArr; <span class="ok">#f</span>
-<span class="sexp-paren">&#x0028;</span>string? <span class="sexp-paren">&#x0027;</span>string<span class="sexp-paren">&#x0029;</span>                &rArr; <span class="ok">#f</span>
-<span class="sexp-paren">&#x0028;</span>string? <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="char">#\c</span> <span class="char">#\h</span> <span class="char">#\a</span> <span class="char">#\r</span> <span class="char">#\s</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
-<span class="sexp-paren">&#x0028;</span>string? <span class="sexp-paren">#&#x0028;</span><span class="char">#\c</span> <span class="char">#\h</span> <span class="char">#\a</span> <span class="char">#\r</span> <span class="char">#\s</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
-</pre></div>
-</dd></dl>
-
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-make_002dstring"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">make-string</strong> <code class="def-code-arguments">k <span class="bracket">[</span>char<span class="bracket">]</span></code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-make_002dstring"> &para;</a></span></dt>
-<dd><p>Returns a newly allocated string of length <var class="var">k</var>.  In the one-argument
-form, each character is initialized to a default value.  In the
-two-argument form, each character is initialized to <var class="var">char</var>.
-</p>
-<p>The default value used by the one-argument form may change in a future
-version.  Programs that require a specific initialization value should
-use the two-argument form.
-</p>
-<p>If <var class="var">k</var> is not an exact integer, an exception that satisfies
-<code class="code">type-exception?</code> is raised.  If <var class="var">k</var> is a negative exact
-integer, an exception that satisfies <code class="code">range-exception?</code> is raised.
-</p>
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>make-string 0<span class="sexp-paren">&#x0029;</span>                 &rArr; <span class="ok">""</span>
-<span class="sexp-paren">&#x0028;</span>string-length <span class="sexp-paren">&#x0028;</span>make-string 4<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">4</span>
-<span class="sexp-paren">&#x0028;</span>make-string 4 <span class="char">#\g</span><span class="sexp-paren">&#x0029;</span>             &rArr; <span class="ok">"gggg"</span>
-</pre></div>
-
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>make-string 4 <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">type exception</span>
-<span class="sexp-paren">&#x0028;</span>make-string 4.5<span class="sexp-paren">&#x0029;</span>   &rarr; <span class="exception">type exception</span>
-<span class="sexp-paren">&#x0028;</span>make-string -1<span class="sexp-paren">&#x0029;</span>    &rarr; <span class="exception">range exception</span>
-</pre></div>
-</dd></dl>
-
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">string</strong> <code class="def-code-arguments">char&hellip;</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string"> &para;</a></span></dt>
-<dd><p>Returns a newly allocated string whose elements are <var class="var">char</var><small class="enddots">...</small>
-The order of the arguments is preserved.  Analogous to <code class="code">list</code>
-(see <a class="pxref" href="#Pair-and-list-procedures">Pair and list procedures</a>).
-</p>
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string<span class="sexp-paren">&#x0029;</span>                               &rArr; <span class="ok">""</span>
-<span class="sexp-paren">&#x0028;</span>string <span class="char">#\G</span> <span class="char">#\a</span> <span class="char">#\m</span> <span class="char">#\b</span> <span class="char">#\i</span> <span class="char">#\t</span><span class="sexp-paren">&#x0029;</span>       &rArr; <span class="ok">"Gambit"</span>
-<span class="sexp-paren">&#x0028;</span>apply string <span class="sexp-paren">&#x0028;</span>string-&gt;list <span class="string">"Gambit"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"Gambit"</span>
-</pre></div>
-</dd></dl>
-
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dlength"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">string-length</strong> <code class="def-code-arguments">string</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_002dlength"> &para;</a></span></dt>
-<dd><p>Returns the number of characters in <var class="var">string</var>.
-</p>
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-length <span class="sexp-paren">&#x0028;</span>make-string 5<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">5</span>
-<span class="sexp-paren">&#x0028;</span>string-length <span class="string">""</span><span class="sexp-paren">&#x0029;</span>              &rArr; <span class="ok">0</span>
-<span class="sexp-paren">&#x0028;</span>string-length <span class="string">"lambda"</span><span class="sexp-paren">&#x0029;</span>        &rArr; <span class="ok">6</span>
-</pre></div>
-</dd></dl>
-
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dref"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">string-ref</strong> <code class="def-code-arguments">string k</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_002dref"> &para;</a></span></dt>
-<dd><p>Returns the character at index <var class="var">k</var> of <var class="var">string</var>.  If <var class="var">k</var> is
-not a valid index of <var class="var">string</var>, an exception that satisfies
-<code class="code">range-exception?</code> is raised.
-</p>
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-ref <span class="string">"zero-origin indexing"</span> 0<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#\z</span>
-</pre></div>
-
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> s <span class="string">"off by one"</span><span class="sexp-paren">&#x0029;</span>
-<span class="sexp-paren">&#x0028;</span>string-ref s <span class="sexp-paren">&#x0028;</span>- <span class="sexp-paren">&#x0028;</span>string-length s<span class="sexp-paren">&#x0029;</span> 1<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#\e</span>
-<span class="sexp-paren">&#x0028;</span>string-ref s <span class="sexp-paren">&#x0028;</span>string-length s<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>       &rarr; <span class="exception">range exception</span>
-</pre></div>
-</dd></dl>
-
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_003d_003f"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">string=?</strong> <code class="def-code-arguments">string&hellip;</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_003d_003f"> &para;</a></span></dt>
-<dd><p>Returns <code class="code">#t</code> if all <var class="var">string</var> arguments are the same length and
-contain exactly the same characters in the same positions.
-</p>
-<p>Gambit extends the <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> description of <code class="code">string=?</code> to accept
-any number of arguments.
-</p>
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string=? <span class="string">"abc"</span> <span class="sexp-paren">&#x0028;</span>string <span class="char">#\a</span> <span class="char">#\b</span> <span class="char">#\c</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
-<span class="sexp-paren">&#x0028;</span>string=? <span class="string">"abcd"</span> <span class="string">"Abcd"</span><span class="sexp-paren">&#x0029;</span>              &rArr; <span class="ok">#f</span>
-<span class="sexp-paren">&#x0028;</span>string=?<span class="sexp-paren">&#x0029;</span>                            &rArr; <span class="ok">#t</span>
-<span class="sexp-paren">&#x0028;</span>string=? <span class="sexp-paren">&#x0028;</span>string<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>                   &rArr; <span class="ok">#t</span>
-<span class="sexp-paren">&#x0028;</span>string=? <span class="string">"a"</span> <span class="string">"a"</span> <span class="string">"a"</span><span class="sexp-paren">&#x0029;</span>                &rArr; <span class="ok">#t</span>
-<span class="sexp-paren">&#x0028;</span>string=? <span class="string">"a"</span> <span class="char">#\a</span><span class="sexp-paren">&#x0029;</span>                    &rarr; <span class="exception">type exception</span>
-</pre></div>
-</dd></dl>
-
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_003c_003f"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">string&lt;?</strong> <code class="def-code-arguments">string&hellip;</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_003c_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003e_003f"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">string&gt;?</strong> <code class="def-code-arguments">string&hellip;</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_003e_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003c_003d_003f"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">string&lt;=?</strong> <code class="def-code-arguments">string&hellip;</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_003c_003d_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_003e_003d_003f"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">string&gt;=?</strong> <code class="def-code-arguments">string&hellip;</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_003e_003d_003f"> &para;</a></span></dt>
-<dd><p>These predicates return <code class="code">#t</code> if their <var class="var">string</var> arguments are
-(respectively): monotonically increasing, monotonically decreasing,
-monotonically non-decreasing, or monotonically non-increasing.  They are
-transitive.
-</p>
-<p>A pair of strings satisfies exactly one of <code class="code">string&lt;?</code>,
-<code class="code">string=?</code>, and <code class="code">string&gt;?</code>.  They may satisfy <code class="code">string&lt;=?</code>
-if and only if they do not satisfy <code class="code">string&gt;?</code>.  They may satisfy
-<code class="code">string&gt;=?</code> if and only if they do not satisfy <code class="code">string&lt;?</code>.
-</p>
-<p>Gambit extends the <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> descriptions of these procedures to
-accept any number of arguments.
-</p>
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string&lt;=? <span class="string">"g"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
-<span class="sexp-paren">&#x0028;</span>string&gt;=? <span class="string">"g"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
-<span class="sexp-paren">&#x0028;</span>string&lt;?  <span class="string">"g"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
-<span class="sexp-paren">&#x0028;</span>string&gt;?  <span class="string">"g"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
-
-<span class="sexp-paren">&#x0028;</span>string&lt;? <span class="string">"G"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#t</span>
-<span class="sexp-paren">&#x0028;</span>string&gt;? <span class="string">"G"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#f</span>
-
-<span class="sexp-paren">&#x0028;</span>string&lt;? <span class="string">"gg"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#f</span>
-<span class="sexp-paren">&#x0028;</span>string&gt;? <span class="string">"gg"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
-</pre></div>
-</dd></dl>
-
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dci_003d_003f"><span class="category-def">scheme/char: </span><span><span class="sexp-paren">(</span><strong class="def-name">string-ci=?</strong> <code class="def-code-arguments">string&hellip;</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_002dci_003d_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003c_003f"><span class="category-def">scheme/char: </span><span><span class="sexp-paren">(</span><strong class="def-name">string-ci&lt;?</strong> <code class="def-code-arguments">string&hellip;</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_002dci_003c_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003e_003f"><span class="category-def">scheme/char: </span><span><span class="sexp-paren">(</span><strong class="def-name">string-ci&gt;?</strong> <code class="def-code-arguments">string&hellip;</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_002dci_003e_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003c_003d_003f"><span class="category-def">scheme/char: </span><span><span class="sexp-paren">(</span><strong class="def-name">string-ci&lt;=?</strong> <code class="def-code-arguments">string&hellip;</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_002dci_003c_003d_003f"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dci_003e_003d_003f"><span class="category-def">scheme/char: </span><span><span class="sexp-paren">(</span><strong class="def-name">string-ci&gt;=?</strong> <code class="def-code-arguments">string&hellip;</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_002dci_003e_003d_003f"> &para;</a></span></dt>
-<dd><p>Each of these predicates behaves as if <code class="code">string-foldcase</code> were
-applied to each <var class="var">string</var> and then that predicate&rsquo;s non-&lsquo;<samp class="samp">-ci</samp>&rsquo;
-counterpart were applied to those case-folded arguments.
-</p>
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-ci=?  <span class="string">"G"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span>                             &rArr; <span class="ok">#t</span>
-<span class="sexp-paren">&#x0028;</span>apply string=? <span class="sexp-paren">&#x0028;</span>map string-foldcase <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="string">"G"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#t</span>
-</pre></div>
-
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-ci&gt;=? <span class="string">"G"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span>                             &rArr; <span class="ok">#t</span>
-<span class="sexp-paren">&#x0028;</span>apply string&lt;=? <span class="sexp-paren">&#x0028;</span>map string-foldcase <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="string">"G"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
-</pre></div>
-
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-ci&lt;=? <span class="string">"g"</span> <span class="string">"G"</span><span class="sexp-paren">&#x0029;</span>                             &rArr; <span class="ok">#t</span>
-<span class="sexp-paren">&#x0028;</span>apply string&lt;=? <span class="sexp-paren">&#x0028;</span>map string-foldcase <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="string">"g"</span> <span class="string">"G"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">#t</span>
-</pre></div>
-
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-ci&lt;?  <span class="string">"G"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span>                             &rArr; <span class="ok">#f</span>
-<span class="sexp-paren">&#x0028;</span>apply string&lt;? <span class="sexp-paren">&#x0028;</span>map string-foldcase <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="string">"G"</span> <span class="string">"g"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#f</span>
-</pre></div>
-
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-ci&gt;?  <span class="string">"g"</span> <span class="string">"G"</span><span class="sexp-paren">&#x0029;</span>                             &rArr; <span class="ok">#f</span>
-<span class="sexp-paren">&#x0028;</span>apply string&gt;? <span class="sexp-paren">&#x0028;</span>map string-foldcase <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="string">"g"</span> <span class="string">"G"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">#f</span>
-</pre></div>
-</dd></dl>
-
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dupcase"><span class="category-def">scheme/char: </span><span><span class="sexp-paren">(</span><strong class="def-name">string-upcase</strong> <code class="def-code-arguments">string</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_002dupcase"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002ddowncase"><span class="category-def">scheme/char: </span><span><span class="sexp-paren">(</span><strong class="def-name">string-downcase</strong> <code class="def-code-arguments">string</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_002ddowncase"> &para;</a></span></dt>
-<dt class="deftypefnx def-cmd-deftypefn" id="index-string_002dfoldcase"><span class="category-def">scheme/char: </span><span><span class="sexp-paren">(</span><strong class="def-name">string-foldcase</strong> <code class="def-code-arguments">string</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_002dfoldcase"> &para;</a></span></dt>
-<dd><p>These procedures apply the Unicode full string uppercasing, lowercasing,
-and case-folding algorithms to their arguments and return the result.
-In certain cases, the result differs in length from <var class="var">string</var>.  Note
-that language-sensitive mappings and foldings are not used.
-</p>
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-downcase <span class="string">"&#x0388;&#x03C4;&#x03BF;&#x03C2;"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"&#x03AD;&#x03C4;&#x03BF;&#x03C2;"</span>
-<span class="sexp-paren">&#x0028;</span>string-foldcase <span class="string">"&#x0388;&#x03C4;&#x03BF;&#x03C2;"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"&#x03AD;&#x03C4;&#x03BF;&#x03C3;"</span>
-<span class="sexp-paren">&#x0028;</span>string-upcase   <span class="string">"&#x0388;&#x03C4;&#x03BF;&#x03C2;"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"&#x0388;&#x03A4;&#x039F;&#x03A3;"</span>
-<span class="sexp-paren">&#x0028;</span>string-downcase <span class="string">"&#x0388;&#x03A4;&#x039F;&#x03A3;"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"&#x03AD;&#x03C4;&#x03BF;&#x03C3;"</span>
-<span class="sexp-paren">&#x0028;</span>string-foldcase <span class="string">"&#x0388;&#x03A4;&#x039F;&#x03A3;"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"&#x03AD;&#x03C4;&#x03BF;&#x03C3;"</span>
-</pre></div>
-
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-downcase <span class="string">"Wei&szlig;"</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">"wei&szlig;"</span>
-<span class="sexp-paren">&#x0028;</span>string-foldcase <span class="string">"Wei&szlig;"</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">"weiss"</span>
-<span class="sexp-paren">&#x0028;</span>string-upcase   <span class="string">"Wei&szlig;"</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">"WEISS"</span>
-<span class="sexp-paren">&#x0028;</span>string-downcase <span class="string">"WEISS"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"weiss"</span>
-<span class="sexp-paren">&#x0028;</span>string-foldcase <span class="string">"WEISS"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"weiss"</span>
-</pre></div>
-</dd></dl>
-
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dappend"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">string-append</strong> <code class="def-code-arguments">string&hellip;</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_002dappend"> &para;</a></span></dt>
-<dd>
-<p>Returns a newly allocated string whose characters are the concatenation
-of the characters in the given <var class="var">strings</var>.
-</p>
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-append<span class="sexp-paren">&#x0029;</span>                     &rArr; <span class="ok">""</span>
-<span class="sexp-paren">&#x0028;</span>string-append <span class="string">""</span><span class="sexp-paren">&#x0029;</span>                  &rArr; <span class="ok">""</span>
-<span class="sexp-paren">&#x0028;</span>string-append <span class="string">"hello"</span> <span class="string">"world"</span><span class="sexp-paren">&#x0029;</span>     &rArr; <span class="ok">"helloworld"</span>
-<span class="sexp-paren">&#x0028;</span>string-append <span class="string">"hello"</span> <span class="string">""</span> <span class="string">"world"</span><span class="sexp-paren">&#x0029;</span>  &rArr; <span class="ok">"helloworld"</span>
-<span class="sexp-paren">&#x0028;</span>string-append <span class="string">"hello "</span> <span class="string">" world"</span><span class="sexp-paren">&#x0029;</span>   &rArr; <span class="ok">"hello  world"</span>
-<span class="sexp-paren">&#x0028;</span>string-append <span class="string">"hello"</span> <span class="string">" "</span> <span class="string">"world"</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"hello world"</span>
-</pre></div>
-</dd></dl>
-
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002d_003elist"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">string-&gt;list</strong> <code class="def-code-arguments">string <span class="bracket">[</span>start <span class="bracket">[</span>end<span class="bracket">]</span><span class="bracket">]</span></code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_002d_003elist"> &para;</a></span></dt>
-<dd><p>Returns a newly allocated list of characters in <var class="var">string</var>.  In the
-one-argument form, the returned list comprises all characters of
-<var class="var">string</var>.  In the two-argument form, the returned list comprises
-characters from index <var class="var">start</var> (inclusive) through the end of
-<var class="var">string</var>.  In the three-argument form, the returned list comprises
-characters from index <var class="var">start</var> (inclusive) through index <var class="var">end</var>
-(exclusive).
-</p>
-<p>Order is preserved.  <code class="code">string-&gt;list</code> and <code class="code">list-&gt;string</code> are
-inverses so far as <code class="code">equal?</code> is concerned.  If either <var class="var">start</var> or
-<var class="var">end</var> is not a valid index of <var class="var">string</var>, an exception that
-satisfies <code class="code">range-exception?</code> is raised.
-</p>
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-&gt;list <span class="string">"scheme"</span><span class="sexp-paren">&#x0029;</span>     &rArr; <span class="ok">(#\s #\c #\h #\e #\m #\e)</span>
-<span class="sexp-paren">&#x0028;</span>string-&gt;list <span class="string">"scheme"</span> 1<span class="sexp-paren">&#x0029;</span>   &rArr; <span class="ok">(#\c #\h #\e #\m #\e)</span>
-<span class="sexp-paren">&#x0028;</span>string-&gt;list <span class="string">"scheme"</span> 2 6<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">(#\h #\e #\m #\e)</span>
-<span class="sexp-paren">&#x0028;</span>string-&gt;list <span class="string">"scheme"</span> 6<span class="sexp-paren">&#x0029;</span>   &rArr; <span class="ok">()</span>
-<span class="sexp-paren">&#x0028;</span>string-&gt;list <span class="string">"scheme"</span> 6 6<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">()</span>
-</pre></div>
-
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-&gt;list <span class="string">"scheme"</span> 7<span class="sexp-paren">&#x0029;</span>   &rarr; <span class="exception">range exception</span>
-<span class="sexp-paren">&#x0028;</span>string-&gt;list <span class="string">"scheme"</span> 3 7<span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">range exception</span>
-</pre></div>
-</dd></dl>
-
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-list_002d_003estring"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">list-&gt;string</strong> <code class="def-code-arguments">list</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-list_002d_003estring"> &para;</a></span></dt>
-<dd><p>Returns a newly allocated string formed from the elements in <var class="var">list</var>.
-</p>
-<p>Order is preserved.  <code class="code">list-&gt;string</code> and <code class="code">string-&gt;list</code> and are
-inverses so far as <code class="code">equal?</code> is concerned.  If any element of
-<var class="var">list</var> is not a character, an exception that satisfies <code class="code">type?</code>
-is raised.
-</p>
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>list-&gt;string <span class="sexp-paren">&#x0028;</span>list<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>                       &rArr; <span class="ok">""</span>
-<span class="sexp-paren">&#x0028;</span>list-&gt;string <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="char">#\s</span> <span class="char">#\c</span> <span class="char">#\h</span> <span class="char">#\e</span> <span class="char">#\m</span> <span class="char">#\e</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>   &rArr; <span class="ok">"scheme"</span>
-<span class="sexp-paren">&#x0028;</span>list-&gt;string <span class="sexp-paren">&#x0027;</span><span class="sexp-paren">&#x0028;</span><span class="char">#\s</span> <span class="char">#\c</span> <span class="char">#\h</span> <span class="char">#\e</span> <span class="char">#\m</span> <span class="char">#\e</span> 2<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">type exception</span>
-</pre></div>
-</dd></dl>
-
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dcopy"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">string-copy</strong> <code class="def-code-arguments">string <span class="bracket">[</span>start <span class="bracket">[</span>end<span class="bracket">]</span><span class="bracket">]</span></code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_002dcopy"> &para;</a></span></dt>
-<dd><p>Returns a newly allocated string whose value is a portion of
-<var class="var">string</var>.  In the one-argument form, the returned portion is all of
-<var class="var">string</var>.  In the two-argument form, the returned string is a copy
-of <var class="var">string</var> from index <var class="var">start</var> (inclusive) through the end of
-<var class="var">string</var>.  In the three-argument form, the returned string is a copy
-of <var class="var">string</var> from index <var class="var">start</var> (inclusive) to index <var class="var">end</var>
-(exclusive).
-</p>
-<p>Order is preserved.  <code class="code">string-&gt;list</code> and <code class="code">list-&gt;string</code> and are
-inverses so far as <code class="code">equal?</code> is concerned.  If either <var class="var">start</var> or
-<var class="var">end</var> is not an exact integer, an exception that satisfies
-<code class="code">type-exception?</code> is raised.  If either <var class="var">start</var> or <var class="var">end</var> is
-not a valid index of <var class="var">string</var>, an exception that satisfies
-<code class="code">range-exception?</code> is raised.
-</p>
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span><span class="sexp-paren">&#x0029;</span>                          &rArr; <span class="ok">"dwim"</span>
-<span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span> 0<span class="sexp-paren">&#x0029;</span>                        &rArr; <span class="ok">"dwim"</span>
-<span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span> 1<span class="sexp-paren">&#x0029;</span>                        &rArr; <span class="ok">"wim"</span>
-<span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span> 1 1<span class="sexp-paren">&#x0029;</span>                      &rArr; <span class="ok">""</span>
-<span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span> 0 <span class="sexp-paren">&#x0028;</span>string-length <span class="string">"dwim"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"dwim"</span>
-<span class="sexp-paren">&#x0028;</span>eqv?     <span class="string">"dwim"</span> <span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>        &rArr; <span class="ok">#f</span>
-<span class="sexp-paren">&#x0028;</span>string=? <span class="string">"dwim"</span> <span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>        &rArr; <span class="ok">#t</span>
-</pre></div>
-
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span> 5<span class="sexp-paren">&#x0029;</span>    &rarr; <span class="exception">range exception</span>
-<span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span> -1 3<span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">range exception</span>
-<span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span> 2 5<span class="sexp-paren">&#x0029;</span>  &rarr; <span class="exception">range exception</span>
-<span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"dwim"</span> 2.5<span class="sexp-paren">&#x0029;</span>  &rarr; <span class="exception">type exception</span>
-</pre></div>
-</dd></dl>
-
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dcopy_0021"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">string-copy!</strong> <code class="def-code-arguments">to-string at from-string <span class="bracket">[</span>start <span class="bracket">[</span>end<span class="bracket">]</span><span class="bracket">]</span></code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_002dcopy_0021"> &para;</a></span></dt>
-<dd><p>Mutates <var class="var">to-string</var> by copying a substring of <var class="var">from-string</var> into
-<var class="var">to-string</var>, beginning with index <var class="var">at</var> of <var class="var">to-string</var>.  In
-the three-argument form, all of <var class="var">from-string</var> is copied.  In the
-four-argument form, the value of &lsquo;<samp class="samp">(string-copy
-<i class="slanted"><var class="var">from-string</var></i> <i class="slanted"><var class="var">start</var></i>)</samp>&rsquo; is copied.  In the
-five-argument form, the value of &lsquo;<samp class="samp">(string-copy
-<i class="slanted"><var class="var">from-string</var></i> <i class="slanted"><var class="var">start</var></i> <i class="slanted"><var class="var">end</var></i>)</samp>&rsquo;
-is copied.
-</p>
-<p>If <var class="var">at</var> is not a valid index of <var class="var">to-string</var>, an exception that
-satisfies <code class="code">range-exception?</code> is raised.  If &lsquo;<samp class="samp">(- (string-length
-<i class="slanted"><var class="var">to-string</var></i>) <i class="slanted"><var class="var">at</var></i>)</samp>&rsquo; is less than &lsquo;<samp class="samp">(-
-<i class="slanted"><var class="var">end</var></i> <i class="slanted"><var class="var">start</var></i>)</samp>&rsquo;, an exception that satisfies
-<code class="code">range-exception?</code>  is raised (in other words, the copied substring
-must not overflow beyond the end of <var class="var">to-string</var>).
-</p>
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> a <span class="string">"12345"</span><span class="sexp-paren">&#x0029;</span>
-<span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> b <span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"abcde"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
-<span class="sexp-paren">&#x0028;</span>string-copy! b 1 a 0 2<span class="sexp-paren">&#x0029;</span>
-b &rArr; <span class="ok">"a12de"</span>
-</pre></div>
-</dd></dl>
-
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dfill_0021"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">string-fill!</strong> <code class="def-code-arguments">string char <span class="bracket">[</span>start <span class="bracket">[</span>end<span class="bracket">]</span><span class="bracket">]</span></code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_002dfill_0021"> &para;</a></span></dt>
-<dd><p>Mutates <var class="var">string</var> by overwriting some or all of its elements with
-<var class="var">char</var>.  In the two-argument form, each element is overwritten.  In
-the three-argument form, the elements from index <var class="var">start</var> (inclusive)
-through the end of <var class="var">string</var> are overwritten.  In the four-argument
-form, the elements from index <var class="var">start</var> (inclusive) to index <var class="var">end</var>
-(exclusive) are overwritten.
-</p>
-<p>If either <var class="var">start</var> or <var class="var">end</var> is not a valid index of <var class="var">string</var>,
-an exception that satisfies <code class="code">range-exception?</code> is raised.
-</p>
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> a <span class="sexp-paren">&#x0028;</span>string-copy <span class="string">"abcde"</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
-<span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> b <span class="sexp-paren">&#x0028;</span>string-copy a<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
-<span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> c <span class="sexp-paren">&#x0028;</span>string-copy b<span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
-<span class="sexp-paren">&#x0028;</span>string-fill! a <span class="char">#\0</span><span class="sexp-paren">&#x0029;</span>
-<span class="sexp-paren">&#x0028;</span>string-fill! b <span class="char">#\0</span> 3<span class="sexp-paren">&#x0029;</span>
-<span class="sexp-paren">&#x0028;</span>string-fill! c <span class="char">#\0</span> 3 4<span class="sexp-paren">&#x0029;</span>
-a &rArr; <span class="ok">"00000"</span>
-b &rArr; <span class="ok">"abc00"</span>
-c &rArr; <span class="ok">"abc0e"</span>
-</pre></div>
-</dd></dl>
-
-<dl class="first-deftypefn">
-<dt class="deftypefn" id="index-string_002dset_0021"><span class="category-def">scheme/base: </span><span><span class="sexp-paren">(</span><strong class="def-name">string-set!</strong> <code class="def-code-arguments">string k char</code><span class="sexp-paren">)</span><a class="copiable-link" href="#index-string_002dset_0021"> &para;</a></span></dt>
-<dd><p>Mutates <var class="var">string</var> by storing <var class="var">char</var> in element <var class="var">k</var> of
-<var class="var">string</var>.
-</p>
-<p>If <var class="var">string</var> is not a mutable string, an exception that satisfies
-<code class="code">type-exception?</code> is raised.  If <var class="var">k</var> is not an exact integer,
-an exception that satisfies <code class="code">type-exception?</code> is raised.  If
-<var class="var">k</var> is not a valid index of <var class="var">string</var>, an exception that
-satisfies <code class="code">range-exception?</code> is raised.
-</p>
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> <span class="sexp-paren">&#x0028;</span>f<span class="sexp-paren">&#x0029;</span> <span class="sexp-paren">&#x0028;</span>make-string 3 <span class="char">#\*</span><span class="sexp-paren">&#x0029;</span><span class="sexp-paren">&#x0029;</span>
-<span class="sexp-paren">&#x0028;</span>string-set! <span class="sexp-paren">&#x0028;</span>f<span class="sexp-paren">&#x0029;</span> 0 <span class="char">#\?</span><span class="sexp-paren">&#x0029;</span> <span class="code-comment">;; ok</span>
-<span class="sexp-paren">&#x0028;</span>string-set! <span class="sexp-paren">&#x0028;</span>f<span class="sexp-paren">&#x0029;</span> 5 <span class="char">#\?</span><span class="sexp-paren">&#x0029;</span>   &rarr; <span class="exception">range exception</span>
-<span class="sexp-paren">&#x0028;</span>string-set! <span class="sexp-paren">&#x0028;</span>f<span class="sexp-paren">&#x0029;</span> 1.1 <span class="char">#\?</span><span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">type exception</span>
-</pre></div>
-
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span>string-set! <span class="sexp-paren">&#x0028;</span>symbol-&gt;string <span class="sexp-paren">&#x0027;</span>immutable<span class="sexp-paren">&#x0029;</span> 0 <span class="char">#\?</span><span class="sexp-paren">&#x0029;</span> &rarr; <span class="exception">type exception</span>
-</pre></div>
-
-<div class="example lisp">
-<pre class="lisp-preformatted"><span class="sexp-paren">&#x0028;</span><span class="syntax">define</span> <span class="sexp-paren">&#x0028;</span>g<span class="sexp-paren">&#x0029;</span> <span class="string">"***"</span><span class="sexp-paren">&#x0029;</span>
-<span class="sexp-paren">&#x0028;</span>string-set! <span class="sexp-paren">&#x0028;</span>g<span class="sexp-paren">&#x0029;</span> 0 <span class="char">#\?</span><span class="sexp-paren">&#x0029;</span> <span class="code-comment">;; <abbr class="acronym">R<sup class="sup">7</sup>RS</abbr> says this is an error</span>
-<span class="sexp-paren">&#x0028;</span>g<span class="sexp-paren">&#x0029;</span> &rArr; <span class="ok">"?**"</span>             <span class="code-comment">;; current Gambit behavior </span>
-</pre></div>
-</dd></dl>
-
-<hr>
-</div>
-</div>
 <div class="unnumbered-level-extent" id="General-Index">
 <div class="nav-panel">
 <p>
-Next: <a href="#Type-Index" accesskey="n" rel="next">Type Index</a>, Previous: <a href="#Strings" accesskey="p" rel="prev">Strings</a>, Up: <a href="#Top" accesskey="u" rel="up">Gambit</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
+Next: <a href="#Type-Index" accesskey="n" rel="next">Type Index</a>, Previous: <a href="#Pairs-and-lists" accesskey="p" rel="prev">Pairs and lists</a>, Up: <a href="#Top" accesskey="u" rel="up">Gambit</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>][<a href="#General-Index" title="Index" rel="index">Index</a>]</p>
 </div>
 <h2 class="unnumbered" id="General-Index-1"><span>General Index<a class="copiable-link" href="#General-Index-1"> &para;</a></span></h2>
 <div class="printindex cp-printindex">
@@ -1775,7 +1381,6 @@ Previous: <a href="#Type-Index" accesskey="p" rel="prev">Type Index</a>, Up: <a 
 <tr><th id="Index-of-procedures-and-syntactic-forms_fn_letter-L">L</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-length"><code>length</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-list"><code>list</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-list_002d_003estring"><code>list-&gt;string</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-list_002dcopy"><code>list-copy</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-list_002dref"><code>list-ref</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-list_002dset_0021"><code>list-set!</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
@@ -1784,7 +1389,6 @@ Previous: <a href="#Type-Index" accesskey="p" rel="prev">Type Index</a>, Up: <a 
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Index-of-procedures-and-syntactic-forms_fn_letter-M">M</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-make_002dlist"><code>make-list</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-make_002dstring"><code>make-string</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-member"><code>member</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-memq"><code>memq</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-memv"><code>memv</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
@@ -1802,29 +1406,6 @@ Previous: <a href="#Type-Index" accesskey="p" rel="prev">Type Index</a>, Up: <a 
 <tr><th id="Index-of-procedures-and-syntactic-forms_fn_letter-S">S</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-set_002dcar_0021"><code>set-car!</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-set_002dcdr_0021"><code>set-cdr!</code></a></td><td class="printindex-index-section"><a href="#Pair-and-list-procedures">Pair and list procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string"><code>string</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_002d_003elist"><code>string-&gt;list</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_002dappend"><code>string-append</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_002dci_003c_003f"><code>string-ci&lt;?</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_002dci_003c_003d_003f"><code>string-ci&lt;=?</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_002dci_003d_003f"><code>string-ci=?</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_002dci_003e_003f"><code>string-ci&gt;?</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_002dci_003e_003d_003f"><code>string-ci&gt;=?</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_002dcopy"><code>string-copy</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_002dcopy_0021"><code>string-copy!</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_002ddowncase"><code>string-downcase</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_002dfill_0021"><code>string-fill!</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_002dfoldcase"><code>string-foldcase</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_002dlength"><code>string-length</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_002dref"><code>string-ref</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_002dset_0021"><code>string-set!</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_002dupcase"><code>string-upcase</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_003f"><code>string?</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_003c_003f"><code>string&lt;?</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_003c_003d_003f"><code>string&lt;=?</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_003d_003f"><code>string=?</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_003e_003f"><code>string&gt;?</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-string_003e_003d_003f"><code>string&gt;=?</code></a></td><td class="printindex-index-section"><a href="#String-procedures">String procedures</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 </table>
 <table class="fn-letters-footer-printindex"><tr><th>Jump to: &nbsp; </th><td><a class="summary-letter-printindex" href="#Index-of-procedures-and-syntactic-forms_fn_letter-A"><b>A</b></a>

@@ -12,6 +12,8 @@ toolshed/gambit.css
 toolshed/today.txi
 GNUmakefile
 makefile
-gambit-*.html
+gambit*.html
+gambit*.txt
+gambit.epub
 gambit-spans.txi
 gambit.info

@@ -1,3 +1,0 @@
-The .txi files the body/ and procedures/ directories should be written
-as if their "top" is at the chapter level.  This permits us to define
-the manual's structure in the including files.
