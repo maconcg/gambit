@@ -5,6 +5,7 @@ html-css-parens/
 html-css-color/
 html-css-color-parens/
 html/
+tests/
 procedures/c/
 **/.stamp
 toolshed/colorize.sed

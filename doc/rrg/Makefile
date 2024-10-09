@@ -14,7 +14,7 @@ html-all-phonies := ${html-monolithic-phonies} ${html-modular-phonies}
 .PHONY: default all all-html html-all all-html-monoliths html-monoliths-all \
  all-html-modules html-all-modules all-monoliths monoliths-all clean \
  clean-intermediate mostlyclean info txt epub ${html-monolithic-phonies} \
- ${html-modular-phonies}
+ ${html-modular-phonies} tests clean-tests
 
 all: info all-html txt
 all-html html-all: all-html-monoliths all-html-modules
@@ -22,7 +22,7 @@ all-html-monoliths html-all-monoliths: ${html-monolithic-phonies}
 all-html-modules html-all-modules: ${html-modular-phonies}
 all-monoliths monoliths-all: info txt all-html-monoliths
 
-clean: clean-intermediate
+clean: clean-intermediate clean-tests
 	rm -fr html/ html-parens/ html-css/ html-css-parens/
 	rm -f gambit.info gambit.txt gambit.html gambit-parens.html \
 		gambit-css.html gambit-css-parens.html gambit.epub
@@ -32,6 +32,16 @@ clean-intermediate mostlyclean:
 	rm -f gambit-spans.txi gambit-pristine.html gambit-css-color.html \
 		gambit-css-color-parens.html toolshed/gambit.css \
 		toolshed/colorize.sed toolshed/today.txi
+
+clean-tests:
+	rm -fr tests/
+
+tests: tests/.stamp
+tests/.stamp: procedures/*.txi toolshed/extract-tests.sh
+	for txi in procedures/*.txi; do\
+		sh -efu toolshed/extract-tests.sh "$$txi" tests;\
+	done
+	touch $@
 
 gambit.txi: prose/* procedures/*.txi \
             toolshed/copying.txi toolshed/macros.txi \
