@@ -1,5 +1,5 @@
 <!-- Copyright (c) 2024 by Macon Gambill, All Rights Reserved. -->
-# `(doc (doc))`
+# (doc (doc))
 ## Making
 Once you've installed Texinfo, you should be able to run `make` from this directory.  Certain output formats (e.g., `epub`, `pdf`) require additional dependencies, as documented by Texinfo.  The default output formats are Info, single-page HTML, and plain text.
 
