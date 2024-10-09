@@ -38,7 +38,6 @@ clean-tests:
 
 tests: tests/.stamp
 tests/.stamp: procedures/*.txi toolshed/extract-tests.sh
-	test -d tests/ || mkdir -p tests/
 	for txi in procedures/*.txi; do\
 		sh -efu toolshed/extract-tests.sh "$$txi" tests;\
 	done
