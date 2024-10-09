@@ -1,8 +1,8 @@
 # Copyright (c) 2024 by Macon Gambill, All Rights Reserved.
 readonly template="$1"
 
-. toolshed/data/modus-operandi-colors.sh
-. toolshed/data/modus-vivendi-colors.sh
+. toolshed/data/modus-operandi-colors
+. toolshed/data/modus-vivendi-colors
 
 substitute() {
     sed -n "/^\/\* BEGIN COLORS \*\/\$/,/^\/\* END COLORS \*\/\$/ {

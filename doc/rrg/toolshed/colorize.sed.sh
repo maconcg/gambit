@@ -1,9 +1,9 @@
 # Copyright (c) 2024 by Macon Gambill, All Rights Reserved.
 readonly syntax="$(<toolshed/data/syntax-words)"
 
-# We only want to colorize the text to the left of @ok/@exception.
-# Store all text to the right of "@ok{" in the hold space; at the end,
-# use a substitution to remove that text from the pattern space.
+# We only want to colorize the text to the left of "@ok{".  Store all
+# text to the right of "@ok{" in the hold space; at the end, use a
+# substitution to remove that text from the pattern space.
 printf '%s\n' '/^@lisp$/,/^@end lisp$/ {
     /@ok{/ {
         h
@@ -13,7 +13,7 @@ printf '%s\n' '/^@lisp$/,/^@end lisp$/ {
     }'
 
 # Wrap each character in @char{}.
-printf '%s\n\n' '    /#\\/ {
+printf '%s\n' '    /#\\/ {
         s/#\\\([[:graph:]]\)$/@char{\1}/g
         s/#\\\([[:graph:]]\)\([])[:blank:]]\)/@char{\1}\2/g
         s/#\\\([[:lower:]]\{2,\}\)$/@char{\1}/g
@@ -24,7 +24,7 @@ printf '%s\n\n' '    /#\\/ {
 
 # Wrap each #!sharp identifier in @sharp{}.
 for s in eof key optional rest void; do
-    printf '%s\n%s\n' "s/^#!$s/@sharp{@hashchar{}@U{0021}$s}/" \
+    printf '    %s\n    %s\n' "s/^#!$s/@sharp{@hashchar{}@U{0021}$s}/" \
            "s/\(['([:blank:]]\)#!$s/\1@sharp{@hashchar{}@U{0021}$s}/g"
 done
 
@@ -41,7 +41,7 @@ for form in $syntax; do
 done
 
 # Wrap each "string" in @string{}.
-printf '    %s\n\n' \
+printf '    %s\n' \
        's/\\"/@backslashchar{}@U{0022}/g' \
        's/"\([^"]*\)"/@string{"\1"}/g'
 
@@ -69,6 +69,6 @@ printf '    %s\n' '/@ok{/ {
         s/\n//
     }'
 
-# Wrap comments last so they may occur to the right of @ok/@exception.
+# Wrap comments last so they may occur to the right of "@ok{..}".
 printf '    %s\n' 's/\([[:blank:]]\);\(.*\)$/\1@codecomment{;\2}/
 }'
