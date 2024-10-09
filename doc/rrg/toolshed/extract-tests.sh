@@ -30,10 +30,10 @@ while read -r line; do
             print=1
             file="$testdir"/"${lib:?}"/"${name:?}@t${count:?}"
             > "${file:?}" ;;
-        @end\ lisp)
+        @end[[:blank:]]lisp)
             count=$(( count + 1 ))
             print=0 ;;
-        @end\ deftypefn)
+        @end[[:blank:]]deftypefn)
             file=
             lib=
             name= ;;
