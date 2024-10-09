@@ -1,5 +1,6 @@
 @node String procedures
 @chapter String procedures
+@nodedescription Procedures that deal with strings.
 
 @deftypefn scheme/base @/ string? obj
 Returns @code{#t} if @var{obj} is a string.

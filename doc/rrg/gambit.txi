@@ -49,6 +49,13 @@ issues via @url{@value{GITHUBURL},the Gambit repository on GitHub}.
 @include procedures/pairs-lists.txi
 @raisesections
 
+@node Strings
+@nodedescription Sequences of characters.
+@chapter Strings
+@lowersections
+@include procedures/strings.txi
+@raisesections
+
 @node General Index
 @unnumbered General Index
 @printindex cp

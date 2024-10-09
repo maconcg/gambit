@@ -95,12 +95,16 @@ gambit-css-color-parens.html: gambit-css-color.html toolshed/parenthesize-defs.s
 gambit-spans.txi: gambit.txi procedures/c/.stamp
 	sed 's/^\(@include[[:blank:]]\{1,\}procedures\/\)/\1c\//' gambit.txi > $@
 
-procedures/c/.stamp: procedures/c/pairs-lists.txi
+procedures/c/.stamp: procedures/c/pairs-lists.txi procedures/c/strings.txi
 	touch $@
 
 procedures/c/pairs-lists.txi: procedures/pairs-lists.txi toolshed/colorize.sed
 	test -d procedures/c || mkdir procedures/c
 	sed -f toolshed/colorize.sed procedures/pairs-lists.txi > $@
+
+procedures/c/strings.txi: procedures/strings.txi toolshed/colorize.sed
+	test -d procedures/c || mkdir procedures/c
+	sed -f toolshed/colorize.sed procedures/strings.txi > $@
 
 toolshed/today.txi:
 	echo "@set TODAY $$(date +'%B %d, %Y')" > $@

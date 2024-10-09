@@ -1,6 +1,6 @@
 @c Copyright (c) 2024 by Macon Gambill, All Rights Reserved.
 @copying
-This is the @value{REVISION} report on Gambit (built @value{UPDATED}).
+This is the @value{REVISION} Report on Gambit (built @value{UPDATED}).
 It documents Gambit v@value{VERSION}.
 
 Copyright @copyright{} 1994--2022 Marc Feeley et al.
