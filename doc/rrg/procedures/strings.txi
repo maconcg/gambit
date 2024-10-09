@@ -47,7 +47,7 @@ integer, an exception that satisfies @code{range-exception?} is raised.
 @end lisp
 @end deftypefn
 
-@deftypefn scheme/base {} string char@dots{}
+@deftypefn scheme/base @/ string char@dots{}
 Returns a newly allocated string whose elements are @var{char}@enddots{}
 The order of the arguments is preserved.  Analogous to @code{list}
 (@pxref{Pair and list procedures}).
