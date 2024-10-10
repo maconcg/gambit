@@ -13,25 +13,37 @@ html-sample-phonies := samples sample color-samples color-sample html-samples \
  html-sample html-color-samples html-color-sample color-html-samples \
  color-html-sample
 
-.NOTPARALLEL: dist
+html-monoliths := gambit.html gambit-css.html gambit-parens.html \
+ gambit-css-color-parens.html gambit-pristine.html gambit-css-color.html
+
+html-stamps := html/.stamp html-css/.stamp html-css-color/.stamp \
+ html-css-color-parens/.stamp html-css-parens/.stamp html-pristine/.stamp
+
+html-samples := gambit-color-samples.html gambit-cs-css.html \
+ gambit-cs-css-parens.html
+
+html-for-dist-dev := ${html-monoliths} ${html-samples} html/.stamp
+
+# .NOTPARALLEL is not necessary when using GNU Make.
+.NOTPARALLEL: dist dist-dev
 
 .PHONY: default all all-html html-all all-html-monoliths html-monoliths-all \
  all-html-modules html-all-modules all-monoliths monoliths-all clean \
  clean-intermediate mostlyclean info txt epub ${html-monolithic-phonies} \
  ${html-modular-phonies} ${html-sample-phonies} tests clean-tests \
- clean-samples dist
+ clean-samples dist dist-dev
 
-all: info all-html txt
-all-html html-all: all-html-monoliths all-html-modules
-all-html-monoliths html-all-monoliths: ${html-monolithic-phonies}
-all-html-modules html-all-modules: ${html-modular-phonies}
-all-monoliths monoliths-all: info txt all-html-monoliths
+all: gambit.info gambit.txt ${html-monoliths} ${html-stamps} ${html-samples}
+all-html html-all: ${html-monoliths} ${html-stamps}
+all-html-monoliths html-all-monoliths: ${html-monoliths}
+all-html-modules html-all-modules: ${html-stamps}
+all-monoliths monoliths-all: gambit.info gambit.txt ${html-monoliths}
 
 clean: clean-intermediate clean-samples clean-tests
 	rm -fr html/ html-parens/ html-css/ html-css-parens/
 	rm -f gambit.info gambit.txt gambit.html gambit-parens.html \
 		gambit-css.html gambit-css-parens.html gambit.epub \
-		gambit-doc.tgz
+		gambit-doc.tgz gambit-doc-dev.tgz
 
 clean-intermediate mostlyclean: clean-intermediate-samples
 	rm -fr html-pristine/ html-css-color/ html-css-color-parens/ procedures/c/
@@ -49,16 +61,16 @@ clean-intermediate-samples clean-samples-intermediate:
 clean-tests:
 	rm -fr tests/
 
-dist: clean gambit-doc.tgz
+dist-dev dev-dist: clean .WAIT gambit-doc-dev.tgz
+dist: clean .WAIT gambit-doc.tgz
+
+make-tarball := tar -czf $@ -s '%html/\..*%%' -s '_^_gambit-doc/_'
+
+gambit-doc-dev.tgz: gambit.info gambit.txt ${html-for-dist-dev}
+	${make-tarball} gambit.{info,txt} gambit*.html html/
+
 gambit-doc.tgz: gambit.info gambit.txt gambit.html html/.stamp
-	tmp=$$(mktemp -d) && {\
-		trap "rm -r $$tmp" ERR EXIT;\
-		mkdir $$tmp/gambit-doc &&\
-		cp -p gambit.info gambit.txt gambit.html $$tmp/gambit-doc &&\
-		cp -Rp html/ $$tmp/gambit-doc/html-modules &&\
-		rm $$tmp/gambit-doc/html-modules/.stamp &&\
-		tar -C $$tmp -czf $@ gambit-doc;\
-	}
+	${make-tarball} gambit.{info,txt} gambit.html html/
 
 tests: tests/.stamp
 tests/.stamp: procedures/*.txi toolshed/extract-tests.sh
