@@ -53,8 +53,8 @@ mandatory.
 @end lisp
 
 @lisp
-(define c '#0=(:f #\f #f "f" '#&f . #0#))
-(cadr c) @ok{#\f} ;; as you can see...
+(define c '#0=(or #!eof f f: #\f #f "f" '#&f . #0#))
+(caddr c) @ok{f} ;; N.B. f (see f)
 @end lisp
 
 @lisp
