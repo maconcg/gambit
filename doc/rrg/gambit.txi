@@ -1,6 +1,5 @@
 \input texinfo
 @c Copyright (c) 2024 by Macon Gambill, All Rights Reserved.
-@include toolshed/today.txi
 @include toolshed/macros.txi
 @include toolshed/vars.txi
 @include toolshed/copying.txi
@@ -17,7 +16,7 @@
 
 @titlepage
 @title @value{REVISION} Report on the Gambit Programming System
-@subtitle built on @value{UPDATED}, for Gambit v@value{VERSION}
+@subtitle for Gambit v@value{VERSION}
 @author Marc Feeley
 @author with revisions by Macon Gambill
 @page

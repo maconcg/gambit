@@ -1,8 +1,8 @@
 # Copyright (c) 2024 by Macon Gambill, All Rights Reserved.
 readonly template="$1"
 
-. toolshed/data/modus-operandi-colors.sh
-. toolshed/data/modus-vivendi-colors.sh
+. toolshed/data/modus-operandi-colors
+. toolshed/data/modus-vivendi-colors
 
 substitute() {
     sed -n "/^\/\* BEGIN COLORS \*\/\$/,/^\/\* END COLORS \*\/\$/ {
@@ -19,7 +19,9 @@ substitute() {
                     s/%fg-alt%/$fg_alt/
                     s/%fg-dim%/$fg_dim/
                     s/%fg-main%/$fg_main/
+                    s/%boolean%/$boolean/
                     s/%border%/$border/
+                    s/%box%/$box/
                     s/%category-def%/$category_def/
                     s/%char%/$char/
                     s/%code-comment%/$code_comment/
@@ -27,6 +29,7 @@ substitute() {
                     s/%emphasis%/$emphasis/
                     s/%exception%/$exception/
                     s/%false%/$false/
+                    s/%keyword%/$keyword/
                     s/%link%/$link/
                     s/%link-visited%/$link_visited/
                     s/%ok%/$ok/
@@ -54,20 +57,23 @@ bg_main="$mo_bg_main"
 fg_alt="$mo_fg_alt"
 fg_dim="$mo_fg_dim"
 fg_main="$mo_fg_main"
+boolean="$mo_indigo"
 border="$mo_border"
+box="$mo_blue"
 category_def="$mo_fg_alt"
-char="$mo_identifier"
-code_comment="$mo_yellow_faint"
+char="$mo_red_faint"
+code_comment="$mo_fg_dim"cf
 def_var="$mo_magenta"
 emphasis="$mo_yellow_faint"
-exception="$mo_red_warmer"
+exception="$mo_yellow_faint"
 false="$mo_fg_alt"
+keyword="$mo_magenta_faint"
 link="$mo_blue_warmer"
 link_visited="$link"
 ok="$mo_slate"
 problem="$mo_bg_yellow_intense"
 sexp_paren="$mo_fg_dim"
-sharp="$mo_red_faint"
+sharp="$mo_cyan"
 string="$mo_green"
 syntax="$mo_magenta_cooler"
 todo="$mo_bg_red_intense"
@@ -87,20 +93,23 @@ bg_main="$mv_bg_main"
 fg_alt="$mv_fg_alt"
 fg_dim="$mv_fg_dim"
 fg_main="$mv_fg_main"
+boolean="$mv_indigo"
 border="$mv_border"
+box="$mv_blue"
 category_def="$mv_fg_alt"
-char="$mv_identifier"
-code_comment="$mv_yellow_faint"
+char="$mv_red_faint"
+code_comment="$mv_fg_dim"cf
 def_var="$mv_magenta"
 emphasis="$mv_yellow_faint"
-exception="$mv_red_warmer"
+exception="$mv_yellow_faint"
 false="$mv_fg_alt"
+keyword="$mv_magenta_faint"
 link="$mv_blue_warmer"
 link_visited="$link"
 ok="$mv_slate"
 problem="$mv_bg_yellow_intense"
 sexp_paren="$mv_fg_dim"
-sharp="$mv_red_faint"
+sharp="$mv_cyan"
 string="$mv_green"
 syntax="$mv_magenta_cooler"
 todo="$mv_bg_red_intense"

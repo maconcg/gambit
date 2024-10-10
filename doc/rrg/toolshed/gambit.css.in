@@ -23,9 +23,12 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
         p var.var, li var.var {color: %def-var%}
     }
     pre {
+        span.boolean {color: %boolean%}
+        span.box {color: %box%}
         span.code-comment {color: %code-comment%}
         span.char {color: %char%}
         span.false {color: %false%}
+        span.keyword {color: %keyword%}
         span.ok {color: %ok%}
         span.problem {background-color: %problem%}
         span.sharp {color: %sharp%}
