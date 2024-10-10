@@ -12,6 +12,8 @@ toolshed/c/
 toolshed/colorize.sed
 toolshed/gambit.css
 toolshed/today.txi
+*.tgz
+*.tar.*
 GNUmakefile
 makefile
 gambit*.html

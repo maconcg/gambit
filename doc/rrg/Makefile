@@ -13,6 +13,8 @@ html-sample-phonies := samples sample color-samples color-sample html-samples \
  html-sample html-color-samples html-color-sample color-html-samples \
  color-html-sample
 
+.NOTPARALLEL: dist
+
 .PHONY: default all all-html html-all all-html-monoliths html-monoliths-all \
  all-html-modules html-all-modules all-monoliths monoliths-all clean \
  clean-intermediate mostlyclean info txt epub ${html-monolithic-phonies} \
@@ -29,7 +31,7 @@ clean: clean-intermediate clean-samples clean-tests
 	rm -fr html/ html-parens/ html-css/ html-css-parens/
 	rm -f gambit.info gambit.txt gambit.html gambit-parens.html \
 		gambit-css.html gambit-css-parens.html gambit.epub \
-		gambit-doc.tar.gz
+		gambit-doc.tgz
 
 clean-intermediate mostlyclean: clean-intermediate-samples
 	rm -fr html-pristine/ html-css-color/ html-css-color-parens/ procedures/c/
@@ -47,8 +49,8 @@ clean-intermediate-samples clean-samples-intermediate:
 clean-tests:
 	rm -fr tests/
 
-dist: gambit-doc.tar.gz
-gambit-doc.tar.gz: gambit.info gambit.txt gambit.html html/.stamp
+dist: clean gambit-doc.tgz
+gambit-doc.tgz: gambit.info gambit.txt gambit.html html/.stamp
 	tmp=$$(mktemp -d) && {\
 		trap "rm -r $$tmp" ERR EXIT;\
 		mkdir $$tmp/gambit-doc &&\
