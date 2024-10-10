@@ -66,7 +66,7 @@ done
 printf '  %s\n' '}'
 
 # Avoid dimming the empty list.
-printf '    %s\n' \
+printf '  %s\n' \
        "s/^(\\([[:blank:]]*\\))/@U{0028}\\1@U{0029}/" \
        "s/\\(@box{$box}\\)(\\([[:blank:]]*\\))/\\1@U{0028}\\2@U{0029}/g" \
        "s/\\($punct\\)(\\([[:blank:]]*\\))/\\1@U{0028}\\2@U{0029}/g" \
@@ -84,7 +84,7 @@ for form in $syntax; do
 done
 
 # Wrap each keyword: in @keyword{}.
-printf '    %s\n' \
+printf '  %s\n' \
        "s/^\\($ident\\{1,\\}:\\)\\($punct\\)/@keyword{\\1}\\2/g" \
        "s/\\($punct\\)\\($ident\\{1,\\}:\\)\\($punct\\)/\\1@keyword{\\2}\\3/g" \
        "s/\\($punct\\)\\($ident\\{1,\\}:\\)\\($punct\\)/\\1@keyword{\\2}\\3/g" \
