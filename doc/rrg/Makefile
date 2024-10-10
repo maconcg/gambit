@@ -157,7 +157,7 @@ toolshed/colorize.sed: toolshed/colorize.sed.sh toolshed/data/syntax-words
 toolshed/gambit.css: toolshed/gambit.css.in toolshed/make-css.sh
 	sh -efu toolshed/make-css.sh toolshed/gambit.css.in > $@
 
-toolshed/make-css.sh: toolshed/data/*-colors.sh
+toolshed/make-css.sh: toolshed/data/*-colors
 
 ${html-sample-phonies}: gambit-color-samples.html
 gambit-color-samples.html: gambit-cs-css-parens.html
