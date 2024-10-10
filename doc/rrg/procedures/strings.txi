@@ -97,7 +97,7 @@ any number of arguments.
 (string=? "abcd" "Abcd")              @ok{#f}
 (string=?)                            @ok{#t}
 (string=? (string))                   @ok{#t}
-(string=? "a" "a" "a")                @ok{#t}
+(string=? "a" "a" (string #\a))       @ok{#t}
 (string=? "a" #\a)                    @exception{type}
 @end lisp
 @end deftypefn

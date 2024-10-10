@@ -8,12 +8,12 @@
 Returns @code{#t} if @var{obj} is a pair.
 
 @lisp
-(pair? '(a . b))  @ok{#t}
-(pair? '(a b c))  @ok{#t}
-(pair? '(() ()))  @ok{#t}
-(pair? '(#() ())) @ok{#t}
-(pair? '())       @ok{#f}
-(pair? '#(a b))   @ok{#f}
+(pair? '(a . b))     @ok{#t}
+(pair? '(a b c))     @ok{#t}
+(pair? '(() ()))     @ok{#t}
+(pair? '(#() ()))    @ok{#t}
+(pair? '())          @ok{#f}
+(pair? #u8(#\a #\b)) @ok{#f}
 @end lisp
 @end deftypefn
 

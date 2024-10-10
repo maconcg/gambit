@@ -12,12 +12,14 @@ define-values
 delay
 delay-force
 do
+else
 error
 guard
 if
 import
 include
 include-ci
+λ
 lambda
 let
 let*

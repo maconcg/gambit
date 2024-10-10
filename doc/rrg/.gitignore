@@ -8,6 +8,7 @@ html/
 tests/
 procedures/c/
 **/.stamp
+toolshed/c/
 toolshed/colorize.sed
 toolshed/gambit.css
 toolshed/today.txi

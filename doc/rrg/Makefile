@@ -9,12 +9,15 @@ html-modular-phonies := html-modules html-pristine-modules html-css-modules \
                         html-parens-modules html-css-modules \
                         html-css-parens-modules html-css-color-modules
 
-html-all-phonies := ${html-monolithic-phonies} ${html-modular-phonies}
+html-sample-phonies := samples sample color-samples color-sample html-samples \
+ html-sample html-color-samples html-color-sample color-html-samples \
+ color-html-sample
 
 .PHONY: default all all-html html-all all-html-monoliths html-monoliths-all \
  all-html-modules html-all-modules all-monoliths monoliths-all clean \
  clean-intermediate mostlyclean info txt epub ${html-monolithic-phonies} \
- ${html-modular-phonies} tests clean-tests
+ ${html-modular-phonies} ${html-sample-phonies} tests clean-tests \
+ clean-samples
 
 all: info all-html txt
 all-html html-all: all-html-monoliths all-html-modules
@@ -22,16 +25,23 @@ all-html-monoliths html-all-monoliths: ${html-monolithic-phonies}
 all-html-modules html-all-modules: ${html-modular-phonies}
 all-monoliths monoliths-all: info txt all-html-monoliths
 
-clean: clean-intermediate clean-tests
+clean: clean-intermediate clean-samples clean-tests
 	rm -fr html/ html-parens/ html-css/ html-css-parens/
 	rm -f gambit.info gambit.txt gambit.html gambit-parens.html \
 		gambit-css.html gambit-css-parens.html gambit.epub
 
-clean-intermediate mostlyclean:
+clean-intermediate mostlyclean: clean-intermediate-samples
 	rm -fr html-pristine/ html-css-color/ html-css-color-parens/ procedures/c/
 	rm -f gambit-spans.txi gambit-pristine.html gambit-css-color.html \
 		gambit-css-color-parens.html toolshed/gambit.css \
-		toolshed/colorize.sed toolshed/today.txi
+		toolshed/colorize.sed
+
+clean-samples clean-sample: clean-intermediate-samples
+	rm -f gambit-color-samples.html
+
+clean-intermediate-samples clean-samples-intermediate:
+	rm -fr toolshed/c/
+	rm -f gambit-cs-css.html gambit-cs-css-parens.html
 
 clean-tests:
 	rm -fr tests/
@@ -43,12 +53,11 @@ tests/.stamp: procedures/*.txi toolshed/extract-tests.sh
 	done
 	touch $@
 
-gambit.txi: prose/* procedures/*.txi \
-            toolshed/copying.txi toolshed/macros.txi \
-            toolshed/today.txi toolshed/vars.txi \
-            toolshed/licenses/LICENSE-2.0.txt \
+gambit.txi: prose/* procedures/*.txi toolshed/copying.txi toolshed/macros.txi \
+            toolshed/vars.txi toolshed/licenses/LICENSE-2.0.txt \
             toolshed/licenses/lgpl-2.1.texi
-gambit.txi: 
+
+gambit.txi:
 	test -f $@ && touch $@
 
 info: gambit.info
@@ -116,9 +125,6 @@ procedures/c/strings.txi: procedures/strings.txi toolshed/colorize.sed
 	test -d procedures/c || mkdir procedures/c
 	sed -f toolshed/colorize.sed procedures/strings.txi > $@
 
-toolshed/today.txi:
-	echo "@set TODAY $$(date +'%B %d, %Y')" > $@
-
 toolshed/colorize.sed: toolshed/colorize.sed.sh toolshed/data/syntax-words
 	sh -efu toolshed/colorize.sed.sh > $@
 
@@ -126,6 +132,27 @@ toolshed/gambit.css: toolshed/gambit.css.in toolshed/make-css.sh
 	sh -efu toolshed/make-css.sh toolshed/gambit.css.in > $@
 
 toolshed/make-css.sh: toolshed/data/*-colors.sh
+
+${html-sample-phonies}: gambit-color-samples.html
+gambit-color-samples.html: gambit-cs-css-parens.html
+	ln -f gambit-cs-css-parens.html $@
+
+gambit-cs-css.html: toolshed/c/color-samples.txi toolshed/gambit.css
+	texi2any -o $@ --html --css-include=toolshed/gambit.css \
+		--no-split toolshed/c/color-samples.txi
+
+gambit-cs-css-parens.html: gambit-cs-css.html toolshed/parenthesize-defs.sed
+	sed -f toolshed/parenthesize-defs.sed gambit-cs-css.html > $@
+
+toolshed/c/color-samples.txi: toolshed/color-samples.txi toolshed/colorize.sed
+	test -d toolshed/c || mkdir toolshed/c
+	sed -f toolshed/colorize.sed toolshed/color-samples.txi > $@
+
+toolshed/color-samples.txi: toolshed/macros.txi toolshed/vars.txi
+	test -f $@ && touch $@
+
+color-samples-spans.txi: toolshed/color-samples.txi toolshed/colorize.sed
+	sed -f toolshed/colorize.sed toolshed/color-samples.txi > $@
 
 html-pristine-modules: html-pristine/.stamp
 html-pristine/.stamp: gambit.txi

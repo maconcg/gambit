@@ -1,6 +1,5 @@
 @c Copyright (c) 2024 by Macon Gambill, All Rights Reserved.
 @set REVISION Revised
-@set UPDATED @value{TODAY}
 @set VERSION 4.9.5
 
 @set HOMEPAGEURL https://gambitscheme.org
