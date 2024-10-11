@@ -59,6 +59,10 @@
 @inlinefmtifelse{tex,``\text\'',@quotedblleft{}\text\@quotedblright{}}
 @end macro
 
+@macro serial {s}
+@inlinefmtifelse{html,@inlineraw{html,<span class="serial">\s\</span>},\s\}
+@end macro
+
 @macro sharp {s}
 @inlinefmtifelse{html,@inlineraw{html,<span class="sharp">\s\</span>},\s\}
 @end macro

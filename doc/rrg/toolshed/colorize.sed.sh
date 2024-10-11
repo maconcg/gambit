@@ -1,126 +1,143 @@
 # Copyright (c) 2024 by Macon Gambill, All Rights Reserved.
 readonly chars="$(sort -r toolshed/data/char-names)" # longest first
+readonly char_refs="$(<toolshed/data/html-character-references)"
 readonly sharps="$(<toolshed/data/sharp-objects)"
 readonly syntax="$(<toolshed/data/syntax-words)"
-readonly vectors="$(<toolshed/data/homogeneous-vectors)"
+readonly homogeneous_vectors="$(<toolshed/data/homogeneous-vectors)"
+readonly identifier_chars='[-[:alnum:]!$%&*+./:<=>?@^_~]'
+lpunct=\[\'',\\`)([:blank:][]'
+rpunct=\['])[:blank:]]'
 
-readonly punct=\[\'',\\`)([:blank:][]'
-readonly ident='[-[:alnum:]!$%&*+./:<=>?@^_~]'
+fstr() {
+    printf 's/\\(%%s\\)%s\\(%%s\\)%s\\(%%s\\)/%%s%s%%s%s%s%%s/%%s\\n' \
+           "${1?prefix}" "${2?suffix}" "${3?new prefix}" \
+           "${4?new suffix}"
+}
 
-readonly box='@hashchar{}@ampchar{}'
-readonly char='@hashchar{}@backslashchar{}'
+gensub() {
+    printf "$(fstr "${1?}" "${3?}" "${4?}" "${6?}")" \
+           '^'        "${2:?}"  '$'        ''    "${5?}"  ''    '' \
+           '^'        "$2"      "$rpunct"  ''    "$5"     '\3'  '' \
+           "$lpunct"  "$2"      '$'        '\1'  "$5"     ''    '' \
+           "$lpunct"  "$2"      "$rpunct"  '\1'  "$5"     '\3'  'g'
+}
 
 # We only want to colorize the text to the left of "@ok{".  Store all
 # text to the right of "@ok{" in the hold space; at the end, use a
 # substitution to remove that text from the pattern space.
-printf '%s\n' '/^@lisp$/,/^@end lisp$/ {
-  /@ok{/ {
-    h
-    x
-    s/^.*@ok{//
-    x
-  }'
+printf '%s\n' \
+       '/^@lisp$/,/^@end lisp$/ {' \
+       '  /@ok{/ {' \
+       '  h' \
+       '  x' \
+       '  s/^.*@ok{//' \
+       '  x' \
+       '}' \
+       '/#./ {'
 
-printf '  %s\n' '/#./ {'
-
-# Wrap each #!sharp in @sharp{}.
-for s in $sharps; do
-    printf '    %s\n' \
-           "s/^#!$s/@sharp{@hashchar{}@U{0021}$s}/" \
-           "s/\\($punct\\)#!$s/\\1@sharp{@hashchar{}@U{0021}$s}/g"
-done
-
-# wrap each #\character in @char{}.
+# Wrap each #\char in @char{}.
 for s in $chars 'x[[:xdigit:]]\{1,\}' 'u[[:xdigit:]]\{4\}' 'U[[:xdigit:]]\{8\}'; do
-    printf '    %s\n' \
-           "s/^#\\\\\\($s\\)/@char{$char\\1}/" \
-           "s/\\($punct\\)#\\\\\\($s\\)/\\1@char{$char\2}/g"
+    gensub '#\\\\' "$s" '' '@char{@value{num}@backslashchar{}' '\2' '}'
 done
 
-printf '    %s\n' \
-       "s/^#\\\\\"/@char{$char@U{0022}}/" \
-       "s/\\($punct\\)#\\\\\"/\\1@char{$char@U{0022}}/g" \
-       "s/^#\\\\\\(.\\)/@char{$char\\1/" \
-       "s/\\($punct\\)#\\\\\\(.\\)/\\1@char{$char\2}/g"
+for pair in $char_refs; do
+    char="${pair%%-*}"
+    ref="${pair##*-}"
+    case "$char" in
+        \\) char='\\\\' ;;
+        \[) char='\\\[' ;;
+        \*) char='\\*' ;;
+        .) char='\\.' ;;
+    esac
+    gensub '#\\\\' "$char" '' '@char{@value{num}@backslashchar{}@value{' "$ref" '}}'
+done
 
 # Wrap each Boolean in @boolean{}.
 for s in true false f t; do
-    printf '    %s\n' \
-           "s/^#\\($s\\)/@boolean{@hashchar{}$s}/" \
-           "s/\\($punct\\)#$s/\\1@boolean{@hashchar{}$s}/g"
+    gensub '#' "$s" '' '@boolean{@value{num}' "$s" '}'
 done
+
+_rpunct="$rpunct"; rpunct='.'
 
 # Wrap each #& in @box{}.
-printf '    %s\n' \
-       "s/^#&/@box{$box}/g" \
-       "s/\\($punct\\)#&/\\1@box{$box}/g"
+gensub '#' '&' '' '@box{@value{num}' '@value{amp}' '}'
 
-# Avoid dimming empty vectors.
-for s in $vectors ''; do
-    printf '    %s\n' \
-           "s/^#$s(\\([[:blank:]]*\\))/@hashchar{}$s@U{0028}\\1@U{0029}/" \
-           "s/\\($box\\)#$s(\\([[:blank:]]*\\))/\\1@hashchar{}$s@U{0028}\\1@U{0029}/" \
-           "s/\\($punct\\)#$s(\\([[:blank:]]*\\))/\\1@hashchar{}$s@U{0028}\\2@U{0029}/g"
+# Wrap each #!sharp in @sharp{}.
+for s in $sharps; do
+    gensub '#!' "$s" '' '@sharp{@value{num}@value{excl}' "$s" '}'
 done
 
-printf '  %s\n' '}'
+# Wrap single-character chars in @char{}
+gensub '#\\\\' '.' '' '@char{@value{num}@backslashchar{}' '\2' '}'
 
-# Avoid dimming the empty list.
-printf '  %s\n' \
-       "s/^(\\([[:blank:]]*\\))/@U{0028}\\1@U{0029}/" \
-       "s/\\(@box{$box}\\)(\\([[:blank:]]*\\))/\\1@U{0028}\\2@U{0029}/g" \
-       "s/\\($punct\\)(\\([[:blank:]]*\\))/\\1@U{0028}\\2@U{0029}/g" \
+rpunct="$_rpunct"
 
-# Wrap each special syntactic form in @syntax{}.
-for form in $syntax; do
-    case "$form" in
-        *\**) s="${form%%\**}\\*${form##*\*}" ;;
-        *)    s="$form" ;;
-    esac
-
-    printf '  %s\n' \
-           "s/\\(([[:blank:]]*\\)$s\\\$/\\1@syntax{$s}/g" \
-           "s/\\(([[:blank:]]*\\)$s\\([])[:blank:]]\\)/\\1@syntax{$s}\\2/g"
-done
+# Wrap each #serial object identifier in @serial{}.
+gensub '#' '[[:digit:]]\{1,\}' '' '@serial{@value{num}' '\2' '}'
 
 # Wrap each keyword: in @keyword{}.
-printf '  %s\n' \
-       "s/^\\($ident\\{1,\\}:\\)\\($punct\\)/@keyword{\\1}\\2/g" \
-       "s/\\($punct\\)\\($ident\\{1,\\}:\\)\\($punct\\)/\\1@keyword{\\2}\\3/g" \
-       "s/\\($punct\\)\\($ident\\{1,\\}:\\)\\($punct\\)/\\1@keyword{\\2}\\3/g" \
-       "s/\\($punct\\)\\($ident\\{1,\\}:\\)\$/\\1@keyword{\\2}/g"
+gensub '' "$identifier_chars\\{1,\\}" ':' '@keyword{' '\2' '@value{colon}}'
 
-# Dim vectors.
-for s in $vectors ''; do
-    printf '  %s\n' \
-           "s/#$s(/@paren{@hashchar{}$s@U{0028}}/g"
+_lpunct="$lpunct"; lpunct='.'
+
+# Avoid dimming empty vectors.
+for s in $homogeneous_vectors ''; do
+    gensub "#$s(" '[[:blank:]]*' ')' "@value{num}$s@value{lpar}" '\2' '@value{rpar}'
 done
 
+printf '%s\n' '}'
+
+# Avoid dimming the empty list.
+gensub "(" '[[:blank:]]*' ')' "@value{lpar}" '\2' '@value{rpar}'
+
+lpunct="$_lpunct"
+
+_rpunct="$rpunct"; rpunct='.';
+
+# Dim vector-beginning delimiters.
+for s in $homogeneous_vectors; do
+    gensub '#' "$s" '(' '@paren{@value{num}' '\2' '@value{lpar}}'
+done
+gensub '#' '(' '' '@paren{@value{num}' '@value{lpar}}' ''
+
 # Dim circular lists.
-printf '  %s\n' \
-       's/#\([[:digit:]]\{1,\}=\)(/@paren{@hashchar{}\1@U{0028}}/g'
+gensub '#' '[[:digit:]]\{1,\}' '=(' '@paren{@value{num}' '\2' \
+       '@value{equals}@value{lpar}}'
+
+rpunct="$_rpunct"
+
+# Wrap each special syntactic form in @syntax{}.
+for s in $syntax; do
+    case "$s" in
+        *\**) form="${s%%\**}\\*${s##*\*}" ;;
+        *) form="$s" ;;
+    esac
+    gensub '' "$form" '' '@syntax{' '\2' '}'
+done
+
+_rpunct="$rpunct"; rpunct='.'; _lpunct="$lpunct"; lpunct='.'
+
+gensub '' '\\"' '' '@backslashchar{}' '@value{quot}' ''
 
 # Dim other "punctuation" characters.
-printf '  %s\n' \
-       "s/'/@paren{@U{0027}}/g" \
-       's/`/@paren{@U{0060}}/g' \
-       's/,/@paren{@comma{}}/g' \
-       's/(/@paren{@U{0028}}/g' \
-       's/)/@paren{@U{0029}}/g' \
-       's/\[/@paren{@U{005B}}/g' \
-       's/]/@paren{@U{005D}}/g' \
-       's/@atchar{}/@paren{@atchar{}}/g' \
-       's/^\.[[:blank:]]/@paren{@U{002E}}/' \
-       's/\([[:blank:]]\)\.\([[:blank:]]\)/\1@paren{@U{002E}}\2/' \
-       's/\([[:blank:]]\)\.$/\1@paren{@U{002E}}/'
+printf '%s\n' \
+       "s/'/@paren{@value{apos}}/g" \
+       's/,/@paren{@value{comma}}/g' \
+       's/`/@paren{@value{grave}}/g' \
+       's/\[/@paren{@value{lbrack}}/g' \
+       's/(/@paren{@value{lpar}}/g' \
+       's/]/@paren{@value{rbrack}}/g' \
+       's/)/@paren{@value{rpar}}/g' \
+       's/\./@paren{@value{period}}/g' \
+       's/@atchar{}/@paren{@atchar}/g'
+
+lpunct="$_lpunct"; rpunct="$_rpunct"
 
 # Wrap each "string" in @string{}.
-printf '  %s\n' \
-       's/\\"/@backslashchar{}@U{0022}/g' \
-       's/"\([^"]*\)"/@string{"\1"}/g'
+printf '  %s\n' 's/"\([^"]*\)"/@string{@value{quot}\1@value{quot}}/g'
 
 # Add back the part we've been keeping in the hold space.
-printf '  %s\n' \
+printf '%s\n' \
        '/@ok{/ {' \
        '  s/@ok{.*$/@ok{/' \
        '  G' \
@@ -128,5 +145,19 @@ printf '  %s\n' \
        '}'
 
 # Wrap comments last so they may occur to the right of "@ok{..}".
-printf '  %s\n' 's/\([[:blank:]]\);\(.*\)$/\1@codecomment{;\2}/
-}'
+printf '%s\n' 's/\([[:blank:]]\);\(.*\)$/\1@codecomment{;\2}/'
+
+# Replace literal character occurrences with character references.
+for pair in $char_refs; do
+    char="${pair%%-*}"
+    ref="${pair##*-}"
+    case "$char" in
+        \\) char='\\' ;;
+        \[) char='\[' ;;
+        \*) char='\*' ;;
+        .) char='\.' ;;
+    esac
+    printf 's/%s/@value{%s}/g\n' "$char" "$ref"
+done
+
+printf '%s\n' '}'
