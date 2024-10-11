@@ -31,6 +31,7 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
         span.keyword {color: %keyword%}
         span.ok {color: %ok%}
         span.problem {background-color: %problem%}
+        span.serial {color: %serial%}
         span.sharp {color: %sharp%}
         span.string {color: %string%}
         span.syntax {color: %syntax%}

@@ -19,13 +19,11 @@ html-monoliths := gambit.html gambit-css.html gambit-parens.html \
 html-stamps := html/.stamp html-css/.stamp html-css-color/.stamp \
  html-css-color-parens/.stamp html-css-parens/.stamp html-pristine/.stamp
 
-html-samples := gambit-color-samples.html gambit-cs-css.html \
- gambit-cs-css-parens.html
+html-samples := gambit-color-samples.html gcs-css-color-parens.html \
+ gcs-css-color.html gcs-css.html gcs-css-parens.html \
+ gcs-parens.html gcs-pristine.html
 
 html-for-dist-dev := ${html-monoliths} ${html-samples} html/.stamp
-
-# .NOTPARALLEL is not necessary when using GNU Make.
-.NOTPARALLEL: dist dist-dev
 
 .PHONY: default all all-html html-all all-html-monoliths html-monoliths-all \
  all-html-modules html-all-modules all-monoliths monoliths-all clean \
@@ -56,21 +54,24 @@ clean-samples clean-sample: clean-intermediate-samples
 
 clean-intermediate-samples clean-samples-intermediate:
 	rm -fr toolshed/c/
-	rm -f gambit-cs-css.html gambit-cs-css-parens.html
+	rm -f gcs-css-color-parens.html gcs-css-color.html gcs-css.html \
+		gcs-css-parens.html gcs-parens.html gcs-pristine.html
 
 clean-tests:
 	rm -fr tests/
 
-dist-dev dev-dist: clean .WAIT gambit-doc-dev.tgz
-dist: clean .WAIT gambit-doc.tgz
-
-make-tarball := tar -czf $@ -s '%html/\..*%%' -s '_^_gambit-doc/_'
+# .NOTPARALLEL is not necessary when using GNU Make.
+.NOTPARALLEL: dist dist-dev
+dist-dev dev-dist: clean gambit-doc-dev.tgz
+dist: clean gambit-doc.tgz
 
 gambit-doc-dev.tgz: gambit.info gambit.txt ${html-for-dist-dev}
-	${make-tarball} gambit.{info,txt} gambit*.html html/
+	tar -czf $@ -s '%html/\..*%%' -s '_^_gambit-doc/_' \
+		gambit.info gambit.txt gambit*.html gcs*.html html/
 
 gambit-doc.tgz: gambit.info gambit.txt gambit.html html/.stamp
-	${make-tarball} gambit.{info,txt} gambit.html html/
+	tar -czf $@ -s '%html/\..*%%' -s '_^_gambit-doc/_' \
+		gambit.{info,txt} gambit.html html/
 
 tests: tests/.stamp
 tests/.stamp: procedures/*.txi toolshed/extract-tests.sh
@@ -105,7 +106,7 @@ gambit.html: gambit-css-color-parens.html
 
 html-modules: html/.stamp
 html/.stamp: html-css-color-parens/.stamp
-	test -d html/ || mkdir html/
+	mkdir -p html/
 	for f in html-css-color-parens/*.html html-css-color/*.css; do\
 		ln -f "$$f" html/"$${f#*/}";\
 	done
@@ -144,7 +145,7 @@ procedures/c/.stamp: procedures/c/pairs-lists.txi
 	touch $@
 
 procedures/c/pairs-lists.txi: procedures/pairs-lists.txi toolshed/colorize.sed
-	test -d procedures/c || mkdir procedures/c
+	mkdir -p procedures/c/
 	sed -f toolshed/colorize.sed procedures/pairs-lists.txi > $@
 
 toolshed/colorize.sed: toolshed/colorize.sed.sh toolshed/data/syntax-words
@@ -155,19 +156,32 @@ toolshed/gambit.css: toolshed/gambit.css.in toolshed/make-css.sh
 
 toolshed/make-css.sh: toolshed/data/*-colors
 
-${html-sample-phonies}: gambit-color-samples.html
-gambit-color-samples.html: gambit-cs-css-parens.html
-	ln -f gambit-cs-css-parens.html $@
+${html-sample-phonies}: ${html-samples}
+gambit-color-samples.html: gcs-css-color-parens.html
+	ln -f gcs-css-color-parens.html $@
 
-gambit-cs-css.html: toolshed/c/color-samples.txi toolshed/gambit.css
+gcs-pristine.html: toolshed/color-samples.txi
+	texi2any -o $@ --html --no-split toolshed/color-samples.txi
+
+gcs-parens.html: gcs-pristine.html toolshed/parenthesize-defs.sed
+	sed -f toolshed/parenthesize-defs.sed gcs-pristine.html > $@
+
+gcs-css.html: toolshed/color-samples.txi toolshed/gambit.css
+	texi2any -o $@ --html --css-include=toolshed/gambit.css \
+		--no-split toolshed/color-samples.txi
+
+gcs-css-parens.html: gcs-css.html toolshed/parenthesize-defs.sed
+	sed -f toolshed/parenthesize-defs.sed gcs-css.html > $@
+
+gcs-css-color.html: toolshed/c/color-samples.txi toolshed/gambit.css
 	texi2any -o $@ --html --css-include=toolshed/gambit.css \
 		--no-split toolshed/c/color-samples.txi
 
-gambit-cs-css-parens.html: gambit-cs-css.html toolshed/parenthesize-defs.sed
-	sed -f toolshed/parenthesize-defs.sed gambit-cs-css.html > $@
+gcs-css-color-parens.html: gcs-css-color.html toolshed/parenthesize-defs.sed
+	sed -f toolshed/parenthesize-defs.sed gcs-css-color.html > $@
 
 toolshed/c/color-samples.txi: toolshed/color-samples.txi toolshed/colorize.sed
-	test -d toolshed/c || mkdir toolshed/c
+	mkdir -p toolshed/c/
 	sed -f toolshed/colorize.sed toolshed/color-samples.txi > $@
 
 toolshed/color-samples.txi: toolshed/macros.txi toolshed/vars.txi
@@ -183,7 +197,7 @@ html-pristine/.stamp: gambit.txi
 
 html-parens-modules: html-parens/.stamp
 html-parens/.stamp: html-pristine/.stamp toolshed/parenthesize-defs.sed
-	test -d html-parens/ || mkdir html-parens/
+	mkdir -p html-parens/
 	for h in html-pristine/*.html; do\
 		sed -f toolshed/parenthesize-defs.sed "$$h"\
 			> html-parens/"$${h#*/}";\
@@ -204,7 +218,7 @@ html-css-color/.stamp: gambit-spans.txi toolshed/gambit.css
 
 html-css-parens-modules: html-css-parens/.stamp
 html-css-parens/.stamp: html-css/.stamp toolshed/parenthesize-defs.sed
-	test -d html-css-parens/ || mkdir html-css-parens/
+	mkdir -p html-css-parens/
 	for h in html-css/*.html; do\
 		sed -f toolshed/parenthesize-defs.sed "$$h"\
 			> html-css-parens/"$${h#*/}";\
@@ -214,7 +228,7 @@ html-css-parens/.stamp: html-css/.stamp toolshed/parenthesize-defs.sed
 
 html-css-color-parens-modules: html-css-color-parens/.stamp
 html-css-color-parens/.stamp: html-css-color/.stamp toolshed/parenthesize-defs.sed
-	test -d html-css-color-parens/ || mkdir html-css-color-parens/
+	mkdir -p html-css-color-parens/
 	for h in html-css-color/*.html; do\
 		sed -f toolshed/parenthesize-defs.sed "$$h"\
 			> html-css-color-parens/"$${h#*/}";\

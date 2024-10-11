@@ -34,6 +34,7 @@ substitute() {
                     s/%link-visited%/$link_visited/
                     s/%ok%/$ok/
                     s/%problem%/$problem/
+                    s/%serial%/$serial/
                     s/%sexp-paren%/$sexp_paren/
                     s/%sharp%/$sharp/
                     s/%string%/$string/
@@ -72,6 +73,7 @@ link="$mo_blue_warmer"
 link_visited="$link"
 ok="$mo_slate"
 problem="$mo_bg_yellow_intense"
+serial="$mo_fg_ochre"
 sexp_paren="$mo_fg_dim"
 sharp="$mo_cyan"
 string="$mo_green"
@@ -108,6 +110,7 @@ link="$mv_blue_warmer"
 link_visited="$link"
 ok="$mv_slate"
 problem="$mv_bg_yellow_intense"
+serial="$mv_fg_ochre"
 sexp_paren="$mv_fg_dim"
 sharp="$mv_cyan"
 string="$mv_green"

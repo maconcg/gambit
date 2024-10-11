@@ -15,9 +15,10 @@ toolshed/today.txi
 *.tgz
 *.tar.*
 GNUmakefile
-makefile
+Makefile
 gambit*.html
 gambit*.txt
 gambit.epub
 gambit-spans.txi
 gambit.info
+gcs*.html
