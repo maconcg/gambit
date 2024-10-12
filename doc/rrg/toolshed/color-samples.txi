@@ -55,14 +55,14 @@ mandatory.
 @lisp
 (lambda (x) x) @ok{#<procedure #2>}
 (define f '#0=(if #!eof f f: #\f #f "f" '#&f #\" #\' #\& . #0#))
-(cadddr (#2 f)) @ok{f} ;; N.B. f (see f)
+(cadddr (#2 f)) @ok{f:} ;; N.B. f (see f)
 @end lisp
 
 @lisp
 (map null? ;; note this
      (append (cons (or (box? '#&"box") (keyword? imakey:)) '())
              (list ( and #s8(   ) #false) #\x62)
-             '(#() t: "" #u8(0 1) . ()))) @ok{(#f #f #f #t #f #f)}
+             '(#() t: "" #u8(0 1) . ()))) @ok{(#f #f #f #f #f #f #f)}
 @end lisp
 
 @lisp

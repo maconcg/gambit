@@ -148,13 +148,20 @@ procedures/c/pairs-lists.txi: procedures/pairs-lists.txi toolshed/colorize.sed
 	mkdir -p procedures/c/
 	sed -f toolshed/colorize.sed procedures/pairs-lists.txi > $@
 
-toolshed/colorize.sed: toolshed/colorize.sed.sh toolshed/data/syntax-words
+toolshed/colorize.sed: toolshed/colorize.sed.sh
 	sh -efu toolshed/colorize.sed.sh > $@
+
+toolshed/colorize.sed.sh: toolshed/data/char-names toolshed/data/chars-to-dim \
+ toolshed/data/homogeneous-vectors toolshed/data/html-char-refs \
+ toolshed/data/sharp-objects toolshed/data/syntax-words
+	test -f $@ && touch $@
 
 toolshed/gambit.css: toolshed/gambit.css.in toolshed/make-css.sh
 	sh -efu toolshed/make-css.sh toolshed/gambit.css.in > $@
 
 toolshed/make-css.sh: toolshed/data/*-colors
+
+toolshed/vars.txi: toolshed/html-char-refs.txi
 
 ${html-sample-phonies}: ${html-samples}
 gambit-color-samples.html: gcs-css-color-parens.html

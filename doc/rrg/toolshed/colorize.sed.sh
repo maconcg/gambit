@@ -1,12 +1,24 @@
 # Copyright (c) 2024 by Macon Gambill, All Rights Reserved.
-readonly chars="$(sort -r toolshed/data/char-names)" # longest first
-readonly char_refs="$(<toolshed/data/html-character-references)"
-readonly sharps="$(<toolshed/data/sharp-objects)"
-readonly syntax="$(<toolshed/data/syntax-words)"
-readonly homogeneous_vectors="$(<toolshed/data/homogeneous-vectors)"
+readonly chars=$(sort -r toolshed/data/char-names) # longest first
+readonly char_refs=$(<toolshed/data/html-char-refs)
+readonly chars_to_dim=$(<toolshed/data/chars-to-dim)
+readonly sharps=$(<toolshed/data/sharp-objects)
+readonly syntax=$(<toolshed/data/syntax-words)
+readonly homogeneous_vectors=$(<toolshed/data/homogeneous-vectors)
 readonly identifier_chars='[-[:alnum:]!$%&*+./:<=>?@^_~]'
 lpunct=\[\'',\\`)([:blank:][]'
 rpunct=\['])[:blank:]]'
+
+bescape() {
+    case "${1:?literal character}" in
+        \/) printf '%s' '\/' ;;
+        \\) printf '%s' '\\' ;;
+        \[) printf '%s' '\[' ;;
+        \*) printf '%s' '\*' ;;
+        .)  printf '%s' '\.' ;;
+        *)  printf '%s' "$1" ;;
+    esac
+}
 
 fstr() {
     printf 's/\\(%%s\\)%s\\(%%s\\)%s\\(%%s\\)/%%s%s%%s%s%s%%s/%%s\\n' \
@@ -15,10 +27,14 @@ fstr() {
 }
 
 gensub() {
+    # The fifth printed line is a duplicate of the fourth.  This is so
+    # certain consecutive tokens are correctly matched.  This seems to
+    # be the most portable way to do with basic regular expressions.
     printf "$(fstr "${1?}" "${3?}" "${4?}" "${6?}")" \
            '^'        "${2:?}"  '$'        ''    "${5?}"  ''    '' \
            '^'        "$2"      "$rpunct"  ''    "$5"     '\3'  '' \
            "$lpunct"  "$2"      '$'        '\1'  "$5"     ''    '' \
+           "$lpunct"  "$2"      "$rpunct"  '\1'  "$5"     '\3'  'g' \
            "$lpunct"  "$2"      "$rpunct"  '\1'  "$5"     '\3'  'g'
 }
 
@@ -41,15 +57,8 @@ for s in $chars 'x[[:xdigit:]]\{1,\}' 'u[[:xdigit:]]\{4\}' 'U[[:xdigit:]]\{8\}';
 done
 
 for pair in $char_refs; do
-    char="${pair%%-*}"
-    ref="${pair##*-}"
-    case "$char" in
-        \\) char='\\\\' ;;
-        \[) char='\\\[' ;;
-        \*) char='\\*' ;;
-        .) char='\\.' ;;
-    esac
-    gensub '#\\\\' "$char" '' '@char{@value{num}@backslashchar{}@value{' "$ref" '}}'
+    gensub '#\\\\' "$(bescape "${pair%%-*}")" '' \
+           '@char{@value{num}@backslashchar{}@value{' "${pair##*-}" '}}'
 done
 
 # Wrap each Boolean in @boolean{}.
@@ -88,8 +97,10 @@ printf '%s\n' '}'
 gensub "(" '[[:blank:]]*' ')' "@value{lpar}" '\2' '@value{rpar}'
 
 lpunct="$_lpunct"
-
 _rpunct="$rpunct"; rpunct='.';
+
+# Wrap each keyword: in @keyword{}.
+gensub '' "$identifier_chars\\{1,\\}" ':' '@keyword{' '\2' '@value{colon}}'
 
 # Dim vector-beginning delimiters.
 for s in $homogeneous_vectors; do
@@ -107,34 +118,26 @@ rpunct="$_rpunct"
 for s in $syntax; do
     case "$s" in
         *\**) form="${s%%\**}\\*${s##*\*}" ;;
-        *) form="$s" ;;
+        *)    form="$s" ;;
     esac
     gensub '' "$form" '' '@syntax{' '\2' '}'
 done
 
-_rpunct="$rpunct"; rpunct='.'; _lpunct="$lpunct"; lpunct='.'
+_rpunct="$rpunct"; rpunct='.'
+_lpunct="$lpunct"; lpunct='.'
 
 gensub '' '\\"' '' '@backslashchar{}' '@value{quot}' ''
 
 # Dim other "punctuation" characters.
-printf '%s\n' \
-       "s/'/@paren{@value{apos}}/g" \
-       's/,/@paren{@value{comma}}/g' \
-       's/`/@paren{@value{grave}}/g' \
-       's/\[/@paren{@value{lbrack}}/g' \
-       's/(/@paren{@value{lpar}}/g' \
-       's/]/@paren{@value{rbrack}}/g' \
-       's/)/@paren{@value{rpar}}/g' \
-       's/\./@paren{@value{period}}/g' \
-       's/@atchar{}/@paren{@atchar}/g'
+for pair in $chars_to_dim; do
+    printf 's/%s/@paren{@value{%s}}/g\n' "$(bescape "${pair%%-*}")" "${pair#*-}"
+done
 
-lpunct="$_lpunct"; rpunct="$_rpunct"
+lpunct="$_lpunct"
+rpunct="$_rpunct"
 
 # Wrap each "string" in @string{}.
-printf '  %s\n' 's/"\([^"]*\)"/@string{@value{quot}\1@value{quot}}/g'
-
-# Wrap each keyword: in @keyword{}.
-printf '%s\n' "s/\\($identifier_chars\\{1,\\}\\):/@keyword{\\1@value{colon}}/g"
+printf '%s\n' 's/"\([^"]*\)"/@string{@value{quot}\1@value{quot}}/g'
 
 # Add back the part we've been keeping in the hold space.
 printf '%s\n' \
@@ -149,15 +152,7 @@ printf '%s\n' 's/\([[:blank:]]\);\(.*\)$/\1@codecomment{;\2}/'
 
 # Replace literal character occurrences with character references.
 for pair in $char_refs; do
-    char="${pair%%-*}"
-    ref="${pair##*-}"
-    case "$char" in
-        \\) char='\\' ;;
-        \[) char='\[' ;;
-        \*) char='\*' ;;
-        .) char='\.' ;;
-    esac
-    printf 's/%s/@value{%s}/g\n' "$char" "$ref"
+    printf 's/%s/@value{%s}/g\n' "$(bescape "${pair%-*}")" "${pair#*-}"
 done
 
 printf '%s\n' '}'

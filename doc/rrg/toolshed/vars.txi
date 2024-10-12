@@ -1,4 +1,6 @@
 @c Copyright (c) 2024 by Macon Gambill, All Rights Reserved.
+@include toolshed/html-char-refs.txi
+
 @set REVISION Revised
 @set VERSION 4.9.5
 
@@ -12,49 +14,3 @@
 @set R4RS @inlinefmtifelse{info,@acronym{R4RS},@inlinefmtifelse{plaintext,@acronym{R4RS},@acronym{R@sup{4}RS}}}
 
 @set RNRS @inlinefmtifelse{info,@acronym{RNRS},@inlinefmtifelse{plaintext,@acronym{RNRS},@acronym{R@sup{n}RS}}}
-
-@set amp @inlinefmtifelse{html,@inlineraw{html,&amp;},@ampchar{}}
-
-@set apos @inlinefmtifelse{html,@inlineraw{html,&apos;},@U{0027}}
-
-@set ast @inlinefmtifelse{html,@inlineraw{html,&ast;},@U{002A}}
-
-@set colon @inlinefmtifelse{html,@inlineraw{html,&colon;},@U{003A}}
-
-@set comma @inlinefmtifelse{html,@inlineraw{html,&comma;},@comma{}}
-
-@set commat @inlinefmtifelse{html,@inlineraw{html,&commat;},@atchar{}}
-
-@set equals @inlinefmtifelse{html,@inlineraw{html,&equals;},@U{003D}}
-
-@set excl @inlinefmtifelse{html,@inlineraw{html,&excl;},@U{0021}}
-
-@set grave @inlinefmtifelse{html,@inlineraw{html,&grave;},@U{0060}}
-
-@set gt @inlinefmtifelse{html,@inlineraw{html,&gt;},@U{003E}}
-
-@set lambda @inlinefmtifelse{html,@inlineraw{html,&lambda;},@U{03BB}}
-
-@set lbrack @inlinefmtifelse{html,@inlineraw{html,&lbrack;},@U{005B}}
-
-@set lpar @inlinefmtifelse{html,@inlineraw{html,&lpar;},@U{0028}}
-
-@set lt @inlinefmtifelse{html,@inlineraw{html,&lt;},@U{003C}}
-
-@set num @inlinefmtifelse{html,@inlineraw{html,&num;},@U{0023}}
-
-@set para @inlinefmtifelse{html,@inlineraw{html,&para;},@U{00B6}}
-
-@set period @inlinefmtifelse{html,@inlineraw{html,&period;},@U{002E}}
-
-@set quest @inlinefmtifelse{html,@inlineraw{html,&quest;},@U{003F}}
-
-@set quot @inlinefmtifelse{html,@inlineraw{html,&quot;},@U{0022}}
-
-@set rbrack @inlinefmtifelse{html,@inlineraw{html,&rbrack;},@U{005D}}
-
-@set rpar @inlinefmtifelse{html,@inlineraw{html,&rpar;},@U{0029}}
-
-@set sect @inlinefmtifelse{html,@inlineraw{html,&sect;},@U{00A7}}
-
-@set semi @inlinefmtifelse{html,@inlineraw{html,&semi;},@U{003B}}
