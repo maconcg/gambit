@@ -25,9 +25,6 @@ html-samples := gambit-color-samples.html gcs-css-color-parens.html \
 
 html-for-dist-dev := ${html-monoliths} ${html-samples} html/.stamp
 
-# .NOTPARALLEL is not necessary when using GNU Make.
-.NOTPARALLEL: dist dist-dev
-
 .PHONY: default all all-html html-all all-html-monoliths html-monoliths-all \
  all-html-modules html-all-modules all-monoliths monoliths-all clean \
  clean-intermediate mostlyclean info txt epub ${html-monolithic-phonies} \
@@ -63,8 +60,10 @@ clean-intermediate-samples clean-samples-intermediate:
 clean-tests:
 	rm -fr tests/
 
-dist-dev dev-dist: clean .WAIT gambit-doc-dev.tgz
-dist: clean .WAIT gambit-doc.tgz
+# .NOTPARALLEL is not necessary when using GNU Make.
+.NOTPARALLEL: dist dist-dev
+dist-dev dev-dist: clean gambit-doc-dev.tgz
+dist: clean gambit-doc.tgz
 
 gambit-doc-dev.tgz: gambit.info gambit.txt ${html-for-dist-dev}
 	tar -czf $@ -s '%html/\..*%%' -s '_^_gambit-doc/_' \
@@ -153,13 +152,20 @@ procedures/c/strings.txi: procedures/strings.txi toolshed/colorize.sed
 	mkdir -p procedures/c/
 	sed -f toolshed/colorize.sed procedures/strings.txi > $@
 
-toolshed/colorize.sed: toolshed/colorize.sed.sh toolshed/data/syntax-words
+toolshed/colorize.sed: toolshed/colorize.sed.sh
 	sh -efu toolshed/colorize.sed.sh > $@
+
+toolshed/colorize.sed.sh: toolshed/data/char-names toolshed/data/chars-to-dim \
+ toolshed/data/homogeneous-vectors toolshed/data/html-char-refs \
+ toolshed/data/sharp-objects toolshed/data/syntax-words
+	test -f $@ && touch $@
 
 toolshed/gambit.css: toolshed/gambit.css.in toolshed/make-css.sh
 	sh -efu toolshed/make-css.sh toolshed/gambit.css.in > $@
 
 toolshed/make-css.sh: toolshed/data/*-colors
+
+toolshed/vars.txi: toolshed/html-char-refs.txi
 
 ${html-sample-phonies}: ${html-samples}
 gambit-color-samples.html: gcs-css-color-parens.html
