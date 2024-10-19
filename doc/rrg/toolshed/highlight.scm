@@ -77,9 +77,9 @@ vector:            #(...)
                        (( #\b  #\d  #\o  #\x ) 'radix)
                        (( #\f  #\s  #\u      ) 'hvector)
                        (( #\(                ) 'vector)
-                       (( #\0 #\1 #\2 #\3
-                          #\4 #\5 #\6 #\7
-                          #\8 #\9            ) 'label-or-serial)
+                       (( #\0  #\1  #\2  #\3
+                          #\4  #\5  #\6  #\7
+                          #\8  #\9           ) 'label-or-serial)
                        (else #f)))
        (else (categorize-char next))))))
 
@@ -102,18 +102,18 @@ vector:            #(...)
                            #f
                            'line-comment))
        ((octothorpe) (case (->char next)
-                       (( #\&               ) 'box-content)
-                       (( #\\               ) 'char)
-                       (( #\!               ) 'directive-or-sharp-object)
-                       (( #\;               ) 'datum-comment)
-                       (( #\e  #\i          ) 'exactness)
-                       (( #\|               ) 'nested-comment)
-                       (( #\b  #\d  #\o  #\x) 'radix)
-                       (( #\f  #\s  #\u     ) 'hvector)
-                       (( #\(               ) 'vector)
-                       (( #\0 #\1 #\2 #\3
-                          #\4 #\5 #\6 #\7
-                          #\8 #\9           ) 'label-or-serial)
+                       (( #\&                ) 'box-content)
+                       (( #\\                ) 'char)
+                       (( #\!                ) 'directive-or-sharp-object)
+                       (( #\;                ) 'datum-comment)
+                       (( #\e  #\i           ) 'exactness)
+                       (( #\|                ) 'nested-comment)
+                       (( #\b  #\d  #\o  #\x ) 'radix)
+                       (( #\f  #\s  #\u      ) 'hvector)
+                       (( #\(                ) 'vector)
+                       (( #\0  #\1  #\2  #\3
+                          #\4  #\5  #\6  #\7
+                          #\8  #\9           ) 'label-or-serial)
                        (else #f)))
        ((string) (if (and (char=? #\" (->char next))
                           (not (char=? #\\ (->char prev))))
