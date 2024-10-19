@@ -3,15 +3,15 @@
 Types
 =====
 boolean:           #f, #false, #t, #true
-box:               #&
-char:              #\
 datum comment:     #;
+datum label:       #<n>=
+datum reference:   #<n>#
 directive:         #!fold-case, #!no-fold-case
 exactness:         #e, #i
 hvector:           s8, u8, s16, u16, s32, u32, s64, u64, f32, f64
 keyword:           kw:
 nested comment:    #|...|#
-serial reference:  #[[:digit:]]
+serial reference:  #<n>
 sharp:             #!eof, #!void, #!optional, #!rest, #!key
 radix:             #x, #d, #o, #b
 vector:            #(...)
@@ -59,23 +59,43 @@ clean way to backtrack (probably just set-category! will work)
        (( #\.                       ) 'dot)
        (( #\|                       ) 'identifier)
        (( #\;                       ) 'line-comment)
-       (( #\#                       ) 'octothorpe)
+       (( #\#                       ) 'tbd)
        (( #\(      #\)              ) 'paren)
        (( #\λ                       ) 'special)
        (( #\"                       ) 'string)
        (( #\space  #\tab  #\newline ) 'whitespace)
-       (else 'default)))
+       (else 'tbd)))
     ((next prev)
-     (or (select-message prev) (categorize-char (->char next))))))
+     (case (select-message prev)
+       ((char identifier string) => identity)
+       ((line-comment) (if (char=? #\newline (->char next))
+                           'whitespace
+                           'line-comment))
+       ((octothorpe) (case (->char next)
+                       (( #\&                ) 'box)
+                       (( #\\                ) 'char)
+                       (( #\!                ) 'directive-or-sharp-object)
+                       (( #\;                ) 'datum-comment)
+                       (( #\e  #\i           ) 'exactness)
+                       (( #\|                ) 'nested-comment)
+                       (( #\b  #\d  #\o  #\x ) 'radix)
+                       (( #\f  #\s  #\u      ) 'hvector)
+                       (( #\(                ) 'vector)
+                       (( #\0 #\1 #\2 #\3
+                          #\4 #\5 #\6 #\7
+                          #\8 #\9            ) 'label-or-serial)
+                       (else #f)))
+       (else (categorize-char next))))))
 
 (define compose-message
   (case-lambda
     ((maybe-adorned-char)
-       (case (->char maybe-adorned-char)
-         (( #\| ) 'identifier)
-         (( #\; ) 'line-comment)
-         (( #\" ) 'string)
-         (else #f)))
+     (case (->char maybe-adorned-char)
+       (( #\| ) 'identifier)
+       (( #\; ) 'line-comment)
+       (( #\# ) 'octothorpe)
+       (( #\" ) 'string)
+       (else #f)))
     ((next prev)
      (case (select-message prev)
        ((identifier) (if (and (char=? #\| (->char next))
@@ -85,23 +105,51 @@ clean way to backtrack (probably just set-category! will work)
        ((line-comment) (if (char=? #\newline (->char next))
                            #f
                            'line-comment))
+       ((octothorpe) (case (->char next)
+                       (( #\&               ) 'box-content)
+                       (( #\\               ) 'char)
+                       (( #\!               ) 'directive-or-sharp-object)
+                       (( #\;               ) 'datum-comment)
+                       (( #\e  #\i          ) 'exactness)
+                       (( #\|               ) 'nested-comment)
+                       (( #\b  #\d  #\o  #\x) 'radix)
+                       (( #\f  #\s  #\u     ) 'hvector)
+                       (( #\(               ) 'vector)
+                       (( #\0 #\1 #\2 #\3
+                          #\4 #\5 #\6 #\7
+                          #\8 #\9           ) 'label-or-serial)
+                       (else #f)))
        ((string) (if (and (char=? #\" (->char next))
                           (not (char=? #\\ (->char prev))))
                      #f
                      'string))
        (else (compose-message (->char next)))))))
 
+(define (revise-previous top rest)
+  (call/cc (lambda (done)
+             (let ((top-category (select-category top)))
+               (for-each (lambda (ac)
+                           (let ((category (select-category ac)))
+                             (if (eq? 'tbd category)
+                                 (let ((message (select-message ac)))
+                                   (if message
+                                       (set-category! ac top-category)
+                                       (set-category! ac 'default)))
+                                 (done #t))))
+                         rest)))))
+
 (define (adorn-datum datum)
   (let loop ((adorned '()) (unadorned datum))
     (cond ((null? unadorned) (reverse adorned))
           ((null? adorned) (let ((first (adorn-char (car unadorned))))
-                             (set-category! first (categorize-char first))
                              (set-message! first (compose-message first))
+                             (set-category! first (categorize-char first))
                              (loop (cons first adorned)
                                    (cdr unadorned))))
           (else (let ((next (adorn-char (car unadorned)))
                       (prev (car adorned)))
-                  (set-category! next (categorize-char next prev))
                   (set-message! next (compose-message next prev))
+                  (set-category! next (categorize-char next prev))
+                  (revise-previous next adorned)
                   (loop (cons next adorned)
                         (cdr unadorned)))))))
