@@ -15,10 +15,6 @@ serial reference:  #<n>
 sharp:             #!eof, #!void, #!optional, #!rest, #!key
 radix:             #x, #d, #o, #b
 vector:            #(...)
-
-Other
-=====
-clean way to backtrack (probably just set-category! will work)
 |#
 
 (define digit-16 (char-set->list char-set:hex-digit))
@@ -144,12 +140,9 @@ clean way to backtrack (probably just set-category! will work)
           ((null? adorned) (let ((first (adorn-char (car unadorned))))
                              (set-message! first (compose-message first))
                              (set-category! first (categorize-char first))
-                             (loop (cons first adorned)
-                                   (cdr unadorned))))
-          (else (let ((next (adorn-char (car unadorned)))
-                      (prev (car adorned)))
+                             (loop (cons first adorned) (cdr unadorned))))
+          (else (let ((next (adorn-char (car unadorned))) (prev (car adorned)))
                   (set-message! next (compose-message next prev))
                   (set-category! next (categorize-char next prev))
                   (revise-previous next adorned)
-                  (loop (cons next adorned)
-                        (cdr unadorned)))))))
+                  (loop (cons next adorned) (cdr unadorned)))))))
