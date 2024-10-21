@@ -16,7 +16,7 @@ sharp:             #!eof, #!void, #!optional, #!rest, #!key
 radix:             #x, #d, #o, #b
 vector:            #(...)
 |#
-#|---------------------------------------------------------------------------|#
+;-----------------------------------------------------------------------------;
 (define-record-type adorned-char
   (make-adorned-char char kind message)
   adorned-char?
@@ -60,14 +60,14 @@ vector:            #(...)
 (define (semicolon?   c) (char=?       #\;                          c))
 (define (tilde?       c) (char=?       #\~                          c))
 (define (whitespace?  c) (char-in? '(  #\newline  #\space  #\tab  ) c))
-#|---------------------------------------------------------------------------|#
+;-----------------------------------------------------------------------------;
 (define (digit2?  c) (char-in? '( #\0 #\1 ) c))
 (define (digit8?  c) (char-in? '( #\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7 ) c))
 (define (digit10? c) (char-in? '( #\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7 #\8 #\9 ) c))
 (define (digit16? c) (char-in? '( #\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7 #\8 #\9
                                   #\a #\b #\c #\d #\e #\f
                                   #\A #\B #\C #\D #\E #\F ) c))
-#|---------------------------------------------------------------------------|#
+;-----------------------------------------------------------------------------;
 (define (abbrev-first? c)
   (or (apostrophe? c) (grave? c) (comma? c)))
 
@@ -86,7 +86,7 @@ vector:            #(...)
 
 (define (radix-char? c)
   (char-in? '( #\x #\d #\o #\b ) c))
-#|---------------------------------------------------------------------------|#
+;-----------------------------------------------------------------------------;
 (define choose-kind
   (case-lambda
     ((next)
@@ -104,47 +104,50 @@ vector:            #(...)
              ((whitespace?   nc) 'whitespace)
              (else               'tbd))))
     ((next rest)
-     (let* ((nc (get-char next))
-            (prev (car rest))
-            (pm (get-message prev)))
-       (cond ((eq? 'char pm) 'char)
-             ((or (eq? 'identifier pm) (eq? 'string pm)) pm)
-             ((eq? 'line-comment pm)
-              (if (char=? #\newline nc)
-                  (choose-kind nc)
-                  'line-comment))
-             ((eq? 'abbrev-if-@ pm)
-              (if (at? nc)
-                  'abbrev
-                  (choose-kind nc)))
-             ((eq? 'special-start pm)
-              (cond ((ampersand?          nc) (revise rest 'box))
-                    ((backslash?          nc) (revise rest 'char))
-                    ((bar?                nc) (revise rest 'nested-comment))
-                    ((char=? #\f          nc) 'tbd)
-                    ((char=? #\t          nc) 'tbd)
-                    ((char-in? '(#\s #\u) nc) 'tbd)
-                    ((digit10?            nc) 'tbd)
-                    ((exactness-char?     nc) (revise rest 'number))
-                    ((exclamation?        nc) 'tbd)
-                    ((lparen?             nc) (revise rest 'vector))
-                    ((radix-char?         nc) (revise rest 'number))
-                    ((semicolon?          nc) (revise rest 'datum-comment))
-                    (else                     (revise rest 'invalid))))
-             ((eq? 'true pm)
-              (let ((pc (get-char prev)))
-                (if (delimiter? nc)
-                    (begin (revise rest (if (char=? #\t pc)
-                                            'boolean
-                                            'invalid))
-                           (choose-kind nc))
-                    (cond ((and (char=? #\t pc) (char=? #\r nc)) 'tbd)
-                          ((and (char=? #\r pc) (char=? #\u nc)) 'tbd)
-                          ((and (char=? #\u pc) (char=? #\e nc))
-                           (revise rest 'boolean))
-                          (else (revise rest 'invalid))))))
-             (else
-              (choose-kind nc)))))))
+     (guard (kind
+             (#t (revise rest kind)))
+       (let* ((nc (get-char next))
+              (prev (car rest))
+              (pm (get-message prev)))
+         (cond ((eq? 'char pm) 'char)
+               ((or (eq? 'identifier pm) (eq? 'string pm)) pm)
+               ((eq? 'line-comment pm)
+                (if (char=? #\newline nc)
+                    (choose-kind nc)
+                    'line-comment))
+               ((eq? 'abbrev-if-@ pm)
+                (if (at? nc)
+                    'abbrev
+                    (choose-kind nc)))
+               ((eq? 'special-start pm)
+                (cond ((ampersand?          nc) (raise 'box))
+                      ((backslash?          nc) (raise 'char))
+                      ((bar?                nc) (raise 'nested-comment))
+                      ((char=? #\f          nc) 'tbd)
+                      ((char=? #\t          nc) 'tbd)
+                      ((char-in? '(#\s #\u) nc) 'tbd)
+                      ((digit10?            nc) 'tbd)
+                      ((exactness-char?     nc) (raise 'number))
+                      ((exclamation?        nc) 'tbd)
+                      ((lparen?             nc) (raise 'vector))
+                      ((radix-char?         nc) (raise 'number))
+                      ((semicolon?          nc) (raise 'datum-comment))
+                      (else                     (raise 'invalid))))
+               ((eq? 'true pm)
+                (let ((pc (get-char prev)))
+                  (if (and (delimiter? nc) (char=? #\t pc))
+                      (begin (revise rest 'boolean)
+                             (choose-kind nc))
+                      (cond
+                       ((and (char=? #\t pc) (char=? #\r nc)) 'tbd)
+                       ((and (char=? #\r pc) (char=? #\u nc)) 'tbd)
+                       ((and (char=? #\u pc) (char=? #\e nc)) (raise 'boolean))
+                       (else (revise rest 'invalid)
+                             (choose-kind nc))))))
+               ((and (not pm) (delimiter? nc) (symbol=? 'tbd (get-kind prev)))
+                (raise (choose-kind nc)))
+               (else
+                (choose-kind nc))))))))
 
 (define compose-message
   (case-lambda
@@ -211,7 +214,9 @@ vector:            #(...)
                            (cond ((eq? 'tbd kind)
                                   (if message
                                       (set-kind! adorned-char revised-kind)
-                                      (set-kind! adorned-char 'default)))
+                                      (begin
+                                        (set-kind! adorned-char 'default)
+                                        (set-message! adorned-char 'revised))))
                                  (else (done revised-kind)))))
                        datum))))
 
@@ -223,6 +228,4 @@ vector:            #(...)
           (else (let ((next (adorn-char (car unadorned))))
                   (set-message! next (compose-message next adorned))
                   (set-kind! next (choose-kind next adorned))
-                  (when (delimiter? (->char next))
-                    (revise adorned (get-kind (car adorned))))
                   (loop (cons next adorned) (cdr unadorned)))))))
