@@ -101,24 +101,27 @@
                           (loop (cdr rest)))
                    (done new-kind)))))))))
 
-(define (maybe-revise-empty-list-or-vector! ac-list)
-  (let ((eligible-kinds '(paren fvector svector uvector vector)))
+(define (maybe-revise-list-or-vector! ac-list)
+  (let ((eligible-kinds '(paren fvector svector uvector vector))
+        (empty? #t))
     (let loop ((rest ac-list))
       (if (null? rest)
           #f
           (let* ((ac (car rest))
                  (kind (get-kind ac)))
-            (guard (s ((eq? s 'revise) (revise-kinds! rest
-                                                      (string->symbol
-                                                       (string-append
+            (guard (s ((eq? s 'revise)
+                       (let ((new-kind (string->symbol (string-append
                                                         (symbol->string kind)
-                                                        "-empty"))
-                                                      kind)
-                       kind)
-                      ((eq? s 'abort) #f))
-              (cond ((memq kind eligible-kinds) (raise 'revise))
+                                                        "-empty"))))
+                         (revise-kinds! rest new-kind kind)
+                         ac))
+                      ((eq? s 'abort) ac))
+              (cond ((memq kind eligible-kinds) (if empty?
+                                                    (raise 'revise)
+                                                    (raise 'abort)))
                     ((eq? kind 'whitespace) (loop (cdr rest)))
-                    (else (raise 'abort)))))))))
+                    (else (when empty? (set! empty? #f))
+                          (loop (cdr rest))))))))))
 
 (define (adorn-list char-list)
   (let loop ((adorned '()) (unadorned char-list))
@@ -232,10 +235,11 @@
                    (revise-kinds! rest 'default)
                    (refresh! nac)
                    (when (char=? nc #\))
-                     (let ((kind (maybe-revise-empty-list-or-vector! rest)))
-                       (when kind
-                         (set-kind! nac (string->symbol
-                                         (string-append (symbol->string kind)
-                                                        "-empty")))))))
+                     (let ((beginning-ac (maybe-revise-list-or-vector! rest)))
+                       (when (adorned-char? beginning-ac)
+                         (let ((beginning-c (get-char beginning-ac))
+                               (beginning-kind (get-kind beginning-ac)))
+                           (when (char=? beginning-c #\()
+                             (set-kind! nac beginning-kind)))))))
                   (else (refresh! nac))))))
     nac))
