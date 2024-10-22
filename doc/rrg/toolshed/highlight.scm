@@ -20,7 +20,7 @@
         ((char-in c '( #\' #\` #\, ))              'abbrev)
         ((char-in c '( #\{ #\} ))                  'brace)
         ((char-in c '( #\[ #\] ))                  'bracket)
-        ((char-in c '( #\( #\) ))                  'paren)
+        ((char-in c '( #\( #\) ))                  'list)
         ((char-in c '( #\newline #\space #\tab ))  'whitespace)
         ((digit10? c)                              'number10)
         (else                                      'tbd)))
@@ -28,7 +28,7 @@
 (define (fresh-message c)
   (cond ((char=? c #\|) 'identifier)
         ((char=? c #\,) 'abbrev-if-@)
-        ((char=? c #\#) 'special-begin)
+        ((char=? c #\#) 'octothorpe-begin)
         ((char=? c #\") 'string)
         ((char=? c #\;) 'line-comment)
         (else           #f)))
@@ -71,20 +71,37 @@
                                   (cdr old))
                             new))))))
 
-(define token-strings
-  (list (cons 'char '("#\\alarm" "#\\backspace" "#\\delete" "#\\esc"
-                      "#\\escape" "#\\linefeed" "#\\newline" "#\\nul" "#\\null"
-                      "#\\page" "#\\return" "#\\space" "#\\tab" "#\\vtab"))
-        (cons 'false '("#f" "#false"))
-        (cons 'fvector '("#f32" "#f64"))
-        (cons 'svector '("#s8" "#s16" "#s32" "#s64"))
-        (cons 'true '("#t" "#true"))
-        (cons 'uvector '("#u8" "#u16" "#u32" "#u64"))))
-
 (define (tbd-is? token ac-list)
-  (member (preceding-tbd ac-list)
-          (cdr (assq token token-strings))
-          string=?))
+  (member
+   (preceding-tbd ac-list)
+   (cadr (assq token
+               '((char ("#\\null" "#\\alarm" "#\\backspace" "#\\tab" "#\\space"
+                        "#\\newline" "#\\return" "#\\delete" "#\\escape"
+                        "#\\page" "#\\vtab" "#\\esc" "#\\linefeed" "#\\nul"))
+                 (directive ("#!fold-case" "#!no-fold-case"))
+                 (false ("#f" "#false"))
+                 (fvector ("#f32" "#f64"))
+                 (runtime-syntax ("and" "begin" "c-declare" "c-define"
+                                  "c-define-type" "c-initialize" "c-lambda"
+                                  "case" "case-lambda" "cond" "cond-expand"
+                                  "declare" "define" "define-library"
+                                  "define-macro" "define-record-type"
+                                  "define-structure" "define-syntax"
+                                  "define-type" "define-type-of-thread"
+                                  "define-values" "delay" "delay-force" "do"
+                                  "future" "guard" "if" "import" "include"
+                                  "include-ci" "lambda" "let" "let*"
+                                  "let*-values" "let-values" "letrec" "letrec*"
+                                  "letrec*-values" "letrec-values" "namespace"
+                                  "or" "parameterize" "quasiquote" "quote"
+                                  "r7rs-guard" "receive" "set!" "syntax-error"
+                                  "syntax-rules" "this-source-file" "unless"
+                                  "when"))
+                 (sharp ("#!eof" "#!key" "#!optional" "#!rest" "#!void"))
+                 (svector ("#s8" "#s16" "#s32" "#s64"))
+                 (true ("#t" "#true"))
+                 (uvector ("#u8" "#u16" "#u32" "#u64")))))
+   string=?))
 
 (define (revise-kinds! ac-list new-kind . optional-old-kind)
   (call-with-current-continuation
@@ -101,8 +118,8 @@
                           (loop (cdr rest)))
                    (done new-kind)))))))))
 
-(define (maybe-revise-list-or-vector! ac-list)
-  (let ((eligible-kinds '(paren fvector svector uvector vector))
+(define (revise-list-or-vector-kinds! ac-list)
+  (let ((eligible-kinds '(list fvector svector uvector vector))
         (empty? #t))
     (let loop ((rest ac-list))
       (if (null? rest)
@@ -116,12 +133,31 @@
                          (revise-kinds! rest new-kind kind)
                          ac))
                       ((eq? s 'abort) ac))
-              (cond ((memq kind eligible-kinds) (if empty?
-                                                    (raise 'revise)
-                                                    (raise 'abort)))
+              (cond ((and (not (char=? (get-char ac) #\)))
+                          (memq kind eligible-kinds)) (if empty?
+                                                          (raise 'revise)
+                                                          (raise 'abort)))
                     ((eq? kind 'whitespace) (loop (cdr rest)))
                     (else (when empty? (set! empty? #f))
                           (loop (cdr rest))))))))))
+
+(define (nesting-level nac ac-list)
+  (let* ((nc (get-char nac))
+         (sought (if (char=? nc #\() #\) #\()))
+    (let loop ((rest ac-list))
+      (if (null? rest)
+          (if (char=? nc #\() 1 -1)
+          (let ((ac (car rest)))
+            (let ((ac-char (get-char ac))
+                  (ac-kind (get-kind ac))
+                  (ac-message (get-message ac)))
+              (guard (s ((eq? s 'return)
+                         ((if (char=? nc #\() + -)
+                          (if (exact-integer? ac-message) ac-message 0)
+                          1)))
+                (if (and (eq? ac-kind (get-kind nac)) (char=? ac-char sought))
+                    (raise 'return)
+                    (loop (cdr rest))))))))))
 
 (define (adorn-list char-list)
   (let loop ((adorned '()) (unadorned char-list))
@@ -169,6 +205,16 @@
                                                   'invalid))
                           (refresh! nac))
                          (else (set-message! nac 'named-char))))
+                  ((eq? pm 'directive-or-sharp)
+                   (cond ((delimiter? nc)
+                          (cond ((tbd-is? 'directive rest)
+                                 (revise-kinds! rest 'directive))
+                                ((tbd-is? 'sharp rest)
+                                 (revise-kinds! rest 'sharp))
+                                (else
+                                 (revise-kinds! rest 'invalid)))
+                          (refresh! nac))
+                         (else (set-message! nac 'directive-or-sharp))))
                   ((eq? pm 'false-or-fvector)
                    (cond ((delimiter? nc)
                           (cond ((tbd-is? 'false rest)
@@ -176,9 +222,11 @@
                                  (refresh! nac))
                                 ((and (tbd-is? 'fvector rest) (char=? nc #\())
                                  (set-kind! nac (revise-kinds! rest 'fvector)))
-                                (else (revise-kinds! rest 'invalid))))
+                                (else
+                                 (revise-kinds! rest 'invalid)
+                                 (refresh! nac))))
                          (else (set-message! nac 'false-or-fvector))))
-                  ((eq? pm 'special-begin)
+                  ((eq? pm 'octothorpe-begin)
                    (cond ((char=? nc #\&)
                           (set-kind! nac (revise-kinds! rest 'box)))
                          ((char=? nc #\\)
@@ -197,11 +245,11 @@
                          ((digit10? nc)
                           (set-message! nac 'label-or-reference-or-serial))
                          ((char=? nc #\!)
-                          (set-message! nac 'directive-or-sharp-object))
+                          (set-message! nac 'directive-or-sharp))
                          ((exactness-char? nc)
                           (set-message! nac 'radix-or-digit10))
                          ((char=? nc #\()
-                          (set-message! nac 'vector-begin))
+                          (set-kind! nac (revise-kinds! rest 'vector)))
                          ((radix-char? nc)
                           (set-message! nac ((cond ((char=? nc #\x)
                                                     'exactness-or-digit16)
@@ -232,10 +280,17 @@
                           (refresh! nac))
                          (else (set-message! nac 'true))))
                   ((and (not pm) (delimiter? nc))
-                   (revise-kinds! rest 'default)
+                   (let ((cdr-rest (cdr rest)))
+                     (cond ((and (char=? #\: pc)
+                                 (not (null? cdr-rest))
+                                 (not (delimiter? (get-char (car cdr-rest)))))
+                            (revise-kinds! rest 'keyword))
+                           ((tbd-is? 'runtime-syntax rest)
+                            (revise-kinds! rest 'runtime-syntax))
+                           (else (revise-kinds! rest 'default))))
                    (refresh! nac)
                    (when (char=? nc #\))
-                     (let ((beginning-ac (maybe-revise-list-or-vector! rest)))
+                     (let ((beginning-ac (revise-list-or-vector-kinds! rest)))
                        (when (adorned-char? beginning-ac)
                          (let ((beginning-c (get-char beginning-ac))
                                (beginning-kind (get-kind beginning-ac)))
