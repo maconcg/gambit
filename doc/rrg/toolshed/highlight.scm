@@ -32,12 +32,6 @@
         ((char=? c #\;)  'line-comment)
         (else            #f)))
 
-(define (refresh-kind! ac)
-  (set-kind! ac (fresh-kind (get-char ac))))
-
-(define (refresh-message! ac)
-  (set-message! ac (fresh-message (get-message ac))))
-
 (define (refresh! ac)
   (let ((c (get-char ac)))
     (set-kind! ac (fresh-kind c))
@@ -76,7 +70,7 @@
                                   (cdr old))
                             new))))))
 
-(define (tbd-is? token ac-list)
+(define (tbd-in token ac-list)
   (member
    (preceding-tbd ac-list)
    (cadr (assq token
@@ -107,6 +101,14 @@
                  (true ("#t" "#true"))
                  (uvector ("#u8" "#u16" "#u32" "#u64")))))
    string=?))
+
+(define (vector-string->symbol s)
+  (string->symbol (string-append (string-copy s 1) "vector")))
+
+;; (define (nest-level ac-list 'kind)
+;;   (if (null? ac-list)
+;;       0
+;;       (if (char=?
 
 (define (revise-kinds! ac-list new-kind . optional-old-kind)
   (call-with-current-continuation
@@ -173,7 +175,7 @@
                                         (delimiter? (get-char (car dr)))))
                                (revise-kinds! rest 'keyword)
                                (revise-kinds! rest 'default)))
-                         (if (tbd-is? 'runtime-syntax rest)
+                         (if (tbd-in 'runtime-syntax rest)
                              (revise-kinds! rest 'runtime-syntax)
                              (revise-kinds! rest 'default)))))
                   ((eq? pm 'invalid)
@@ -204,7 +206,7 @@
                        (set-message! nac 'named-char)))
                   ((eq? pm 'named-char)
                    (if (delimiter? nc)
-                       (begin (revise-kinds! rest (if (tbd-is? 'char rest)
+                       (begin (revise-kinds! rest (if (tbd-in 'char rest)
                                                       'char
                                                       'invalid))
                               (refresh! nac))
@@ -212,33 +214,43 @@
                   ((eq? pm 'directive-or-sharp)
                    (if (delimiter? nc)
                        (begin (refresh! nac)
-                              (if (tbd-is? 'directive rest)
+                              (if (tbd-in 'directive rest)
                                   (revise-kinds! rest 'directive)
-                                  (if (tbd-is? 'sharp rest)
+                                  (if (tbd-in 'sharp rest)
                                       (revise-kinds! rest 'sharp)
                                       (revise-kinds! rest 'invalid))))
                        (set-message! nac 'directive-or-sharp)))
                   ((memq pm '(svector uvector))
                    (if (delimiter? nc)
-                       (if (and (char=? nc #\() (tbd-is? pm rest))
-                           (begin (set-kind! nac pm)
-                                  (revise-kinds! rest pm))
-                           (begin (revise-kinds! rest 'invalid)
-                                  (refresh! nac)))
+                       (if (char=? nc #\()
+                           (let ((tbd (tbd-in pm rest)))
+                             (if tbd
+                                 (let ((nk (vector-string->symbol (car tbd))))
+                                   (begin (set-kind! nac nk)
+                                          (revise-kinds! rest nk)))
+                                 (begin (refresh! nac)
+                                        (revise-kinds! rest 'invalid))))
+                           (begin (refresh! nac)
+                                  (revise-kinds! rest 'invalid)))
                        (set-message! nac pm)))
                   ((eq? pm 'false-or-fvector)
                    (if (delimiter? nc)
-                       (if (and (char=? nc #\() (tbd-is? 'fvector rest))
-                           (begin (set-kind! nac 'fvector)
-                                  (revise-kinds! rest 'fvector))
-                           (begin (revise-kinds! rest (if (tbd-is? 'false rest)
-                                                      'boolean
-                                                      'invalid))
-                                  (refresh! nac)))
+                       (if (char=? nc #\()
+                           (let ((tbd (tbd-in 'fvector rest)))
+                             (if tbd
+                                 (let ((nk (vector-string->symbol (car tbd))))
+                                   (begin (set-kind! nac nk)
+                                          (revise-kinds! rest nk)))
+                                 (begin (refresh! nac)
+                                        (revise-kinds! rest 'invalid))))
+                           (begin (refresh! nac)
+                                  (revise-kinds! rest (if (tbd-in 'false rest)
+                                                          'boolean
+                                                          'invalid))))
                        (set-message! nac 'false-or-fvector)))
                   ((eq? pm 'true)
                    (if (delimiter? nc)
-                       (begin (revise-kinds! rest (if (tbd-is? 'true rest)
+                       (begin (revise-kinds! rest (if (tbd-in 'true rest)
                                                       'boolean
                                                       'invalid))
                               (refresh! nac))
