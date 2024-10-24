@@ -106,38 +106,42 @@
                  (uvector ("#u8" "#u16" "#u32" "#u64")))))
    string=?))
 
-(define (vector-string->symbol s)
+(define (vector-string->kind s)
   (string->symbol (string-append (string-copy s 1) "vector")))
 
 (define (peer! nac peer-char ac-list)
-  (let ((empty? #t))
-    (let ((find-peer (lambda ()
-                       (let loop ((rest ac-list))
-                         (if (null? rest)
-                             (values 'invalid #f)
-                             (let ((ac (car rest)))
-                               (let ((ack (get-kind ac))
-                                     (acmesg (get-mesg ac)))
-                                 (if (and (number? acmesg)
-                                          (not (get-peer ac))
-                                          (char=? (get-char ac) peer-char))
-                                     (begin (when empty?
-                                              (set-kind! ac
-                                                         (string->symbol
-                                                          (string-append
-                                                           (symbol->string ack)
-                                                           "-empty"))))
-                                            (set-peer! ac (get-mesg nac))
-                                            (values (get-kind ac) acmesg))
-                                     (begin (unless (eq? ack 'whitespace)
-                                              (set! empty? #f))
-                                            (loop (cdr rest))))))))))
-          (record-peer (lambda (kind message)
-                         (if (eq? kind 'invalid)
-                             (invalidate! nac)
-                             (begin (set-kind! nac kind)
-                                    (set-peer! nac message))))))
-      (call-with-values find-peer record-peer))))
+  (let ((empty? #t)
+        (append-empty (lambda (kind)
+                        (string->symbol (string-append (symbol->string kind)
+                                                       "-empty"))))
+        (kind->length (lambda (kind)
+                        (cond ((eq? kind 'vector) 1)
+                              ((memq kind '(u8vector s8vector)) 3)
+                              ((memq kind '(u16vector u32vector u64vector
+                                            s16vector s32vector s64vector
+                                            f32vector f64vector)) 4)
+                              (else 0)))))
+    (let loop ((rest ac-list))
+      (if (null? rest)
+          (invalidate! nac)
+          (let ((ac (car rest)))
+            (let ((ac-kind (get-kind ac))
+                  (ac-mesg (get-mesg ac)))
+              (if (and (number? ac-mesg)
+                       (not (get-peer ac))
+                       (char=? (get-char ac) peer-char))
+                  (begin (if empty?
+                             (let ((ac-kind-empty (append-empty ac-kind)))
+                               (begin (revise-kinds! rest
+                                                     ac-kind-empty
+                                                     ac-kind
+                                                     (kind->length ac-kind))
+                                      (set-kind! nac ac-kind-empty)))
+                             (set-kind! nac ac-kind))
+                         (set-peer! ac (get-mesg nac))
+                         (set-peer! nac ac-mesg))
+                  (begin (unless (eq? ac-kind 'whitespace) (set! empty? #f))
+                         (loop (cdr rest))))))))))
 
 (define (nested-comment-peer! nac pac ac-list)
   (let loop ((rest ac-list))
@@ -173,18 +177,19 @@
                                                    -) (get-mesg acB) 1)))
                               (else (loop (cdr rest)))))))))))))
 
-(define (revise-kinds! ac-list new-kind . optional-old-kind)
-  (let ((old-kind (if (null? optional-old-kind)
+(define (revise-kinds! ac-list new-kind . optionals)
+  (let ((old-kind (if (null? optionals)
                       'tbd
-                      (car optional-old-kind))))
-    (let loop ((rest ac-list))
-      (if (null? rest)
-          #t
-          (let ((ac (car rest)))
-            (if (eq? (get-kind ac) old-kind)
-                (begin (set-kind! ac new-kind)
-                       (loop (cdr rest)))
-                new-kind))))))
+                      (car optionals)))
+        (limit (if (or (null? optionals) (null? (cdr optionals)))
+                   #f
+                   (cadr optionals))))
+    (let loop ((rest ac-list) (count 0))
+      (unless (or (null? rest) (and limit (> count limit)))
+        (let ((ac (car rest)))
+          (when (eq? (get-kind ac) old-kind)
+            (set-kind! ac new-kind)
+            (loop (cdr rest) (+ count 1))))))))
 
 (define (adorn-list char-list)
   (let loop ((adorned '()) (unadorned char-list) (adorned-length 0))
@@ -313,7 +318,7 @@
                        (if (char=? nc #\()
                            (let ((tbd (tbd-in pm rest)))
                              (if tbd
-                                 (let ((nk (vector-string->symbol (car tbd))))
+                                 (let ((nk (vector-string->kind (car tbd))))
                                    (begin (set-kind! nac nk)
                                           (set-mesg! nac adorned-length)
                                           (revise-kinds! rest nk)))
@@ -327,7 +332,7 @@
                        (if (char=? nc #\()
                            (let ((tbd (tbd-in 'fvector rest)))
                              (if tbd
-                                 (let ((nk (vector-string->symbol (car tbd))))
+                                 (let ((nk (vector-string->kind (car tbd))))
                                    (begin (set-kind! nac nk)
                                           (set-mesg! nac adorned-length)
                                           (revise-kinds! rest nk)))
