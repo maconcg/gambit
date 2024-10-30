@@ -12,7 +12,7 @@
   (map (lambda (s) (reverse (string->list s))) sl))
 
 (define directive-char-lists
-  (string-list->char-lists '("#\\!fold-case" "#\\!no-fold-case")))
+  (string-list->char-lists '("#!fold-case" "#!no-fold-case")))
 
 (define sharp-object-char-lists
   (string-list->char-lists '("#!eof" "#!key" "#!optional" "#!rest" "#!void")))
@@ -224,6 +224,11 @@
   (could-match-one-of? directive-char-lists ac-list 'octothorpe))
 (define (looking-at-directive? ac-list)
   (looking-at-one-of? directive-char-lists ac-list 'octothorpe))
+
+(define (could-match-datum-comment-directive? ac-list)
+  (could-match-one-of? directive-char-lists ac-list 'datumc#))
+(define (looking-at-datum-comment-directive? ac-list)
+  (looking-at-one-of? directive-char-lists ac-list 'datumc#))
 
 (define (could-match-sharp-object? ac-list)
   (could-match-one-of? sharp-object-char-lists ac-list 'octothorpe))
@@ -542,7 +547,7 @@
               (( datumc# )
                (set-refresh! nac #f)
                (cond ((char=? nc #\!)
-                      (set-kind+mesg! nac 'datumc 'datumc-directive))
+                      (set-kind+mesg! nac 'datumc '~datumc-directive))
                      ((char=? nc #\;)
                       (set-kind+mesg! nac 'datumc '~datumc)
                       (set-peer! nac index))
@@ -551,7 +556,7 @@
                       (set-mesg! pac 1)
                       (set-peer! pac (- index 1))
                       (revise! adorned 'nestc))
-                     (else (set-kind+mesg! nac 'datumc))))
+                     (else (set-kind! nac 'datumc))))
               (( datumc-simple )
                (if (delimiter? nc)
                    (let ((rest (datum-comment-peer! pac adorned (- index 1))))
@@ -570,6 +575,24 @@
                                         '~datumc
                                         index)))
                    (set-mesg! nac 'datumc-compound)))
+              (( ~datumc-directive )
+               (let ((all (cons nac adorned)))
+                 (if (could-match-datum-comment-directive? all)
+                     (if (looking-at-datum-comment-directive? all)
+                         (set-kind+mesg! nac 'datumc 'datumc-directive)
+                         (set-kind+mesg! nac 'datumc '~datumc-directive))
+                     (if (delimiter? nc)
+                         (let ((r
+                                (datum-comment-peer! pac adorned (- index 1))))
+                           (when (unused-datum-comment? r)
+                             (set-kind+mesg! nac 'datumc '~datumc)
+                             (set-refresh! nac #f)))
+                         (set-kind+mesg! nac 'datumc 'datumc-simple)))))
+              (( datumc-directive )
+               (set-refresh! nac #f)
+               (if (delimiter? nc)
+                   (set-kind+mesg! nac 'datumc '~datumc)
+                   (set-kind+mesg! nac 'datumc '~datumc-simple)))
               (( nestc nestc-begin )
                (set-refresh! nac #f)
                (set-kind+mesg! nac 'nestc (cond ((char=? nc #\#) 'nestc#)
