@@ -1,3 +1,5 @@
+;; Copyright (c) 2024 by Macon Gambill, all rights reserved.
+
 (define-record-type achar
   (adorn-char c k m p r t)
   adorned-char?
