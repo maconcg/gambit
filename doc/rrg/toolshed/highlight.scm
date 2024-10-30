@@ -443,18 +443,18 @@
                        (else (set-mesg! nac pm)))))
               (( string-backslash ident-backslash )
                (set-refresh! nac #f)
-               (let-values (((fallback octal esc esc-nil hex-x hex-u hex-U)
+               (let-values (((fallback octal esc esc-nothing hex-x hex-u hex-U)
                              (case pm
                                (( ident-backslash )
                                 (values 'identifier 'ident-octal 'ident-escape
-                                        'ident-escape-nothing 'ident-hex-x
+                                        'ident-nothing 'ident-hex-x
                                         'ident-hex-u 'ident-hex-U))
                                (( string-backslash )
                                 (values 'string 'string-octal 'string-escape
-                                        'string-escape-nothing 'string-hex-x
+                                        'string-nothing 'string-hex-x
                                         'string-hex-u 'string-hex-U)))))
                  (case nc
-                   (( #\newline ) (set-kind+mesg! nac fallback esc-nil))
+                   (( #\newline ) (set-kind+mesg! nac fallback esc-nothing))
                    (( #\x ) (set-kind+mesg! nac fallback hex-x))
                    (( #\u ) (set-kind+mesg! nac fallback hex-u))
                    (( #\U ) (set-kind+mesg! nac fallback hex-U))
@@ -465,6 +465,18 @@
                     (set-kind! pac octal)
                     (set-kind+mesg! nac octal))
                    (else (set-kind+mesg! nac fallback)))))
+              (( string-nothing ident-nothing )
+               (set-refresh! nac #f)
+               (let-values (((delim fallback)
+                             (case pm
+                               (( string-nothing ) (values #\" 'string))
+                               (( ident-nothing ) (values #\| 'identifier)))))
+                 (cond ((memc nc '(#\space #\tab))
+                        (set-kind+mesg! nac fallback pm))
+                       ((char=? nc delim)
+                        (set-kind! nac fallback)
+                        (symmetric-peer! delim nac adorned index))
+                       (else (set-kind+mesg! nac fallback)))))
               (( string-octal ident-octal )
                (set-refresh! nac #f)
                (let-values (((delim fallback)
