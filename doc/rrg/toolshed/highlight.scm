@@ -339,6 +339,8 @@
                           (set-kind+mesg! nac 'here-string '~hs-end))
                          ((and (char=? pc #\newline) (char=? nc hs-key-first))
                           (set-kind+mesg! nac 'here-string '~hs-end))
+                         ((char=? nc #\newline)
+                          (set-kind+mesg! nac 'here-string 'hs-end))
                          (else (set-kind+mesg! nac 'here-string))))))
               (( ~named-char )
                (unless (delimiter? nc) (set-refresh! nac #f))
