@@ -225,7 +225,7 @@ END
                         (( serial ) 'fg-ochre)
                         (( sharp ) 'cyan)
                         (( string string-escape here-string ) 'green)
-                        (( hs-key ) 'yellow-faint)
+                        (( hs-key ) 'yellow)
                         (( runtime-syntax ) 'magenta-cooler)
                         (else kind)))) ;; pass symbol directly to assq
         (modus-operandi-colors ;; from Protesilaos Stavrou's modus-themes

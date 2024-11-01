@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>  
+<!-- Created by highlight.scm -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>make-css.scm</title>
+<meta name="resource-type" content="document">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style type="text/css">
+<!--
+body {
+    color: #000000;
+    background-color: #ffffff;
+}
+
+a:link {color: #3548cf}
+a:visited {color: #3548cf}
+hr {color: #9f9f9f}
+span.todo {background-color: #ff8f88}
+.chapter-level-extent pre {border-left-color: #000000}
+
+dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
+    border-top-color: #9f9f9f;
+    dt {
+        code.def-code-arguments {color: #721045}
+        span.category-def {color: #193668}
+        code.def-code-arguments span.bracket {color: #193668}
+    }
+    dd {
+        background-color: #ffffff;
+        p var.var, li var.var {color: #721045}
+    }
+    pre {
+        span.abbrev {color: #595959}
+        span.boolean {color: #4a3a8a}
+        span.box {color: #0031a9}
+        span.char {color: #7f0000}
+        span.datumc, span.linec, span.nestc {color: #595959cf}
+        span.dot {color: #595959}
+        span.identifier-escape, span.string-escape {color: #006800}
+        span.keyword {color: #7c318f}
+        span.list {color: #595959}
+        span.ok {color: #2f3f83}
+        span.problem {background-color: #f3d000}
+        span.serial {color: #573a30}
+        span.sharp {color: #005e8b}
+        span.string {color: #006800}
+        span.here-string {color: #006800}
+        span.hs-begin {color: #595959}
+        span.hs-end, span.hs-key {color: #6f5500}
+        span.runtime-syntax {color: #531ab6}
+        span.shebang {color: #595959}
+    }
+}
+
+dl.first-deftp, dl.first-deftypevr {
+    p i.slanted {color: #624416}
+}
+
+dl.first-deftp {
+    background-color: #f2f2f290;
+    background-image: linear-gradient(90deg, #f0e3c06f, #f0e3c03f 35%);
+}
+
+dl.first-deftypefn {
+    background-color: #f2f2f290;
+    background-image: linear-gradient(90deg, #ccdfff6f, #ccdfff3f 35%);
+    span.paren {color: #595959}
+    dd pre span.exception {color: #624416}
+}
+
+dl.first-deftypevr {
+    background-color: #f2f2f290;
+    background-image: linear-gradient(90deg, #f1c8b56f, #f1c8b53f 35%);
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        color: #ffffff;
+        background-color: #000000;
+    }
+    
+    a:link {color: #79a8ff}
+    a:visited {color: #79a8ff}
+    hr {color: #646464}
+    span.todo {background-color: #9d1f1f}
+    .chapter-level-extent pre {border-left-color: #ffffff}
+    
+    dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
+        border-top-color: #646464;
+        dt {
+            code.def-code-arguments {color: #feacd0}
+            span.category-def {color: #c6daff}
+            code.def-code-arguments span.bracket {color: #c6daff}
+        }
+        dd {
+            background-color: #000000;
+            p var.var, li var.var {color: #feacd0}
+        }
+        pre {
+            span.abbrev {color: #989898}
+            span.boolean {color: #9099d9}
+            span.box {color: #2fafff}
+            span.char {color: #ff9580}
+            span.datumc, span.linec, span.nestc {color: #989898cf}
+            span.dot {color: #989898}
+            span.identifier-escape, span.string-escape {color: #44bc44}
+            span.keyword {color: #caa6df}
+            span.list {color: #989898}
+            span.ok {color: #76afbf}
+            span.problem {background-color: #7a6100}
+            span.serial {color: #e0d09c}
+            span.sharp {color: #00d3d0}
+            span.string {color: #44bc44}
+            span.here-string {color: #44bc44}
+            span.hs-begin {color: #989898}
+            span.hs-end, span.hs-key {color: #d0bc00}
+            span.runtime-syntax {color: #b6a0ff}
+            span.shebang {color: #989898}
+        }
+    }
+    
+    dl.first-deftp, dl.first-deftypevr {
+        p i.slanted {color: #d2b580}
+    }
+    
+    dl.first-deftp {
+        background-color: #1e1e1e90;
+        background-image: linear-gradient(90deg, #462f20bf, #462f209f 35%);
+    }
+    
+    dl.first-deftypefn {
+        background-color: #1e1e1e90;
+        background-image: linear-gradient(90deg, #2426796f, #2426793f 35%);
+        span.paren {color: #989898}
+        dd pre span.exception {color: #d2b580}
+    }
+    
+    dl.first-deftypevr {
+        background-color: #1e1e1e90;
+        background-image: linear-gradient(90deg, #49191aaf, #49191a8f 35%);
+    }
+}
+
+strong.def-name {font-size: large}
+
+.top-level-extent, .chapter-level-extent, .appendix-level-extent {
+    dd, .center, li, p:not(.nav-panel p) {width: 40rem}
+}
+
+.chapter-level-extent {
+    dd p:not(.nav-panel p), p:not(.nav-panel p) {text-align: justify}
+}
+
+dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
+    border-top-style: solid;
+    border-top-width: thin;
+    padding-top: 0.1rem;
+    width: 44rem;
+    dt.deftp, dt.deftypefn, dt.deftypefnx, dt.deftypevr {
+        align-content: center;
+        padding-left: 0.3em;
+        strong.def-name {font-weight: normal}
+    }
+    dt.deftp, dt.deftypevr {
+        span, code, strong {font-family: inherit}
+    }
+    dt.deftypefn, dt.deftypefnx {font-family: monospace}
+    dd {
+        align-content: start;
+        margin-left: 0;
+        margin-top: 0.1rem;
+        padding-left: 2rem;
+        width: 100%;
+        div.example {
+            margin-left: 1.6rem;
+            pre {
+                border-left-style: dotted;
+                border-left-width: thin;
+                font-size: 1.1em;
+                padding-left: 0.4rem;
+                span.datumc, span.linec, span.nestc, span.exception {
+                     font-style: oblique;
+                }
+                span.ident-escape, span.ident-octal, span.ident-nothing,
+                  span.ident-hex-x, span.ident-hex-u, span.ident-hex-U,
+                  span.string-escape, span.string-octal, span.string-nothing,
+                  span.string-hex-x, span.string-hex-u, span.string-hex-U {
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
+-->
+</style>
+</head>
+<body lang="en">
+<dl class="first-deftypefn">
+<dd>
+<div class="example lisp">
+<pre class="lisp-preformatted">
+</span><span class="shebang">&#35;&#33;&#47;usr&#47;bin&#47;env gsi&#45;script</span>
+
+</span><span class="list">&#40;</span></span><span class="runtime-syntax">define</span> </span><span class="list">&#40;</span>main </span><span class="dot">&#46;</span> args</span><span class="list">&#41;</span>
+  </span><span class="list">&#40;</span></span><span class="runtime-syntax">let&#45;values</span> </span><span class="list">&#40;&#40;&#40;</span>light dark output&#45;file</span><span class="list">&#41;</span>
+                </span><span class="list">&#40;</span></span><span class="runtime-syntax">let</span> loop </span><span class="list">&#40;&#40;</span>rest args</span><span class="list">&#41;</span>
+                           </span><span class="list">&#40;</span>light </span><span class="abbrev">&#39;</span>modus&#45;operandi</span><span class="list">&#41;</span>
+                           </span><span class="list">&#40;</span>dark </span><span class="abbrev">&#39;</span>modus&#45;vivendi</span><span class="list">&#41;</span>
+                           </span><span class="list">&#40;</span>output&#45;file </span><span class="string">&#34;gambit&#46;css&#34;</span></span><span class="list">&#41;&#41;</span>
+                  </span><span class="list">&#40;</span></span><span class="runtime-syntax">if</span> </span><span class="list">&#40;</span></span><span class="runtime-syntax">or</span> </span><span class="list">&#40;</span>null&#63; rest</span><span class="list">&#41;</span>
+                          </span><span class="list">&#40;</span>not </span><span class="list">&#40;</span>member </span><span class="list">&#40;</span>car rest</span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span></span><span class="list">&#40;</span></span><span class="string">&#34;&#45;d&#34;</span> </span><span class="string">&#34;&#45;l&#34;</span> </span><span class="string">&#34;&#45;o&#34;</span></span><span class="list">&#41;</span> string&#61;&#63;</span><span class="list">&#41;&#41;&#41;</span>
+                      </span><span class="list">&#40;</span>values light dark output&#45;file</span><span class="list">&#41;</span>
+                      </span><span class="list">&#40;</span></span><span class="runtime-syntax">let</span> </span><span class="list">&#40;&#40;</span>opt </span><span class="list">&#40;</span>car rest</span><span class="list">&#41;&#41;&#41;</span>
+                        </span><span class="list">&#40;</span></span><span class="runtime-syntax">cond</span> </span><span class="list">&#40;&#40;</span>string&#61;&#63; opt </span><span class="string">&#34;&#45;d&#34;</span></span><span class="list">&#41;</span>
+                               </span><span class="list">&#40;</span>loop </span><span class="list">&#40;</span>cddr rest</span><span class="list">&#41;</span>
+                                     light
+                                     </span><span class="list">&#40;</span>string&#45;&#62;symbol </span><span class="list">&#40;</span>cadr rest</span><span class="list">&#41;&#41;</span>
+                                     output&#45;file</span><span class="list">&#41;&#41;</span>
+                              </span><span class="list">&#40;&#40;</span>string&#61;&#63; </span><span class="list">&#40;</span>car rest</span><span class="list">&#41;</span> </span><span class="string">&#34;&#45;l&#34;</span></span><span class="list">&#41;</span>
+                               </span><span class="list">&#40;</span>loop </span><span class="list">&#40;</span>cddr rest</span><span class="list">&#41;</span>
+                                     </span><span class="list">&#40;</span>string&#45;&#62;symbol </span><span class="list">&#40;</span>cadr rest</span><span class="list">&#41;&#41;</span>
+                                     dark
+                                     output&#45;file</span><span class="list">&#41;&#41;</span>
+                              </span><span class="list">&#40;&#40;</span>string&#61;&#63; </span><span class="list">&#40;</span>car rest</span><span class="list">&#41;</span> </span><span class="string">&#34;&#45;o&#34;</span></span><span class="list">&#41;</span>
+                               </span><span class="list">&#40;</span>loop </span><span class="list">&#40;</span>cddr rest</span><span class="list">&#41;</span>
+                                     light
+                                     dark
+                                     </span><span class="list">&#40;</span>cadr rest</span><span class="list">&#41;&#41;&#41;&#41;&#41;&#41;&#41;&#41;&#41;</span>
+    </span><span class="list">&#40;</span>with&#45;output&#45;to&#45;file output&#45;file
+      </span><span class="list">&#40;</span></span><span class="runtime-syntax">lambda</span> </span><span class="empty-list">&#40;&#41;</span>
+        </span><span class="list">&#40;</span>write&#45;css&#45;colors light</span><span class="list">&#41;</span>
+        </span><span class="list">&#40;</span>write&#45;string </span><span class="string">&#34;</span></span><span class="string-escape">&#92;n</span></span><span class="string">&#64;media &#40;prefers&#45;color&#45;scheme&#58; dark&#41; &#123;</span></span><span class="string-escape">&#92;n</span></span><span class="string">&#34;</span></span><span class="list">&#41;</span>
+        </span><span class="list">&#40;</span>indent&#43;write 4 </span><span class="list">&#40;</span></span><span class="runtime-syntax">lambda</span> </span><span class="empty-list">&#40;&#41;</span> </span><span class="list">&#40;</span>write&#45;css&#45;colors dark</span><span class="list">&#41;&#41;&#41;</span>
+        </span><span class="list">&#40;</span>write&#45;string </span><span class="list">&#40;</span>string&#45;append </span><span class="string">&#34;&#125;</span></span><span class="string-escape">&#92;n&#92;n</span></span><span class="string">&#34;</span> css&#45;non&#45;color&#45;template</span><span class="list">&#41;&#41;&#41;&#41;&#41;&#41;</span>
+
+</span><span class="list">&#40;</span></span><span class="runtime-syntax">define</span> </span><span class="list">&#40;</span>indent&#43;write spaces thunk&#45;that&#45;writes</span><span class="list">&#41;</span>
+  </span><span class="list">&#40;</span></span><span class="runtime-syntax">let</span> </span><span class="list">&#40;&#40;</span>out&#45;string </span><span class="list">&#40;</span>open&#45;output&#45;string</span><span class="list">&#41;&#41;&#41;</span>
+    </span><span class="list">&#40;</span></span><span class="runtime-syntax">parameterize</span> </span><span class="list">&#40;&#40;</span>current&#45;output&#45;port out&#45;string</span><span class="list">&#41;&#41;</span>
+      </span><span class="list">&#40;</span>thunk&#45;that&#45;writes</span><span class="list">&#41;&#41;</span>
+    </span><span class="list">&#40;</span>for&#45;each </span><span class="list">&#40;</span></span><span class="runtime-syntax">lambda</span> </span><span class="list">&#40;</span>line</span><span class="list">&#41;</span>
+                </span><span class="list">&#40;</span>write&#45;string </span><span class="list">&#40;</span>string&#45;append </span><span class="list">&#40;</span>make&#45;string spaces </span><span class="char">&#35;&#92;space</span></span><span class="list">&#41;</span>
+                                             line
+                                             </span><span class="string">&#34;</span></span><span class="string-escape">&#92;n</span></span><span class="string">&#34;</span></span><span class="list">&#41;&#41;&#41;</span>
+              </span><span class="list">&#40;</span>call&#45;with&#45;input&#45;string </span><span class="list">&#40;</span>get&#45;output&#45;string out&#45;string</span><span class="list">&#41;</span>
+                                      </span><span class="list">&#40;</span></span><span class="runtime-syntax">lambda</span> </span><span class="list">&#40;</span>p</span><span class="list">&#41;</span> </span><span class="list">&#40;</span>read&#45;all p read&#45;line</span><span class="list">&#41;&#41;&#41;&#41;&#41;&#41;</span>
+
+</span><span class="list">&#40;</span></span><span class="runtime-syntax">define</span> css&#45;color&#45;template </span><span class="hs-begin">&#35;&#60;&#60;</span></span><span class="hs-key">END
+</span></span><span class="here-string">body &#123;
+    color&#58; &#60;fg&#45;main&#62;&#59;
+    background&#45;color&#58; &#60;bg&#45;main&#62;&#59;
+&#125;
+
+a&#58;link &#123;color&#58; &#60;link&#62;&#125;
+a&#58;visited &#123;color&#58; &#60;link&#45;visited&#62;&#125;
+hr &#123;color&#58; &#60;border&#62;&#125;
+span&#46;todo &#123;background&#45;color&#58; &#60;todo&#62;&#125;
+&#46;chapter&#45;level&#45;extent pre &#123;border&#45;left&#45;color&#58; &#60;fg&#45;main&#62;&#125;
+
+dl&#46;first&#45;deftp&#44; dl&#46;first&#45;deftypefn&#44; dl&#46;first&#45;deftypevr &#123;
+    border&#45;top&#45;color&#58; &#60;border&#62;&#59;
+    dt &#123;
+        code&#46;def&#45;code&#45;arguments &#123;color&#58; &#60;def&#45;var&#62;&#125;
+        span&#46;category&#45;def &#123;color&#58; &#60;category&#45;def&#62;&#125;
+        code&#46;def&#45;code&#45;arguments span&#46;bracket &#123;color&#58; &#60;fg&#45;alt&#62;&#125;
+    &#125;
+    dd &#123;
+        background&#45;color&#58; &#60;bg&#45;main&#62;&#59;
+        p var&#46;var&#44; li var&#46;var &#123;color&#58; &#60;def&#45;var&#62;&#125;
+    &#125;
+    pre &#123;
+        span&#46;abbrev &#123;color&#58; &#60;abbrev&#62;&#125;
+        span&#46;boolean &#123;color&#58; &#60;boolean&#62;&#125;
+        span&#46;box &#123;color&#58; &#60;box&#62;&#125;
+        span&#46;char &#123;color&#58; &#60;char&#62;&#125;
+        span&#46;datumc&#44; span&#46;linec&#44; span&#46;nestc &#123;color&#58; &#60;codecomment&#62;&#125;
+        span&#46;dot &#123;color&#58; &#60;dot&#62;&#125;
+        span&#46;identifier&#45;escape&#44; span&#46;string&#45;escape &#123;color&#58; &#60;string&#45;escape&#62;&#125;
+        span&#46;keyword &#123;color&#58; &#60;keyword&#62;&#125;
+        span&#46;list &#123;color&#58; &#60;list&#62;&#125;
+        span&#46;ok &#123;color&#58; &#60;ok&#62;&#125;
+        span&#46;problem &#123;background&#45;color&#58; &#60;problem&#62;&#125;
+        span&#46;serial &#123;color&#58; &#60;serial&#62;&#125;
+        span&#46;sharp &#123;color&#58; &#60;sharp&#62;&#125;
+        span&#46;string &#123;color&#58; &#60;string&#62;&#125;
+        span&#46;here&#45;string &#123;color&#58; &#60;here&#45;string&#62;&#125;
+        span&#46;hs&#45;begin &#123;color&#58; &#60;hs&#45;begin&#62;&#125;
+        span&#46;hs&#45;end&#44; span&#46;hs&#45;key &#123;color&#58; &#60;hs&#45;key&#62;&#125;
+        span&#46;runtime&#45;syntax &#123;color&#58; &#60;runtime&#45;syntax&#62;&#125;
+        span&#46;shebang &#123;color&#58; &#60;shebang&#62;&#125;
+    &#125;
+&#125;
+
+dl&#46;first&#45;deftp&#44; dl&#46;first&#45;deftypevr &#123;
+    p i&#46;slanted &#123;color&#58; &#60;emphasis&#62;&#125;
+&#125;
+
+dl&#46;first&#45;deftp &#123;
+    background&#45;color&#58; &#60;bg&#45;deftp&#62;&#59;
+    background&#45;image&#58; linear&#45;gradient&#40;90deg&#44; &#60;deftp&#45;l&#62;&#44; &#60;deftp&#45;r&#62; 35&#37;&#41;&#59;
+&#125;
+
+dl&#46;first&#45;deftypefn &#123;
+    background&#45;color&#58; &#60;bg&#45;deftypefn&#62;&#59;
+    background&#45;image&#58; linear&#45;gradient&#40;90deg&#44; &#60;deftypefn&#45;l&#62;&#44; &#60;deftypefn&#45;r&#62; 35&#37;&#41;&#59;
+    span&#46;paren &#123;color&#58; &#60;list&#62;&#125;
+    dd pre span&#46;exception &#123;color&#58; &#60;exception&#62;&#125;
+&#125;
+
+dl&#46;first&#45;deftypevr &#123;
+    background&#45;color&#58; &#60;bg&#45;deftypevr&#62;&#59;
+    background&#45;image&#58; linear&#45;gradient&#40;90deg&#44; &#60;deftypevr&#45;l&#62;&#44; &#60;deftypevr&#45;r&#62; 35&#37;&#41;&#59;
+&#125;
+</span></span><span class="hs-end">
+END
+</span></span><span class="list">&#41;</span>
+
+</span><span class="list">&#40;</span></span><span class="runtime-syntax">define</span> css&#45;non&#45;color&#45;template </span><span class="hs-begin">&#35;&#60;&#60;</span></span><span class="hs-key">END
+</span></span><span class="here-string">strong&#46;def&#45;name &#123;font&#45;size&#58; large&#125;
+
+&#46;top&#45;level&#45;extent&#44; &#46;chapter&#45;level&#45;extent&#44; &#46;appendix&#45;level&#45;extent &#123;
+    dd&#44; &#46;center&#44; li&#44; p&#58;not&#40;&#46;nav&#45;panel p&#41; &#123;width&#58; 40rem&#125;
+&#125;
+
+&#46;chapter&#45;level&#45;extent &#123;
+    dd p&#58;not&#40;&#46;nav&#45;panel p&#41;&#44; p&#58;not&#40;&#46;nav&#45;panel p&#41; &#123;text&#45;align&#58; justify&#125;
+&#125;
+
+dl&#46;first&#45;deftp&#44; dl&#46;first&#45;deftypefn&#44; dl&#46;first&#45;deftypevr &#123;
+    border&#45;top&#45;style&#58; solid&#59;
+    border&#45;top&#45;width&#58; thin&#59;
+    padding&#45;top&#58; 0&#46;1rem&#59;
+    width&#58; 44rem&#59;
+    dt&#46;deftp&#44; dt&#46;deftypefn&#44; dt&#46;deftypefnx&#44; dt&#46;deftypevr &#123;
+        align&#45;content&#58; center&#59;
+        padding&#45;left&#58; 0&#46;3em&#59;
+        strong&#46;def&#45;name &#123;font&#45;weight&#58; normal&#125;
+    &#125;
+    dt&#46;deftp&#44; dt&#46;deftypevr &#123;
+        span&#44; code&#44; strong &#123;font&#45;family&#58; inherit&#125;
+    &#125;
+    dt&#46;deftypefn&#44; dt&#46;deftypefnx &#123;font&#45;family&#58; monospace&#125;
+    dd &#123;
+        align&#45;content&#58; start&#59;
+        margin&#45;left&#58; 0&#59;
+        margin&#45;top&#58; 0&#46;1rem&#59;
+        padding&#45;left&#58; 2rem&#59;
+        width&#58; 100&#37;&#59;
+        div&#46;example &#123;
+            margin&#45;left&#58; 1&#46;6rem&#59;
+            pre &#123;
+                border&#45;left&#45;style&#58; dotted&#59;
+                border&#45;left&#45;width&#58; thin&#59;
+                font&#45;size&#58; 1&#46;1em&#59;
+                padding&#45;left&#58; 0&#46;4rem&#59;
+                span&#46;datumc&#44; span&#46;linec&#44; span&#46;nestc&#44; span&#46;exception &#123;
+                     font&#45;style&#58; oblique&#59;
+                &#125;
+                span&#46;ident&#45;escape&#44; span&#46;ident&#45;octal&#44; span&#46;ident&#45;nothing&#44;
+                  span&#46;ident&#45;hex&#45;x&#44; span&#46;ident&#45;hex&#45;u&#44; span&#46;ident&#45;hex&#45;U&#44;
+                  span&#46;string&#45;escape&#44; span&#46;string&#45;octal&#44; span&#46;string&#45;nothing&#44;
+                  span&#46;string&#45;hex&#45;x&#44; span&#46;string&#45;hex&#45;u&#44; span&#46;string&#45;hex&#45;U &#123;
+                    font&#45;weight&#58; bold&#59;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</span></span><span class="hs-end">
+END
+</span></span><span class="list">&#41;</span>
+
+</span><span class="list">&#40;</span></span><span class="runtime-syntax">define</span> </span><span class="list">&#40;</span>write&#45;css&#45;colors </span><span class="identifier">&#124;them</span></span><span class="ident-hex-x">&#92;x65&#59;</span></span><span class="identifier">&#124;</span></span><span class="list">&#41;</span>
+  </span><span class="list">&#40;</span></span><span class="runtime-syntax">let</span> </span><span class="list">&#40;&#40;</span>chars </span><span class="list">&#40;</span>call&#45;with&#45;input&#45;string css&#45;color&#45;template
+                                       </span><span class="list">&#40;</span></span><span class="runtime-syntax">lambda</span> </span><span class="list">&#40;</span>p</span><span class="list">&#41;</span> </span><span class="list">&#40;</span>read&#45;all p read&#45;char</span><span class="list">&#41;&#41;&#41;&#41;&#41;</span>
+    </span><span class="list">&#40;</span></span><span class="runtime-syntax">let</span> loop </span><span class="list">&#40;&#40;</span>buffer </span><span class="abbrev">&#39;</span></span><span class="empty-list">&#40;&#41;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>rest chars</span><span class="list">&#41;&#41;</span>
+      </span><span class="list">&#40;</span></span><span class="runtime-syntax">unless</span> </span><span class="list">&#40;</span>null&#63; rest</span><span class="list">&#41;</span>
+        </span><span class="list">&#40;</span></span><span class="runtime-syntax">let</span> </span><span class="list">&#40;&#40;</span>c </span><span class="list">&#40;</span>car rest</span><span class="list">&#41;&#41;&#41;</span>
+          </span><span class="list">&#40;</span></span><span class="runtime-syntax">if</span> </span><span class="list">&#40;</span>null&#63; buffer</span><span class="list">&#41;</span>
+              </span><span class="list">&#40;</span></span><span class="runtime-syntax">if</span> </span><span class="list">&#40;</span>char&#61;&#63; c </span><span class="char">&#35;&#92;&#60;</span></span><span class="list">&#41;</span>
+                  </span><span class="list">&#40;</span>loop </span><span class="list">&#40;</span>cons c buffer</span><span class="list">&#41;</span> </span><span class="list">&#40;</span>cdr rest</span><span class="list">&#41;&#41;</span>
+                  </span><span class="list">&#40;</span></span><span class="runtime-syntax">begin</span> </span><span class="list">&#40;</span>write&#45;char c</span><span class="list">&#41;</span>
+                         </span><span class="list">&#40;</span>loop </span><span class="abbrev">&#39;</span></span><span class="empty-list">&#40;&#41;</span> </span><span class="list">&#40;</span>cdr rest</span><span class="list">&#41;&#41;&#41;&#41;</span>
+              </span><span class="list">&#40;</span></span><span class="runtime-syntax">if</span> </span><span class="list">&#40;</span>char&#61;&#63; c </span><span class="char">&#35;&#92;&#62;</span></span><span class="list">&#41;</span>
+                  </span><span class="list">&#40;</span></span><span class="runtime-syntax">begin</span>
+                    </span><span class="list">&#40;</span>write&#45;string
+                     </span><span class="list">&#40;</span>get&#45;color theme </span><span class="list">&#40;</span>list&#45;&#62;string </span><span class="list">&#40;</span>cdr </span><span class="list">&#40;</span>reverse buffer</span><span class="list">&#41;&#41;&#41;&#41;&#41;</span>
+                    </span><span class="list">&#40;</span>loop </span><span class="abbrev">&#39;</span></span><span class="empty-list">&#40;&#41;</span> </span><span class="list">&#40;</span>cdr rest</span><span class="list">&#41;&#41;&#41;</span>
+                  </span><span class="list">&#40;</span>loop </span><span class="list">&#40;</span>cons c buffer</span><span class="list">&#41;</span> </span><span class="list">&#40;</span>cdr rest</span><span class="list">&#41;&#41;&#41;&#41;&#41;&#41;&#41;&#41;&#41;</span>
+
+</span><span class="list">&#40;</span></span><span class="runtime-syntax">define</span> </span><span class="list">&#40;</span>get&#45;color theme string&#45;or&#45;symbol</span><span class="list">&#41;</span>
+  </span><span class="list">&#40;</span></span><span class="runtime-syntax">let</span> </span><span class="list">&#40;&#40;</span>element&#45;color </span><span class="list">&#40;</span></span><span class="runtime-syntax">lambda</span> </span><span class="list">&#40;</span>element</span><span class="list">&#41;</span>
+                         </span><span class="list">&#40;</span></span><span class="runtime-syntax">case</span> element
+                           </span><span class="list">&#40;&#40;</span> bg&#45;deftp bg&#45;deftypefn bg&#45;deftypevr </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>bg&#45;dim</span><span class="list">&#41;</span>
+                           </span><span class="list">&#40;&#40;</span> problem </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>bg&#45;yellow&#45;intense</span><span class="list">&#41;</span>
+                           </span><span class="list">&#40;&#40;</span> category&#45;def def&#45;bracket </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>fg&#45;alt</span><span class="list">&#41;</span>
+                           </span><span class="list">&#40;&#40;</span> def&#45;var </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>magenta</span><span class="list">&#41;</span>
+                           </span><span class="list">&#40;&#40;</span> deftp&#45;l deftp&#45;r </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>bg&#45;ochre</span><span class="list">&#41;</span>
+                           </span><span class="list">&#40;&#40;</span> deftypefn&#45;l deftypefn&#45;r </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>bg&#45;blue&#45;subtle</span><span class="list">&#41;</span>
+                           </span><span class="list">&#40;&#40;</span> deftypevr&#45;l deftypevr&#45;r </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>bg&#45;clay</span><span class="list">&#41;</span>
+                           </span><span class="list">&#40;&#40;</span> emphasis exception </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>yellow&#45;faint</span><span class="list">&#41;</span>
+                           </span><span class="list">&#40;&#40;</span> keyword </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>magenta&#45;faint</span><span class="list">&#41;</span>
+                           </span><span class="list">&#40;&#40;</span> link link&#45;visited </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>blue&#45;warmer</span><span class="list">&#41;</span>
+                           </span><span class="list">&#40;&#40;</span> ok </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>slate</span><span class="list">&#41;</span>
+                           </span><span class="list">&#40;&#40;</span> todo </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>bg&#45;red&#45;intense</span><span class="list">&#41;</span>
+                           </span><span class="list">&#40;</span></span><span class="runtime-syntax">else</span> </span><span class="boolean">&#35;f</span></span><span class="list">&#41;&#41;&#41;&#41;</span>
+        </span><span class="list">&#40;</span>code&#45;color </span><span class="list">&#40;</span></span><span class="runtime-syntax">lambda</span> </span><span class="list">&#40;</span>kind</span><span class="list">&#41;</span>
+                      </span><span class="list">&#40;</span></span><span class="runtime-syntax">case</span> kind
+                        </span><span class="list">&#40;&#40;</span> abbrev list dot vector u8vector u16vector u32vector
+                           u64vector s8vector s16vector s32vector s64vector
+                           f32vector f64vector </span><span class="list">&#41;</span>
+                         </span><span class="abbrev">&#39;</span>fg&#45;dim</span><span class="list">&#41;</span>
+                        </span><span class="list">&#40;&#40;</span> empty&#45;list empty&#45;vector empty&#45;u8vector
+                           empty&#45;u16vector empty&#45;u32vector empty&#45;u64vector
+                           empty&#45;s8vector empty&#45;s16vector empty&#45;s32vector
+                           empty&#45;s64vector empty&#45;f32vector empty&#45;f64vector </span><span class="list">&#41;</span>
+                         </span><span class="abbrev">&#39;</span>fg&#45;main</span><span class="list">&#41;</span>
+                        </span><span class="list">&#40;&#40;</span> boolean </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>indigo</span><span class="list">&#41;</span>
+                        </span><span class="list">&#40;&#40;</span> box </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>blue</span><span class="list">&#41;</span>
+                        </span><span class="list">&#40;&#40;</span> char </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>red&#45;faint</span><span class="list">&#41;</span>
+                        </span><span class="list">&#40;&#40;</span> codecomment invalid hs&#45;begin shebang </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>fg&#45;dim</span><span class="list">&#41;</span>
+                        </span><span class="list">&#40;&#40;</span> datum&#45;label datum&#45;reference </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>fg&#45;alt</span><span class="list">&#41;</span>
+                        </span><span class="list">&#40;&#40;</span> default </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>fg&#45;main</span><span class="list">&#41;</span>
+                        </span><span class="list">&#40;&#40;</span> directive </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>pink</span><span class="list">&#41;</span>
+                        </span><span class="list">&#40;&#40;</span> identifier identifier&#45;escape </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>fg&#45;main</span><span class="list">&#41;</span>
+                        </span><span class="list">&#40;&#40;</span> keyword </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>magenta&#45;faint</span><span class="list">&#41;</span>
+                        </span><span class="list">&#40;&#40;</span> serial </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>fg&#45;ochre</span><span class="list">&#41;</span>
+                        </span><span class="list">&#40;&#40;</span> sharp </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>cyan</span><span class="list">&#41;</span>
+                        </span><span class="list">&#40;&#40;</span> string string&#45;escape here&#45;string </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>green</span><span class="list">&#41;</span>
+                        </span><span class="list">&#40;&#40;</span> hs&#45;key </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>yellow</span><span class="list">&#41;</span>
+                        </span><span class="list">&#40;&#40;</span> runtime&#45;syntax </span><span class="list">&#41;</span> </span><span class="abbrev">&#39;</span>magenta&#45;cooler</span><span class="list">&#41;</span>
+                        </span><span class="list">&#40;</span></span><span class="runtime-syntax">else</span> kind</span><span class="list">&#41;&#41;&#41;&#41;</span> </span><span class="linec">&#59;&#59; pass symbol directly to assq</span>
+        </span><span class="list">&#40;</span>modus&#45;operandi&#45;colors </span><span class="linec">&#59;&#59; from Protesilaos Stavrou&#39;s modus&#45;themes</span>
+         </span><span class="abbrev">&#39;</span></span><span class="list">&#40;&#40;</span>bg&#45;active           </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;c4c4c4&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;added            </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;c1f2d1&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;added&#45;faint      </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;d8f8e1&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;added&#45;fringe     </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;6cc06c&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;added&#45;refine     </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;aee5be&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;blue&#45;intense     </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;bfc9ff&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;blue&#45;nuanced     </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ecedff&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;blue&#45;subtle      </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ccdfff&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;changed          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ffdfa9&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;changed&#45;faint    </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ffefbf&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;changed&#45;fringe   </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;d7c20a&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;changed&#45;refine   </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;fac090&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;char&#45;0           </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;7feaff&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;char&#45;1           </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ffaaff&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;char&#45;2           </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;dff000&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;clay             </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;f1c8b5&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;completion       </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;c0deff&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;cyan&#45;intense     </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;a4d5f9&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;cyan&#45;nuanced     </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;e0f2fa&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;cyan&#45;subtle      </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;bfefff&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;dim              </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;f2f2f2&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;green&#45;intense    </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;8adf80&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;green&#45;nuanced    </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;e0f6e0&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;green&#45;subtle     </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;b3fabf&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;hl&#45;line          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;dae5ec&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;hover            </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;b2e4dc&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;hover&#45;secondary  </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;f5d0a0&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;inactive         </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;e0e0e0&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;lavender         </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;dfcdfa&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;magenta&#45;intense  </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;dfa0f0&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;magenta&#45;nuanced  </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;f8e6f5&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;magenta&#45;subtle   </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ffddff&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;main             </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ffffff&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;ochre            </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;f0e3c0&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;paren&#45;expression </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;efd3f5&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;paren&#45;match      </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;5fcfff&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;red&#45;intense      </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ff8f88&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;red&#45;nuanced      </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ffe8e8&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;red&#45;subtle       </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ffcfbf&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;region           </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;bdbdbd&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;removed          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ffd8d5&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;removed&#45;faint    </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ffe9e9&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;removed&#45;fringe   </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;d84a4f&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;removed&#45;refine   </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;f3b5af&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;sage             </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;c0e7d4&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;tab&#45;bar          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;dfdfdf&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;tab&#45;other        </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;c2c2c2&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;yellow&#45;intense   </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;f3d000&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;yellow&#45;nuanced   </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;f8f0d0&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;yellow&#45;subtle    </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;fff576&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>blue                </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;0031a9&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>blue&#45;cooler         </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;0000b0&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>blue&#45;faint          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;003497&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>blue&#45;intense        </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;0000ff&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>blue&#45;warmer         </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;3548cf&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>border              </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;9f9f9f&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>cyan                </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;005e8b&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>cyan&#45;cooler         </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;005f5f&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>cyan&#45;faint          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;005077&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>cyan&#45;intense        </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;008899&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>cyan&#45;warmer         </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;3f578f&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>fg&#45;added            </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;005000&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>fg&#45;added&#45;intense    </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;006700&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>fg&#45;alt              </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;193668&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>fg&#45;changed          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;553d00&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>fg&#45;changed&#45;intense  </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;655000&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>fg&#45;clay             </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;63192a&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>fg&#45;dim              </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;595959&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>fg&#45;lavender         </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;443379&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>fg&#45;main             </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;000000&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>fg&#45;ochre            </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;573a30&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>fg&#45;removed          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;8f1313&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>fg&#45;removed&#45;intense  </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;aa2222&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>fg&#45;sage             </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;124b41&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>gold                </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;80601f&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>green               </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;006800&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>green&#45;cooler        </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;00663f&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>green&#45;faint         </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;2a5045&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>green&#45;intense       </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;008900&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>green&#45;warmer        </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;316500&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>indigo              </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;4a3a8a&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>magenta             </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;721045&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>magenta&#45;cooler      </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;531ab6&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>magenta&#45;faint       </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;7c318f&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>magenta&#45;intense     </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;dd22dd&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>magenta&#45;warmer      </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;8f0075&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>maroon              </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;731c52&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>olive               </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;56692d&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>pink                </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;7b435c&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>red                 </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;a60000&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>red&#45;cooler          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;a0132f&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>red&#45;faint           </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;7f0000&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>red&#45;intense         </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;d00000&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>red&#45;warmer          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;972500&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>rust                </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;8a290f&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>slate               </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;2f3f83&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>yellow              </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;6f5500&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>yellow&#45;cooler       </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;7a4f2f&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>yellow&#45;faint        </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;624416&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>yellow&#45;intense      </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;808000&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>yellow&#45;warmer       </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;884900&#34;</span></span><span class="list">&#41;&#41;&#41;</span>
+        </span><span class="list">&#40;</span>modus&#45;vivendi&#45;colors </span><span class="linec">&#59;&#59; from Protesilaos Stavrou&#39;s modus&#45;themes</span>
+         </span><span class="abbrev">&#39;</span></span><span class="list">&#40;&#40;</span>bg&#45;active           </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;535353&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;added            </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;00381f&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;added&#45;faint      </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;002910&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;added&#45;fringe     </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;237f3f&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;added&#45;refine     </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;034f2f&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;blue&#45;intense     </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;1640b0&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;blue&#45;nuanced     </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;12154a&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;blue&#45;subtle      </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;242679&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;changed          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;363300&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;changed&#45;faint    </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;2a1f00&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;changed&#45;fringe   </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;8a7a00&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;changed&#45;refine   </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;4a4a00&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;char&#45;0           </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;0050af&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;char&#45;1           </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;7f1f7f&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;char&#45;2           </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;625a00&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;clay             </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;49191a&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;completion       </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;2f447f&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;cyan&#45;intense     </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;2266ae&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;cyan&#45;nuanced     </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;042837&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;cyan&#45;subtle      </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;004065&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;dim              </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;1e1e1e&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;green&#45;intense    </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;2f822f&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;green&#45;nuanced    </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;092f1f&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;green&#45;subtle     </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;00422a&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;hl&#45;line          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;2f3849&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;hover            </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;45605e&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;hover&#45;secondary  </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;654a39&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;inactive         </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;303030&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;lavender         </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;38325c&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;magenta&#45;intense  </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;7030af&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;magenta&#45;nuanced  </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;2f0c3f&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;magenta&#45;subtle   </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;552f5f&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;main             </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;000000&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;ochre            </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;462f20&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;paren&#45;expression </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;453040&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;paren&#45;match      </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;2f7f9f&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;red&#45;intense      </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;9d1f1f&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;red&#45;nuanced      </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;3a0c14&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;red&#45;subtle       </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;620f2a&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;region           </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;5a5a5a&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;removed          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;4f1119&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;removed&#45;faint    </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;380a0f&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;removed&#45;fringe   </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;b81a1f&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;removed&#45;refine   </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;781a1f&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;sage             </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;143e32&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;tab&#45;bar          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;313131&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;tab&#45;other        </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;545454&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;yellow&#45;intense   </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;7a6100&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>bg&#45;yellow&#45;nuanced   </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;381d0f&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>bg&#45;yellow&#45;subtle    </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;4a4000&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>blue                </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;2fafff&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>blue&#45;cooler         </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;00bcff&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>blue&#45;faint          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;82b0ec&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>blue&#45;intense        </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;338fff&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>blue&#45;warmer         </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;79a8ff&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>border              </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;646464&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>cyan                </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;00d3d0&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>cyan&#45;cooler         </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;6ae4b9&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>cyan&#45;faint          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;9ac8e0&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>cyan&#45;intense        </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;00eff0&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>cyan&#45;warmer         </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;4ae2f0&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>fg&#45;added            </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;a0e0a0&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>fg&#45;added&#45;intense    </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;80e080&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>fg&#45;alt              </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;c6daff&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>fg&#45;changed          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;efef80&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>fg&#45;changed&#45;intense  </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;c0b05f&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>fg&#45;clay             </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;f1b090&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>fg&#45;dim              </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;989898&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>fg&#45;lavender         </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;dfc0f0&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>fg&#45;main             </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ffffff&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>fg&#45;ochre            </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;e0d09c&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>fg&#45;removed          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ffbfbf&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>fg&#45;removed&#45;intense  </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ff9095&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>fg&#45;sage             </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;c3e7d4&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>gold                </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;c0965b&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>green               </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;44bc44&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>green&#45;cooler        </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;00c06f&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>green&#45;faint         </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;88ca9f&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>green&#45;intense       </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;44df44&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>green&#45;warmer        </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;70b900&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>indigo              </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;9099d9&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>magenta             </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;feacd0&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>magenta&#45;cooler      </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;b6a0ff&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>magenta&#45;faint       </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;caa6df&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>magenta&#45;intense     </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ff66ff&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>magenta&#45;warmer      </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;f78fe7&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>maroon              </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;cf7fa7&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>olive               </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;9cbd6f&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>pink                </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;d09dc0&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>red                 </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ff5f59&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>red&#45;cooler          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ff7f9f&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>red&#45;faint           </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ff9580&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>red&#45;intense         </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ff5f5f&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>red&#45;warmer          </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;ff6b55&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>rust                </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;db7b5f&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>slate               </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;76afbf&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>yellow              </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;d0bc00&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>yellow&#45;cooler       </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;dfaf7a&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>yellow&#45;faint        </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;d2b580&#34;</span></span><span class="list">&#41;</span> </span><span class="list">&#40;</span>yellow&#45;intense      </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;efef00&#34;</span></span><span class="list">&#41;</span>
+           </span><span class="list">&#40;</span>yellow&#45;warmer       </span><span class="dot">&#46;</span> </span><span class="string">&#34;&#35;fec43f&#34;</span></span><span class="list">&#41;&#41;&#41;&#41;</span>
+    </span><span class="list">&#40;</span></span><span class="runtime-syntax">let&#42;</span> </span><span class="list">&#40;&#40;</span>symbol </span><span class="list">&#40;</span></span><span class="runtime-syntax">if</span> </span><span class="list">&#40;</span>string&#63; string&#45;or&#45;symbol</span><span class="list">&#41;</span>
+                       </span><span class="list">&#40;</span>string&#45;&#62;symbol string&#45;or&#45;symbol</span><span class="list">&#41;</span>
+                       string&#45;or&#45;symbol</span><span class="list">&#41;&#41;</span>
+           </span><span class="list">&#40;</span>color </span><span class="list">&#40;</span>cdr </span><span class="list">&#40;</span>assq </span><span class="list">&#40;</span></span><span class="runtime-syntax">or</span> </span><span class="list">&#40;</span>element&#45;color symbol</span><span class="list">&#41;</span> </span><span class="list">&#40;</span>code&#45;color symbol</span><span class="list">&#41;&#41;</span>
+                             </span><span class="list">&#40;</span></span><span class="runtime-syntax">case</span> theme
+                               </span><span class="list">&#40;&#40;</span> modus&#45;operandi </span><span class="list">&#41;</span> modus&#45;operandi&#45;colors</span><span class="list">&#41;</span>
+                               </span><span class="list">&#40;&#40;</span> modus&#45;vivendi </span><span class="list">&#41;</span> modus&#45;vivendi&#45;colors</span><span class="list">&#41;</span>
+                               </span><span class="list">&#40;</span></span><span class="runtime-syntax">else</span> </span><span class="list">&#40;</span>error </span><span class="string">&#34;Unknown theme&#34;</span> theme</span><span class="list">&#41;&#41;&#41;&#41;&#41;&#41;&#41;</span>
+      </span><span class="list">&#40;</span></span><span class="runtime-syntax">case</span> theme
+        </span><span class="list">&#40;&#40;</span> modus&#45;operandi </span><span class="list">&#41;</span>
+         </span><span class="list">&#40;</span></span><span class="runtime-syntax">case</span> symbol
+           </span><span class="list">&#40;&#40;</span> codecomment </span><span class="list">&#41;</span> </span><span class="list">&#40;</span>string&#45;append color </span><span class="string">&#34;cf&#34;</span></span><span class="list">&#41;&#41;</span>
+           </span><span class="list">&#40;&#40;</span> bg&#45;deftp bg&#45;deftypefn bg&#45;deftypevr </span><span class="list">&#41;</span> </span><span class="list">&#40;</span>string&#45;append color </span><span class="string">&#34;90&#34;</span></span><span class="list">&#41;&#41;</span>
+           </span><span class="list">&#40;&#40;</span> deftp&#45;l deftypefn&#45;l deftypevr&#45;l </span><span class="list">&#41;</span> </span><span class="list">&#40;</span>string&#45;append color </span><span class="string">&#34;6f&#34;</span></span><span class="list">&#41;&#41;</span>
+           </span><span class="list">&#40;&#40;</span> deftp&#45;r deftypefn&#45;r deftypevr&#45;r </span><span class="list">&#41;</span> </span><span class="list">&#40;</span>string&#45;append color </span><span class="string">&#34;3f&#34;</span></span><span class="list">&#41;&#41;</span>
+           </span><span class="list">&#40;</span></span><span class="runtime-syntax">else</span> color</span><span class="list">&#41;&#41;&#41;</span>
+        </span><span class="list">&#40;&#40;</span> modus&#45;vivendi </span><span class="list">&#41;</span>
+         </span><span class="list">&#40;</span></span><span class="runtime-syntax">case</span> symbol
+           </span><span class="list">&#40;&#40;</span> codecomment </span><span class="list">&#41;</span> </span><span class="list">&#40;</span>string&#45;append color </span><span class="string">&#34;cf&#34;</span></span><span class="list">&#41;&#41;</span>
+           </span><span class="list">&#40;&#40;</span> bg&#45;deftp bg&#45;deftypefn bg&#45;deftypevr </span><span class="list">&#41;</span> </span><span class="list">&#40;</span>string&#45;append color </span><span class="string">&#34;90&#34;</span></span><span class="list">&#41;&#41;</span>
+           </span><span class="list">&#40;&#40;</span> deftp&#45;l </span><span class="list">&#41;</span> </span><span class="list">&#40;</span>string&#45;append color </span><span class="string">&#34;bf&#34;</span></span><span class="list">&#41;&#41;</span>
+           </span><span class="list">&#40;&#40;</span> deftypefn&#45;l </span><span class="list">&#41;</span> </span><span class="list">&#40;</span>string&#45;append color </span><span class="string">&#34;6f&#34;</span></span><span class="list">&#41;&#41;</span>
+           </span><span class="list">&#40;&#40;</span> deftypevr&#45;l </span><span class="list">&#41;</span> </span><span class="list">&#40;</span>string&#45;append color </span><span class="string">&#34;af&#34;</span></span><span class="list">&#41;&#41;</span>
+           </span><span class="list">&#40;&#40;</span> deftp&#45;r </span><span class="list">&#41;</span> </span><span class="list">&#40;</span>string&#45;append color </span><span class="string">&#34;9f&#34;</span></span><span class="list">&#41;&#41;</span>
+           </span><span class="list">&#40;&#40;</span> deftypefn&#45;r </span><span class="list">&#41;</span> </span><span class="list">&#40;</span>string&#45;append color </span><span class="string">&#34;3f&#34;</span></span><span class="list">&#41;&#41;</span>
+           </span><span class="list">&#40;&#40;</span> deftypevr&#45;r </span><span class="list">&#41;</span> </span><span class="list">&#40;</span>string&#45;append color </span><span class="string">&#34;8f&#34;</span></span><span class="list">&#41;&#41;</span>
+           </span><span class="list">&#40;</span></span><span class="runtime-syntax">else</span> color</span><span class="list">&#41;&#41;&#41;</span>
+        </span><span class="list">&#40;</span></span><span class="runtime-syntax">else</span> color</span><span class="list">&#41;&#41;&#41;&#41;&#41;</span>
+</pre>
+</div>            
+</dd>
+</dl>
+</body>
