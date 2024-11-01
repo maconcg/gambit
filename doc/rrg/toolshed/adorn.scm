@@ -778,6 +778,10 @@
                   (set-peer! pac (- index 1)))
                  (( #\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7 #\8 #\9 )
                   (set-mesg! nac '~label/reference))
+                 (( #\b #\e #\i #\o #\x )
+                  (set-kind! nac 'default)
+                  (set-kind! pac 'default)
+                  (set-tent! nac #f))
                  (else (set-kind+mesg! nac 'invalid)))))
             (when (refresh? nac)
               (case nc
