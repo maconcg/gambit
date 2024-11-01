@@ -67,17 +67,25 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
         p var.var, li var.var {color: <def-var>}
     }
     pre {
+        span.abbrev {color: <abbrev>}
         span.boolean {color: <boolean>}
         span.box {color: <box>}
         span.char {color: <char>}
-        span.codecomment {color: <codecomment>}
+        span.datumc, span.linec, span.nestc {color: <codecomment>}
+        span.dot {color: <dot>}
+        span.identifier-escape, span.string-escape {color: <string-escape>}
         span.keyword {color: <keyword>}
+        span.list {color: <list>}
         span.ok {color: <ok>}
         span.problem {background-color: <problem>}
         span.serial {color: <serial>}
         span.sharp {color: <sharp>}
         span.string {color: <string>}
-        span.syntax {color: <syntax>}
+        span.here-string {color: <here-string>}
+        span.hs-begin {color: <hs-begin>}
+        span.hs-end, span.hs-key {color: <hs-key>}
+        span.runtime-syntax {color: <runtime-syntax>}
+        span.shebang {color: <shebang>}
     }
 }
 
@@ -143,7 +151,15 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
                 border-left-width: thin;
                 font-size: 1.1em;
                 padding-left: 0.4rem;
-                span.codecomment, span.exception {font-style: oblique}
+                span.datumc, span.linec, span.nestc, span.exception {
+                     font-style: oblique;
+                }
+                span.ident-escape, span.ident-octal, span.ident-nothing,
+                  span.ident-hex-x, span.ident-hex-u, span.ident-hex-U,
+                  span.string-escape, span.string-octal, span.string-nothing,
+                  span.string-hex-x, span.string-hex-u, span.string-hex-U {
+                    font-weight: bold;
+                }
             }
         }
     }
@@ -152,7 +168,7 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
 END
 )
 
-(define (write-css-colors theme)
+(define (write-css-colors |them\x65;|)
   (let ((chars (call-with-input-string css-color-template
                                        (lambda (p) (read-all p read-char)))))
     (let loop ((buffer '()) (rest chars))
@@ -188,32 +204,29 @@ END
                            (else #f))))
         (code-color (lambda (kind)
                       (case kind
-                        (( list vector u8vector u16vector u32vector u64vector
-                           s8vector s16vector s32vector s64vector f32vector
-                           f64vector )
+                        (( abbrev list dot vector u8vector u16vector u32vector
+                           u64vector s8vector s16vector s32vector s64vector
+                           f32vector f64vector )
                          'fg-dim)
                         (( empty-list empty-vector empty-u8vector
                            empty-u16vector empty-u32vector empty-u64vector
                            empty-s8vector empty-s16vector empty-s32vector
                            empty-s64vector empty-f32vector empty-f64vector )
                          'fg-main)
-                        (( abbrev ) 'fg-dim)
                         (( boolean ) 'indigo)
                         (( box ) 'blue)
                         (( char ) 'red-faint)
-                        (( codecomment ) 'fg-dim)
+                        (( codecomment invalid hs-begin shebang ) 'fg-dim)
                         (( datum-label datum-reference ) 'fg-alt)
                         (( default ) 'fg-main)
                         (( directive ) 'pink)
                         (( identifier identifier-escape ) 'fg-main)
-                        (( invalid ) 'fg-dim)
                         (( keyword ) 'magenta-faint)
-                        (( datumc linec nestc ) 'fg-dim)
                         (( serial ) 'fg-ochre)
                         (( sharp ) 'cyan)
                         (( string string-escape here-string ) 'green)
-                        (( hs-begin hs-end hs-key ) 'fg-main)
-                        (( syntax ) 'magenta-cooler)
+                        (( hs-key ) 'yellow-faint)
+                        (( runtime-syntax ) 'magenta-cooler)
                         (else kind)))) ;; pass symbol directly to assq
         (modus-operandi-colors ;; from Protesilaos Stavrou's modus-themes
          '((bg-active           . "#c4c4c4") (bg-added            . "#c1f2d1")
