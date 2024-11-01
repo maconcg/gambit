@@ -1,0 +1,349 @@
+#!/usr/bin/env gsi-script
+
+(define (main . args)
+  (let-values (((light dark output-file)
+                (let loop ((rest args)
+                           (light 'modus-operandi)
+                           (dark 'modus-vivendi)
+                           (output-file "gambit.css"))
+                  (if (or (null? rest)
+                          (not (member (car rest) '("-d" "-l" "-o") string=?)))
+                      (values light dark output-file)
+                      (let ((opt (car rest)))
+                        (cond ((string=? opt "-d")
+                               (loop (cddr rest)
+                                     light
+                                     (string->symbol (cadr rest))
+                                     output-file))
+                              ((string=? (car rest) "-l")
+                               (loop (cddr rest)
+                                     (string->symbol (cadr rest))
+                                     dark
+                                     output-file))
+                              ((string=? (car rest) "-o")
+                               (loop (cddr rest)
+                                     light
+                                     dark
+                                     (cadr rest)))))))))
+    (with-output-to-file output-file
+      (lambda ()
+        (write-css-colors light)
+        (write-string "\n@media (prefers-color-scheme: dark) {\n")
+        (indent+write 4 (lambda () (write-css-colors dark)))
+        (write-string (string-append "}\n\n" css-non-color-template))))))
+
+(define (indent+write spaces thunk-that-writes)
+  (let ((out-string (open-output-string)))
+    (parameterize ((current-output-port out-string))
+      (thunk-that-writes))
+    (for-each (lambda (line)
+                (write-string (string-append (make-string spaces #\space)
+                                             line
+                                             "\n")))
+              (call-with-input-string (get-output-string out-string)
+                                      (lambda (p) (read-all p read-line))))))
+
+(define css-color-template #<<END
+body {
+    color: <fg-main>;
+    background-color: <bg-main>;
+}
+
+a:link {color: <link>}
+a:visited {color: <link-visited>}
+hr {color: <border>}
+span.todo {background-color: <todo>}
+.chapter-level-extent pre {border-left-color: <fg-main>}
+
+dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
+    border-top-color: <border>;
+    dt {
+        code.def-code-arguments {color: <def-var>}
+        span.category-def {color: <category-def>}
+        code.def-code-arguments span.bracket {color: <fg-alt>}
+    }
+    dd {
+        background-color: <bg-main>;
+        p var.var, li var.var {color: <def-var>}
+    }
+    pre {
+        span.boolean {color: <boolean>}
+        span.box {color: <box>}
+        span.char {color: <char>}
+        span.codecomment {color: <codecomment>}
+        span.keyword {color: <keyword>}
+        span.ok {color: <ok>}
+        span.problem {background-color: <problem>}
+        span.serial {color: <serial>}
+        span.sharp {color: <sharp>}
+        span.string {color: <string>}
+        span.syntax {color: <syntax>}
+    }
+}
+
+dl.first-deftp, dl.first-deftypevr {
+    p i.slanted {color: <emphasis>}
+}
+
+dl.first-deftp {
+    background-color: <bg-deftp>;
+    background-image: linear-gradient(90deg, <deftp-l>, <deftp-r> 35%);
+}
+
+dl.first-deftypefn {
+    background-color: <bg-deftypefn>;
+    background-image: linear-gradient(90deg, <deftypefn-l>, <deftypefn-r> 35%);
+    span.paren {color: <list>}
+    dd pre span.exception {color: <exception>}
+}
+
+dl.first-deftypevr {
+    background-color: <bg-deftypevr>;
+    background-image: linear-gradient(90deg, <deftypevr-l>, <deftypevr-r> 35%);
+}
+
+END
+)
+
+(define css-non-color-template #<<END
+strong.def-name {font-size: large}
+
+.top-level-extent, .chapter-level-extent, .appendix-level-extent {
+    dd, .center, li, p:not(.nav-panel p) {width: 40rem}
+}
+
+.chapter-level-extent {
+    dd p:not(.nav-panel p), p:not(.nav-panel p) {text-align: justify}
+}
+
+dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
+    border-top-style: solid;
+    border-top-width: thin;
+    padding-top: 0.1rem;
+    width: 44rem;
+    dt.deftp, dt.deftypefn, dt.deftypefnx, dt.deftypevr {
+        align-content: center;
+        padding-left: 0.3em;
+        strong.def-name {font-weight: normal}
+    }
+    dt.deftp, dt.deftypevr {
+        span, code, strong {font-family: inherit}
+    }
+    dt.deftypefn, dt.deftypefnx {font-family: monospace}
+    dd {
+        align-content: start;
+        margin-left: 0;
+        margin-top: 0.1rem;
+        padding-left: 2rem;
+        width: 100%;
+        div.example {
+            margin-left: 1.6rem;
+            pre {
+                border-left-style: dotted;
+                border-left-width: thin;
+                font-size: 1.1em;
+                padding-left: 0.4rem;
+                span.codecomment, span.exception {font-style: oblique}
+            }
+        }
+    }
+}
+
+END
+)
+
+(define (write-css-colors theme)
+  (let ((chars (call-with-input-string css-color-template
+                                       (lambda (p) (read-all p read-char)))))
+    (let loop ((buffer '()) (rest chars))
+      (unless (null? rest)
+        (let ((c (car rest)))
+          (if (null? buffer)
+              (if (char=? c #\<)
+                  (loop (cons c buffer) (cdr rest))
+                  (begin (write-char c)
+                         (loop '() (cdr rest))))
+              (if (char=? c #\>)
+                  (begin
+                    (write-string
+                     (get-color theme (list->string (cdr (reverse buffer)))))
+                    (loop '() (cdr rest)))
+                  (loop (cons c buffer) (cdr rest)))))))))
+
+(define (get-color theme string-or-symbol)
+  (let ((element-color (lambda (element)
+                         (case element
+                           (( bg-deftp bg-deftypefn bg-deftypevr ) 'bg-dim)
+                           (( problem ) 'bg-yellow-intense)
+                           (( category-def def-bracket ) 'fg-alt)
+                           (( def-var ) 'magenta)
+                           (( deftp-l deftp-r ) 'bg-ochre)
+                           (( deftypefn-l deftypefn-r ) 'bg-blue-subtle)
+                           (( deftypevr-l deftypevr-r ) 'bg-clay)
+                           (( emphasis exception ) 'yellow-faint)
+                           (( keyword ) 'magenta-faint)
+                           (( link link-visited ) 'blue-warmer)
+                           (( ok ) 'slate)
+                           (( todo ) 'bg-red-intense)
+                           (else #f))))
+        (code-color (lambda (kind)
+                      (case kind
+                        (( list vector u8vector u16vector u32vector u64vector
+                           s8vector s16vector s32vector s64vector f32vector
+                           f64vector )
+                         'fg-dim)
+                        (( empty-list empty-vector empty-u8vector
+                           empty-u16vector empty-u32vector empty-u64vector
+                           empty-s8vector empty-s16vector empty-s32vector
+                           empty-s64vector empty-f32vector empty-f64vector )
+                         'fg-main)
+                        (( abbrev ) 'fg-dim)
+                        (( boolean ) 'indigo)
+                        (( box ) 'blue)
+                        (( char ) 'red-faint)
+                        (( codecomment ) 'fg-dim)
+                        (( datum-label datum-reference ) 'fg-alt)
+                        (( default ) 'fg-main)
+                        (( directive ) 'pink)
+                        (( identifier identifier-escape ) 'fg-main)
+                        (( invalid ) 'fg-dim)
+                        (( keyword ) 'magenta-faint)
+                        (( datumc linec nestc ) 'fg-dim)
+                        (( serial ) 'fg-ochre)
+                        (( sharp ) 'cyan)
+                        (( string string-escape here-string ) 'green)
+                        (( hs-begin hs-end hs-key ) 'fg-main)
+                        (( syntax ) 'magenta-cooler)
+                        (else kind)))) ;; pass symbol directly to assq
+        (modus-operandi-colors ;; from Protesilaos Stavrou's modus-themes
+         '((bg-active           . "#c4c4c4") (bg-added            . "#c1f2d1")
+           (bg-added-faint      . "#d8f8e1") (bg-added-fringe     . "#6cc06c")
+           (bg-added-refine     . "#aee5be") (bg-blue-intense     . "#bfc9ff")
+           (bg-blue-nuanced     . "#ecedff") (bg-blue-subtle      . "#ccdfff")
+           (bg-changed          . "#ffdfa9") (bg-changed-faint    . "#ffefbf")
+           (bg-changed-fringe   . "#d7c20a") (bg-changed-refine   . "#fac090")
+           (bg-char-0           . "#7feaff") (bg-char-1           . "#ffaaff")
+           (bg-char-2           . "#dff000") (bg-clay             . "#f1c8b5")
+           (bg-completion       . "#c0deff") (bg-cyan-intense     . "#a4d5f9")
+           (bg-cyan-nuanced     . "#e0f2fa") (bg-cyan-subtle      . "#bfefff")
+           (bg-dim              . "#f2f2f2") (bg-green-intense    . "#8adf80")
+           (bg-green-nuanced    . "#e0f6e0") (bg-green-subtle     . "#b3fabf")
+           (bg-hl-line          . "#dae5ec") (bg-hover            . "#b2e4dc")
+           (bg-hover-secondary  . "#f5d0a0") (bg-inactive         . "#e0e0e0")
+           (bg-lavender         . "#dfcdfa") (bg-magenta-intense  . "#dfa0f0")
+           (bg-magenta-nuanced  . "#f8e6f5") (bg-magenta-subtle   . "#ffddff")
+           (bg-main             . "#ffffff") (bg-ochre            . "#f0e3c0")
+           (bg-paren-expression . "#efd3f5") (bg-paren-match      . "#5fcfff")
+           (bg-red-intense      . "#ff8f88") (bg-red-nuanced      . "#ffe8e8")
+           (bg-red-subtle       . "#ffcfbf") (bg-region           . "#bdbdbd")
+           (bg-removed          . "#ffd8d5") (bg-removed-faint    . "#ffe9e9")
+           (bg-removed-fringe   . "#d84a4f") (bg-removed-refine   . "#f3b5af")
+           (bg-sage             . "#c0e7d4") (bg-tab-bar          . "#dfdfdf")
+           (bg-tab-other        . "#c2c2c2") (bg-yellow-intense   . "#f3d000")
+           (bg-yellow-nuanced   . "#f8f0d0") (bg-yellow-subtle    . "#fff576")
+           (blue                . "#0031a9") (blue-cooler         . "#0000b0")
+           (blue-faint          . "#003497") (blue-intense        . "#0000ff")
+           (blue-warmer         . "#3548cf") (border              . "#9f9f9f")
+           (cyan                . "#005e8b") (cyan-cooler         . "#005f5f")
+           (cyan-faint          . "#005077") (cyan-intense        . "#008899")
+           (cyan-warmer         . "#3f578f") (fg-added            . "#005000")
+           (fg-added-intense    . "#006700") (fg-alt              . "#193668")
+           (fg-changed          . "#553d00") (fg-changed-intense  . "#655000")
+           (fg-clay             . "#63192a") (fg-dim              . "#595959")
+           (fg-lavender         . "#443379") (fg-main             . "#000000")
+           (fg-ochre            . "#573a30") (fg-removed          . "#8f1313")
+           (fg-removed-intense  . "#aa2222") (fg-sage             . "#124b41")
+           (gold                . "#80601f") (green               . "#006800")
+           (green-cooler        . "#00663f") (green-faint         . "#2a5045")
+           (green-intense       . "#008900") (green-warmer        . "#316500")
+           (indigo              . "#4a3a8a") (magenta             . "#721045")
+           (magenta-cooler      . "#531ab6") (magenta-faint       . "#7c318f")
+           (magenta-intense     . "#dd22dd") (magenta-warmer      . "#8f0075")
+           (maroon              . "#731c52") (olive               . "#56692d")
+           (pink                . "#7b435c") (red                 . "#a60000")
+           (red-cooler          . "#a0132f") (red-faint           . "#7f0000")
+           (red-intense         . "#d00000") (red-warmer          . "#972500")
+           (rust                . "#8a290f") (slate               . "#2f3f83")
+           (yellow              . "#6f5500") (yellow-cooler       . "#7a4f2f")
+           (yellow-faint        . "#624416") (yellow-intense      . "#808000")
+           (yellow-warmer       . "#884900")))
+        (modus-vivendi-colors ;; from Protesilaos Stavrou's modus-themes
+         '((bg-active           . "#535353") (bg-added            . "#00381f")
+           (bg-added-faint      . "#002910") (bg-added-fringe     . "#237f3f")
+           (bg-added-refine     . "#034f2f") (bg-blue-intense     . "#1640b0")
+           (bg-blue-nuanced     . "#12154a") (bg-blue-subtle      . "#242679")
+           (bg-changed          . "#363300") (bg-changed-faint    . "#2a1f00")
+           (bg-changed-fringe   . "#8a7a00") (bg-changed-refine   . "#4a4a00")
+           (bg-char-0           . "#0050af") (bg-char-1           . "#7f1f7f")
+           (bg-char-2           . "#625a00") (bg-clay             . "#49191a")
+           (bg-completion       . "#2f447f") (bg-cyan-intense     . "#2266ae")
+           (bg-cyan-nuanced     . "#042837") (bg-cyan-subtle      . "#004065")
+           (bg-dim              . "#1e1e1e") (bg-green-intense    . "#2f822f")
+           (bg-green-nuanced    . "#092f1f") (bg-green-subtle     . "#00422a")
+           (bg-hl-line          . "#2f3849") (bg-hover            . "#45605e")
+           (bg-hover-secondary  . "#654a39") (bg-inactive         . "#303030")
+           (bg-lavender         . "#38325c") (bg-magenta-intense  . "#7030af")
+           (bg-magenta-nuanced  . "#2f0c3f") (bg-magenta-subtle   . "#552f5f")
+           (bg-main             . "#000000") (bg-ochre            . "#462f20")
+           (bg-paren-expression . "#453040") (bg-paren-match      . "#2f7f9f")
+           (bg-red-intense      . "#9d1f1f") (bg-red-nuanced      . "#3a0c14")
+           (bg-red-subtle       . "#620f2a") (bg-region           . "#5a5a5a")
+           (bg-removed          . "#4f1119") (bg-removed-faint    . "#380a0f")
+           (bg-removed-fringe   . "#b81a1f") (bg-removed-refine   . "#781a1f")
+           (bg-sage             . "#143e32") (bg-tab-bar          . "#313131")
+           (bg-tab-other        . "#545454") (bg-yellow-intense   . "#7a6100")
+           (bg-yellow-nuanced   . "#381d0f") (bg-yellow-subtle    . "#4a4000")
+           (blue                . "#2fafff") (blue-cooler         . "#00bcff")
+           (blue-faint          . "#82b0ec") (blue-intense        . "#338fff")
+           (blue-warmer         . "#79a8ff") (border              . "#646464")
+           (cyan                . "#00d3d0") (cyan-cooler         . "#6ae4b9")
+           (cyan-faint          . "#9ac8e0") (cyan-intense        . "#00eff0")
+           (cyan-warmer         . "#4ae2f0") (fg-added            . "#a0e0a0")
+           (fg-added-intense    . "#80e080") (fg-alt              . "#c6daff")
+           (fg-changed          . "#efef80") (fg-changed-intense  . "#c0b05f")
+           (fg-clay             . "#f1b090") (fg-dim              . "#989898")
+           (fg-lavender         . "#dfc0f0") (fg-main             . "#ffffff")
+           (fg-ochre            . "#e0d09c") (fg-removed          . "#ffbfbf")
+           (fg-removed-intense  . "#ff9095") (fg-sage             . "#c3e7d4")
+           (gold                . "#c0965b") (green               . "#44bc44")
+           (green-cooler        . "#00c06f") (green-faint         . "#88ca9f")
+           (green-intense       . "#44df44") (green-warmer        . "#70b900")
+           (indigo              . "#9099d9") (magenta             . "#feacd0")
+           (magenta-cooler      . "#b6a0ff") (magenta-faint       . "#caa6df")
+           (magenta-intense     . "#ff66ff") (magenta-warmer      . "#f78fe7")
+           (maroon              . "#cf7fa7") (olive               . "#9cbd6f")
+           (pink                . "#d09dc0") (red                 . "#ff5f59")
+           (red-cooler          . "#ff7f9f") (red-faint           . "#ff9580")
+           (red-intense         . "#ff5f5f") (red-warmer          . "#ff6b55")
+           (rust                . "#db7b5f") (slate               . "#76afbf")
+           (yellow              . "#d0bc00") (yellow-cooler       . "#dfaf7a")
+           (yellow-faint        . "#d2b580") (yellow-intense      . "#efef00")
+           (yellow-warmer       . "#fec43f"))))
+    (let* ((symbol (if (string? string-or-symbol)
+                       (string->symbol string-or-symbol)
+                       string-or-symbol))
+           (color (cdr (assq (or (element-color symbol) (code-color symbol))
+                             (case theme
+                               (( modus-operandi ) modus-operandi-colors)
+                               (( modus-vivendi ) modus-vivendi-colors)
+                               (else (error "Unknown theme" theme)))))))
+      (case theme
+        (( modus-operandi )
+         (case symbol
+           (( codecomment ) (string-append color "cf"))
+           (( bg-deftp bg-deftypefn bg-deftypevr ) (string-append color "90"))
+           (( deftp-l deftypefn-l deftypevr-l ) (string-append color "6f"))
+           (( deftp-r deftypefn-r deftypevr-r ) (string-append color "3f"))
+           (else color)))
+        (( modus-vivendi )
+         (case symbol
+           (( codecomment ) (string-append color "cf"))
+           (( bg-deftp bg-deftypefn bg-deftypevr ) (string-append color "90"))
+           (( deftp-l ) (string-append color "bf"))
+           (( deftypefn-l ) (string-append color "6f"))
+           (( deftypevr-l ) (string-append color "af"))
+           (( deftp-r ) (string-append color "9f"))
+           (( deftypefn-r ) (string-append color "3f"))
+           (( deftypevr-r ) (string-append color "8f"))
+           (else color)))
+        (else color)))))

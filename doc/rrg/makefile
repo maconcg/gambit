@@ -160,8 +160,8 @@ toolshed/colorize.sed.sh: toolshed/data/char-names toolshed/data/chars-to-dim \
  toolshed/data/sharp-objects toolshed/data/syntax-words
 	test -f $@ && touch $@
 
-toolshed/gambit.css: toolshed/gambit.css.in toolshed/make-css.sh
-	sh -efu toolshed/make-css.sh toolshed/gambit.css.in > $@
+toolshed/gambit.css: toolshed/make-css.scm
+	gsi -f toolshed/make-css.scm -o $@
 
 toolshed/make-css.sh: toolshed/data/*-colors
 

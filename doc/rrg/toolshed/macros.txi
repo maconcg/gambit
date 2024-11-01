@@ -12,7 +12,7 @@
 @end macro
 
 @macro codecomment {cmt}
-@inlinefmtifelse{html,@inlineraw{html,<span class="code-comment">\cmt\</span>},\cmt\}
+@inlinefmtifelse{html,@inlineraw{html,<span class="codecomment">\cmt\</span>},\cmt\}
 @end macro
 
 @macro exception {kind}
@@ -32,7 +32,7 @@
 @end rmacro
 
 @macro paren {p}
-@inlinefmtifelse{html,@inlineraw{html,<span class="sexp-paren">\p\</span>},\p\}
+@inlinefmtifelse{html,@inlineraw{html,<span class="paren">\p\</span>},\p\}
 @end macro
 
 @macro pari {name}
