@@ -36,7 +36,7 @@
      "c-lambda" "case" "case-lambda" "cond" "cond-expand" "declare" "define"
      "define-library" "define-macro" "define-record-type" "define-structure"
      "define-syntax" "define-type" "define-type-of-thread" "define-values"
-     "delay" "delay-force" "do" "future" "guard" "if" "import" "include"
+     "delay" "delay-force" "do" "else" "future" "guard" "if" "import" "include"
      "include-ci" "lambda" "let" "let*" "let*-values" "let-values" "letrec"
      "letrec*" "letrec*-values" "letrec-values" "namespace" "or" "parameterize"
      "quasiquote" "quote" "r7rs-guard" "receive" "set!" "syntax-error"
@@ -342,7 +342,7 @@
                          ((and (char=? pc #\newline) (char=? nc hs-key-first))
                           (set-kind+mesg! nac 'here-string '~hs-end))
                          ((char=? nc #\newline)
-                          (set-kind+mesg! nac 'here-string 'hs-end))
+                          (set-kind+mesg! nac 'here-string '~hs-end))
                          (else (set-kind+mesg! nac 'here-string))))))
               (( ~named-char )
                (unless (delimiter? nc) (set-refresh! nac #f))
