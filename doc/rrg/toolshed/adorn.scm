@@ -41,6 +41,11 @@
      "letrec*" "letrec*-values" "letrec-values" "namespace" "or" "parameterize"
      "quasiquote" "quote" "r7rs-guard" "receive" "set!" "syntax-error"
      "syntax-rules" "this-source-file" "unless" "when")))
+
+(define binding-syntax-char-lists
+  (string-list->char-lists
+   '("define" "define-values" "define-syntax" "let" "let*" "letrec" "letrec*"
+     "let-values" "let*-values" "let-syntax" "letrec-syntax")))
 ;==============================================================================
 (define (memc c l) (member c l char=?))
 
@@ -254,6 +259,21 @@
 (define (looking-at-long-named-char? ac-list)
   (looking-at-one-of? long-named-char-char-lists ac-list 'octothorpe))
 ;==============================================================================
+(define (start-of-binding-lval? ac-list)
+  (and (eq? (get-kind (car ac-list)) 'default)
+       (not (null? (cdr ac-list)))
+       (memq (get-kind (cadr ac-list)) '(list whitespace))
+       (let loop ((rest (cddr ac-list)))
+         (if (null? rest)
+             #f
+             (let* ((ac (car rest))
+                    (kind (get-kind ac)))
+               (cond ((eq? kind 'runtime-syntax)
+                      (looking-at-binding-syntax? rest))
+                     ((memq kind '(list whitespace))
+                      (loop (cdr rest)))
+                     (else #f)))))))
+
 (define (looking-at-keyword? ac-list)
   (if (null? ac-list)
       #f
@@ -263,22 +283,29 @@
               (not (or (null? rest) (delimiter? (get-char (car rest))))))
             #f))))
 
+(define (looking-at-syntax? ac-list char-lists expected-kind)
+  (let ((plausible-kinds (cons expected-kind '(list datumc linec nestc))))
+    (letrec ((start-of-syntax
+              (lambda (cl al)
+                (cond ((null? cl) al)
+                      ((null? al) #f)
+                      (else (let ((cal (car al)))
+                              (and (memq (get-kind cal) plausible-kinds)
+                                   (char=? (car cl) (get-char cal))
+                                   (start-of-syntax (cdr cl) (cdr al)))))))))
+      (let loop ((rest char-lists))
+        (if (null? rest)
+            #f
+            (let ((start (start-of-syntax (car rest) ac-list)))
+              (if start
+                  (operator-position? start)
+                  (loop (cdr rest)))))))))
+
+(define (looking-at-binding-syntax? ac-list)
+  (looking-at-syntax? ac-list binding-syntax-char-lists 'runtime-syntax))
+
 (define (looking-at-runtime-syntax? ac-list)
-  (letrec ((start-of-syntax
-            (lambda (cl al)
-              (cond ((null? cl) al)
-                    ((null? al) #f)
-                    (else (let ((cal (car al)))
-                            (and (memq (get-kind cal) '(default list nestc))
-                                 (char=? (car cl) (get-char cal))
-                                 (start-of-syntax (cdr cl) (cdr al)))))))))
-    (let loop ((rest runtime-syntax-char-lists))
-      (if (null? rest)
-          #f
-          (let ((start (start-of-syntax (car rest) ac-list)))
-            (if start
-                (operator-position? start)
-                (loop (cdr rest))))))))
+  (looking-at-syntax? ac-list runtime-syntax-char-lists 'default))
 ;==============================================================================
 (define (adorn! char-list #!optional so-far)
   (let-values (((so-far unadorned index pac pc pk pm ppr pt)
@@ -307,9 +334,9 @@
                (unless (char=? nc #\newline)
                  (set-kind+mesg! nac 'shebang)
                  (set-refresh! nac #f)))
-              (( invalid )
+              (( bind invalid )
                (unless (delimiter? nc)
-                 (set-kind+mesg! nac 'invalid)
+                 (set-kind+mesg! nac pm)
                  (set-refresh! nac #f)))
               (( abbrev )
                (when (char=? nc #\@)
@@ -828,7 +855,9 @@
                  (set-kind! nac 'whitespace)
                  (set-tent! nac #f)))
               (let ((full (cons nac adorned)))
-                (cond ((looking-at-keyword? full)
+                (cond ((start-of-binding-lval? full)
+                       (set-kind+mesg! nac 'bind 'bind))
+                      ((looking-at-keyword? full)
                        (set-kind+mesg! nac 'keyword '~keyword)
                        (revise! adorned 'keyword))
                       ((looking-at-runtime-syntax? full)

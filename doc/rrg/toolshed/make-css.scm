@@ -68,6 +68,7 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     }
     pre {
         span.abbrev {color: <abbrev>}
+        span.bind {color: <bind>}
         span.boolean {color: <boolean>}
         span.box {color: <box>}
         span.char {color: <char>}
@@ -192,7 +193,7 @@ END
                            (( bg-deftp bg-deftypefn bg-deftypevr ) 'bg-dim)
                            (( problem ) 'bg-yellow-intense)
                            (( category-def def-bracket ) 'fg-alt)
-                           (( def-var ) 'magenta)
+                           (( def-var ) 'magenta )
                            (( deftp-l deftp-r ) 'bg-ochre)
                            (( deftypefn-l deftypefn-r ) 'bg-blue-subtle)
                            (( deftypevr-l deftypevr-r ) 'bg-clay)
@@ -213,6 +214,7 @@ END
                            empty-s8vector empty-s16vector empty-s32vector
                            empty-s64vector empty-f32vector empty-f64vector )
                          'fg-main)
+                        (( bind ) 'magenta )
                         (( boolean ) 'indigo)
                         (( box ) 'blue)
                         (( char ) 'red-faint)
