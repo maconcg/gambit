@@ -11,6 +11,7 @@ procedures/c/
 toolshed/c/
 toolshed/colorize.sed
 toolshed/gambit.css
+toolshed/gambit-examples-only.css
 toolshed/today.txi
 *.tgz
 *.tar.*

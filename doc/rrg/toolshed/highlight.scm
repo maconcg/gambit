@@ -3,8 +3,11 @@
 (load "adorn.scm")
 
 (define (main . args)
-  (let ((css (call-with-input-file "gambit.css" (lambda (p) (read-line p #f))))
-        (source (car args)))
+  (let ((source (car args))
+        (css (call-with-input-file (if (null? (cdr args))
+                                       "gambit.css"
+                                       (cadr args))
+               (lambda (p) (read-line p #f)))))
     (let ((adorned (reverse (adorn! (call-with-input-file source
                                       (lambda (p) (read-all p read-char))))))
           (basename (let loop ((bn '()) (rest (reverse (string->list source))))
@@ -30,9 +33,6 @@
 </style>
 </head>
 <body lang="en">
-<dl class="first-deftypefn">
-<dd>
-<div class="example lisp">
 <pre class="lisp-preformatted">
 
 END
@@ -40,9 +40,6 @@ END
             (write-ac-list adorned)
             (write-string #<<END
 </pre>
-</div>            
-</dd>
-</dl>
 </body>
 
 END

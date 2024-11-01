@@ -1,49 +1,136 @@
 #!/usr/bin/env gsi-script
 
 (define (main . args)
-  (let-values (((light dark output-file)
-                (let loop ((rest args)
-                           (light 'modus-operandi)
+  (let-values (((examples-only? dark light output-file)
+                (let loop ((rest (cdr (command-line)))
+                           (examples-only? #f)
                            (dark 'modus-vivendi)
+                           (light 'modus-operandi)
                            (output-file "gambit.css"))
-                  (if (or (null? rest)
-                          (not (member (car rest) '("-d" "-l" "-o") string=?)))
-                      (values light dark output-file)
+                  (if (null? rest)
+                      (values examples-only? dark light output-file)
                       (let ((opt (car rest)))
-                        (cond ((string=? opt "-d")
+                        (cond ((member opt '("-d" "--dark-theme") string=?)
                                (loop (cddr rest)
+                                     examples-only?
+                                     (cadr rest)
                                      light
-                                     (string->symbol (cadr rest))
                                      output-file))
-                              ((string=? (car rest) "-l")
-                               (loop (cddr rest)
-                                     (string->symbol (cadr rest))
+                              ((member opt '("-e" "--examples-only") string=?)
+                               (loop (cdr rest)
+                                     #t
                                      dark
-                                     output-file))
-                              ((string=? (car rest) "-o")
-                               (loop (cddr rest)
                                      light
+                                     "gambit-examples-only.css"))
+                              ((member opt '("-l" "--light-theme") string=?)
+                               (loop (cddr rest)
+                                     examples-only?
                                      dark
-                                     (cadr rest)))))))))
+                                     (cadr rest)
+                                     output-file))
+                              ((member opt '("-o" "--output-file") string=?)
+                               (loop (cddr rest)
+                                     examples-only?
+                                     dark
+                                     light
+                                     (cadr rest)))
+                              (else (error "Unknown argument" opt))))))))
     (with-output-to-file output-file
       (lambda ()
-        (write-css-colors light)
-        (write-string "\n@media (prefers-color-scheme: dark) {\n")
-        (indent+write 4 (lambda () (write-css-colors dark)))
-        (write-string (string-append "}\n\n" css-non-color-template))))))
+        (if examples-only?
+            (begin (write-string examples-noncolor-css)
+                   (write-from-template light examples-color-template)
+                   (write-string "@media (prefers-color-scheme: dark) {\n")
+                   (indent+write
+                    4 (lambda ()
+                        (write-from-template dark examples-color-template)))
+                   (write-string "}\n"))
+            (begin (write-string general-noncolor-css)                   
+                   (write-string examples-noncolor-css)
+                   (write-from-template light general-color-template)
+                   (write-from-template light examples-color-template)
+                   (write-string "@media (prefers-color-scheme: dark) {\n")
+                   (indent+write
+                    4 (lambda ()
+                        (write-from-template dark general-color-template)
+                        (write-from-template dark examples-color-template)))
+                   (write-string "}\n")))))))
+
+(define (write-from-template |th\x65;me| template)
+  (let ((chars (call-with-input-string template
+                                       (lambda (p) (read-all p read-char)))))
+    (let loop ((buffer '()) (rest chars))
+      (if (null? rest)
+          (newline)
+          (let ((c (car rest)))
+            (if (null? buffer)
+                (if (char=? c #\<)
+                    (loop (cons c buffer) (cdr rest))
+                    (begin (write-char c)
+                           (loop '() (cdr rest))))
+                (if (char=? c #\>)
+                    (begin
+                      (write-string
+                       (get-color theme (list->string (cdr (reverse buffer)))))
+                      (loop '() (cdr rest)))
+                    (loop (cons c buffer) (cdr rest)))))))))
 
 (define (indent+write spaces thunk-that-writes)
-  (let ((out-string (open-output-string)))
+  (let ((indention (make-string spaces #\space))
+        (out-string (open-output-string)))
     (parameterize ((current-output-port out-string))
       (thunk-that-writes))
     (for-each (lambda (line)
-                (write-string (string-append (make-string spaces #\space)
-                                             line
-                                             "\n")))
+                (if (positive? (string-length line))                    
+                    (write-string (string-append indention line "\n"))
+                    (newline)))
               (call-with-input-string (get-output-string out-string)
                                       (lambda (p) (read-all p read-line))))))
 
-(define css-color-template #<<END
+(define examples-color-template #<<END
+pre.lisp-preformatted {
+    span.abbrev {color: <abbrev>}
+    span.bind {color: <bind>}
+    span.boolean {color: <boolean>}
+    span.box {color: <box>}
+    span.char {color: <char>}
+    span.datumc, span.linec, span.nestc {color: <codecomment>}
+    span.dot {color: <dot>}
+    span.identifier-escape, span.string-escape {color: <string-escape>}
+    span.keyword {color: <keyword>}
+    span.list {color: <list>}
+    span.ok {color: <ok>}
+    span.problem {background-color: <problem>}
+    span.serial {color: <serial>}
+    span.sharp {color: <sharp>}
+    span.string {color: <string>}
+    span.here-string {color: <here-string>}
+    span.hs-begin {color: <hs-begin>}
+    span.hs-end, span.hs-key {color: <hs-key>}
+    span.runtime-syntax {color: <runtime-syntax>}
+    span.shebang {color: <shebang>}
+}
+
+END
+)
+
+(define examples-noncolor-css #<<END
+pre.lisp-preformatted {
+    span.datumc, span.linec, span.nestc, span.exception {
+        font-style: oblique;
+    }
+    span.ident-escape, span.ident-octal, span.ident-nothing,
+      span.ident-hex-x, span.ident-hex-u, span.ident-hex-U,
+      span.string-escape, span.string-octal, span.string-nothing,
+      span.string-hex-x, span.string-hex-u, span.string-hex-U {
+        font-weight: bold;
+    }
+}
+
+END
+)
+
+(define general-color-template #<<END
 body {
     color: <fg-main>;
     background-color: <bg-main>;
@@ -65,28 +152,6 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     dd {
         background-color: <bg-main>;
         p var.var, li var.var {color: <def-var>}
-    }
-    pre {
-        span.abbrev {color: <abbrev>}
-        span.bind {color: <bind>}
-        span.boolean {color: <boolean>}
-        span.box {color: <box>}
-        span.char {color: <char>}
-        span.datumc, span.linec, span.nestc {color: <codecomment>}
-        span.dot {color: <dot>}
-        span.identifier-escape, span.string-escape {color: <string-escape>}
-        span.keyword {color: <keyword>}
-        span.list {color: <list>}
-        span.ok {color: <ok>}
-        span.problem {background-color: <problem>}
-        span.serial {color: <serial>}
-        span.sharp {color: <sharp>}
-        span.string {color: <string>}
-        span.here-string {color: <here-string>}
-        span.hs-begin {color: <hs-begin>}
-        span.hs-end, span.hs-key {color: <hs-key>}
-        span.runtime-syntax {color: <runtime-syntax>}
-        span.shebang {color: <shebang>}
     }
 }
 
@@ -114,7 +179,7 @@ dl.first-deftypevr {
 END
 )
 
-(define css-non-color-template #<<END
+(define general-noncolor-css #<<END
 strong.def-name {font-size: large}
 
 .top-level-extent, .chapter-level-extent, .appendix-level-extent {
@@ -152,15 +217,6 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
                 border-left-width: thin;
                 font-size: 1.1em;
                 padding-left: 0.4rem;
-                span.datumc, span.linec, span.nestc, span.exception {
-                     font-style: oblique;
-                }
-                span.ident-escape, span.ident-octal, span.ident-nothing,
-                  span.ident-hex-x, span.ident-hex-u, span.ident-hex-U,
-                  span.string-escape, span.string-octal, span.string-nothing,
-                  span.string-hex-x, span.string-hex-u, span.string-hex-U {
-                    font-weight: bold;
-                }
             }
         }
     }
@@ -168,24 +224,6 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
 
 END
 )
-
-(define (write-css-colors |them\x65;|)
-  (let ((chars (call-with-input-string css-color-template
-                                       (lambda (p) (read-all p read-char)))))
-    (let loop ((buffer '()) (rest chars))
-      (unless (null? rest)
-        (let ((c (car rest)))
-          (if (null? buffer)
-              (if (char=? c #\<)
-                  (loop (cons c buffer) (cdr rest))
-                  (begin (write-char c)
-                         (loop '() (cdr rest))))
-              (if (char=? c #\>)
-                  (begin
-                    (write-string
-                     (get-color theme (list->string (cdr (reverse buffer)))))
-                    (loop '() (cdr rest)))
-                  (loop (cons c buffer) (cdr rest)))))))))
 
 (define (get-color theme string-or-symbol)
   (let ((element-color (lambda (element)
