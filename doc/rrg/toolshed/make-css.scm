@@ -45,7 +45,7 @@
                     4 (lambda ()
                         (write-from-template dark examples-color-template)))
                    (write-string "}\n"))
-            (begin (write-string general-noncolor-css)                   
+            (begin (write-string general-noncolor-css)
                    (write-string examples-noncolor-css)
                    (write-from-template light general-color-template)
                    (write-from-template light examples-color-template)
@@ -81,7 +81,7 @@
     (parameterize ((current-output-port out-string))
       (thunk-that-writes))
     (for-each (lambda (line)
-                (if (positive? (string-length line))                    
+                (if (positive? (string-length line))
                     (write-string (string-append indention line "\n"))
                     (newline)))
               (call-with-input-string (get-output-string out-string)
@@ -116,6 +116,7 @@ END
 
 (define examples-noncolor-css #<<END
 pre.lisp-preformatted {
+    font-size: 1.1em;
     span.datumc, span.linec, span.nestc, span.exception {
         font-style: oblique;
     }
@@ -215,7 +216,6 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
             pre {
                 border-left-style: dotted;
                 border-left-width: thin;
-                font-size: 1.1em;
                 padding-left: 0.4rem;
             }
         }
