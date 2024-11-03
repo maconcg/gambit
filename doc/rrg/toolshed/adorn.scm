@@ -265,12 +265,25 @@
 (define (looking-at-long-named-char? ac-list)
   (looking-at-one-of? long-named-char-char-lists ac-list 'octothorpe))
 ;==============================================================================
-;; (define (start-of-let-binding? ac-list) #f)
-
 (define (start-of-let-binding? ac-list)
   (and (not (null? ac-list)) (eq? (get-kind (car ac-list)) 'default)
        (operator-position? (cdr ac-list))
        (looking-at-let? (enclosing-list-start (current-list-start ac-list)))))
+
+(define (start-of-var-define-or-named-let? ac-list)
+  (and (not (null? ac-list))
+       (not (memc (get-char (car ac-list)) '(#\( #\# #\space #\newline #\tab)))
+       (let loop ((rest (cdr ac-list)))
+         (if (null? rest)
+             #f
+             (let* ((ac (car rest))
+                    (kind (get-kind ac)))
+               (cond ((eq? kind 'whitespace)
+                      (loop (cdr rest)))
+                     ((eq? kind 'runtime-syntax)
+                      (looking-at-one-of? '((#\e #\n #\i #\f #\e #\d #\()
+                                            (#\t #\e #\l #\()) rest #f))
+                     (else #f)))))))
 
 (define (looking-at-let? ac-list)
   (and (not (null? ac-list)) (char=? (get-char (car ac-list)) #\()
@@ -911,7 +924,9 @@
                  (set-kind! nac 'whitespace)
                  (set-tent! nac #f)))
               (let ((full (cons nac adorned)))
-                (cond ((start-of-let-binding? full)
+                (cond ((start-of-var-define-or-named-let? full)
+                       (set-kind+mesg! nac 'bind))
+                      ((start-of-let-binding? full)
                        (set-kind+mesg! nac 'bind))
                       ((looking-at-keyword? full)
                        (set-kind+mesg! nac 'keyword '~keyword)
