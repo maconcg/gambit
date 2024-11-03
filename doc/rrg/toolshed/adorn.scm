@@ -58,6 +58,9 @@
 (define (delimiter? c)
   (memc c '( #\) #\( #\space #\newline #\tab #\" #\; #\| #\\ )))
 
+(define (atmosphere? kind)
+  (memq kind '(whitespace datumc linec nestc directive)))
+
 (define set-kind+mesg!
   (case-lambda
     ((ac km) (set-kind! ac km) (set-mesg! ac km))
@@ -208,7 +211,7 @@
         #f
         (let ((ac (car rest)))
           (cond ((char=? (get-char ac) #\() (eq? (get-kind ac) 'list))
-                ((memq (get-kind ac) '(whitespace nestc)) (loop (cdr rest)))
+                ((atmosphere? (get-kind ac)) (loop (cdr rest)))
                 (else #f))))))
 
 (define (looking-at? char-list ac-list delimiting-mesg)
@@ -284,6 +287,25 @@
                       (looking-at-one-of? '((#\e #\n #\i #\f #\e #\d #\()
                                             (#\t #\e #\l #\()) rest #f))
                      (else #f)))))))
+
+(define (looking-at-define? ac-list)
+    (and (not (null? ac-list))
+         (let ((kind (get-kind (car ac-list))))
+           (if (atmosphere? kind)
+               (looking-at-define? (cdr ac-list))
+               (and (eq? kind 'runtime-syntax)
+                    (looking-at? '(#\e #\n #\i #\f #\e #\d #\()
+                                 ac-list #f))))))
+
+(define (start-of-proc-define? ac-list)
+  (and (not (null? ac-list))
+       (let ((ac (car ac-list)))
+         (and (eq? (get-kind ac) 'default)
+              (not (get-mesg ac))
+              (operator-position? (cdr ac-list))
+              (let ((list-start (current-list-start ac-list)))
+                (and (not (null? list-start))
+                     (looking-at-define? (cdr list-start))))))))
 
 (define (looking-at-let? ac-list)
   (and (not (null? ac-list)) (char=? (get-char (car ac-list)) #\()
@@ -927,6 +949,8 @@
                 (cond ((start-of-var-define-or-named-let? full)
                        (set-kind+mesg! nac 'bind))
                       ((start-of-let-binding? full)
+                       (set-kind+mesg! nac 'bind))
+                      ((start-of-proc-define? full)
                        (set-kind+mesg! nac 'bind))
                       ((looking-at-keyword? full)
                        (set-kind+mesg! nac 'keyword '~keyword)
