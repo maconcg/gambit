@@ -42,6 +42,12 @@
      "quasiquote" "quote" "r7rs-guard" "receive" "set!" "syntax-error"
      "syntax-rules" "this-source-file" "unless" "when")))
 
+(define let-char-lists
+  (string-list->char-lists '("let" "let*" "letrec" "letrec*")))
+
+(define define-char-lists
+  (string-list->char-lists '("define" "define-values")))
+
 (define binding-syntax-char-lists
   (string-list->char-lists
    '("define" "define-values" "define-syntax" "let" "let*" "letrec" "letrec*"
@@ -259,20 +265,65 @@
 (define (looking-at-long-named-char? ac-list)
   (looking-at-one-of? long-named-char-char-lists ac-list 'octothorpe))
 ;==============================================================================
-(define (start-of-binding-lval? ac-list)
-  (and (eq? (get-kind (car ac-list)) 'default)
-       (not (null? (cdr ac-list)))
-       (memq (get-kind (cadr ac-list)) '(list whitespace))
-       (let loop ((rest (cddr ac-list)))
+;; (define (start-of-let-binding? ac-list) #f)
+
+(define (start-of-let-binding? ac-list)
+  (and (not (null? ac-list)) (eq? (get-kind (car ac-list)) 'default)
+       (operator-position? (cdr ac-list))
+       (looking-at-let? (enclosing-list-start (current-list-start ac-list)))))
+
+(define (looking-at-let? ac-list)
+  (and (not (null? ac-list)) (char=? (get-char (car ac-list)) #\()
+       (let loop ((rest (cdr ac-list)))
          (if (null? rest)
              #f
              (let* ((ac (car rest))
                     (kind (get-kind ac)))
-               (cond ((eq? kind 'runtime-syntax)
-                      (looking-at-binding-syntax? rest))
-                     ((memq kind '(list whitespace))
+               (cond ((eq? kind 'whitespace)
                       (loop (cdr rest)))
+                     ((eq? kind 'runtime-syntax)
+                      (looking-at-one-of? let-char-lists rest #f))
                      (else #f)))))))
+
+(define (current-list-start ac-list)
+  (if (null? ac-list)
+      '()
+      (let ((ac (car ac-list)))
+        (if (and (eq? (get-kind ac) 'list)
+                 (char=? (get-char ac) #\()
+                 (not (get-peer ac)))
+            ac-list
+            (current-list-start (cdr ac-list))))))
+
+(define (enclosing-list-start ac-list)
+  (if (null? ac-list)
+      '()
+      (let loop ((rest (cdr ac-list)))
+        (if (null? rest)
+            '()
+            (let ((ac (car rest)))
+              (if (and (eq? (get-kind ac) 'list)
+                       (char=? (get-char ac) #\()
+                       (not (get-peer ac)))
+                  rest
+                  (loop (cdr rest))))))))
+
+(define (start-of-binding-lval? ac-list)
+  (or (and (eq? (get-kind (car ac-list)) 'default)
+           (not (null? (cdr ac-list)))
+           (memq (get-kind (cadr ac-list)) '(list whitespace))
+           (let loop ((rest (cddr ac-list)))
+             (if (null? rest)
+                 #f
+                 (let* ((ac (car rest))
+                        (kind (get-kind ac)))
+                   (cond ((eq? kind 'runtime-syntax)
+                          (looking-at-binding-syntax? rest))
+                         ((memq kind '(list whitespace))
+                          (loop (cdr rest)))
+                         (else #f))))))
+      (looking-at-let? (before-previous-unmatched-list
+                        (before-previous-unmatched-list ac-list)))))
 
 (define (looking-at-keyword? ac-list)
   (if (null? ac-list)
@@ -860,8 +911,8 @@
                  (set-kind! nac 'whitespace)
                  (set-tent! nac #f)))
               (let ((full (cons nac adorned)))
-                (cond ((start-of-binding-lval? full)
-                       (set-kind+mesg! nac 'bind 'bind))
+                (cond ((start-of-let-binding? full)
+                       (set-kind+mesg! nac 'bind))
                       ((looking-at-keyword? full)
                        (set-kind+mesg! nac 'keyword '~keyword)
                        (revise! adorned 'keyword))
