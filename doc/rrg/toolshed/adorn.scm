@@ -161,6 +161,7 @@
     '((directive ("#!fold-case" "#!no-fold-case"))
       (false ("#false"))
       (fvector ("#f32(" "#f64("))
+      (lambda ("lambda" "\x3bb;"))
       (mv-define ("define-values"))
       (mv-let ("let-values" "let*-values"))
       (named-let ("let"))
@@ -180,10 +181,11 @@
         "define-library" "define-macro" "define-record-type" "define-structure"
         "define-syntax" "define-type" "define-type-of-thread" "define-values"
         "delay" "delay-force" "do" "else" "future" "guard" "if" "import"
-        "include" "include-ci" "lambda" "let" "let*" "let*-values" "let-values"
-        "letrec" "letrec*" "letrec*-values" "letrec-values" "namespace" "or"
-        "parameterize" "quasiquote" "quote" "r7rs-guard" "receive" "set!"
-        "syntax-error" "syntax-rules" "this-source-file" "unless" "when"))))
+        "include" "include-ci" "\x3bb;" "lambda" "let" "let*" "let*-values"
+        "let-values" "letrec" "letrec*" "letrec*-values" "letrec-values"
+        "namespace" "or" "parameterize" "quasiquote" "quote" "r7rs-guard"
+        "receive" "set!" "syntax-error" "syntax-rules" "this-source-file"
+        "unless" "when"))))
   (define char-lists
     (let ((string->char-list (lambda (s) (reverse (string->list s)))))
       (map (lambda (kv) (cons (car kv) (map string->char-list (cadr kv))))
@@ -194,7 +196,7 @@
   (case spec
     (( false true sharp fvector svector uvector )
      (values 'default octo-start?))
-    (( sv-define sv-let named-let mv-define mv-let )
+    (( lambda sv-define sv-let named-let mv-define mv-let )
      (values 'runtime-syntax #f))
     (( datumc-directive )
      (values 'datumc (lambda (ac) (eq? (get-mesg ac) 'datumc#))))
@@ -235,7 +237,7 @@
   (if (symbol? spec)
       (let-values (((k ep?) (get-matching-kind+ep? spec)))
         (case spec
-          (( sv-define sv-let named-let mv-let mv-define )
+          (( lambda sv-define sv-let named-let mv-let mv-define )
            (looking-at-one-of? (get-char-lists spec)
                                (truncate-acl atmosphere? ac-list) k: k ep?: ep?))
           (( directive )
@@ -293,8 +295,8 @@
         (partial-match-cl? (cdr spec) ac-list kind ep?)))
 
 (define (start-of-bind? ac-list)
-  (let ((binds '(define-proc define-var named-let-var sv-let-formal
-                 mv-define mv-let-formal named-let-formal)))
+  (let ((binds '(lambda define-proc define-var named-let-var
+                 sv-let-formal mv-define mv-let-formal named-let-formal)))
     (let loop ((rest binds))
       (and (not (null? rest))
            (or (start-of? (car rest) ac-list)
@@ -327,12 +329,16 @@
          (and (symbol=? (get-kind ac) 'default)
               (not (get-mesg ac))
               (case token
+                (( lambda )
+                 (let* ((list-start (start-of-list ac-list))
+                        (outside (cdr list-start)))
+                   (and (not (operator-position? outside))
+                        (looking-at? 'lambda outside))))
                 (( define-proc )
                  (and (operator-position? rest)
                       (let ((cdr-signature (cdr (start-of-list ac-list))))
                         (and (not (operator-position? cdr-signature))
-                             (looking-at? 'sv-define cdr-signature
-                                          kind: 'runtime-syntax)))))
+                             (looking-at? 'sv-define cdr-signature)))))
                 (( define-var )
                  (and (not (operator-position? rest))
                       (looking-at? 'sv-define rest)))
