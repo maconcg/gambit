@@ -96,14 +96,17 @@ pre.lisp-preformatted {
     span.datumc, span.linec, span.nestc {color: <codecomment>}
     span.dot {color: <dot>}
     span.false, span.true {color: <boolean>}
-    span.identifier-escape, span.string-escape {color: <string-escape>}
     span.keyword {color: <keyword>}
     span.list {color: <list>}
     span.ok {color: <ok>}
     span.problem {background-color: <problem>}
     span.serial {color: <serial>}
     span.sharp {color: <sharp>}
-    span.string {color: <string>}
+    span.string, span.string-escape, span.string-octal, span.string-nothing,
+      span.string-hex-x, span.string-hex-u, span.string-hex-U {
+          color: <string>
+    }
+    span.string: {color: <string>}
     span.here-string {color: <here-string>}
     span.hs-begin {color: <hs-begin>}
     span.hs-end, span.hs-key {color: <hs-key>}
