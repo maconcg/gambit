@@ -91,11 +91,11 @@
 pre.lisp-preformatted {
     span.abbrev {color: <abbrev>}
     span.bind {color: <bind>}
-    span.boolean {color: <boolean>}
     span.box {color: <box>}
-    span.char {color: <char>}
+    span.char, span.char-body {color: <char>}
     span.datumc, span.linec, span.nestc {color: <codecomment>}
     span.dot {color: <dot>}
+    span.false, span.true {color: <boolean>}
     span.identifier-escape, span.string-escape {color: <string-escape>}
     span.keyword {color: <keyword>}
     span.list {color: <list>}
@@ -120,10 +120,10 @@ pre.lisp-preformatted {
     span.datumc, span.linec, span.nestc, span.exception {
         font-style: oblique;
     }
-    span.ident-escape, span.ident-octal, span.ident-nothing,
-      span.ident-hex-x, span.ident-hex-u, span.ident-hex-U,
-      span.string-escape, span.string-octal, span.string-nothing,
-      span.string-hex-x, span.string-hex-u, span.string-hex-U {
+    span.char-body, span.ident-escape, span.ident-octal, span.ident-nothing,
+      span.ident-hex-x, span.ident-hex-u, span.ident-hex-U, span.string-escape,
+      span.string-octal, span.string-nothing, span.string-hex-x,
+      span.string-hex-u, span.string-hex-U {
         font-weight: bold;
     }
 }
