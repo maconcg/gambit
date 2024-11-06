@@ -106,7 +106,7 @@ pre.lisp-preformatted {
       span.string-hex-x, span.string-hex-u, span.string-hex-U {
           color: <string>
     }
-    span.string: {color: <string>}
+    span.string {color: <string>}
     span.here-string {color: <here-string>}
     span.hs-begin {color: <hs-begin>}
     span.hs-end, span.hs-key {color: <hs-key>}
