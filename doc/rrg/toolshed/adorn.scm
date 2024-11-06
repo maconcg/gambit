@@ -363,7 +363,6 @@
   (and (not (null? ac-list))
        (let ((ac (car ac-list)) (rest (cdr ac-list)))
          (and (symbol=? (get-kind ac) 'default)
-              (not (get-mesg ac))
               (case token
                 (( lambda )
                  (let ((list-start (start-of-list ac-list)))
@@ -933,6 +932,9 @@
                   (set-kind+mesg! pac 'nestc 1)
                   (set-mesg! pac 1)
                   (set-peer! pac (- index 1)))
+                 (( #\# )
+                  (set-kind+mesg! nac 'default #f)
+                  (set-refresh! nac #f))
                  (( #\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7 #\8 #\9 )
                   (set-mesg! nac '~label/reference))
                  (( #\b #\e #\i #\o #\x )

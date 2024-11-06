@@ -88,6 +88,11 @@
                                       (lambda (p) (read-all p read-line))))))
 
 (define examples-color-template #<<END
+body {
+    color: <fg-main>;
+    background-color: <bg-main>;
+}
+
 pre.lisp-preformatted {
     span.abbrev {color: <abbrev>}
     span.bind {color: <bind>}
@@ -135,11 +140,6 @@ END
 )
 
 (define general-color-template #<<END
-body {
-    color: <fg-main>;
-    background-color: <bg-main>;
-}
-
 a:link {color: <link>}
 a:visited {color: <link-visited>}
 hr {color: <border>}
