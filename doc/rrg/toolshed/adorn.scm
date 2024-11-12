@@ -102,7 +102,6 @@
     (string->symbol (string-append string (symbol->string symbol)))))
 (define (prepend-empty symbol) ((prepend-to-symbol "empty-") symbol))
 (define (prepend-matched symbol) ((prepend-to-symbol "matched-") symbol))
-;; (define (prepend-unmatched symbol) ((prepend-to-symbol "unmatched-") symbol))
 
 (define (simple-peer! ac-list ending-ac ending-kind)
   (define (get-nearest-peer+distance ending-kind)
@@ -233,42 +232,15 @@
                   (set-stack! peer '())
                   (adorn-char char new-kind mesg (- distance) stack))))))))
 
-(define (in-peer-stack? predicate?)
-  (lambda (stack)
-    (let search-stack ((rest stack))
-      (cond ((null? rest) #f)
-            ((predicate? (car rest)) #t)
-            (else (search-stack (cdr rest)))))))
-
-(define (stack-contains-top? stack)
-  ((in-peer-stack? (lambda (l) (eq? (get-mesg (car l)) 'octothorpe)))
-   stack))
-
-
-(define (datumc-compound-nest-level ac-list)
-  (if (null? ac-list)
-      #f
-      (let* ((ac (car ac-list)) (mesg (get-mesg ac)))
-        (cond ((eq? mesg 'datumc-top-compound-unmatched) 0)
-              ((memq mesg '(datumc-compound-unmatched
-                            datumc-compound-end)) (length (get-stack ac)))
-              ((memq mesg '(datumc# octothorpe datumc-top-compound-end)) 0)
-              (else (datumc-compound-nest-level (cdr ac-list)))))))
-
 (define (in-datumc-compound? ac-list)
-  (if (null? ac-list)
-      #f
-      (let* ((ac (car ac-list)) (mesg (get-mesg ac)))
-        (cond ((memq mesg '(datumc-compound
-                            datumc-compound-end
-                            datumc-compound-unmatched
-                            datumc-top-compound-unmatched)) #t)
-              ((eq? mesg 'octothorpe) #f)
-              ((and (eq? mesg 'datumc-top-compound-end)
-                    (not (null? (get-stack ac)))
-                    (memq (get-mesg (caar (get-stack ac)))
-                          '(datumc# octothorpe))) #f)
-              (else (in-datumc-compound? (cdr ac-list)))))))
+  (and (not (null? ac-list))
+       (let* ((ac (car ac-list)) (mesg (get-mesg ac)))
+         (and mesg (cond ((memq mesg '( datumc-compound datumc-compound-end
+                                        datumc-compound-unmatched
+                                        datumc-top-compound-unmatched)) #t)
+                         ((memq mesg '( ~datumc datumc-top-compound-end
+                                        octothorpe whitespace)) #f)
+                         (else (in-datumc-compound? (cdr ac-list))))))))
 
 (define (nested-comment-peer! ending-ac ac-list index)
   (unless (null? ac-list)
@@ -279,43 +251,6 @@
           (set-mesg! ending-ac index)
           (set-peer! ending-ac ac-index))
         (nested-comment-peer! ending-ac (cdr ac-list) index))))
-
-(define (compound-peer! nac peer-char ac-list index)
-  (define (kind->empty-kind kind)
-    (cdr (assq kind '((list    . empty-list)    (vector  . empty-vector)
-                      (fvector . empty-fvector) (svector . empty-svector)
-                      (uvector . empty-uvector)))))
-  (let loop ((rest ac-list) (empty? #t))
-    (if (null? rest)
-        (set-kind! nac 'unmatched)
-        (let ((ac (car rest)))
-          (let ((char (get-char ac)) (mesg (get-mesg ac)) (peer (get-peer ac)))
-            (if (and (char=? char peer-char) (number? mesg) (not peer))
-                (let ((kind (get-kind ac)))
-                  (if empty?
-                      (let ((empty-kind (kind->empty-kind kind)))
-                        (set-kind! nac empty-kind)
-                        (set-kind! ac empty-kind)
-                        (revise! (cdr rest) kind empty-kind octo-start?))
-                      (set-kind! nac kind))
-                  (set-mesg! nac index)
-                  (set-peer! nac mesg)
-                  (set-peer! ac index))
-                (loop (cdr rest) (and empty? (atmosphere? ac)))))))))
-
-(define (symmetric-peer! peer-char nac ac-list index)
-  (let loop ((rest ac-list))
-    (unless (null? rest)
-      (let ((ac (car rest)))
-        (if (char=? peer-char (get-char ac))
-            (let ((peer (get-peer ac)))
-              (if (number? peer)
-                  (begin (set-mesg! nac index)
-                         (set-peer! nac peer)
-                         (set-mesg! ac peer)
-                         (set-peer! ac index))
-                  (loop (cdr rest))))
-            (loop (cdr rest)))))))
 ;==============================================================================
 (define (operator-position? ac-list)
   (and (not (null? ac-list))
@@ -841,9 +776,7 @@
          (let* ((top-peer (caar stack))
                 (total-distance (+ distance (get-peer top-peer))))
            (if (in-datumc-compound? adorned)
-               (if (char=? nc #\))
-                   (%end-datumc-compound)
-                   (box-ac! nc 'datumc 'datumc-compound #f))
+               (%~datumc 'datumc-compound)
                (if (char=? nc #\))
                    (box-ac! nc 'invalid '~datumc #f '())
                    (begin (set-peer! prev-ac (- total-distance))
@@ -1037,8 +970,10 @@
                     (box-invalid! nc))))
         (( ~datumc )
          (%~datumc '~datumc))
-        (( datumc-compound datumc-top-compound-unmatched
-           datumc-compound-unmatched )
+        (( datumc-top-compound-end )
+         (%~datumc '~datumc))
+        (( datumc-compound-unmatched datumc-top-compound-unmatched
+           datumc-compound )
          (%~datumc 'datumc-compound))
         (( datumc-compound-end )
          (%~datumc 'datumc-compound))
