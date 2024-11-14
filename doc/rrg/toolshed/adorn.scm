@@ -156,7 +156,7 @@
   (and symbol
        (string=? "datumc-sub" (string-copy (symbol->string symbol) 0 10))))
 
-(define (^end-compound! sub-mesg? peer+empty?+distance)
+(define (^end-compound! sub-mesg? peer+empty?+distance ->sub-begin ->sub-end)
   (lambda (ac-list char)
     (let-values (((from-peer empty distance) (peer+empty?+distance ac-list)))
       (if from-peer
@@ -185,7 +185,8 @@
 (define (end-compound! ac-list char)
   (call-with-values
       (lambda ()
-        ((^end-compound! subcompound-mesg? compound-peer+empty?+distance)
+        ((^end-compound! subcompound-mesg? compound-peer+empty?+distance
+                         ->sub-begin ->sub-end)
          ac-list char))
     (lambda (ac rest) ac)))
 
@@ -193,15 +194,19 @@
   (call-with-values
       (lambda ()
         ((^end-compound! datumc-subcompound-mesg?
-                         datumc-compound-peer+empty?+distance) ac-list char))
+                         datumc-compound-peer+empty?+distance
+                         (lambda (symbol) 'datumc-subcompound-begin)
+                         (lambda (symbol) 'datumc-subcompound-end))
+         ac-list char))
     (lambda (ac rest)
-      (let-values (((from-peer distance) (datumc-peer+distance rest)))
-        (let ((total-distance (+ distance (get-hop (car rest)))))
-          (set-hop! ac (- total-distance))
-          (let* ((datumc-peer-stack (get-stack (car from-peer)))
-                 (top-datumc-peer (caar datumc-peer-stack)))
-            (increment-hops! datumc-peer-stack total-distance)
-            (set-stack! top-datumc-peer (cdr (get-stack top-datumc-peer))))))
+      (when (eq? (get-mesg ac) 'datumc-compound-end)
+        (let-values (((from-peer distance) (datumc-peer+distance rest)))
+          (let ((total-distance (+ distance (get-hop (car rest)))))
+            (let* ((datumc-peer-stack (get-stack (car from-peer)))
+                   (top-datumc-peer (caar datumc-peer-stack)))
+              (increment-hops! datumc-peer-stack total-distance)
+              (set-hop! ac (- total-distance))
+              (set-stack! top-datumc-peer (cdr datumc-peer-stack))))))
       ac)))
 
 (define (adorn-without-context char)
@@ -329,8 +334,8 @@
 ;;                  (in-datumc-compound? (cdr ac-list)))))))
 
 (define (handle-~datumc/compound base-kind base-mesg simple-mesg)
-  (let ((compound-kind (cond ((eq? base-kind 'datumc) 'datumc-compound)
-                             (else base-kind))))
+  ;; (let ((compound-kind (cond ((eq? base-kind 'datumc) 'datumc-compound)
+  ;;                            (else base-kind))))
     (lambda (ac-list nc)
       (cond ((char=? nc #\#)
              (adorn-char nc base-kind 'datumc#))
@@ -341,13 +346,13 @@
             ((char=? nc #\;)
              (adorn-char nc 'linec 'linec))
             ((memc nc '(#\( #\[ #\{))
-             (begin-datumc-compound! ac-list nc compound-kind))
+             (begin-datumc-compound! ac-list nc 'datumc-compound))
             ((memc nc '(#\) #\] #\}))
              (end-datumc-compound! ac-list nc))
             ((or (memc nc '(#\space #\newline #\tab #\' #\` #\,))
                  (and (char=? nc #\@) (memc pc '(#\' #\` #\,))))
              (adorn-char nc base-kind base-mesg))
-            (else (adorn-char nc base-kind simple-mesg))))))
+            (else (adorn-char nc base-kind simple-mesg)))))
 (define handle-~datumc
   (handle-~datumc/compound 'datumc '~datumc 'datumc-simple))
 (define handle-~datumc-compound
@@ -547,6 +552,26 @@
              (unless (delimiter? nc)
                (adorn-char nc 'invalid 'invalid)))))))
 
+(define (handle-datumc# nc)
+  (cond ((char=? nc #\!) (adorn-char nc 'datumc '~datumc-directive #f))
+        ((char=? nc #\f) (adorn-char nc 'datumc '~datumc-fvector #f))
+        ((char=? nc #\s) (adorn-char nc 'datumc '~datumc-svector #f))
+        ((char=? nc #\u) (adorn-char nc 'datumc '~datumc-uvector #f))
+        ((char=? nc #\\) (adorn-char nc 'datumc '~datumc-simple  #f))
+        ((char=? nc #\() (begin-datumc-compound!))
+        ((char=? nc #\;)
+         (let-values (((peer dist) (peer+distance adorned #\# 'datumc)))
+           (let ((peer-stack (get-stack peer))
+                 (previous-ac (unbox ac-box)))
+             (increment-peer-stack! peer-stack dist)
+             (set-peer! previous-ac 0)
+             (set-stack! peer '())
+             (let ((new-stack (cons (list previous-ac) peer-stack)))
+               (set-stack! previous-ac new-stack))
+             (adorn-char nc 'datumc '~datumc #f '()))))
+        ((delimiter? nc) (%maybe-end-datumc))
+        (else (adorn-char nc 'datumc 'datumc-simple))))
+
 (define (try-pm ac-list nc pac pm)
   (guard (match? ((not match?) #f))
     (box-ac!
@@ -575,7 +600,10 @@
        ((ident-octal-3)             (handle-ident! ac-list nc))
        ((~datumc)                   (handle-~datumc ac-list nc))
        ((~datumc-compound )         (handle-~datumc-compound ac-list nc))
+       ((datumc#)                   (handle-datumc# ac-list nc))
        ((datumc-compound-unmatched) (handle-~datumc-compound ac-list nc))
+       ((datumc-subcompound-unmatched) (handle-~datumc-compound ac-list nc))
+       ((datumc-subcompound-end)    (handle-~datumc-compound ac-list nc))
        ((datumc-string)             (handle-datumc-string! ac-list nc))
        ((datumc-string-unmatched)   (handle-datumc-string! ac-list nc))
        ((datumc-string-backslash)   (handle-datumc-string-backslash! nc pac))
