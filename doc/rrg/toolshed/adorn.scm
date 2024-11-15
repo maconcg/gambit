@@ -261,16 +261,49 @@
     (set-stack! new-ac (list (cons new-ac ac-list)))
     new-ac))
 
+(define (maybe-end-datumc! ac-list nc pac pm)
+  (let-values (((from-peer distance) (datumc-peer+distance ac-list)))
+    (let* ((nearest-peer (car from-peer))
+           (peer-stack (get-stack nearest-peer))
+           (top-peer (caar peer-stack))
+           (total-distance (+ distance (get-hop top-peer))))
+      (set-hop! top-peer total-distance)
+      (let ((rest (cdr peer-stack)))
+        (set-stack! nearest-peer rest)
+        (set-hop! pac (- total-distance))
+        (cond ((null? rest)
+               (set-mesg! pac 'datumc-end)
+               (try-nc! ac-list nc))
+              (else (set-mesg! pac 'datumc-simple-end)
+                    (adorn-char nc 'datumc '~datumc)))))))
+
+(define (end-datumc-symmetric! ac-list char kind)
+  (let-values (((from-peer distance) (symmetric-peer+distance ac-list kind)))
+    (or from-peer (error "Unable to find beginning of symmetric datum"))
+    (let ((peer (car from-peer)))
+      (set-hop! peer distance)
+      (set-mesg! peer (->begin kind))
+      (set-stack! peer '()))
+    (let-values (((from-dc-peer dc-distance) (datumc-peer+distance from-peer)))
+      (let* ((nearest-peer (car from-dc-peer))
+             (peer-stack (get-stack nearest-peer))
+             (top-peer (caar peer-stack))
+             (total-distance (+ distance dc-distance (get-hop top-peer))))
+        (set-hop! top-peer total-distance)
+        (let ((rest (cdr peer-stack)))
+          (set-stack! nearest-peer rest)
+          (if (null? rest)
+              (adorn-char char kind 'datumc-end (- total-distance))
+              (adorn-char char kind (->end kind) (- total-distance))))))))
+
 (define (end-symmetric! ac-list char kind)
   (let-values (((from-peer distance) (symmetric-peer+distance ac-list kind)))
-    (if from-peer
-        (let ((peer (car from-peer))
-              (new-ac (adorn-char char kind (->end kind) (- distance))))
-          (set-hop! peer distance)
-          (set-mesg! peer (->begin kind))
-          (set-stack! peer '())
-          new-ac)
-        (begin-symmetric ac-list char kind))))
+    (or from-peer (error "Unable to find beginning of symmetric datum"))
+    (let ((peer (car from-peer)))
+      (set-hop! peer distance)
+      (set-mesg! peer (->begin kind))
+      (set-stack! peer '()))
+    (adorn-char char kind (->end kind) (- distance))))
 
 (define (distance-until ac-list char/mesg)
   (cond ((char? char/mesg)
@@ -405,9 +438,9 @@
          (end-datumc-compound! ac-list nc))
         (else (adorn-char nc 'datumc '~datumc-compound))))
 
-(define (handle-linec nc)
-  (cond ((char=? nc #\newline) (adorn-without-context nc))
-        (else (adorn-char nc 'linec 'linec))))
+(define (proceed-until-newline nc pm)
+  (cond ((char=? nc #\newline) (adorn-char #\newline 'whitespace #f))
+        (else (adorn-char nc pm pm))))
 
 (define (handle-octothorpe! ac-list nc pac)
   (cond ((char=? nc #\\)
@@ -450,18 +483,20 @@
         ;;    (set-hop! previous-ac (- index 1)))
         ;;  (commit! nc 'nestc 'nestc-begin #f))
 
-(define (handle-ident/string! base-sym delimiter-char)
+(define (^handle-ident/string! base-sym delimiter-char end-symmetric!)
   (let ((backslash (->backslash base-sym)))
     (lambda (ac-list nc)
       (cond ((char=? nc delimiter-char) (end-symmetric! ac-list nc base-sym))
             ((char=? nc #\\) (adorn-char nc base-sym backslash))
             (else (adorn-char nc base-sym base-sym))))))
-(define handle-string! (handle-ident/string! 'string #\"))
-(define handle-ident! (handle-ident/string! 'ident #\|))
-(define handle-datumc-string! (handle-ident/string! 'datumc-string #\"))
-(define handle-datumc-ident! (handle-ident/string! 'datumc-ident #\|))
+(define handle-string! (^handle-ident/string! 'string #\" end-symmetric!))
+(define handle-ident! (^handle-ident/string! 'ident #\| end-symmetric!))
+(define handle-datumc-string!
+  (^handle-ident/string! 'datumc-string #\" end-datumc-symmetric!))
+(define handle-datumc-ident!
+  (^handle-ident/string! 'datumc-ident #\| end-datumc-symmetric!))
 
-(define (handle-ident/string-backslash! base-sym)
+(define (^handle-ident/string-backslash! base-sym)
   (let ((escape (->escape base-sym)) (hex-x (->hex-x base-sym))
         (hex-u (->hex-u base-sym)) (hex-U (->hex-U base-sym))
         (nil-esc (->nil-esc base-sym)) (octal-1 (->octal-1 base-sym)))
@@ -479,14 +514,14 @@
              (set-kind! pac escape)
              (adorn-char nc escape base-sym))
             (else (adorn-char nc 'invalid 'base-sym))))))
-(define handle-string-backslash! (handle-ident/string-backslash! 'string))
-(define handle-ident-backslash! (handle-ident/string-backslash! 'ident))
+(define handle-string-backslash! (^handle-ident/string-backslash! 'string))
+(define handle-ident-backslash! (^handle-ident/string-backslash! 'ident))
 (define handle-datumc-string-backslash!
-  (handle-ident/string-backslash! 'datumc-string))
+  (^handle-ident/string-backslash! 'datumc-string))
 (define handle-datumc-ident-backslash!
-  (handle-ident/string-backslash! 'datumc-ident))
+  (^handle-ident/string-backslash! 'datumc-ident))
 
-(define (handle-ident/string-hex-x! base-sym delimiter-char)
+(define (^handle-ident/string-hex-x! base-sym delimiter-char end-symmetric!)
   (let ((backslash (->backslash base-sym)) (escape (->escape base-sym))
         (hex-x (->hex-x base-sym)))
     (lambda (ac-list nc)
@@ -497,14 +532,17 @@
             ((memc nc hexadecimal-chars)
              (adorn-char nc base-sym hex-x))
             (else (adorn-char nc 'invalid base-sym))))))
-(define handle-string-hex-x! (handle-ident/string-hex-x! 'string #\"))
-(define handle-ident-hex-x! (handle-ident/string-hex-x! 'ident #\|))
+(define handle-string-hex-x! 
+  (^handle-ident/string-hex-x! 'string #\" end-symmetric!))
+(define handle-ident-hex-x!
+  (^handle-ident/string-hex-x! 'ident #\| end-symmetric!))
 (define handle-datumc-string-hex-x!
-  (handle-ident/string-hex-x! 'datumc-string #\"))
+  (^handle-ident/string-hex-x! 'datumc-string #\" end-datumc-symmetric!))
 (define handle-datumc-ident-hex-x!
-  (handle-ident/string-hex-x! 'datumc-ident #\|))
+  (^handle-ident/string-hex-x! 'datumc-ident #\| end-datumc-symmetric!))
 
-(define (handle-ident/string-hex-Uu! base-sym delimiter-char hex-Uu)
+(define (^handle-ident/string-hex-Uu! base-sym delimiter-char hex-Uu
+                                      end-symmetric!)
   (define U '(string-hex-U ident-hex-U datumc-string-hex-U datumc-ident-hex-U))
   (let ((escape (->escape base-sym)) (backslash (->backslash base-sym)))
     (let ((distance (if (memq hex-Uu U) 8 4)))
@@ -519,23 +557,27 @@
                             (adorn-char nc escape base-sym)))))
               (else (adorn-char nc 'invalid base-sym)))))))
 (define handle-string-hex-u!
-  (handle-ident/string-hex-Uu! 'string #\" 'string-hex-u))
+  (^handle-ident/string-hex-Uu! 'string #\" 'string-hex-u end-symmetric!))
 (define handle-ident-hex-u!
-  (handle-ident/string-hex-Uu! 'ident #\| 'ident-hex-u))
+  (^handle-ident/string-hex-Uu! 'ident #\| 'ident-hex-u end-symmetric!))
 (define handle-string-hex-U!
-  (handle-ident/string-hex-Uu! 'string #\" 'string-hex-U))
+  (^handle-ident/string-hex-Uu! 'string #\" 'string-hex-U end-symmetric!))
 (define handle-ident-hex-U!
-  (handle-ident/string-hex-Uu! 'ident #\| 'ident-hex-U))
+  (^handle-ident/string-hex-Uu! 'ident #\| 'ident-hex-U end-symmetric!))
 (define handle-datumc-string-hex-u!
-  (handle-ident/string-hex-Uu! 'datumc-string #\" 'datumc-string-hex-u))
+  (^handle-ident/string-hex-Uu! 'datumc-string #\" 'datumc-string-hex-u
+                                end-datumc-symmetric!))
 (define handle-datumc-ident-hex-u!
-  (handle-ident/string-hex-Uu! 'datumc-ident #\| 'datumc-ident-hex-u))
+  (^handle-ident/string-hex-Uu! 'datumc-ident #\| 'datumc-ident-hex-u
+                                end-datumc-symmetric!))
 (define handle-datumc-string-hex-U!
-  (handle-ident/string-hex-Uu! 'datumc-string #\" 'datumc-string-hex-U))
+  (^handle-ident/string-hex-Uu! 'datumc-string #\" 'datumc-string-hex-U
+                                end-datumc-symmetric!))
 (define handle-datumc-ident-hex-U!
-  (handle-ident/string-hex-Uu! 'datumc-ident #\| 'datumc-ident-hex-U))
+  (^handle-ident/string-hex-Uu! 'datumc-ident #\| 'datumc-ident-hex-U
+                                end-datumc-symmetric!))
 
-(define (handle-ident/string-nil-esc! base-sym delimiter-char)
+(define (^handle-ident/string-nil-esc! base-sym delimiter-char end-symmetric!)
   (let ((backslash (->backslash base-sym)) (escape (->escape base-sym))
         (nil-esc (->nil-esc base-sym)))
     (lambda (ac-list nc)
@@ -543,14 +585,16 @@
             ((char=? nc #\\) (adorn-char nc base-sym backslash))
             ((memc nc '(#\space #\tab)) (adorn-char nc escape nil-esc))
             (else (adorn-char nc base-sym base-sym))))))
-(define handle-string-nil-esc! (handle-ident/string-nil-esc! 'string #\"))
-(define handle-ident-nil-esc! (handle-ident/string-nil-esc! 'ident #\|))
+(define handle-string-nil-esc!
+  (^handle-ident/string-nil-esc! 'string #\" end-symmetric!))
+(define handle-ident-nil-esc!
+  (^handle-ident/string-nil-esc! 'ident #\| end-symmetric!))
 (define handle-datumc-string-nil-esc!
-  (handle-ident/string-nil-esc! 'datumc-string #\"))
+  (^handle-ident/string-nil-esc! 'datumc-string #\" end-datumc-symmetric!))
 (define handle-datumc-ident-nil-esc!
-  (handle-ident/string-nil-esc! 'datumc-ident #\|))
+  (^handle-ident/string-nil-esc! 'datumc-ident #\| end-datumc-symmetric!))
 
-(define (handle-ident/string-octal-1! base-sym delimiter-char)
+(define (^handle-ident/string-octal-1! base-sym delimiter-char end-symmetric!)
   (let ((backslash (->backslash base-sym)) (escape (->escape base-sym))
         (octal-2 (->octal-2 base-sym)))
     (lambda (ac-list nc)
@@ -558,14 +602,16 @@
             ((char=? nc #\\) (adorn-char nc base-sym backslash))
             ((memc nc octal-chars) (adorn-char nc escape octal-2))
             (else (adorn-char nc base-sym base-sym))))))
-(define handle-string-octal-1! (handle-ident/string-octal-1! 'string #\"))
-(define handle-ident-octal-1! (handle-ident/string-octal-1! 'ident #\|))
+(define handle-string-octal-1!
+  (^handle-ident/string-octal-1! 'string #\" end-symmetric!))
+(define handle-ident-octal-1!
+  (^handle-ident/string-octal-1! 'ident #\| end-symmetric!))
 (define handle-datumc-string-octal-1!
-  (handle-ident/string-octal-1! 'datumc-string #\"))
+  (^handle-ident/string-octal-1! 'datumc-string #\" end-datumc-symmetric!))
 (define handle-datumc-ident-octal-1!
-  (handle-ident/string-octal-1! 'datumc-ident #\|))
+  (^handle-ident/string-octal-1! 'datumc-ident #\| end-datumc-symmetric!))
 
-(define (handle-ident/string-octal-2! base-sym delimiter-char)
+(define (^handle-ident/string-octal-2! base-sym delimiter-char end-symmetric!)
   (let ((backslash (->backslash base-sym)) (escape (->escape base-sym))
         (octal-1 (->octal-1 base-sym)) (octal-3 (->octal-3 base-sym)))
     (lambda (ac-list nc)
@@ -578,12 +624,14 @@
                                          octal-3
                                          base-sym))))
             (else (adorn-char nc base-sym base-sym))))))
-(define handle-string-octal-2! (handle-ident/string-octal-2! 'string #\"))
-(define handle-ident-octal-2! (handle-ident/string-octal-2! 'ident #\|))
+(define handle-string-octal-2!
+  (^handle-ident/string-octal-2! 'string #\" end-symmetric!))
+(define handle-ident-octal-2!
+  (^handle-ident/string-octal-2! 'ident #\| end-symmetric!))
 (define handle-datumc-string-octal-2!
-  (handle-ident/string-octal-2! 'datumc-string #\"))
+  (^handle-ident/string-octal-2! 'datumc-string #\" end-datumc-symmetric!))
 (define handle-datumc-ident-octal-2!
-  (handle-ident/string-octal-2! 'datumc-ident #\|))
+  (^handle-ident/string-octal-2! 'datumc-ident #\| end-datumc-symmetric!))
 
 (define (maybe-end-datumc! ac-list nc pac pm)
   (let-values (((from-peer distance) (datumc-peer+distance ac-list)))
@@ -672,14 +720,15 @@
   (guard (match? ((not match?) #f))
     (box-ac!
      (case pm
-       ((linec)                     (handle-linec nc))
-       ((octothorpe)                (handle-octothorpe! ac-list nc pac))
        ((~fvector)                  (handle~fvector! ac-list nc))
        ((~svector)                  (handle~svector! ac-list nc))
        ((~uvector)                  (handle~uvector! ac-list nc))
        ((~datumc-fvector)           (handle-datumc~fvector! ac-list nc pac pm))
        ((~datumc-svector)           (handle-datumc~svector! ac-list nc pac pm))
        ((~datumc-uvector)           (handle-datumc~uvector! ac-list nc pac pm))
+       ((octothorpe)                (handle-octothorpe! ac-list nc pac))
+       ((linec)                     (proceed-until-newline nc pm))
+       ((shebang)                   (proceed-until-newline nc pm))
        ((string)                    (handle-string! ac-list nc))
        ((string-unmatched)          (handle-string! ac-list nc))
        ((string-backslash)          (handle-string-backslash! nc pac))
@@ -703,6 +752,8 @@
        ((~datumc)                   (handle~datumc! ac-list nc))
        ((datumc-compound-end)       (handle~datumc! ac-list nc))
        ((datumc-simple-end)         (handle~datumc! ac-list nc))
+       ((datumc-ident-end)          (handle~datumc! ac-list nc))
+       ((datumc-string-end)         (handle~datumc! ac-list nc))
        ((datumc-simple)             (handle-datumc-simple! ac-list nc pac pm))
        ((datumc-simple-begin)       (handle-datumc-simple! ac-list nc pac pm))
        ((datumc#)                   (handle-datumc#! ac-list nc pac))
@@ -757,23 +808,23 @@
                 (adorn-loop! (cdr unadorned) (cons new-ac adorned))))))))
 
 (define (adorn! chars . so-far)
-  (define (maybe-handle-shebang char-list adorned)
-    (if (and (null? adorned)
-             (not (null? char-list)) (char=? (car char-list) #\#)
-             (not (null? (cdr char-list))) (char=? (cadr char-list) #\!)
-             (not (null? (cddr char-list)) (let ((third (caddr char-list)))
-                                             (or (char=? third #\/)
-                                                 (char=? third #\space)))))
-        (adorn-loop! (cddr char-list)
-                     (list (adorn-char #\# 'shebang 'shebang)
-                           (adorn-char #\! 'shebang 'shebang)))
-        (adorn-loop! char-list adorned)))
+  (define (maybe-handle-shebang chars adorned)
+    (if (and (null? adorned) (not (null? chars)) (not (null? (cdr chars)))
+             (char=? (car chars) #\#) (char=? (cadr chars) #\!))
+        (let ((trunc (cddr chars)))
+          (if (and (not (null? trunc)) (memc (car trunc) '(#\/ #\space #\tab)))
+              (let ((first-ac (adorn-char #\# 'shebang 'shebang))
+                    (second-ac (adorn-char #\! 'shebang 'shebang)))
+                (set-box! ac-box second-ac)
+                (adorn-loop! trunc (list first-ac second-ac)))
+              (begin (set-box! ac-box (adorn-char #f #f #f))
+                     (adorn-loop! chars adorned))))
+        (begin (set-box! ac-box (adorn-char #f #f #f))
+               (adorn-loop! chars adorned))))
   (let ((char-list (cond ((string? chars) (string->list chars))
                          ((char? chars) (list chars))
-                         (else chars)))
-        (adorned (if (null? so-far) so-far (car so-far))))
-    (set-box! ac-box (adorn-char #f #f #f))
-    (maybe-handle-shebang char-list adorned)))
+                         (else chars))))
+    (maybe-handle-shebang char-list (if (null? so-far) so-far (car so-far)))))
 
 ;; (define (nested-comment-peer! ending-ac ac-list index)
 ;;   (unless (null? ac-list)
@@ -1283,18 +1334,6 @@
 ;==============================================================================
 
 ;;   (case pm
-;;     (( ~fvector )
-;;      (%~hvector/directive/sharp/boolean
-;;       '~fvector 'fvector 'fvector 'default 'octothorpe index
-;;       box-invalid! fvector-strings))
-;;     (( ~svector )
-;;      (%~hvector/directive/sharp/boolean
-;;       '~svector 'svector 'svector 'default 'octothorpe index
-;;       box-invalid! svector-strings))
-;;     (( ~uvector )
-;;      (%~hvector/directive/sharp/boolean
-;;       '~uvector 'uvector 'uvector 'default 'octothorpe index
-;;       box-invalid! uvector-strings))
 ;;     (( ~directive )
 ;;      (%~hvector/directive/sharp/boolean
 ;;       '~directive 'directive 'directive 'default 'octothorpe #f
@@ -1311,54 +1350,6 @@
 ;;      (%~hvector/directive/sharp/boolean
 ;;       '~true 'true 'true 'default 'octothorpe #f box-invalid!
 ;;       '("#true")))
-;;     (( string string-begin )
-;;      (%ident/string 'string-backslash #\" 'string))
-;;     (( ident ident-begin )
-;;      (%ident/string 'ident-backslash #\| 'ident))
-;;     (( string-backslash )
-;;      (%ident/string-backslash 'string-escape 'string 'string-hex-x
-;;                               'string-hex-u 'string-hex-U
-;;                               'string-escape-nil 'string-octal-second))
-;;     (( ident-backslash )
-;;      (%ident/string-backslash 'ident-escape 'ident 'ident-hex-x
-;;                               'ident-hex-u 'ident-hex-U
-;;                               'ident-escape-nil 'ident-octal-second))
-;;     (( string-hex-u )
-;;      (%ident/string-hex-Uu 'string-backslash #\" 4 'string-escape
-;;                            'string 'string-hex-u))
-;;     (( ident-hex-u )
-;;      (%ident/string-hex-Uu 'ident-backslash #\| 4 'ident-escape
-;;                            'ident 'ident-hex-u))
-;;     (( string-hex-U )
-;;      (%ident/string-hex-Uu 'string-backslash #\" 8 'string-escape
-;;                            'string 'string-hex-U))
-;;     (( ident-hex-U )
-;;      (%ident/ident-hex-Uu 'ident-backslash #\| 8 'ident-escape
-;;                           'ident 'ident-hex-U))
-;;     (( string-hex-x )
-;;      (%ident/string-hex-x 'string-backslash #\" 'string-escape
-;;                           'string 'string-hex-x))
-;;     (( ident-hex-x )
-;;      (%ident/string-hex-x 'ident-backslash #\| 'ident-escape
-;;                           'ident 'ident-hex-x))
-;;     (( string-nil )
-;;      (%ident/string-nil 'string-backslash #\" 'string-escape 'string
-;;                         'string-nil))
-;;     (( ident-nil )
-;;      (%ident/string-nil 'ident-backslash #\| 'ident-escape 'ident
-;;                         'ident-nil))
-;;     (( string-octal-second )
-;;      (%ident/string-octal-second 'string-backslash #\" 'string-escape
-;;                                  'string 'string-octal-third))
-;;     (( ident-octal-second )
-;;      (%ident/string-octal-second 'ident-backslash #\| 'ident-escape
-;;                                  'ident 'ident-octal-third))
-;;     (( string-octal-third )
-;;      (%ident/string-octal-third 'string-backslash #\" 'string-esc
-;;                                 'string))
-;;     (( ident-octal-third )
-;;      (%ident/string-octal-third 'ident-backslash #\| 'ident-esc
-;;                                 'ident))
 ;;     (( ~char-first )
 ;;      (cond ((maybe-named-char? nc adorned)
 ;;             (box-ac! nc 'char-body '~char-second #f))
@@ -1410,72 +1401,6 @@
 ;;             (revise-until! adorned 'default 'octothorpe))
 ;;            ((not (delimiter? nc))
 ;;             (box-invalid! nc))))
-;; (( shebang )
-;;  (cond ((char=? nc #\newline) (box-ac! nc 'whitespace #f #f))
-;;        (else (box-ac! nc 'shebang 'shebang #f))))
-;; (( ~datumc )
-;;  (%~datumc '~datumc))
-;; (( datumc-top-compound-end )
-;;  (%~datumc '~datumc))
-;; (( datumc-compound-unmatched datumc-compound-unmatched
-;;    datumc-compound )
-;;  (%~datumc 'datumc-compound))
-;; (( datumc-compound-end )
-;;  (%~datumc 'datumc-compound))
-;; (( datumc-simple datumc-string-end )
-;;  (cond ((delimiter? nc) (%maybe-end-datumc))
-;;        (else (box-ac! nc 'datumc 'datumc-simple #f))))
-;; (( datumc# )
-;;  (cond ((char=? nc #\!) (box-ac! nc 'datumc '~datumc-directive #f))
-;;        ((char=? nc #\f) (box-ac! nc 'datumc '~datumc-fvector #f))
-;;        ((char=? nc #\s) (box-ac! nc 'datumc '~datumc-svector #f))
-;;        ((char=? nc #\u) (box-ac! nc 'datumc '~datumc-uvector #f))
-;;        ((char=? nc #\\) (box-ac! nc 'datumc '~datumc-simple  #f))
-;;        ((char=? nc #\() (%begin-datumc-compound))
-;;        ((char=? nc #\;)
-;;         (let-values (((peer dist) (peer+distance adorned #\# 'datumc)))
-;;           (let ((peer-stack (get-stack peer))
-;;                 (previous-ac (unbox ac-box)))
-;;             (increment-peer-stack! peer-stack dist)
-;;             (set-peer! previous-ac 0)
-;;             (set-stack! peer '())
-;;             (let ((new-stack (cons (list previous-ac) peer-stack)))
-;;               (set-stack! previous-ac new-stack))
-;;             (box-ac! nc 'datumc '~datumc #f '()))))
-;;        ((delimiter? nc) (%maybe-end-datumc))
-;;        (else (box-ac! nc 'datumc 'datumc-simple))))
-;; (( ~datumc-fvector )
-;;  (%~hvector/directive/sharp/boolean
-;;   '~datumc-fvector 'datumc-compound-begin 'datumc 'datumc 'datumc#
-;;   index (lambda (c) (box-ac! c 'datumc 'datumc-simple #f))
-;;   fvector-strings)
-;;  (when (eq? (get-mesg (unbox ac-box)) 'datumc-compound-begin)
-;;             (%begin-datumc-compound)))
-;; (( ~datumc-svector )
-;;  (%~hvector/directive/sharp/boolean
-;;   '~datumc-svector 'datumc-compound-begin 'datumc 'datumc 'datumc#
-;;   index (lambda (c) (box-ac! c 'datumc 'datumc-simple #f))
-;;   svector-strings)
-;;  (when (eq? (get-mesg (unbox ac-box)) 'datumc-compound-begin)
-;;             (%begin-datumc-compound)))
-;; (( ~datumc-uvector )
-;;  (%~hvector/directive/sharp/boolean
-;;   '~datumc-uvector 'datumc-compound-begin 'datumc 'datumc 'datumc#
-;;   index (lambda (c) (box-ac! c 'datumc 'datumc-simple #f))
-;;   uvector-strings)
-;;  (when (eq? (get-mesg (unbox ac-box)) 'datumc-compound-begin)
-;;             (%begin-datumc-compound)))
-;; (( datumc-string )
-;;  (%datumc-string 'datumc-string-backslash 'datumc-string-end))
-;; (( datumc-compound-string )
-;;  (%datumc-string 'datumc-compound-string-backslash
-;;                  'datumc-compound-string-end))
-;; (( datumc-string-backslash )
-;;  (box-ac! nc 'datumc 'datumc-string #f))
-;; (( datumc-compound-string-backslash )
-;;  (box-ac! nc 'datumc 'datumc-compound-string #f))
-;; (( datumc-compound-string-end )
-;;  (box-ac! nc 'datumc 'datumc-compound #f))
 
 ;;   (( abbrev )
 ;;    (when (char=? nc #\@) (box-ac! nc 'abbrev #f #f)))
@@ -1511,58 +1436,6 @@
 ;;            ((char=? nc #\newline)
 ;;             (box-ac! nc 'hs-body '~hs-end #f))
 ;;            (else (box-ac! nc 'hs-body 'hs-body #f)))))
-;;   (( linec )
-;;    (cond ((char=? nc #\newline) (box-no-context! nc))
-;;          (else (box-ac! nc 'linec 'linec #f))))
-;;   (( octothorpe )
-;;    (case nc
-;;      (( #\! )
-;;       (cond ((= index 1)
-;;              (set-kind! (unbox ac-box) 'shebang)
-;;              (box-ac! nc 'shebang 'shebang #f))
-;;             (else (box-ac! nc 'default '~directive/sharp #f))))
-;;      (( #\\ )
-;;       (set-kind! (unbox ac-box) 'char)
-;;       (box-ac! nc 'char '~char-first #f))
-;;      (( #\f )
-;;       (set-kind! (unbox ac-box) 'false)
-;;       (box-ac! nc 'false '~false/fvector #f))
-;;      (( #\s )
-;;       (box-ac! nc 'default '~svector #f))
-;;      (( #\t )
-;;       (set-kind! (unbox ac-box) 'true)
-;;       (box-ac! nc 'true '~true #f))
-;;      (( #\u )
-;;       (box-ac! nc 'default '~uvector #f))
-;;      (( #\; )
-;;       (let ((previous-ac (unbox ac-box)))
-;;         (set-kind! previous-ac 'datumc)
-;;         (set-peer! previous-ac 0)
-;;         (set-stack! previous-ac (list adorned))
-;;         (box-ac! nc 'datumc '~datumc #f)))
-;;      (( #\& )
-;;       (set-kind! (unbox ac-box) 'box)
-;;       (box-ac! nc 'box #f #f))
-;;      (( #\( )
-;;       (set-kind! (unbox ac-box) 'vector)
-;;       (box-ac! nc 'vector 'vector-begin #f))
-;;      (( #\< )
-;;       (set-kind! (unbox ac-box) 'hs-begin)
-;;       (box-ac! nc 'hs-begin 'hs-begin #f))
-;;      (( #\| )
-;;       (let ((previous-ac (unbox ac-box)))
-;;         (set-kind! previous-ac 'nestc)
-;;         (set-mesg! previous-ac 1)
-;;         (set-peer! previous-ac (- index 1)))
-;;       (box-ac! nc 'nestc 'nestc-begin #f))
-;;      (( #\# #\b #\e #\i #\o #\x )
-;;       (box-ac! nc 'default #f #f))
-;;      (( #\0 #\1 #\2 #\3 #\4 #\5 #\6 #\7 #\8 #\9 )
-;;       (box-ac! nc 'default '~label/reference #f))
-;;      (else (box-invalid! nc))))
-;;   (( shebang )
-;;    (cond ((char=? nc #\newline) (box-ac! nc 'whitespace #f #f))
-;;          (else (box-ac! nc 'shebang 'shebang #f))))
 ;;   (else (cond ((memc nc '(#\( #\[ #\{))
 ;;                (set-box! ac-box (compound-begin adorned nc 'list)))
 ;;               ((memc nc '(#\) #\] #\}))
