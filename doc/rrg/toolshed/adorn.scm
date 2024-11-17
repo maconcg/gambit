@@ -36,6 +36,9 @@
     "namespace" "or" "parameterize" "quasiquote" "quote" "r7rs-guard"
     "receive" "set!" "syntax-error" "syntax-rules" "this-source-file"
     "unless" "when"))
+(define single-value-define-var-syntax '("define" "define-record-type"))
+(define single-value-let-syntax
+  '("let" "let*" "letrec" "letrec*" "parameterize"))
 (define sublist-begin-mesgs '(sublist-unmatched sublist-begin))
 (define list-begin-mesgs
   (append sublist-begin-mesgs '(list-unmatched list-begin)))
@@ -436,6 +439,12 @@
     (and (not (null? achievable))
          (or (matches? (car achievable) actual)
              (loop (cdr achievable))))))
+
+(define (looking-at ac-list mesg-list)
+  (and (not (null? ac-list)) (let ((ac (car ac-list)))
+                               (if (memq (get-kind ac) atmosphere-kinds)
+                                   (looking-at (cdr ac-list) mesg-list)
+                                   (memq (get-mesg ac) mesg-list)))))
 
 (define (handle~datumc! ac-list nc)
   (cond ((char=? nc #\#)
@@ -992,6 +1001,52 @@
           (else (revise-while! ac-list 'default rt-syntax?)
                 (adorn-char nc 'default #f)))))
 
+(define (handle-define-like-bind ac-list nc pm)
+  (cond ((memc nc delimiter-chars) (try-nc! ac-list nc))
+        (else (adorn-char nc 'define-like-bind pm))))
+
+(define (handle-let-like-bind ac-list nc pm)
+  (cond ((memc nc delimiter-chars) (try-nc! ac-list nc))
+        (else (adorn-char nc 'let-like-bind pm))))
+
+(define (define-var-bind? ac-list)
+  (and (looking-at ac-list '(~runtime-syntax))
+       (matches-one-of? single-value-define-var-syntax
+                        (runtime-syntax-operator ac-list))))
+
+(define (defun-procedure-bind? ac-list)
+  (and (operator-position? ac-list)
+       (let ((up-one (up-list ac-list)))
+         (and (looking-at up-one '(~runtime-syntax))
+              (matches? "define" (runtime-syntax-operator up-one))))))
+
+(define (defun-parameter-bind? ac-list)
+  (and (not (operator-position? ac-list))
+       (looking-at ac-list '(defun-procedure))))
+
+(define (define-values-bind? ac-list)
+  (let ((up-one (up-list ac-list)))
+    (and (looking-at up-one '(~runtime-syntax))
+         (matches? "define-values" (runtime-syntax-operator up-one)))))
+
+(define (named-let-var? ac-list)
+  (and (looking-at ac-list '(~runtime-syntax))
+       (matches? "let" (runtime-syntax-operator ac-list))))
+
+(define (single-value-let-bind? ac-list)
+  (and (operator-position? ac-list)
+       (let* ((up-one (up-list ac-list))
+              (up-one-start (start-of-list up-one)))
+         (and (operator-position? up-one-start)
+              (let ((up-two (up-list up-one-start)))
+                (and (looking-at up-two '(~runtime-syntax))
+                     (matches-one-of? single-value-let-syntax
+                                      (runtime-syntax-operator up-two))))))))
+
+(define (let-bind? ac-list)
+  (or (named-let-var? ac-list)
+      (single-value-let-bind? ac-list)))
+
 (define (try-pm! ac-list nc pac)
   (let ((pm (get-mesg pac)))
     (case pm
@@ -1017,6 +1072,8 @@
       ((~datumc-svector)          (handle-datumc~svector! ac-list nc pac pm))
       ((~datumc-uvector)          (handle-datumc~uvector! ac-list nc pac pm))
       ((abbrev)                   (handle-abbrev ac-list nc))
+      ((defun-parameter)          (handle-let-like-bind ac-list nc pm))
+      ((defun-procedure)          (handle-define-like-bind ac-list nc pm))
       ((hs-key)                   (handle-hs-key ac-list nc))
       ((hs-key-end)               (handle-hs-body! ac-list nc))
       ((hs-body)                  (handle-hs-body! ac-list nc))
@@ -1097,9 +1154,6 @@
        (revise-unless-delimiter ac-list nc 'octothorpe))
       (else #f))))
 
-(define (default+no-mesg? ac)
-  (and (not (get-mesg ac)) (eq? (get-kind ac) 'default)))
-
 (define (operator-position? ac-list)
   (and (not (null? ac-list))
        (let ((ac (car ac-list)))
@@ -1110,16 +1164,19 @@
 (define (start-of-list ac-list)
   (if (null? ac-list)
       '()
-      (let ((ac (car ac-list)))
-        (if (memq (get-mesg ac) list-begin-mesgs)
-            ac-list
-            (let ((stack (get-stack ac)))
-              (if (null? stack)
-                  (start-of-list (cdr ac-list))
-                  (let ((potential-destination (car stack)))
-                    (if (eq? (car potential-destination) ac)
-                        (start-of-list (cdr ac-list))
-                        (start-of-list potential-destination)))))))))
+      (let* ((ac (car ac-list)) (mesg (get-mesg ac)))
+        (cond ((memq mesg '(list-unmatched sublist-unmatched)) ac-list)
+              ((eq? mesg 'list-end) '())
+              ((eq? mesg 'sublist-end)
+               (let ((stack (get-stack ac)))
+                 (start-of-list (if (null? stack)
+                                    (let skip ((rest (cdr ac-list))
+                                               (i (get-hop ac)))
+                                      (if (zero? i)
+                                          rest
+                                          (skip (cdr ac-list) (+ i 1))))
+                                    (car stack)))))
+              (else (start-of-list (cdr ac-list)))))))
 
 (define (up-list ac-list)
   (let ((list-start (start-of-list ac-list)))
@@ -1135,6 +1192,10 @@
           (if (null? stack)
               list-start
               (list-ref stack index))))))
+
+(define (~~runtime-syntax? ac-list nc)
+  (and (operator-position? ac-list)
+       (could-match-one-of? runtime-syntax (list nc))))
 
 (define (runtime-syntax-operator ac-list)
   (let seek ((rest ac-list) (buffer '()))
@@ -1156,22 +1217,6 @@
                                   (seek (cdr rest) '())
                                   (seek potential-destination '())))))))))))
 
-(define (try-context! ac-list nc pac)
-  (let ((pc (get-char pac)))
-    (and pc
-         (cond ((and (char=? pc #\:) (memc nc delimiter-chars))
-                (unless (or (null? (cdr ac-list))
-                            (memc (get-char (cadr ac-list)) delimiter-chars))
-                  (revise-while! ac-list 'keyword default+no-mesg?))
-                (try-nc! ac-list nc))
-               ((operator-position? ac-list)
-                (cond ((matches-one-of? runtime-syntax (list nc))
-                       (adorn-char nc 'runtime-syntax '~~runtime-syntax))
-                      ((could-match-one-of? runtime-syntax (list nc))
-                       (adorn-char nc 'runtime-syntax '~~runtime-syntax))
-                      (else (try-nc! ac-list nc))))
-               (else #f)))))
-
 (define (try-nc! ac-list nc)
   (cond ((char=? nc #\")
          (begin-symmetric ac-list nc 'string))
@@ -1182,6 +1227,28 @@
         ((memc nc compound-end-chars)
          (end-compound! ac-list nc))
         (else #f)))
+
+(define (try-context! ac-list nc pac)
+  (define (default+no-mesg? ac)
+    (and (not (get-mesg ac)) (eq? (get-kind ac) 'default)))
+  (let ((pc (get-char pac)))
+    (and pc
+         (cond ((memc nc delimiter-chars)
+                (try-nc! ac-list nc))
+               ((and (char=? pc #\:) (memc nc delimiter-chars))
+                (unless (or (null? (cdr ac-list))
+                            (memc (get-char (cadr ac-list)) delimiter-chars))
+                  (revise-while! ac-list 'keyword default+no-mesg?))
+                (try-nc! ac-list nc))
+               ((defun-procedure-bind? ac-list)
+                (adorn-char nc 'define-like-bind 'defun-procedure))
+               ((defun-parameter-bind? ac-list)
+                (adorn-char nc 'let-like-bind 'defun-parameter))
+               ((~~runtime-syntax? ac-list nc)
+                (if (matches-one-of? runtime-syntax (list nc))
+                    (adorn-char nc 'runtime-syntax '~~runtime-syntax)
+                    (adorn-char nc 'default '~~runtime-syntax)))
+               (else #f)))))
 
 (define (adorn-loop! unadorned adorned)
   (if (null? unadorned)
@@ -1217,11 +1284,9 @@
 ;;     '((directive ("#!fold-case" "#!no-fold-case"))
 ;;       (lambda ("lambda" "\x3bb;"))
 ;;       (long-quote ("quote"))
-;;       (mv-define ("define-values"))
 ;;       (mv-let ("let-values" "let*-values"))
 ;;       (named-let ("let"))
 ;;       (short-quote ("'"))
-;;       (sv-define ("define"))
 ;;       (sv-let ("let" "let*" "letrec" "letrec*" "parameterize"))
 ;;   (cadr (assq symbol string-lists)))
 ;==============================================================================
@@ -1229,148 +1294,20 @@
 ;;   (define string-lists
 ;;       (lambda ("lambda" "\x3bb;"))
 ;;       (long-quote ("quote"))
-;;       (mv-define ("define-values"))
 ;;       (mv-let ("let-values" "let*-values"))
 ;;       (named-let ("let"))
 ;;       (short-quote ("'"))
-;;       (sv-define ("define"))
 ;;       (sv-let ("let" "let*" "letrec" "letrec*" "parameterize"))
 ;;       (svector ("#s8(" "#s16(" "#s32(" "#s64("))
 ;;       (true ("#true"))
 ;;       (uvector ("#u8(" "#u16(" "#u32(" "#u64("))
 ;;   (cadr (assq symbol string-lists)))
 ;==============================================================================
-;; (define (get-matching-kind+ep? spec)
-;;   (case spec
-;;     (( false true sharp fvector svector uvector )
-;;      (values 'default octo-start?))
-;;     (( lambda sv-define sv-let named-let mv-define mv-let )
-;;      (values 'runtime-syntax #f))
-;;     (( datumc-directive )
-;;      (values 'datumc (lambda (ac) (eq? (get-mesg ac) 'datumc#))))
-;;     (else (values #f #f))))
-
-;; (define (looking-at spec ac-list #!key kind ep?)
-;;   (define (truncate-acl trunc-predicate? ac-list)
-;;     (if (null? ac-list)
-;;         ac-list
-;;         (if (trunc-predicate? (car ac-list))
-;;             (truncate-acl trunc-predicate? (cdr ac-list))
-;;             ac-list)))
-;;   (define (looking-at-char-list char-list ac-list #!key k ep?)
-;;     (let loop ((cl-rest char-list) (ac-rest ac-list))
-;;       (if (null? cl-rest)
-;;           ac-rest
-;;           (and (not (null? ac-rest))
-;;                (let ((next-char (car cl-rest))
-;;                      (next-ac (car ac-rest)))
-;;                  (and (or (not k) (eq? k (get-kind next-ac)))
-;;                       (char=? next-char (get-char next-ac))
-;;                       (let ((cdr-cl-rest (cdr cl-rest)))
-;;                         (if (and ep? (null? cdr-cl-rest))
-;;                             (and (ep? next-ac) ac-rest)
-;;                             (loop cdr-cl-rest (cdr ac-rest))))))))))
-;;   (define (looking-at-one-of list-of-char-lists ac-list #!key k ep?)
-;;     (and (not (null? list-of-char-lists))
-;;          (or (looking-at-char-list (car list-of-char-lists)
-;;                                    ac-list k: k ep?: ep?)
-;;              (looking-at-one-of (cdr list-of-char-lists)
-;;                                 ac-list k: k ep?: ep?))))
-;;   (if (symbol? spec)
-;;       (let-values (((k ep?) (get-matching-kind+ep? spec)))
-;;         (case spec
-;;           (( sv-define sv-let named-let mv-let mv-define lambda )
-;;            (looking-at-one-of (get-char-lists spec)
-;;                               (truncate-acl (lambda (ac)
-;;                                               (atmosphere? ac))
-;;                                             ac-list) k: k ep?: ep?))
-;;           (( datumc )
-;;            (looking-at-char-list
-;;             '(#\; #\#)
-;;             (truncate-acl (lambda (ac)
-;;                             (let ((kind (get-kind ac)))
-;;                               (or (memq kind '(linec nestc datumc-directive))
-;;                                   (and (eq? kind 'datumc)
-;;                                        (memc (get-char ac) '(#\space
-;;                                                              #\newline
-;;                                                              #\tab))))))
-;;                           ac-list)
-;;             k: 'datumc ep?: octo-start?))
-;;           (( directive )
-;;            (looking-at-one-of (get-char-lists spec)
-;;                               (truncate-acl
-;;                                (lambda (ac)
-;;                                  (memq (get-kind ac)
-;;                                        '(whitespace datumc linec nestc))))
-;;                               k: k ep?: ep?))
-;;           (( keyword )
-;;            (let ((ac (car ac-list)))
-;;              (and (char=? (get-char ac) #\:)
-;;                   (eq? (get-kind ac) 'default)
-;;                   (not (get-mesg ac))
-;;                   (not (null? (cdr ac-list)))
-;;                   (let ((prev (cadr ac-list)))
-;;                     (let ((prev-char (get-char prev))
-;;                           (prev-kind (get-kind prev))
-;;                           (prev-mesg (get-mesg prev)))
-;;                       (or (and (eq? prev-kind 'identifier)
-;;                                (char=? prev-char #\|)
-;;                                (number? prev-mesg)
-;;                                (number? (get-peer prev)))
-;;                           (and (eq? prev-kind 'default)
-;;                                (not (delimiter? prev-char))
-;;                                (or (not prev-mesg)
-;;                                    (eq? prev-mesg 'runtime-syntax)))))))))
-;;           (( quote )
-;;            (let ((truncated-acl (truncate-acl (lambda (ac)
-;;                                                 (atmosphere? ac))
-;;                                               ac-list)))
-;;              (or (looking-at-one-of (get-char-lists 'short-quote) truncated-acl
-;;                                     k: 'abbrev)
-;;                  (looking-at-one-of (get-char-lists 'long-quote) truncated-acl
-;;                                     k: 'runtime-syntax))))
-;;           (( runtime-syntax )
-;;            (let ((acl (looking-at-one-of (get-char-lists 'runtime-syntax)
-;;                                          ac-list
-;;                                          k: k ep?: ep?)))
-;;              (and acl (operator-position? acl))))
-;;           (else
-;;            (looking-at-one-of (get-char-lists spec) ac-list k: k ep?: ep?))))
-;;       (looking-at-char-list spec ac-list k: kind ep?: ep?)))
-
-;==============================================================================
 ;; (define (trim-ac-list ac-list predicate?)
 ;;   (if (predicate? (car ac-list))
 ;;       (trim-ac-list (cdr ac-list) predicate?)
 ;;       ac-list))
 ;==============================================================================
-;; (define (start-of-bind? ac-list)
-;;   (let ((cdr-ac-list (cdr ac-list)))
-;;         (and (not (null? cdr-ac-list))
-;;              (delimiter? (get-char (car cdr-ac-list)))
-;;              (let loop ((binders '(lambda define-proc define-var named-let-var
-;;                                    sv-let-formal mv-define mv-let-formal
-;;                                    named-let-formal)))
-;;                (and (not (null? binders))
-;;                     (or (start-of? (car binders) ac-list)
-;;                         (loop (cdr binders))))))))
-
-;; (define (start-of-list ac-list #!optional (mesg 'list-unmatched))
-;;   (if (null? ac-list)
-;;       '()
-;;       (if (eq? (get-mesg (car ac-list)) mesg)
-;;           ac-list
-;;           (start-of-list (cdr ac-list)))))
-
-;; (define (up-list ac-list)
-;;   (let ((list-start (start-of-list ac-list)))
-;;     (if (null? list-start)
-;;         '()
-;;         (let ((stack (get-stack (car (start-of-list ac-list)))))
-;;           (if (null? stack)
-;;               '()
-;;                (cadr stack))))))
-
 ;; (define (start-of? token ac-list)
 ;;   (and (not (null? ac-list))
 ;;        (let ((ac (car ac-list)) (rest (cdr ac-list)))
