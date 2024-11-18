@@ -106,7 +106,20 @@
   (map ->unmatched '(datumc-compound datumc-subcompound)))
 (define datumc-compound-peering-mesgs
   (cons 'datumc-subcompound-end datumc-compound-unmatched-mesgs))
+;==============================================================================
+(define (ident/string-mesg-alists base)
+  (list (cons 'base base) (cons 'unmatched (->unmatched base))
+        (cons 'backslash (->backslash base)) (cons 'hex-x (->hex-x base))
+        (cons 'hex-U (->hex-U base)) (cons 'hex-u (->hex-u base))
+        (cons 'nil-esc (->nil-esc base)) (cons 'octal-1 (->octal-1 base))
+        (cons 'octal-2 (->octal-2 base)) (cons 'octal-3 (->octal-3 base))))
 
+(define (ident/string-mesgs base) (map cdr (ident/string-mesg-alists base)))
+(define string-mesgs (ident/string-mesgs 'string))
+(define ident-mesgs (ident/string-mesgs 'ident))
+(define datumc-string-mesgs (ident/string-mesgs 'datumc-string))
+(define datumc-ident-mesgs (ident/string-mesgs 'datumc-ident))
+;==============================================================================
 (define (increment-hops! peer-stack amount)
   (let ((heads (map car peer-stack)))
     (for-each (lambda (ac) (set-hop! ac (+ (get-hop ac) amount))) heads)))
@@ -618,12 +631,6 @@
       (cond ((char=? nc delimiter-char) (end-symmetric! ac-list nc base-sym))
             ((char=? nc #\\) (adorn-char nc base-sym backslash))
             (else (adorn-char nc base-sym base-sym))))))
-(define handle:string! (^handle:ident/string! 'string #\" end-symmetric!))
-(define handle:ident! (^handle:ident/string! 'ident #\| end-symmetric!))
-(define handle:datumc-string!
-  (^handle:ident/string! 'datumc-string #\" end-datumc-symmetric!))
-(define handle:datumc-ident!
-  (^handle:ident/string! 'datumc-ident #\| end-datumc-symmetric!))
 
 (define (^handle:ident/string-backslash! base-sym)
   (let ((escape (->escape base-sym)) (hex-x (->hex-x base-sym))
@@ -643,12 +650,6 @@
              (set-kind! pac escape)
              (adorn-char nc escape base-sym))
             (else (adorn-char nc 'invalid 'base-sym))))))
-(define handle:string-backslash! (^handle:ident/string-backslash! 'string))
-(define handle:ident-backslash! (^handle:ident/string-backslash! 'ident))
-(define handle:datumc-string-backslash!
-  (^handle:ident/string-backslash! 'datumc-string))
-(define handle:datumc-ident-backslash!
-  (^handle:ident/string-backslash! 'datumc-ident))
 
 (define (^handle:ident/string-hex-x! base-sym delimiter-char end-symmetric!)
   (let ((backslash (->backslash base-sym)) (escape (->escape base-sym))
@@ -661,23 +662,14 @@
             ((memc nc hexadecimal-chars)
              (adorn-char nc base-sym hex-x))
             (else (adorn-char nc 'invalid base-sym))))))
-(define handle:string-hex-x!
-  (^handle:ident/string-hex-x! 'string #\" end-symmetric!))
-(define handle:ident-hex-x!
-  (^handle:ident/string-hex-x! 'ident #\| end-symmetric!))
-(define handle:datumc-string-hex-x!
-  (^handle:ident/string-hex-x! 'datumc-string #\" end-datumc-symmetric!))
-(define handle:datumc-ident-hex-x!
-  (^handle:ident/string-hex-x! 'datumc-ident #\| end-datumc-symmetric!))
 
-(define (^handle:ident/string-hex-Uu! base-sym delimiter-char hex-Uu
-                                      end-symmetric!)
+(define (^handle:ident/string-hex-Uu! base-sym delimiter-char hex-Uu end!)
   (define U '(string-hex-U ident-hex-U datumc-string-hex-U datumc-ident-hex-U))
   (let ((escape (->escape base-sym)) (backslash (->backslash base-sym)))
     (let ((target (if (memq hex-Uu U) 8 4)))
       (lambda (ac-list nc)
         (cond ((char=? nc delimiter-char)
-               (end-symmetric! ac-list nc base-sym))
+               (end! ac-list nc base-sym))
               ((memc nc hexadecimal-chars)
                (let ((running-total (distance-until ac-list backslash)))
                  (if (> target running-total)
@@ -685,26 +677,6 @@
                      (begin (revise-until! ac-list escape (+ target 1))
                             (adorn-char nc escape base-sym)))))
               (else (adorn-char nc 'invalid base-sym)))))))
-(define handle:string-hex-u!
-  (^handle:ident/string-hex-Uu! 'string #\" 'string-hex-u end-symmetric!))
-(define handle:ident-hex-u!
-  (^handle:ident/string-hex-Uu! 'ident #\| 'ident-hex-u end-symmetric!))
-(define handle:string-hex-U!
-  (^handle:ident/string-hex-Uu! 'string #\" 'string-hex-U end-symmetric!))
-(define handle:ident-hex-U!
-  (^handle:ident/string-hex-Uu! 'ident #\| 'ident-hex-U end-symmetric!))
-(define handle:datumc-string-hex-u!
-  (^handle:ident/string-hex-Uu! 'datumc-string #\" 'datumc-string-hex-u
-                                end-datumc-symmetric!))
-(define handle:datumc-ident-hex-u!
-  (^handle:ident/string-hex-Uu! 'datumc-ident #\| 'datumc-ident-hex-u
-                                end-datumc-symmetric!))
-(define handle:datumc-string-hex-U!
-  (^handle:ident/string-hex-Uu! 'datumc-string #\" 'datumc-string-hex-U
-                                end-datumc-symmetric!))
-(define handle:datumc-ident-hex-U!
-  (^handle:ident/string-hex-Uu! 'datumc-ident #\| 'datumc-ident-hex-U
-                                end-datumc-symmetric!))
 
 (define (^handle:ident/string-nil-esc! base-sym delimiter-char end-symmetric!)
   (let ((backslash (->backslash base-sym)) (escape (->escape base-sym))
@@ -714,14 +686,6 @@
             ((char=? nc #\\) (adorn-char nc base-sym backslash))
             ((memc nc '(#\space #\tab)) (adorn-char nc escape nil-esc))
             (else (adorn-char nc base-sym base-sym))))))
-(define handle:string-nil-esc!
-  (^handle:ident/string-nil-esc! 'string #\" end-symmetric!))
-(define handle:ident-nil-esc!
-  (^handle:ident/string-nil-esc! 'ident #\| end-symmetric!))
-(define handle:datumc-string-nil-esc!
-  (^handle:ident/string-nil-esc! 'datumc-string #\" end-datumc-symmetric!))
-(define handle:datumc-ident-nil-esc!
-  (^handle:ident/string-nil-esc! 'datumc-ident #\| end-datumc-symmetric!))
 
 (define (^handle:ident/string-octal-1! base-sym delimiter-char end-symmetric!)
   (let ((backslash (->backslash base-sym)) (escape (->escape base-sym))
@@ -731,14 +695,6 @@
             ((char=? nc #\\) (adorn-char nc base-sym backslash))
             ((memc nc octal-chars) (adorn-char nc escape octal-2))
             (else (adorn-char nc base-sym base-sym))))))
-(define handle:string-octal-1!
-  (^handle:ident/string-octal-1! 'string #\" end-symmetric!))
-(define handle:ident-octal-1!
-  (^handle:ident/string-octal-1! 'ident #\| end-symmetric!))
-(define handle:datumc-string-octal-1!
-  (^handle:ident/string-octal-1! 'datumc-string #\" end-datumc-symmetric!))
-(define handle:datumc-ident-octal-1!
-  (^handle:ident/string-octal-1! 'datumc-ident #\| end-datumc-symmetric!))
 
 (define (^handle:ident/string-octal-2! base-sym delimiter-char end-symmetric!)
   (let ((backslash (->backslash base-sym)) (escape (->escape base-sym))
@@ -753,14 +709,47 @@
                                          octal-3
                                          base-sym))))
             (else (adorn-char nc base-sym base-sym))))))
-(define handle:string-octal-2!
-  (^handle:ident/string-octal-2! 'string #\" end-symmetric!))
-(define handle:ident-octal-2!
-  (^handle:ident/string-octal-2! 'ident #\| end-symmetric!))
-(define handle:datumc-string-octal-2!
-  (^handle:ident/string-octal-2! 'datumc-string #\" end-datumc-symmetric!))
-(define handle:datumc-ident-octal-2!
-  (^handle:ident/string-octal-2! 'datumc-ident #\| end-datumc-symmetric!))
+
+(define (^ident/string-dispatch! base-sym delimiter-char end!)
+  (define sym-alist (ident/string-mesg-alists base-sym))
+  (define reversed-alist (map (lambda (p) (cons (cdr p) (car p))) sym-alist))
+  (define (generic->specific sym) (cdr (assq sym sym-alist)))
+  (define (specific->generic sym) (cdr (assq sym reversed-alist)))
+  (define (generic->handler sym)
+    (cond ((memq sym '(base unmatched octal-3))
+           (^handle:ident/string! base-sym delimiter-char end-symmetric!))
+          ((eq? sym 'backslash)
+           (^handle:ident/string-backslash! base-sym))
+          ((eq? sym 'hex-x)
+           (^handle:ident/string-hex-x! base-sym delimiter-char end!))
+          ((memq sym '(hex-U hex-u))
+           (^handle:ident/string-hex-Uu! base-sym delimiter-char sym end!))
+          ((eq? sym 'nil-esc)
+           (^handle:ident/string-nil-esc! base-sym delimiter-char end!))
+          ((eq? sym 'octal-1)
+           (^handle:ident/string-octal-1! base-sym delimiter-char end!))
+          ((eq? sym 'octal-2)
+           (^handle:ident/string-octal-1! base-sym delimiter-char end!))))
+    (lambda (ac-list nc pac pm)
+      (let* ((generic-sym (specific->generic pm))
+             (handler (generic->handler generic-sym)))
+        (cond ((eq? generic-sym 'backslash) (handler nc pac))
+              (else (handler ac-list nc))))))
+
+(define string-dispatch! (^ident/string-dispatch! 'string #\" end-symmetric!))
+(define datumc-string-dispatch!
+  (^ident/string-dispatch! 'datumc-string #\" end-datumc-symmetric!))
+
+(define ident-dispatch! (^ident/string-dispatch! 'ident #\| end-symmetric!))
+(define datumc-ident-dispatch!
+  (^ident/string-dispatch! 'datumc-ident #\| end-datumc-symmetric!))
+
+(define (ident/string-dispatch! pm)
+  (cond ((memq pm string-mesgs) string-dispatch!)
+        ((memq pm ident-mesgs) ident-dispatch!)
+        ((memq pm datumc-string-mesgs) datumc-string-dispatch!)
+        ((memq pm datumc-ident-mesgs) datumc-ident-dispatch!)
+        (else #f)))
 
 (define (maybe-end-datumc! ac-list nc pac pm)
   (let-values (((from-peer distance) (datumc:peer+distance ac-list)))
@@ -1012,13 +1001,14 @@
           (else (revise-while! ac-list 'default rt-syntax?)
                 (adorn-char nc 'default #f)))))
 
-(define (handle:define-like-bind ac-list nc pm)
-  (cond ((memc nc delimiter-chars) (try-nc! ac-list nc))
-        (else (adorn-char nc 'define-like-bind pm))))
+(define (handle:defun-proc ac-list nc pm)
+  (cond ((char=? nc #\|) (adorn-char nc 'de-identifier 'de-identifier))
+        ((memc nc delimiter-chars) (try-nc! ac-list nc))
+        (else (adorn-char nc 'def-like pm))))
 
-(define (handle:let-like-bind ac-list nc pm)
+(define (handle:let-like ac-list nc pm)
   (cond ((memc nc delimiter-chars) (try-nc! ac-list nc))
-        (else (adorn-char nc 'let-like-bind pm))))
+        (else (adorn-char nc 'let-like pm))))
 
 (define (define-variable-bind? ac-list)
   (and (looking-at ac-list '(~runtime-syntax))
@@ -1093,13 +1083,15 @@
       ((~datumc-svector)          (handle:datumc~svector! ac-list nc pac pm))
       ((~datumc-uvector)          (handle:datumc~uvector! ac-list nc pac pm))
       ((abbrev)                   (handle:abbrev ac-list nc))
-      ((defun-procedure)          (handle:define-like-bind ac-list nc pm))
-      ((sv-define-bind)           (handle:define-like-bind ac-list nc pm))
-      ((mv-define-bind)           (handle:define-like-bind ac-list nc pm))
-      ((defun-parameter)          (handle:let-like-bind ac-list nc pm))
-      ((named-let-var)            (handle:let-like-bind ac-list nc pm))
-      ((sv-let-bind)              (handle:let-like-bind ac-list nc pm))
-      ((mv-let-bind)              (handle:let-like-bind ac-list nc pm))
+      ((defun-procedure)          (handle:defun-proc ac-list nc pm))
+      ((sv-define-bind)           (handle:defun-proc ac-list nc pm))
+      ((mv-define-bind)           (handle:defun-proc ac-list nc pm))
+      ((defun-parameter)          (handle:let-like ac-list nc pm))
+      ((named-let-var)            (handle:let-like ac-list nc pm))
+      ((sv-let-bind)              (handle:let-like ac-list nc pm))
+      ((mv-let-bind)              (handle:let-like ac-list nc pm))
+      ((def-like-ident)           (handle:defun-proc-ident! ac-list nc))
+      ((def-like-ident-unmatched) (handle:defun-proc-ident! ac-list nc))
       ((hs-key)                   (handle:hs-key ac-list nc))
       ((hs-key-end)               (handle:hs-body! ac-list nc))
       ((hs-body)                  (handle:hs-body! ac-list nc))
@@ -1120,26 +1112,6 @@
       ((datumc-nestc-begin)       (handle:datumc-nestc nc))
       ((datumc-nestc)             (handle:datumc-nestc nc))
       ((shebang)                  (proceed-until-newline nc pm))
-      ((string)                   (handle:string! ac-list nc))
-      ((string-unmatched)         (handle:string! ac-list nc))
-      ((string-backslash)         (handle:string-backslash! nc pac))
-      ((string-hex-x)             (handle:string-hex-x! ac-list nc))
-      ((string-hex-u)             (handle:string-hex-u! ac-list nc))
-      ((string-hex-U)             (handle:string-hex-U! ac-list nc))
-      ((string-nil-esc)           (handle:string-nil-esc! ac-list nc))
-      ((string-octal-1)           (handle:string-octal-1! ac-list nc))
-      ((string-octal-2)           (handle:string-octal-2! ac-list nc))
-      ((string-octal-3)           (handle:string! ac-list nc))
-      ((ident)                    (handle:ident! ac-list nc))
-      ((ident-unmatched)          (handle:ident! ac-list nc))
-      ((ident-backslash)          (handle:ident-backslash! nc pac))
-      ((ident-hex-x)              (handle:ident-hex-x! ac-list nc))
-      ((ident-hex-u)              (handle:ident-hex-u! ac-list nc))
-      ((ident-hex-U)              (handle:ident-hex-U! ac-list nc))
-      ((ident-nil-esc)            (handle:ident-nil-esc! ac-list nc))
-      ((ident-octal-1)            (handle:ident-octal-1! ac-list nc))
-      ((ident-octal-2)            (handle:ident-octal-2! ac-list nc))
-      ((ident-octal-3)            (handle:ident! ac-list nc))
       ((~datumc)                  (handle~datumc! ac-list nc))
       ((~datumc-directive)        (handle~datumc-directive! ac-list nc pac pm))
       ((datumc-compound-end)      (handle~datumc! ac-list nc))
@@ -1155,30 +1127,13 @@
       ((datumc-compound-unmatched)    (handle~datumc-compound! ac-list nc))
       ((datumc-subcompound-unmatched) (handle~datumc-compound! ac-list nc))
       ((datumc-subcompound-end)       (handle~datumc-compound! ac-list nc))
-      ((datumc-string)            (handle:datumc-string! ac-list nc))
-      ((datumc-string-unmatched)  (handle:datumc-string! ac-list nc))
-      ((datumc-string-backslash)  (handle:datumc-string-backslash! nc pac))
-      ((datumc-string-hex-x)      (handle:datumc-string-hex-x! ac-list nc))
-      ((datumc-string-hex-u)      (handle:datumc-string-hex-u! ac-list nc))
-      ((datumc-string-hex-U)      (handle:datumc-string-hex-U! ac-list nc))
-      ((datumc-string-nil-esc)    (handle:datumc-string-nil-esc! ac-list nc))
-      ((datumc-string-octal-1)    (handle:datumc-string-octal-1! ac-list nc))
-      ((datumc-string-octal-2)    (handle:datumc-string-octal-2! ac-list nc))
-      ((datumc-string-octal-3)    (handle:datumc-string! ac-list nc))
-      ((datumc-ident)             (handle:datumc-ident! ac-list nc))
-      ((datumc-ident-unmatched)   (handle:datumc-ident! ac-list nc))
-      ((datumc-ident-backslash)   (handle:datumc-ident-backslash! nc pac))
-      ((datumc-ident-hex-x)       (handle:datumc-ident-hex-x! ac-list nc))
-      ((datumc-ident-hex-u)       (handle:datumc-ident-hex-u! ac-list nc))
-      ((datumc-ident-hex-U)       (handle:datumc-ident-hex-U! ac-list nc))
-      ((datumc-ident-nil-esc)     (handle:datumc-ident-nil-esc! ac-list nc))
-      ((datumc-ident-octal-1)     (handle:datumc-ident-octal-1! ac-list nc))
-      ((datumc-ident-octal-2)     (handle:datumc-ident-octal-2! ac-list nc))
-      ((datumc-ident-octal-3)     (handle:datumc-ident! ac-list nc))
       ((invalid)                  (proceed-until-delimiter nc pm))
       ((char-U char-u directive false named-char sharp-object true)
        (revise-unless-delimiter ac-list nc 'octothorpe))
-      (else #f))))
+      (else (let ((ident/string-handler (ident/string-dispatch! pm)))
+              (cond (ident/string-handler
+                     (ident/string-handler ac-list nc pac pm))
+                    (else #f)))))))
 
 (define (operator-position? ac-list)
   (and (not (null? ac-list))
@@ -1239,12 +1194,19 @@
         ((memc nc compound-end-chars) (end-compound! ac-list nc))
         (else #f)))
 
+(define (^begin-bind kind identifier-kind mesg)
+  (lambda (ac-list char)
+    (cond ((char=? char #\|) (begin-symmetric ac-list char identifier-kind))
+          (else (adorn-char char kind mesg)))))
+(define begin-defun-procedure-bind
+  (^begin-bind 'defun-procedure 'defun-proc-ident 'defun-procedure))
+
 (define (try-context! ac-list nc pac)
   (define (default+no-mesg? ac)
     (and (not (get-mesg ac)) (eq? (get-kind ac) 'default)))
   (let ((pc (get-char pac)))
     (and pc
-         (cond ((memc nc delimiter-chars)
+         (cond ((and (not (char=? nc #\|)) (memc nc delimiter-chars))
                 (try-nc! ac-list nc))
                ((and (char=? pc #\:) (memc nc delimiter-chars))
                 (unless (or (null? (cdr ac-list))
@@ -1252,19 +1214,19 @@
                   (revise-while! ac-list 'keyword default+no-mesg?))
                 (try-nc! ac-list nc))
                ((defun-procedure-bind? ac-list)
-                (adorn-char nc 'define-like-bind 'defun-procedure))
+                (begin-defun-procedure-bind ac-list nc))
                ((defun-parameter-bind? ac-list)
-                (adorn-char nc 'let-like-bind 'defun-parameter))
+                (adorn-char nc 'let-like 'defun-parameter))
                ((define-variable-bind? ac-list)
-                (adorn-char nc 'define-like-bind 'sv-define-bind))
+                (adorn-char nc 'def-like 'sv-define-bind))
                ((define-values-bind? ac-list)
-                (adorn-char nc 'define-like-bind 'mv-define-bind))
+                (adorn-char nc 'def-like 'mv-define-bind))
                ((named-let-var? ac-list)
-                (adorn-char nc 'let-like-bind 'named-let-var))
+                (adorn-char nc 'let-like 'named-let-var))
                ((regular-let-bind? ac-list)
-                (adorn-char nc 'let-like-bind 'sv-let-bind))
+                (adorn-char nc 'let-like 'sv-let-bind))
                ((let-values-bind? ac-list)
-                (adorn-char nc 'let-like-bind 'mv-let-bind))
+                (adorn-char nc 'let-like 'mv-let-bind))
                ((~~runtime-syntax? ac-list nc)
                 (if (matches-one-of? runtime-syntax (list nc))
                     (adorn-char nc 'runtime-syntax '~~runtime-syntax)
@@ -1302,7 +1264,6 @@
 
 ;; (define (special-strings symbol)
 ;;   (define string-lists
-;;     '((directive ("#!fold-case" "#!no-fold-case"))
 ;;       (lambda ("lambda" "\x3bb;"))
 ;;       (long-quote ("quote"))
 ;;       (short-quote ("'"))
