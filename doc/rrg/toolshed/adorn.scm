@@ -18,13 +18,10 @@
 (define fvector-strings '("#f32(" "#f64("))
 (define svector-strings '("#s8(" "#s16(" "#s32(" "#s64("))
 (define uvector-strings '("#u8(" "#u16(" "#u32(" "#u64("))
-(define fvector-symbols '(f32vector f64vector))
-(define svector-symbols '(s8vector s16vector s32vector s64vector))
-(define uvector-symbols '(u8vector u16vector u32vector u64vector))
-(define atmosphere-kinds '(whitespace linec datumc nestc directive))
 (define fvector-kinds '(f32vector f64vector))
 (define svector-kinds '(s8vector s16vector s32vector s64vector))
 (define uvector-kinds '(u8vector u16vector u32vector u64vector))
+(define atmosphere-kinds '(whitespace linec datumc nestc directive))
 (define runtime-syntax
   '("and" "begin" "c-declare" "c-define" "c-define-type" "c-initialize"
     "c-lambda" "case" "case-lambda" "cond" "cond-expand" "declare" "define"
@@ -39,6 +36,7 @@
 (define single-value-define-variable-syntax '("define" "define-record-type"))
 (define single-value-let-syntax
   '("let" "let*" "letrec" "letrec*" "parameterize"))
+
 (define sublist-begin-mesgs '(sublist-unmatched sublist-begin))
 (define list-begin-mesgs
   (append sublist-begin-mesgs '(list-unmatched list-begin)))
@@ -49,6 +47,15 @@
 
 (define compound-kinds
   (append '(list vector) fvector-kinds svector-kinds uvector-kinds))
+
+(define bind-mesgs
+  '( sv-define mv-define defun-proc defun-param named-let sv-let mv-let
+     lambda-bind case-lambda-bind ))
+
+(define ident/string-base-mesgs
+  '( string datumc-string ident datumc-ident defun-proc-ident defun-param-ident
+     sv-define-ident mv-define-ident named-let-ident sv-let-ident mv-let-ident
+     lambda-bind-ident case-lambda-bind-ident ))
 
 (define-record-type achar
   (make-adorned-char c k m h s)
@@ -704,8 +711,9 @@
         (cons 'nil-esc (->nil-esc base))  (cons 'octal-1 (->octal-1 base))
         (cons 'octal-2 (->octal-2 base))  (cons 'octal-3 (->octal-3 base))))
 
-(define (ident/string-mesg-list base)
-  (map cdr (ident/string-mesg-alist base)))
+(define (ident/string-mesg-list base) (map cdr (ident/string-mesg-alist base)))
+(define ident/string-mesg-lists
+  (map ident/string-mesg-list ident/string-base-mesgs))
 
 (define (^ident/string-dispatch! base-sym delimiter-char end!)
   (define sym-alist (ident/string-mesg-alist base-sym))
@@ -732,18 +740,6 @@
              (handler (generic->handler generic-sym)))
         (cond ((eq? generic-sym 'backslash) (handler nc pac))
               (else (handler ac-list nc))))))
-
-(define bind-mesgs
-  '( sv-define mv-define defun-proc defun-param named-let sv-let mv-let
-     lambda-bind case-lambda-bind ))
-
-(define ident/string-base-mesgs
-  '( string datumc-string ident datumc-ident defun-proc-ident defun-param-ident
-     sv-define-ident mv-define-ident named-let-ident sv-let-ident mv-let-ident
-     lambda-bind-ident case-lambda-bind-ident ))
-
-(define ident/string-mesg-lists
-  (map ident/string-mesg-list ident/string-base-mesgs))
 
 (define (ident/string-dispatch! ac-list nc pac pm)
   (define string-dispatch!
