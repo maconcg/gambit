@@ -307,7 +307,7 @@
                 (cons rest distance)
                 (seek (cdr rest) (+ distance 1))))))))
 
-(define (^compound-peer/distance peering-mesgs end-mesgs)
+(define (^compound:peer/distance peering-mesgs end-mesgs)
   (lambda (ac-list)
     (let seek ((rest ac-list) (distance 1))
       (if (null? rest)
@@ -317,10 +317,10 @@
                   ((memq mesg end-mesgs) '(#f . 0))
                   (else (seek (cdr rest) (+ distance 1)))))))))
 
-(define compound-peer/distance
-  (^compound-peer/distance compound-peering-mesgs compound-end-mesgs))
-(define datumc-compound-peer/distance
-  (^compound-peer/distance datumc-compound-peering-mesgs
+(define compound:peer/distance
+  (^compound:peer/distance compound-peering-mesgs compound-end-mesgs))
+(define datumc-compound:peer/distance
+  (^compound:peer/distance datumc-compound-peering-mesgs
                            '(datumc-compound-end)))
 
 (define (^begin-compound! peer/distance ->sub-unmatched)
@@ -340,9 +340,9 @@
               (begin (set-stack! ac (list (cons ac ac-list)))
                      ac)))))))
 (define begin-compound!
-  (^begin-compound! compound-peer/distance ->sub-unmatched))
+  (^begin-compound! compound:peer/distance ->sub-unmatched))
 (define (begin-datumc-compound! ac-list nc)
-  ((^begin-compound! datumc-compound-peer/distance
+  ((^begin-compound! datumc-compound:peer/distance
                      (lambda (kind) 'datumc-subcompound-unmatched))
    ac-list nc 'datumc-compound))
 
