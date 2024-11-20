@@ -29,7 +29,7 @@
   '( datumc-string-esc datumc-compound-string-esc datumc-ident-esc
      datumc-compound-ident-esc ))
 (define comment-kinds (append '(linec nestc) datumc-kinds datumc-escape-kinds))
-(define atmosphere-kinds (cons 'directive comment-kinds))
+(define atmosphere-kinds (append '(whitespace directive) comment-kinds))
 
 (define runtime-syntax
   '("and" "begin" "c-declare" "c-define" "c-define-type" "c-initialize"
@@ -1313,6 +1313,11 @@
                               (rt-syntax-operator (up-list ac-list)))))
       (let ((pc (get-char pac)))
         (cond ((not pc) #f)
+              ((char=? nc #\#)
+               (if (memq (get-kind pac) (append atmosphere-kinds
+                                                compound-kinds))
+                   (try-nc! ac-list nc)
+                   (adorn-char nc 'default #f)))
               ((and (char=? pc #\.) (memc nc whitespace-chars))
                (let ((rest (cdr ac-list)))
                  (unless (null? rest)
