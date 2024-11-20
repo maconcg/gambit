@@ -8,8 +8,9 @@
                                        "gambit.css"
                                        (cadr args))
                (lambda (p) (read-line p #f)))))
-    (let ((adorned (reverse (adorn! (call-with-input-file source
-                                      (lambda (p) (read-all p read-char))))))
+    (let ((ac-list (reverse+simplify-kinds!
+                    (adorn! (call-with-input-file source
+                              (lambda (p) (read-all p read-char))))))
           (basename (let loop ((bn '()) (rest (reverse (string->list source))))
                       (if (null? rest)
                           (list->string bn)
@@ -37,7 +38,7 @@
 
 END
 )
-            (write-ac-list adorned)
+            (write-ac-list ac-list)
             (write-string #<<END
 </pre>
 </body>
