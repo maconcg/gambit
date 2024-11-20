@@ -22,7 +22,15 @@
 (define fvector-kinds '(f32vector f64vector))
 (define svector-kinds '(s8vector s16vector s32vector s64vector))
 (define uvector-kinds '(u8vector u16vector u32vector u64vector))
-(define atmosphere-kinds '(whitespace linec datumc nestc directive))
+(define datumc-kinds
+  '( datumc datumc-compound datumc-string datumc-compound-string datumc-ident
+     datumc-compound-ident ))
+(define datumc-escape-kinds
+  '( datumc-string-esc datumc-compound-string-esc datumc-ident-esc
+     datumc-compound-ident-esc ))
+(define comment-kinds (append '(linec nestc) datumc-kinds datumc-escape-kinds))
+(define atmosphere-kinds (cons 'directive comment-kinds))
+
 (define runtime-syntax
   '("and" "begin" "c-declare" "c-define" "c-define-type" "c-initialize"
     "c-lambda" "case" "case-lambda" "cond" "cond-expand" "declare" "define"
@@ -55,8 +63,9 @@
   (append '(list vector) fvector-kinds svector-kinds uvector-kinds))
 
 (define ident/string-base-mesgs
-  '( string datumc-string ident datumc-ident defun-proc-ident defun-param-ident
-     sv-define-ident mv-define-ident named-let-ident sv-let-ident mv-let-ident
+  '( string datumc-string datumc-compound-string ident datumc-ident
+     datumc-compound-ident defun-proc-ident defun-param-ident sv-define-ident
+     mv-define-ident named-let-ident sv-let-ident mv-let-ident
      lambda-bind-ident lambda-rest-ident case-lambda-bind-ident
      case-lambda-rest-ident ))
 ;==============================================================================
@@ -379,7 +388,7 @@
 
 (define (^end-compound! sub-mesg? peer/empty?/distance ->sub-begin ->sub-end)
   (define (compound-kind->distance symbol)
-    (cond ((eq? symbol 'list) 1)
+    (cond ((memq symbol '(list datumc-compound)) 1)
           ((eq? symbol 'vector) 2)
           ((memq symbol '(u8vector s8vector)) 4)
           (else 5)))
@@ -597,6 +606,10 @@
     (^ident/string-dispatch! 'datumc-string #\" datumc:end-symmetric!))
   (define datumc-ident-dispatch!
     (^ident/string-dispatch! 'datumc-ident #\| datumc:end-symmetric!))
+  (define datumc-compound-string-dispatch!
+    (^ident/string-dispatch! 'datumc-compound-string #\" end-symmetric!))
+  (define datumc-compound-ident-dispatch!
+    (^ident/string-dispatch! 'datumc-compound-ident #\| end-symmetric!))
   (define (^ident-dispatch! kind)
     (^ident/string-dispatch! kind #\| end-symmetric!))
   (define ident-dispatch! (^ident-dispatch! 'ident))
@@ -631,6 +644,10 @@
          ((memq pm (pm->mesgs 'named-let-ident)) named-let-ident-dispatch!)
          ((memq pm (pm->mesgs 'sv-let-ident)) sv-let-ident-dispatch!)
          ((memq pm (pm->mesgs 'mv-let-ident)) mv-let-ident-dispatch!)
+         ((memq pm (pm->mesgs 'datumc-compound-string))
+          datumc-compound-string-dispatch!)
+         ((memq pm (pm->mesgs 'datumc-compound-ident))
+          datumc-compound-ident-dispatch!)
          ((memq pm (pm->mesgs 'case-lambda-bind-ident))
           case-lambda-bind-ident-dispatch!)
          ((memq pm (pm->mesgs 'case-lambda-rest-ident))
@@ -652,8 +669,10 @@
 
 (define (handle~datumc-compound! ac-list nc)
   (cond ((char=? nc #\#) (adorn-char nc 'datumc '~datumc-compound))
-        ((char=? nc #\") (adorn-char nc 'datumc 'datumc-string-unmatched))
-        ((char=? nc #\|) (adorn-char nc 'datumc 'datumc-ident-unmatched))
+        ((char=? nc #\")
+         (adorn-char nc 'datumc 'datumc-compound-string-unmatched))
+        ((char=? nc #\|)
+         (adorn-char nc 'datumc 'datumc-compound-ident-unmatched))
         ((memc nc compound-begin-chars) (begin-datumc-compound! ac-list nc))
         ((memc nc compound-end-chars) (datumc:end-compound! ac-list nc))
         (else (adorn-char nc 'datumc '~datumc-compound))))
@@ -825,6 +844,7 @@
    ((memq pm '( datumc-nestc datumc-nestc-begin datumc-nestc+ datumc-nestc- ))
     (handle:datumc-nestc nc))
    ((memq pm '( ~datumc datumc-simple-end datumc-compound-end datumc-string-end
+                datumc-compound-string-end datumc-compound-ident-end
                 datumc-ident-end datumc-nestc-end ))
     (handle~datumc! ac-list nc))
    ((memq pm '( ~datumc-compound datumc-compound-simple datumc-subcompound-end
@@ -1358,3 +1378,44 @@
                          ((char? chars) (list chars))
                          (else chars))))
     (maybe-handle:shebang char-list (if (null? so-far) so-far (car so-far)))))
+
+(define (simplify-kinds! ac-list)
+  (define define-like-binds
+    '(defun-proc sv-define sv-define-ident mv-define mv-define-ident))
+  (define define-like-escapes '( sv-define-ident-esc mv-define-ident-esc ))
+  (define let-like-binds
+    '( named-let named-let-ident sv-let sv-let-ident mv-let mv-let-ident
+       lambda-bind lambda-bind-ident lambda-rest lambda-rest-ident
+       case-lambda-bind case-lambda-bind-ident case-lambda-rest
+       case-lambda-rest-ident ))
+  (define let-like-escapes
+    '( named-let-ident-esc sv-let-ident-esc mv-let-ident-esc
+       lambda-bind-ident-esc lambda-rest-ident-esc case-lambda-bind-ident-esc
+       case-lambda-rest-ident-esc ))
+  (define syntax-kinds '(rt-syntax aux-syntax))
+  (define empty-compound-kinds (map ->empty compound-kinds))
+  (let simplify! ((unsimplified ac-list) (simplified '()))
+    (if (null? unsimplified)
+        (reverse simplified)
+        (let* ((ac (car unsimplified)) (kind (get-kind ac)))
+          (cond ((eq? kind 'hs-body)
+                 (set-kind! ac 'string))
+                ((memq kind '(false true))
+                 (set-kind! ac 'boolean))
+                ((memq kind define-like-binds)
+                 (set-kind! ac 'define-like-bind))
+                ((memq kind define-like-escapes)
+                 (set-kind! ac 'define-like-escape))
+                ((memq kind let-like-binds)
+                 (set-kind! ac 'let-like-bind))
+                ((memq kind let-like-escapes)
+                 (set-kind! ac 'let-like-escapes))
+                ((memq kind comment-kinds)
+                 (set-kind! ac 'comment))
+                ((memq kind syntax-kinds)
+                 (set-kind! ac 'syntax))
+                ((memq kind compound-kinds)
+                 (set-kind! ac 'compound))
+                ((memq kind empty-compound-kinds)
+                 (set-kind! ac 'compound-empty)))
+          (simplify! (cdr unsimplified) (cons ac simplified))))))
