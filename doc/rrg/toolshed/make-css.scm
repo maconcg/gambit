@@ -108,7 +108,7 @@ pre.lisp-preformatted {
     span.ident, span.ident-esc {color: <ident>}
     span.hs-begin {color: <hs-begin>}
     span.hs-key {color: <hs-key>}
-    span.keyword {color: <keyword>}
+    span.keyword, span.key-param, span.key-init-param {color: <keyword>}
     span.let-like-bind, span.let-like-esc {color: <let-like-bind>}
     span.ok {color: <ok>}
     span.problem {background-color: <problem>}
@@ -125,7 +125,7 @@ END
 (define examples-noncolor-css #<<END
 pre.lisp-preformatted {
     font-size: 1.1em;
-    span.codecomment { font-style: oblique }
+    span.codecomment, span.sharp { font-style: oblique }
     span.char-body, span.define-like-esc, span.ident-esc, span.let-like-esc,
       span.string-esc {
         font-weight: bold
@@ -234,11 +234,10 @@ END
     (( compound-empty datum-ref default ) 'fg-main)
     (( datum-label define-like-bind define-like-esc ) 'magenta)
     (( datum-ref serial-ref ) 'fg-alt)
-    (( hs-key ) 'yellow)
+    (( hs-key sharp ) 'yellow)
     (( ident ident-esc ) 'fg-main)
-    (( keyword ) 'magenta-warmer)
+    (( keyword key-param key-init-param ) 'magenta-warmer)
     (( let-like-bind let-like-esc ) 'blue-faint)
-    (( sharp ) 'cyan)
     (( string string-esc ) 'green)
     (( syntax ) 'magenta-cooler)
     (else kind)))
@@ -363,10 +362,10 @@ END
       (yellow              . "#d0bc00") (yellow-cooler       . "#dfaf7a")
       (yellow-faint        . "#d2b580") (yellow-intense      . "#efef00")
       (yellow-warmer       . "#fec43f")))
-  (let* ((symbol (if (string? string-or-symbol)
-                     (string->symbol string-or-symbol)
-                     string-or-symbol))
-         (color (cdr (or (assq (or (element->color symbol) (kind->color symbol))
+  (let* ((sym (if (string? string-or-symbol)
+                  (string->symbol string-or-symbol)
+                  string-or-symbol))
+         (color (cdr (or (assq (or (element->color sym) (kind->color sym))
                                (case theme
                                  (( modus-operandi ) modus-operandi-colors)
                                  (( modus-vivendi ) modus-vivendi-colors)
@@ -374,14 +373,14 @@ END
 
     (case theme
       (( modus-operandi )
-       (case symbol
+       (case sym
          (( codecomment ) (string-append color "cf"))
          (( bg-deftp bg-deftypefn bg-deftypevr ) (string-append color "90"))
          (( deftp-l deftypefn-l deftypevr-l ) (string-append color "6f"))
          (( deftp-r deftypefn-r deftypevr-r ) (string-append color "3f"))
          (else color)))
       (( modus-vivendi )
-       (case symbol
+       (case sym
          (( codecomment ) (string-append color "cf"))
          (( bg-deftp bg-deftypefn bg-deftypevr ) (string-append color "90"))
          (( deftp-l ) (string-append color "bf"))
