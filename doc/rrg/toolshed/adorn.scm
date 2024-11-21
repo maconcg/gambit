@@ -22,6 +22,7 @@
 (define fvector-kinds '(f32vector f64vector))
 (define svector-kinds '(s8vector s16vector s32vector s64vector))
 (define uvector-kinds '(u8vector u16vector u32vector u64vector))
+(define hvector-kinds (append fvector-kinds svector-kinds uvector-kinds))
 (define datumc-kinds
   '( datumc datumc-compound datumc-string datumc-compound-string datumc-ident
      datumc-compound-ident ))
@@ -35,22 +36,24 @@
   (append strings (map (lambda (s) (string-append "##" s)) strings)))
 
 (define runtime-syntax
-  (plus-## '("and" "begin" "c-declare" "c-define" "c-define-type" "c-initialize"
-             "c-lambda" "case" "case-lambda" "cond" "cond-expand" "declare"
-             "define" "define-library" "define-macro" "define-prim"
-             "define-prim&proc" "define-record-type" "define-runtime-syntax"
-             "define-structure" "define-syntax" "define-type" "define-type-of-thread"
-             "define-values" "delay" "delay-force" "do" "future" "guard" "if"
-             "import" "include" "include-ci" "\x3bb;" "lambda" "let" "let*"
-             "let*-values" "let-values" "letrec" "letrec*" "letrec*-values"
-             "letrec-values" "namespace" "or" "parameterize" "quasiquote" "quote"
-             "r7rs-guard" "receive" "set!" "syntax-error" "syntax-rules"
-             "this-source-file" "unless" "when")))
+  (plus-## '("and" "begin" "c-declare" "c-define" "c-define-type"
+             "c-initialize" "c-lambda" "case" "case-lambda" "cond"
+             "cond-expand" "declare" "define" "define-library" "define-macro"
+             "define-prim" "define-prim&proc" "define-record-type"
+             "define-runtime-syntax" "define-structure" "define-syntax"
+             "define-type" "define-type-of-thread" "define-values" "delay"
+             "delay-force" "do" "future" "guard" "if" "import" "include"
+             "include-ci" "\x3bb;" "lambda" "let" "let*" "let*-values"
+             "let-values" "letrec" "letrec*" "letrec*-values" "letrec-values"
+             "namespace" "or" "parameterize" "quasiquote" "quote" "r7rs-guard"
+             "receive" "set!" "syntax-error" "syntax-rules" "this-source-file"
+             "unless" "when")))
 
 (define sv-define-syntax
   (plus-## '("define" "define-prim" "define-prim&proc" "define-record-type")))
 
-(define sv-let-syntax (plus-## '("let" "let*" "letrec" "letrec*" "parameterize")))
+(define sv-let-syntax
+  (plus-## '("let" "let*" "letrec" "letrec*" "parameterize")))
 
 (define else-is-syntax-syntax (plus-## '("cond" "case" "macro-case-target")))
 
@@ -68,8 +71,8 @@
   (append sublist-delimiter-mesgs list-begin-mesgs '(list-end)))
 (define list-end-mesgs '(sublist-end list-end))
 
-(define compound-kinds
-  (append '(list vector) fvector-kinds svector-kinds uvector-kinds))
+(define dsssl-compounds '(key-compound opt-compound))
+(define compound-kinds (append '(list vector) dsssl-compounds hvector-kinds))
 
 (define ident/string-base-mesgs
   '( string datumc-string datumc-compound-string ident datumc-ident
@@ -417,7 +420,7 @@
 
 (define (^end-compound! sub-mesg? peer/empty?/distance ->sub-begin ->sub-end)
   (define (compound-kind->distance symbol)
-    (cond ((memq symbol '(list datumc-compound)) 1)
+    (cond ((memq symbol (append '(list datumc-compound) dsssl-compounds)) 1)
           ((eq? symbol 'vector) 2)
           ((memq symbol '(u8vector s8vector)) 4)
           (else 5)))
@@ -960,19 +963,90 @@
                   ((memc nc delim-chars) (try-nc! ac-list nc))
                   (else (adorn-char nc 'invalid 'invalid))))))
       (define (try-bind-pm! ac-list nc pac pm)
-        (cond ((not (memq pm bind-mesgs)) #f)
-              ((and (memc nc whitespace-chars) (char=? (get-char pac) #\.))
-               (let ((rest (cdr ac-list)))
-                 (when (and (not (null? rest))
-                            (memq (get-kind (car rest)) atmosphere-kinds))
-                   (set-kind! pac 'dot))
-                 (try-nc! ac-list nc)))
-              ((memc nc delim-chars)
-               (let ((tested (chars-while ac-list pm)))
-                 (when (matches-one-of? '("#!key" "#!optional" "#!rest") tested)
-                   (revise-until! ac-list 'sharp (length tested))))
-               (try-nc! ac-list nc))
-              (else (adorn-char nc pm pm))))
+        (define (^try-key/opt-pm! ~mesg ~compound compound kind init-mesg)
+          (let ((subcompound (->sub compound)))
+            (let ((unmatched-sub (->unmatched subcompound))
+                  (end-sub (->end subcompound)))
+              (let ((extra-compound-mesgs (list ~mesg end-sub))
+                    (intra-compound-mesgs (list unmatched-sub ~compound)))
+            (lambda (ac-list nc pm)
+              (cond ((memq pm extra-compound-mesgs)
+                     (cond ((memc nc compound-begin-chars)
+                            (begin-compound! ac-list nc compound))
+                           ((memc nc whitespace-chars)
+                            (adorn-char nc 'whitespace ~mesg))
+                           ((memc nc delim-chars) (try-nc! ac-list nc))
+                           (else (adorn-char nc kind kind))))
+                    ((memq pm intra-compound-mesgs)
+                     (cond ((memc nc whitespace-chars)
+                            (adorn-char nc 'whitespace ~mesg))
+                           ((memc nc delim-chars) (try-nc! ac-list nc))
+                           (else (adorn-char nc kind init-mesg))))
+                    ((eq? pm init-mesg)
+                     (cond ((memc nc delim-chars) (try-nc! ac-list nc))
+                           (else (adorn-char nc kind init-mesg))))
+                    ((eq? pm kind)
+                     (cond ((memc nc whitespace-chars)
+                            (adorn-char nc 'whitespace ~mesg))
+                           ((memc nc delim-chars) (try-nc! ac-list nc))
+                           (else (adorn-char nc kind kind))))
+                    (else #f)))))))
+        (define try-key-pm!
+          (^try-key/opt-pm! '~key '~key-compound 'key-compound 'key-param
+                            'key-init-param))
+        (define try-opt-pm!
+          (^try-key/opt-pm! '~opt '~opt-compound 'opt-compound 'opt-param
+                            'opt-init-param))
+        (or (try-key-pm! ac-list nc pm)
+            (try-opt-pm! ac-list nc pm)
+            (cond ((eq? pm '~rest)
+                   (cond ((memc nc whitespace-chars)
+                          (adorn-char nc 'whitespace '~rest))
+                         ((memc nc delim-chars)
+                          (try-nc! ac-list nc))
+                         (else (adorn-char nc 'rest-param 'rest))))
+                  ((eq? pm 'rest)
+                   (cond ((memc nc whitespace-chars)
+                          (adorn-char nc 'whitespace 'no-more-rest))
+                         ((memc nc delim-chars)
+                          (try-nc! ac-list nc))
+                         (else (adorn-char nc 'rest-param 'rest))))
+                  ((eq? pm 'no-more-rest)
+                   (cond ((memc nc whitespace-chars)
+                          (adorn-char nc 'whitespace 'no-more-rest))
+                         ((memc nc delim-chars)
+                          (try-nc! ac-list nc))
+                         (else (adorn-char nc 'invalid 'invalid))))
+                  ((not (memq pm bind-mesgs)) #f)
+                  ((and (memc nc whitespace-chars) (char=? (get-char pac) #\.))
+                   (let ((rest (cdr ac-list)))
+                     (when (and (not (null? rest))
+                                (memq (get-kind (car rest)) atmosphere-kinds))
+                       (set-kind! pac 'dot))
+                     (try-nc! ac-list nc)))
+                  ((memc nc delim-chars)
+                   (let ((tested (chars-while ac-list pm)))
+                     (cond ((matches? "#!key" tested)
+                            (revise-until! ac-list 'sharp (length tested))
+                            (cond ((memc nc whitespace-chars)
+                                   (adorn-char nc 'whitespace '~key))
+                                  ((memc nc compound-begin-chars)
+                                   (begin-compound! ac-list nc 'key-compound))
+                                  (else (try-nc! ac-list nc))))
+                           ((matches? "#!optional" tested)
+                            (revise-until! ac-list 'sharp (length tested))
+                            (cond ((memc nc whitespace-chars)
+                                   (adorn-char nc 'whitespace '~opt))
+                                  ((memc nc compound-begin-chars)
+                                   (begin-compound! ac-list nc 'opt-compound))
+                                  (else (try-nc! ac-list nc))))
+                           ((matches? "#!rest" tested)
+                            (revise-until! ac-list 'sharp (length tested))
+                            (cond ((memc nc whitespace-chars)
+                                   (adorn-char nc 'whitespace '~rest))
+                                  (else (try-nc! ac-list nc))))
+                           (else (try-nc! ac-list nc)))))
+                  (else (adorn-char nc pm pm)))))
       (define (try-boolean/hvector-pm! ac-list nc pm)
         (define (handle~f/false/fvector! ac-list nc)
           (cond ((memc nc delim-chars) (try-nc! ac-list nc))
@@ -1267,10 +1341,13 @@
       (define begin-sv-define (^begin-bind 'sv-define))
       (define begin-mv-define (^begin-bind 'mv-define))
       (define begin-named-let (^begin-bind 'named-let))
+      (define begin-optional-param (^begin-bind 'optional-param))
       (define begin-sv-let (^begin-bind 'sv-let))
       (define begin-mv-let (^begin-bind 'mv-let))
       (define begin-lambda-bind (^begin-bind 'lambda-bind))
       (define begin-lambda-rest (^begin-bind 'lambda-rest))
+      (define begin-key-compound (^begin-bind 'key-compound))
+      (define begin-opt-compound (^begin-bind 'opt-compound))
       (define begin-case-lambda-bind (^begin-bind 'case-lambda-bind))
       (define begin-case-lambda-rest (^begin-bind 'case-lambda-rest))
       (define (default+no-mesg? ac)
@@ -1309,7 +1386,8 @@
         (and (operator-position? ac-list)
              (let ((up-1 (up-list ac-list)))
                (and (peeking-at up-1 '(~rt-syntax))
-                    (matches-one-of? sv-define-syntax (rt-syntax-operator up-1))))))
+                    (matches-one-of? sv-define-syntax
+                                     (rt-syntax-operator up-1))))))
       (define (lambda-bind? ac-list)
         (or (peeking-at ac-list '(lambda-bind lambda-bind-ident-end))
             (let ((up-1 (up-list ac-list)))
