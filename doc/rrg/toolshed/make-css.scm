@@ -110,6 +110,7 @@ pre.lisp-preformatted {
     span.hs-key {color: <hs-key>}
     span.keyword, span.key-param, span.key-init-param {color: <keyword>}
     span.let-like-bind, span.let-like-esc {color: <let-like-bind>}
+    span.number {color: <number>}
     span.ok {color: <ok>}
     span.problem {background-color: <problem>}
     span.serial-ref {color: <serial-ref>}
@@ -238,6 +239,7 @@ END
     (( ident ident-esc ) 'fg-main)
     (( keyword key-param key-init-param ) 'magenta-warmer)
     (( let-like-bind let-like-esc ) 'blue-faint)
+    (( number ) 'gold)
     (( string string-esc ) 'green)
     (( syntax ) 'magenta-cooler)
     (else kind)))
