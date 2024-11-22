@@ -239,7 +239,7 @@ END
     (( ident ident-esc ) 'fg-main)
     (( keyword key-param key-init-param ) 'magenta-warmer)
     (( let-like-bind let-like-esc ) 'blue-faint)
-    (( number ) 'gold)
+    (( number ) 'cyan-cooler)
     (( string string-esc ) 'green)
     (( syntax ) 'magenta-cooler)
     (else kind)))
