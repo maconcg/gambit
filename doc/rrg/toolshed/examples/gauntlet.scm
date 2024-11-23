@@ -1,3 +1,5 @@
+#!/usr/bin/env gsi-script
+
 ;; Chars (R⁷RS + Gambit extensions):
 #\N #\Nu #\n #\nU #\nu #\nul #\null #\nulls
 #\s #\spac #\space #\spaceballs
@@ -7,33 +9,33 @@
 #\U0123456 #\U01234567 #\U012345678
 ;==============================================================================
 ;; Numbers (covers §6.2.5 of R⁷RS):
-3.14 3.14e0 3.14L0 3.14E0 3.14f0 #i3.14 #d3.14 #i#d3.14s12 #d#i3.14
-+1 -1 11 +NaN.0 +nan.0 -nAN.0 +nAn.0 -inf.0 -inF.0 +INF.0 -Inf.0 #b11
-#b#e0 #e#b1 #b#i0 #i#b1 #O#e7 #e#O6 #X#Ee #e#xe #x#if #x#ICE #e#d10e0
-#e+3 #I-9 #d#i-4 #D#I+9l1 .4 -.3 +.4 #d#I+.8 #e#X+F
+3.14 3.14e0 3.14L0 3.14E0 3.14f0 #i3.14 #d3.14 #i#d3.14s12 #d#i3.14 +1 -1 11
++NaN.0 +nan.0 -nAN.0 +nAn.0 -inf.0 -inF.0 +INF.0 -Inf.0 #b11 #b#e0 #e#b1 #b#i0
+#i#b1 #O#e7 #e#O6 #X#Ee #e#xe #x#if #x#ICE #e#d10e0 #e+3 #I-9 #d#i-4 #D#I+9l1
+.4 .4s4 -.3 +.4 #d#I+.8 #e#X+F 2. #d2. #e#d.2 #D#E.0
 ;; Not numbers:
 #b#i12 #b21 #o87 #da1 #xg2 #e#d10ea #o7e1 + - ++ -- +- -+ + 1+ 1- +1+
--1- +nan.1 +inf.00 -inf.0e1 #e+ #I+ .. .4. ..2
+-1- +nan.1 +inf.00 -inf.0e1 #e+ #I+ .. .4. ..2 #D#E.
 ;==============================================================================
 ;; Strings/identifiers:
 "\\\t\r\a\ffic" "Newline at my end\n" "one\|string" |one\"idntifier\||
 "\\\u012345\U0123456789\\x0;\x0;" "\u012three"
-#;#;#; "\"one string on this line" "is not" "commented" #|" ";"""|# "" #;"\""
+#;#;#;"\"2 strings on this line" "are not" "commented"#|" ";"""|# "" #;"\"""\""
 #| 4 strings of increasing length: |# "" "\"" "\"\"" "\"\"\"" "\"\"\"\""
 (define a-here-string #<<end-of-this-here-string
 #<<end-of-this-here-string
 #!eof
 end-of-this-here-string 
  end-of-this-here-string
-"" \" \\
+"" " \\\
 end-of-this-here-string
 )
 ;==============================================================================
 ;; Compound data:
 #| 3 are empty: |# ((()(( #;#;#;empty #|#|lists|# are|#more prominent))))((()))
 #| 2 empty vectors: |# #(#(#()#(#(#(#f64( #| #;#;#;#;vectors #|too ;|#|# ))))))
-( #| “if” is runtime syntax |# if x y z)
-( #| “if” is not runtime syntax |# not if)
+( #| “if” is runtime syntax: |# if x y z)
+( #| “if” is not runtime syntax: |# not if)
 #| One empty list: |# ((( ;;
                          )       ))
 (cond ((not (auxiliary-syntax else)) => (lambda x (else #false)))
@@ -79,7 +81,6 @@ end-of-this-here-string
 (define (f10 a #!key b) (list a b))
 (define (f11 a #!key (b (list a b))) (list a b))
 (f11 'A b: 'B) ;; Keyword parameters are the same color as keyword: arguments.
-
 (define (f12 a #!optional #!rest b) (list a b))
 (define (f13 a #!optional b #!rest c) (list a b c))
 (define (f14 a #!optional #!key) (list a))
@@ -105,3 +106,27 @@ end-of-this-here-string
 (define (f34 a #!optional (b (list a b c)) #!key . c) (list a b c))
 (define (f35 a #!optional b #!key c . d) (list a b c d))
 (define (f36 a #!optional (b (list a b c d)) #!key (c (list a b c d)) . d) (list a b c d))
+;==============================================================================
+;; Booleans/homogeneous vectors:
+#t #tr #tru #true #truer
+#f #fa #fal #fals #false #falser
+#f #f3 #f32 #f32( ) #f32( 1. ) #f62( )
+#s #s1 #s16 #s16( ) #s16( 1 ) #s17( )
+#u #u8 #u8( ) #u8( 1 ) #u64( 1 ) #u2( )
+;==============================================================================
+;; Boxes:
+#&f #&#f #&#\f #&|\f| #&f: #&"\f" #&#\newline #&20
+;==============================================================================
+;; Labels/references:
+#| cicular list: |#               '#0=(1 2 3 . #0#)
+#| (repl-result-history-ref 0) |#  # (# 'x)
+#| (repl-result-history-ref 1) |#  ## (## 'x)
+#| (repl-result-history-ref 2) |#  ### (### 'x)
+#| (serial-number->object 0)   |#  #0 (#0 'x)
+#| (serial-number->object 1)   |#  #1 (#1 'x)
+#| (serial-number->object 78)  |#  #78 (#78 'x)
+;==============================================================================
+;; Directives/atmosphere:
+#;#; #!fold-case #!no-fold-case commented commented not-commented
+#!no-fold-case
+not-commented #|#|#|#|#|#|;;commented#;|#|#|##|#|#||#|#|#|#|#|# not-commented

@@ -98,7 +98,7 @@ pre.lisp-preformatted {
     span.boolean {color: <boolean>}
     span.box {color: <box>}
     span.char, span.char-body {color: <char>}
-    span.codecomment {color: <codecomment>}
+    span.atmosphere {color: <atmosphere>}
     span.compound {color: <compound>}
     span.compound-empty {color: <compound-empty>}
     span.datum-label {color: <datum-label>}
@@ -114,6 +114,7 @@ pre.lisp-preformatted {
     span.number {color: <number>}
     span.ok {color: <ok>}
     span.problem {background-color: <problem>}
+    span.repl-ref {color: <repl-ref>}
     span.serial-ref {color: <serial-ref>}
     span.sharp {color: <sharp>}
     span.shebang {color: <shebang>}
@@ -127,7 +128,7 @@ END
 (define examples-noncolor-css #<<END
 pre.lisp-preformatted {
     font-size: 1.1em;
-    span.codecomment, span.sharp { font-style: oblique }
+    span.atmosphere, span.sharp { font-style: oblique }
     span.char-body, span.define-like-esc, span.ident-esc, span.let-like-esc,
       span.string-esc {
         font-weight: bold
@@ -228,14 +229,12 @@ END
 
 (define (kind->color kind)
   (case kind
-    (( abbrev codecomment compound directive dot hs-begin invalid shebang )
-     'fg-dim)
+    (( abbrev atmosphere compound dot hs-begin invalid shebang ) 'fg-dim)
     (( boolean ) 'yellow-cooler)
-    (( box ) 'fg-ochre)
     (( char ) 'red-faint)
-    (( compound-empty datum-ref default ) 'fg-main)
+    (( compound-empty default ) 'fg-main)
     (( datum-label define-like-bind define-like-esc ) 'magenta)
-    (( datum-ref serial-ref ) 'fg-alt)
+    (( box datum-ref repl-ref serial-ref ) 'fg-alt)
     (( hs-key sharp ) 'yellow)
     (( ident ident-esc ) 'fg-main)
     (( keyword key-param key-init-param ) 'magenta-warmer)
@@ -377,14 +376,14 @@ END
     (case theme
       (( modus-operandi )
        (case sym
-         (( codecomment ) (string-append color "cf"))
+         (( atmosphere ) (string-append color "cf"))
          (( bg-deftp bg-deftypefn bg-deftypevr ) (string-append color "90"))
          (( deftp-l deftypefn-l deftypevr-l ) (string-append color "6f"))
          (( deftp-r deftypefn-r deftypevr-r ) (string-append color "3f"))
          (else color)))
       (( modus-vivendi )
        (case sym
-         (( codecomment ) (string-append color "cf"))
+         (( atmosphere ) (string-append color "cf"))
          (( bg-deftp bg-deftypefn bg-deftypevr ) (string-append color "90"))
          (( deftp-l ) (string-append color "bf"))
          (( deftypefn-l ) (string-append color "6f"))
