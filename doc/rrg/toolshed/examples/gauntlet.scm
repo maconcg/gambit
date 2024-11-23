@@ -1,5 +1,16 @@
 #!/usr/bin/env gsi-script
 
+(import (srfi 19))  ;; for time procedures
+(import (srfi 48))  ;; for format
+
+(define (get-date)
+  (time-utc->date (current-time time-utc)))
+
+(format #t
+        "current UTC time: ~a\n"
+        (date->string (get-date)))
+
+;==============================================================================
 ;; Chars (R⁷RS + Gambit extensions):
 #\N #\Nu #\n #\nU #\nu #\nul #\null #\nulls
 #\s #\spac #\space #\spaceballs
@@ -18,7 +29,7 @@
 -1- +nan.1 +inf.00 -inf.0e1 #e+ #I+ .. .4. ..2 #D#E.
 ;==============================================================================
 ;; Strings/identifiers:
-"\\\t\r\a\ffic" "Newline at my end\n" "one\|string" |one\"idntifier\||
+"\\\t\r\a\ffic" "Newline at my end\n" " one\| string\"" | one \" identifier \||
 "\\\u012345\U0123456789\\x0;\x0;" "\u012three"
 #;#;#;"\"2 strings on this line" "are not" "commented"#|" ";"""|# "" #;"\"""\""
 #| 4 strings of increasing length: |# "" "\"" "\"\"" "\"\"\"" "\"\"\"\""
