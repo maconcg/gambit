@@ -108,6 +108,7 @@ pre.lisp-preformatted {
     span.ident, span.ident-esc {color: <ident>}
     span.hs-begin {color: <hs-begin>}
     span.hs-key {color: <hs-key>}
+    span.invalid {color: <invalid>}
     span.keyword, span.key-param, span.key-init-param {color: <keyword>}
     span.let-like-bind, span.let-like-esc {color: <let-like-bind>}
     span.number {color: <number>}
