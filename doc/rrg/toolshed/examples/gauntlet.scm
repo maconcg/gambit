@@ -59,8 +59,8 @@ end-of-this-here-string
 ;; scope of a “let-like” binding does not.  This lets us consistently
 ;; use the same rules for “regular” define, “defun” define, let, etc.
 (lambda x 
-    (let ((y (car x)))
-      (* y y)))
+  (let ((y (car x)))
+    (* y y)))
 
 (lambda (x) (* x x))
 (lambda (|\x78;|) (* |x| |\u0078|))
@@ -76,7 +76,7 @@ end-of-this-here-string
         (iterate (- i 1) (* i product))
         product)))
 
-(define identity (lambda thing thing)
+(define identity (lambda thing thing))
 (define identity (lambda thing #;#;#; thing thing #|thing|# thing thing))
 
 ;; from tests/mix.scm
@@ -141,3 +141,8 @@ end-of-this-here-string
 #;#; #!fold-case #!no-fold-case commented commented not-commented
 #!no-fold-case
 not-commented #|#|#|#|#|#|;;commented#;|#|#|##|#|#||#|#|#|#|#|# not-commented
+#; ;; next compound datum is commented
+#(0 1 2 3 #(0 1 #()))
+not-commented
+#;#;#; ;; next three compound data are commented
+() #u64() (     ) not-commented

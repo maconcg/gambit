@@ -231,10 +231,6 @@
        (cond ((memc nc delim-chars) (try-nc! ac-list nc))
              (else (adorn-char nc 'invalid 'invalid)))))
 
-(define (try-linec-pm! ac-list nc pm)
-  (and (eq? pm 'linec) (cond ((char=? nc #\newline) (try-nc! ac-list nc))
-                             (else (adorn-char nc 'linec 'linec)))))
-
 (define (try-numeric-pm! ac-list nc pac pm)
   (define (numeric-kind? ac) (eq? (get-kind ac) 'number))
   (define (^try~exactness-pm! ~mesg ~mesg# mesg#dec)
