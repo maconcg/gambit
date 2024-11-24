@@ -5,6 +5,7 @@
         (try-box-pm! ac-list nc pm)
         (try-char-pm! ac-list nc pac pm)
         (try-datumc-pm! ac-list nc pac pm)
+        (try-datumc-linec-pm! ac-list nc pm)
         (try-directive/sharp-pm! ac-list nc pm)
         (try-else-pm! ac-list nc pm)
         (try-hs-pm! ac-list nc pm)

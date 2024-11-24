@@ -2,11 +2,16 @@
   (and (eq? pm 'linec) (cond ((char=? nc #\newline) (try-nc! ac-list nc))
                              (else (adorn-char nc 'linec 'linec)))))
 
+(define (try-datumc-linec-pm! ac-list nc pm)
+  (and (eq? pm 'datumc-linec) (cond ((char=? nc #\newline)
+                                     (adorn-char nc 'datumc '~datumc))
+                                    (else (adorn-char nc 'linec 'datumc-linec)))))
+
 (define (handle~datumc! ac-list nc pac)
   (cond ((char=? nc #\#) (adorn-char nc 'datumc 'datumc#))
         ((char=? nc #\") (adorn-char nc 'datumc 'datumc-string-unmatched))
         ((char=? nc #\|) (adorn-char nc 'datumc 'datumc-ident-unmatched))
-        ((char=? nc #\;) (adorn-char nc 'linec 'linec))
+        ((char=? nc #\;) (adorn-char nc 'linec 'datumc-linec))
         ((memc nc compound-begin-chars) (begin-datumc-compound! ac-list nc))
         ((memc nc '(#\) #\] #\})) (datumc:end-compound! ac-list nc))
         ((or (memc nc '(#\space #\newline #\tab #\' #\` #\,))
