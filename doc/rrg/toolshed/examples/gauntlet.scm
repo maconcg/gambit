@@ -79,6 +79,9 @@ end-of-this-here-string
 (define identity (lambda thing thing))
 (define identity (lambda thing #;#;#; thing thing #|thing|# thing thing))
 
+(define v0 98) (define v1 #f) (define v2 #t) (define v3 #!void) (define v4 #())
+(define v5 (quote #&50)) (define v6 |r\r|) (define v7 "t\tt") (define v8 #\tab)
+
 ;; from tests/mix.scm
 (define (f1) 'ok)
 (define (f2 a) (list a))
