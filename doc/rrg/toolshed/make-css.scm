@@ -336,7 +336,7 @@ END
 (define (modus:kind->color kind)
   (case kind
     (( abbrev atmosphere compound dot hs-begin invalid shebang ) 'fg-dim)
-    (( boolean ) 'yellow-cooler)
+    (( boolean ) 'yellow-warmer)
     (( char ) 'red-faint)
     (( compound-empty default ) 'fg-main)
     (( datum-label define-like-bind define-like-esc ) 'magenta)
@@ -345,7 +345,7 @@ END
     (( ident ident-esc ) 'fg-main)
     (( keyword key-param key-init-param ) 'magenta-warmer)
     (( let-like-bind let-like-esc ) 'blue-faint)
-    (( number ) 'cyan-cooler)
+    (( number ) 'cyan)
     (( string string-esc ) 'green)
     (( syntax ) 'magenta-cooler)
     (else kind)))
@@ -365,7 +365,7 @@ END
     (( todo ) 'bg-red-intense)
     (else #f)))
 
-(define code-mirror-colors
+(define codemirror-colors
   '((cm-keyword   . "#708") (cm-atom       . "#219") (cm-number     . "#164")
     (cm-def       . "#00f") (cm-variable-2 . "#05a") (cm-variable-3 . "#085")
     (cm-type      . "#085") (cm-comment    . "#a50") (cm-string     . "#a11")
@@ -374,7 +374,7 @@ END
     (cm-attribute . "#00c") (cm-hr         . "#999") (fg-main       . "#000")
     (cm-error     . "#f00") (fg-alt        . "#000") (bg-main       . "#fff")))
 
-(define (code-mirror:kind->color kind)
+(define (codemirror:kind->color kind)
   (case kind
     (( abbrev atmosphere shebang ) 'cm-comment)
     (( boolean ) 'cm-atom)
@@ -401,9 +401,9 @@ END
            (( modus-vivendi ) (list modus:element->color
                                     modus:kind->color
                                     modus-vivendi-colors))
-           (( code-mirror ) (list code-mirror:kind->color
-                                  code-mirror:kind->color
-                                  code-mirror-colors))
+           (( codemirror ) (list codemirror:kind->color
+                                  codemirror:kind->color
+                                  codemirror-colors))
            (else (error "Unknown theme")))))
     (let ((element->color (car element->color/kind->color/colors))
           (kind->color (cadr element->color/kind->color/colors))

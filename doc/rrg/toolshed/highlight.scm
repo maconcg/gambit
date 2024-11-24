@@ -1,6 +1,6 @@
 #!/usr/bin/env gsi-script
 
-(load "adorn.scm")
+(load "adorn/adorn")
 
 (define (main . args)
   (let ((source (car args))
@@ -8,8 +8,8 @@
                                        "gambit.css"
                                        (cadr args))
                (lambda (p) (read-line p #f)))))
-    (let ((ac-list (reverse+simplify-kinds!
-                    (adorn! (call-with-input-file source
+    (let ((ac-list (adorn#reverse+simplify-kinds!
+                    (adorn#adorn! (call-with-input-file source
                               (lambda (p) (read-all p read-char))))))
           (basename (let loop ((bn '()) (rest (reverse (string->list source))))
                       (if (null? rest)
@@ -96,8 +96,8 @@ END
         (if (null? rest)
             (close-span pk)
             (let ((ac (car rest)))
-              (let ((char (get-char ac))
-                    (kind (get-kind ac)))
+              (let ((char (adorn#get-char ac))
+                    (kind (adorn#get-kind ac)))
                 (if (eq? kind pk)
                     (begin (write-char-or-char-list (char->html-maybe-& char))
                            (loop kind (cdr rest)))
