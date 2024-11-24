@@ -177,7 +177,9 @@
                   (let ((looking (looking-at ac-list bind-mesgs)))
                     (and looking
                          (not (memq (car looking) '(case-lambda-rest
-                                                    lambda-rest))))))
+                                                    lambda-rest
+                                                    named-let
+                                                    sv-define))))))
              (adorn-char nc 'default '~~new-sharp))
             ((not (memq pm bind-mesgs)) #f)
             ((and (memc nc whitespace-chars) (char=? (get-char pac) #\.))
