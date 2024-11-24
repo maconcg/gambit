@@ -57,7 +57,7 @@
   (cons 'datumc-subcompound-end datumc-compound-unmatched-mesgs))
 
 ;======================= Navigation/context procedures ========================
-;; It would maybe be more efficient (and more difficult to work with) analogous
+;; It would perhaps be more efficient (and maybe more painful) to use analogous
 ;; procedures that use pointers exclusively (e.g., the "stack" field).  It also
 ;; might be more efficient to convert the list into one or more vectors once it
 ;; reaches a certain size.
