@@ -10,26 +10,13 @@
                (lambda (p) (read-line p #f)))))
     (let ((ac-list (adorn#reverse+simplify-kinds!
                     (adorn#adorn! (call-with-input-file source
-                              (lambda (p) (read-all p read-char))))))
-          (basename (let loop ((bn '()) (rest (reverse (string->list source))))
-                      (if (null? rest)
-                          (list->string bn)
-                          (let ((next (car rest)))
-                            (if (char=? #\/ next)
-                                (list->string bn)
-                                (loop (cons next bn) (cdr rest))))))))
-      (let ((bn-no-extension (let loop ((ne '()) (rest (string->list source)))
-                               (if (null? rest)
-                                   (list->string (reverse ne))
-                                   (let ((next (car rest)))
-                                     (if (char=? #\. next)
-                                         (list->string (reverse ne))
-                                         (loop (cons next ne) (cdr rest))))))))
-        (with-output-to-file (string-append bn-no-extension ".html")
-          (lambda ()
-            (write-pre-css basename)
-            (display css)
-            (write-string #<<END
+                                    (lambda (p) (read-all p read-char))))))
+          (base-filename (basename source)))
+      (with-output-to-file (string-append base-filename ".html")
+        (lambda ()
+          (write-pre-css base-filename)
+          (display css)
+          (write-string #<<END
 -->
 </style>
 </head>
@@ -44,7 +31,16 @@ END
 </body>
 
 END
-)))))))
+))))))
+
+(define (basename path-string)
+  (let loop ((new '()) (old (reverse (string->list path-string))))
+    (if (null? old)
+        (list->string new)
+        (let ((next (car old)))
+          (if (char=? next #\/)
+              (list->string new)
+              (loop (cons next new) (cdr old)))))))
 
 (define (write-pre-css title)
   (write-string (string-append #<<END
