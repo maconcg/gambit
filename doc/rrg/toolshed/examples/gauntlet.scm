@@ -129,7 +129,7 @@ end-of-this-here-string
 #u #u8 #u8( ) #u8( 1 ) #u64( 1 ) #u2( )
 ;==============================================================================
 ;; Boxes:
-#&f #&#f #&#\f #&|\f| #&f: #&"\f" #&#\newline #&20
+'(#&f #&#f #&#\f #&|\f| #&f: #&"\f" #&#\newline #&20)
 ;==============================================================================
 ;; Labels/references:
 #| cicular list: |#               '#0=(1 2 3 . #0#)
@@ -147,5 +147,5 @@ not-commented #|#|#|#|#|#|;;commented#;|#|#|##|#|#||#|#|#|#|#|# not-commented
 #; ;; next compound datum is commented
 #(0 1 2 3 #(0 1 #()))
 not-commented
-#;#;#; ;; next three compound data are commented
-() #u64() (     ) not-commented
+(list #;#;#; ;; the next three compound data are commented
+() #(#u64(64)) ( #()#() ) not-commented)
