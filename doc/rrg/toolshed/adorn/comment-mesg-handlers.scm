@@ -133,7 +133,7 @@
   (lambda (ac-list nc pac pm)
     (let ((recent-chars (append (chars-until ac-list 'datumc#) (list nc))))
       (cond ((matches-one-of? prefix-strings recent-chars)
-             (begin-compound! ac-list nc 'datumc-compound))
+             (begin-datumc-compound! ac-list nc))
             ((could-match-one-of? prefix-strings recent-chars)
              (adorn-char nc 'datumc ~mesg))
             (else (revise-until! ac-list 'datumc 'datumc#
