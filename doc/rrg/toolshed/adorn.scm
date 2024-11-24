@@ -38,18 +38,17 @@
   (append strings (map (lambda (s) (string-append "##" s)) strings)))
 
 (define runtime-syntax
-  (plus-## '("and" "begin" "c-declare" "c-define" "c-define-type"
-             "c-initialize" "c-lambda" "case" "case-lambda" "cond"
-             "cond-expand" "declare" "define" "define-library" "define-macro"
-             "define-prim" "define-prim&proc" "define-record-type"
-             "define-runtime-syntax" "define-structure" "define-syntax"
-             "define-type" "define-type-of-thread" "define-values" "delay"
-             "delay-force" "do" "future" "guard" "if" "import" "include"
-             "include-ci" "\x3bb;" "lambda" "let" "let*" "let*-values"
-             "let-values" "letrec" "letrec*" "letrec*-values" "letrec-values"
-             "namespace" "or" "parameterize" "quasiquote" "quote" "r7rs-guard"
-             "receive" "set!" "syntax-error" "syntax-rules" "this-source-file"
-             "unless" "when")))
+  (plus-##
+   '("and" "begin" "c-declare" "c-define" "c-define-type" "c-initialize"
+     "c-lambda" "case" "case-lambda" "cond" "cond-expand" "declare" "define"
+     "define-library" "define-macro" "define-prim" "define-prim&proc"
+     "define-record-type" "define-runtime-syntax" "define-structure"
+     "define-syntax" "define-type" "define-type-of-thread" "define-values"
+     "delay" "delay-force" "do" "future" "guard" "if" "import" "include"
+     "include-ci" "\x3bb;" "lambda" "let" "let*" "let*-values" "let-values"
+     "letrec" "letrec*" "letrec*-values" "letrec-values" "namespace" "or"
+     "parameterize" "quasiquote" "quote" "r7rs-guard" "receive" "set!"
+     "syntax-error" "syntax-rules" "this-source-file" "unless" "when")))
 
 (define sv-define-syntax
   (plus-## '("define" "define-prim" "define-prim&proc" "define-record-type")))
@@ -357,16 +356,6 @@
   (^compound:peer/distance datumc-compound-peering-mesgs
                            '(datumc-compound-end datumc-end)))
 
-(define (^compound:peer/distance peering-mesgs end-mesgs)
-  (lambda (ac-list)
-    (let seek ((rest ac-list) (distance 1))
-      (if (null? rest)
-          '(#f . 0)
-          (let* ((ac (car rest)) (mesg (get-mesg ac)))
-            (cond ((memq mesg peering-mesgs) (cons rest distance))
-                  ((memq mesg end-mesgs) '(#f . 0))
-                  (else (seek (cdr rest) (+ distance 1)))))))))
-
 (define (^begin-compound! peer/distance ->sub-unmatched)
   (lambda (ac-list nc kind)
     (let ((p/d (peer/distance ac-list)))
@@ -383,6 +372,7 @@
             (let ((ac (adorn-char nc kind (->unmatched kind) 0 '())))
               (begin (set-stack! ac (list (cons ac ac-list)))
                      ac)))))))
+
 (define begin-compound!
   (^begin-compound! compound:peer/distance ->sub-unmatched))
 
@@ -484,7 +474,7 @@
                   (set-stack! initial-# popped-#-stack)))))))
       ac)))
 
-(define (symmetric-peer/distance ac-list kind)
+(define (symmetric:peer/distance ac-list kind)
   (let ((unmatched-kind (->unmatched kind)))
     (let seek ((rest ac-list) (distance 1))
       (cond ((null? rest) '(#f . 0))
@@ -497,7 +487,7 @@
     new-ac))
 
 (define (^end-symmetric! ac-list nc kind)
-  (let ((p/d (symmetric-peer/distance ac-list kind)))
+  (let ((p/d (symmetric:peer/distance ac-list kind)))
     (let ((from-peer (car p/d)) (distance (cdr p/d)))
       (or from-peer (error "Unable to find beginning of symmetric datum"))
       (let ((peer (car from-peer)))
@@ -908,43 +898,43 @@
    ((eq? pm '~datumc-directive) (handle~datumc-directive! ac-list nc pac pm))
    (else #f)))
 
-(define (quoted? ac-list)
-  (define (quote-stack ac-list)
-    (let loop ((rest ac-list) (stack '()))
-      (cond ((null? rest) stack)
-            ((looking-at rest '(quote))
-             (loop (cdr rest) (cons 'q stack)))
-            ((looking-at rest '(quasiquote))
-             (loop (cdr rest) (cons 'qq stack)))
-            ((looking-at rest '(unquote))
-             (loop (cdr rest) (cons 'u stack)))
-            ((looking-at rest '(~rt-syntax))
-             (let ((op (rt-syntax-operator rest)))
-               (cond ((matches? "quote" op)
-                      (loop (up-list rest) (cons 'q stack)))
-                     ((matches? "quasiquote" op)
-                      (loop (up-list rest) (cons 'qq stack)))
-                     ((matches? "unquote" op)
-                      (loop (up-list rest) (cons 'u stack)))
-                     (else (loop (up-list rest) stack)))))
-            ((looking-at rest list-begin-mesgs)
-             (loop (up-list rest) stack))
-            (else '()))))
-  (if (looking-at ac-list '(quote quasiquote unquote))
-      (let ((stack (quote-stack ac-list)))
-        (and (not (null? stack))
-             (let ((top (car stack)))
-               (or (eq? top 'q)
-                   (and (not (eq? top 'u))
-                        (positive?
-                         (let sum ((top top) (s (cdr stack)) (i 0))
-                           (cond ((null? s) (cond ((eq? top 'q) 1)
-                                                  ((eq? top 'qq) (+ i 1))
-                                                  ((eq? top 'u) (- i 1))))
-                                 ((eq? top 'qq) (sum (car s) (cdr s) (+ i 1)))
-                                 ((eq? top 'u) (sum (car s) (cdr s) (- i 1)))
-                                 (else (sum (car s) (cdr s) i))))))))))
-      (quoted? (up-list ac-list))))
+;; (define (quoted? ac-list)
+;;   (define (quote-stack ac-list)
+;;     (let loop ((rest ac-list) (stack '()))
+;;       (cond ((null? rest) stack)
+;;             ((looking-at rest '(quote))
+;;              (loop (cdr rest) (cons 'q stack)))
+;;             ((looking-at rest '(quasiquote))
+;;              (loop (cdr rest) (cons 'qq stack)))
+;;             ((looking-at rest '(unquote))
+;;              (loop (cdr rest) (cons 'u stack)))
+;;             ((looking-at rest '(~rt-syntax))
+;;              (let ((op (rt-syntax-operator rest)))
+;;                (cond ((matches? "quote" op)
+;;                       (loop (up-list rest) (cons 'q stack)))
+;;                      ((matches? "quasiquote" op)
+;;                       (loop (up-list rest) (cons 'qq stack)))
+;;                      ((matches? "unquote" op)
+;;                       (loop (up-list rest) (cons 'u stack)))
+;;                      (else (loop (up-list rest) stack)))))
+;;             ((looking-at rest list-begin-mesgs)
+;;              (loop (up-list rest) stack))
+;;             (else '()))))
+;;   (if (looking-at ac-list '(quote quasiquote unquote))
+;;       (let ((stack (quote-stack ac-list)))
+;;         (and (not (null? stack))
+;;              (let ((top (car stack)))
+;;                (or (eq? top 'q)
+;;                    (and (not (eq? top 'u))
+;;                         (positive?
+;;                          (let sum ((top top) (s (cdr stack)) (i 0))
+;;                            (cond ((null? s) (cond ((eq? top 'q) 1)
+;;                                                   ((eq? top 'qq) (+ i 1))
+;;                                                   ((eq? top 'u) (- i 1))))
+;;                                  ((eq? top 'qq) (sum (car s) (cdr s) (+ i 1)))
+;;                                  ((eq? top 'u) (sum (car s) (cdr s) (- i 1)))
+;;                                  (else (sum (car s) (cdr s) i))))))))))
+;;       (quoted? (up-list ac-list))))
 
 (define (try-nc! ac-list nc)
   (define (^handle-potential-decimal kind ~mesg)
