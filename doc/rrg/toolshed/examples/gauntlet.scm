@@ -120,6 +120,16 @@ end-of-this-here-string
 (define (f34 a #!optional (b (list a b c)) #!key . c) (list a b c))
 (define (f35 a #!optional b #!key c . d) (list a b c d))
 (define (f36 a #!optional (b (list a b c d)) #!key (c (list a b c d)) . d) (list a b c d))
+
+(define allowed-field-options
+  '((printable:     . (-2 . 0))
+    (unprintable:   . (-2 . 1))
+    (read-write:    . (-3 . 0))
+    (read-only:     . (-3 . 2))
+    (equality-test: . (-5 . 0))
+    (equality-skip: . (-5 . 4))
+    (functional-setter:    . (-17 . 0))
+    (no-functional-setter: . (-17 . 16))))
 ;==============================================================================
 ;; Booleans/homogeneous vectors:
 #t #tr #tru #true #truer

@@ -216,9 +216,6 @@
 ;                                 (else (sum (car s) (cdr s) i))))))))))
 ;      (quoted? (up-list ac-list))))
 
-(define (default+no-mesg? ac)
-  (and (not (get-mesg ac)) (eq? (get-kind ac) 'default)))
-
 (define (valid-keyword? ac-list nc pc)
   (and (char=? pc #\:) (memc nc delim-chars)
        (let ((rest (cdr ac-list)))
