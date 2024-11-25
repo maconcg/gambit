@@ -476,11 +476,12 @@
              (else (adorn-char nc 'invalid 'invalid)))))
 
 (define (try-quote-pm! ac-list nc pac pm)
-  (cond ((memq pm '(quasiquote quote)) (try-nc! ac-list nc))
+  (cond ((memq pm '(quasiquote quote))
+         (or (try-context! ac-list nc pac) (try-nc! ac-list nc)))
         ((eq? pm 'unquote)
          (if (and (char=? nc #\@) (char=? (get-char pac) #\,))
              (adorn-char nc 'abbrev 'unquote)
-             (try-nc! ac-list nc)))
+             (or (try-context! ac-list nc pac) (try-nc! ac-list nc))))
         (else #f)))
 
 (define (try~repl-ref-pm! ac-list nc pm)

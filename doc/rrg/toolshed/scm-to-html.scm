@@ -57,7 +57,7 @@ END
   (write-string (string-append #<<END
 <!DOCTYPE html>
 <html>  
-<!-- Created by highlight.scm -->
+<!-- Created by scm-to-html.scm -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>
