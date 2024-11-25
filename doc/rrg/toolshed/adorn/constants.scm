@@ -45,12 +45,12 @@
      "define-library" "define-macro" "define-prim" "define-prim&proc"
      "define-record-type" "define-runtime-macro" "define-runtime-syntax"
      "define-structure" "define-syntax" "define-type" "define-type-of-thread"
-     "define-values" "delay" "delay-force" "do" "error" "future" "guard" "if"
-     "import" "include" "include-ci" "\x3bb;" "lambda" "let" "let*"
-     "let*-values" "let-values" "letrec" "letrec*" "letrec*-values"
-     "letrec-values" "load" "namespace" "or" "parameterize" "quasiquote"
-     "quote" "r7rs-guard" "receive" "set!" "syntax-error" "syntax-rules"
-     "this-source-file" "unless" "when")))
+     "define-values" "delay" "delay-force" "do" "future" "guard" "if" "import"
+     "include" "include-ci" "\x3bb;" "lambda" "let" "let*" "let*-values"
+     "let-values" "letrec" "letrec*" "letrec*-values" "letrec-values" "load"
+     "namespace" "or" "parameterize" "quasiquote" "quote" "r7rs-guard"
+     "receive" "set!" "syntax-error" "syntax-rules" "this-source-file"
+     "unless" "when")))
 
 (define sv-define-syntax
   (plus-## '("define" "define-prim" "define-prim&proc" "define-record-type")))
