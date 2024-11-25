@@ -179,6 +179,7 @@
                          (not (memq (car looking) '(case-lambda-rest
                                                     lambda-rest
                                                     named-let
+                                                    sv-let
                                                     sv-define))))))
              (adorn-char nc 'default '~~new-sharp))
             ((not (memq pm bind-mesgs)) #f)
