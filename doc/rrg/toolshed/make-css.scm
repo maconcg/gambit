@@ -20,7 +20,9 @@
                                      #t
                                      dark
                                      light
-                                     "gambit-examples-only.css"))
+                                     (if (eq? light 'codemirror)
+                                         "gambit-examples-cm.css"
+                                         "gambit-examples.css")))
                               ((member opt '("-l" "--light-theme") string=?)
                                (loop (cddr rest)
                                      examples-only?
@@ -33,29 +35,55 @@
                                      dark
                                      light
                                      (cadr rest)))
+                              ((member opt '("-t" "--theme") string=?)
+                               (cond ((string=? "modus" (cadr rest))
+                                      (loop (cddr rest)
+                                            examples-only?
+                                            'modus-vivendi
+                                            'modus-operandi
+                                            "gambit-examples.css"))
+                                     ((string=? "codemirror" (cadr rest))
+                                      (loop (cddr rest)
+                                            examples-only?
+                                            'codemirror
+                                            'codemirror
+                                            (if examples-only?
+                                                "gambit-examples-cm.css"
+                                                "gambit-cm.css")))
+                                     (else (error "Unknown theme"))))
                               (else (error "Unknown argument" opt))))))))
-    (let ((examples-only? (car values)) (dark (cadr values))
-          (light (caddr values)) (output-file (cadddr values)))
+    (let ((examples-only? (car values)) (dark-theme (cadr values))
+          (light-theme (caddr values)) (output-file (cadddr values)))
       (with-output-to-file output-file
         (lambda ()
           (if examples-only?
-              (begin (write-string examples-noncolor-css)
-                     (write-from-template light examples-color-template)
-                     (write-string "@media (prefers-color-scheme: dark) {\n")
-                     (indent+write
-                      4 (lambda ()
-                          (write-from-template dark examples-color-template)))
-                     (write-string "}\n"))
-              (begin (write-string general-noncolor-css)
-                     (write-string examples-noncolor-css)
-                     (write-from-template light general-color-template)
-                     (write-from-template light examples-color-template)
-                     (write-string "@media (prefers-color-scheme: dark) {\n")
-                     (indent+write
-                      4 (lambda ()
-                          (write-from-template dark general-color-template)
-                          (write-from-template dark examples-color-template)))
-                     (write-string "}\n"))))))))
+              (write-examples-only-css light-theme dark-theme)
+              (write-full-css light-theme dark-theme)))))))
+
+(define (write-examples-only-css light-theme dark-theme)
+  (define (write-light-theme)
+    (write-from-template light-theme examples-color-template))
+  (define (write-dark-theme)
+    (write-from-template dark-theme examples-color-template))
+  (write-string examples-noncolor-css)
+  (write-light-theme)
+  (write-string "@media (prefers-color-scheme: dark) {\n")
+  (indent+write 4 write-dark-theme)
+  (write-string "}\n"))
+
+(define (write-full-css light-theme dark-theme)
+  (define (write-light-theme)
+    (write-from-template light-theme general-color-template)
+    (write-from-template light-theme examples-color-template))
+  (define (write-dark-theme)
+    (write-from-template dark-theme general-color-template)
+    (write-from-template dark-theme examples-color-template))
+  (write-string general-noncolor-css)
+  (write-string examples-noncolor-css)
+  (write-light-theme)
+  (write-string "@media (prefers-color-scheme: dark) {\n")
+  (indent+write 4 write-dark-theme)
+  (write-string "}\n"))
 
 (define (write-from-template |th\x65;m\u0065| template)
   (let ((char-list (call-with-input-string
@@ -170,7 +198,7 @@ dl.first-deftp {
 dl.first-deftypefn {
     background-color: <bg-deftypefn>;
     background-image: linear-gradient(90deg, <deftypefn-l>, <deftypefn-r> 35%);
-    span.paren {color: <list>}
+    span.paren {color: <compound>}
     dd pre span.exception {color: <exception>}
 }
 
@@ -227,7 +255,7 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
 END
 )
 
-(define modus-operandi-colors ;; from Protesilaos Stavrou's modus-themes
+(define modus-operandi-colors ;; based on Protesilaos Stavrou's modus-themes
   '((bg-active           . "#c4c4c4") (bg-added            . "#c1f2d1")
     (bg-added-faint      . "#d8f8e1") (bg-added-fringe     . "#6cc06c")
     (bg-added-refine     . "#aee5be") (bg-blue-intense     . "#bfc9ff")
@@ -278,9 +306,9 @@ END
     (rust                . "#8a290f") (slate               . "#2f3f83")
     (yellow              . "#6f5500") (yellow-cooler       . "#7a4f2f")
     (yellow-faint        . "#624416") (yellow-intense      . "#808000")
-    (yellow-warmer       . "#884900")))
+    (yellow-warmer       . "#884900") (fg-dimmer           . "#777777")))
 
-(define modus-vivendi-colors ;; from Protesilaos Stavrou's modus-themes
+(define modus-vivendi-colors ;; based on Protesilaos Stavrou's modus-themes
   '((bg-active           . "#535353") (bg-added            . "#00381f")
     (bg-added-faint      . "#002910") (bg-added-fringe     . "#237f3f")
     (bg-added-refine     . "#034f2f") (bg-blue-intense     . "#1640b0")
@@ -331,11 +359,12 @@ END
     (rust                . "#db7b5f") (slate               . "#76afbf")
     (yellow              . "#d0bc00") (yellow-cooler       . "#dfaf7a")
     (yellow-faint        . "#d2b580") (yellow-intense      . "#efef00")
-    (yellow-warmer       . "#fec43f")))
+    (yellow-warmer       . "#fec43f") (fg-dimmer           . "#888888")))
 
 (define (modus:kind->color kind)
   (case kind
-    (( abbrev atmosphere compound dot hs-begin invalid shebang ) 'fg-dim)
+    (( abbrev dot hs-begin invalid shebang ) 'fg-dim)
+    (( atmosphere compound ) 'fg-dimmer)
     (( boolean ) 'yellow-warmer)
     (( char ) 'red-faint)
     (( compound-empty default ) 'fg-main)
@@ -387,7 +416,7 @@ END
     (( problem ) 'cm-error)
     (( string string-esc ) 'cm-string)
     (( syntax ) 'cm-builtin)
-    (else kind)))
+    (else #f)))
 
 (define (get-color theme string-or-symbol)
   (let ((sym (if (string? string-or-symbol)
@@ -402,26 +431,27 @@ END
                                     modus:kind->color
                                     modus-vivendi-colors))
            (( codemirror ) (list codemirror:kind->color
-                                  codemirror:kind->color
-                                  codemirror-colors))
+                                 codemirror:kind->color
+                                 codemirror-colors))
            (else (error "Unknown theme")))))
     (let ((element->color (car element->color/kind->color/colors))
           (kind->color (cadr element->color/kind->color/colors))
           (colors (caddr element->color/kind->color/colors)))
       (let ((color (cdr (or (assq (or (element->color sym) (kind->color sym))
                                   colors)
+                            (assq (or (modus:element->color sym)
+                                      (modus:kind->color sym))
+                                  modus-operandi-colors)
                             sym))))
         (case theme
           (( modus-operandi )
            (case sym
-             ((atmosphere) (string-append color "cf"))
              ((bg-deftp bg-deftypefn bg-deftypevr) (string-append color "90"))
              ((deftp-l deftypefn-l deftypevr-l) (string-append color "6f"))
              ((deftp-r deftypefn-r deftypevr-r) (string-append color "3f"))
              (else color)))
           (( modus-vivendi )
            (case sym
-             ((atmosphere) (string-append color "cf"))
              ((bg-deftp bg-deftypefn bg-deftypevr) (string-append color "90"))
              ((deftp-l ) (string-append color "bf"))
              ((deftypefn-l) (string-append color "6f"))

@@ -1,3 +1,4 @@
+toolshed/adorn/adorn.o*
 html-pristine/
 html-parens/
 html-css/
@@ -10,8 +11,7 @@ procedures/c/
 **/.stamp
 toolshed/c/
 toolshed/colorize.sed
-toolshed/gambit.css
-toolshed/gambit-examples-only.css
+toolshed/*.css
 toolshed/today.txi
 *.tgz
 *.tar.*

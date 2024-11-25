@@ -3,20 +3,31 @@
 (load "adorn/adorn")
 
 (define (main . args)
-  (let ((source (car args))
-        (css (call-with-input-file (if (null? (cdr args))
-                                       "gambit.css"
-                                       (cadr args))
-               (lambda (p) (read-line p #f)))))
-    (let ((ac-list (adorn#reverse+simplify-kinds!
+  (let ((source/css (if (null? args)
+                        (error "No arguments given")
+                        (let ((first (car args)) (rest (cdr args)))
+                          (cond ((null? rest) (cons first "gambit.css"))
+                                ((string=? first "-e")
+                                 (cons (car rest) "gambit-examples.css"))
+                                (else (cons (car rest) first)))))))
+    (let ((source (car source/css)) (css (cdr source/css)))
+      (let ((css-content (call-with-input-file css
+                           (lambda (p) (read-line p #f)))))
+        (let ((ac-list (adorn#reverse+simplify-kinds!
                     (adorn#adorn! (call-with-input-file source
                                     (lambda (p) (read-all p read-char))))))
-          (base-filename (basename source)))
-      (with-output-to-file (string-append base-filename ".html")
-        (lambda ()
-          (write-pre-css base-filename)
-          (display css)
-          (write-string #<<END
+              (base-filename (basename source)))
+          (with-output-to-file (string-append
+                                base-filename
+                                (if (member css '("gambit.css"
+                                                  "gambit-examples.css")
+                                            string=?)
+                                    ".html"
+                                    ".alt.html"))
+            (lambda ()
+              (write-pre-css base-filename)
+              (display css-content)
+              (write-string #<<END
 -->
 </style>
 </head>
@@ -31,7 +42,7 @@ END
 </body>
 
 END
-))))))
+))))))))
 
 (define (basename path-string)
   (let loop ((new '()) (old (reverse (string->list path-string))))
@@ -101,3 +112,4 @@ END
                            (open-span kind)
                            (write-char-or-char-list (char->html-maybe-& char))
                            (loop kind (cdr rest)))))))))))
+
