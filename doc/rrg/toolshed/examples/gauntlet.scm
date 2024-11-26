@@ -20,13 +20,14 @@
 #\U0123456 #\U01234567 #\U012345678
 ;==============================================================================
 ;; Numbers (covers §6.2.5 of R⁷RS):
-3.1 1.1e+8 2.2F-1 3.4e0 3.1L0 3.5E0 3.7f0 #i3.8 #d3.9 #i#d3.5s12 #d#i3.1 +1 -1
-+NaN.0 +nan.0 -nAN.0 +nAn.0 -inf.0 -inF.0 +INF.0 -Inf.0 #b11 #b#e0 #e#b1 #b#i0
+3.1 1.1e+8 2.2F-1 3.4e0 3.1L0 3.5E0 3.7f0 #i3.8 #d3.9 #i#d3.5s12 #d#i-3.1 +1 -1
++NaN.0 +nan.0 -nAN.0 +nAn.0 -inf.0 -inF.0 +INF.0 -Inf.0 #b11 #b#e0 #e#b10 #b#i0
 #i#b1 #O#e7 #e#O6 #X#Ee #e#xe #x#if #x#ICE #e#d10e0 #e+3 #I-9 #d#i-4 #D#I+9l1 4
-44 .4 .4s4 -.3 +.4 #d#I+.8 #e#X+F 2. #d2. #e#d2. #d#E2. #D.8 #e.8 #e9. #D#E.0
+44 .4 .4s4 -.3 +.4 #d#I+.8 #e#X+F 2. #d2. #e#d2. #d#E2. #D.8 #e.8s2 #e9. #D#E.0
+#x#i-InF.0 #i#O+nAN.0 #i#b+inf.0 #x#if #E#xe
 ;; Not numbers:
-#b#i12 #b21 #o87 #da1 #xg2 #e#d10ea #o7e1 + - ++ -- +- -+ + 1+ 1- +1+
--1- +nan.1 +inf.00 -inf.0e1 #e+ #I+ .. .4. ..2 #D#E.
+#b#i12 #b21 #o87 #da1 #xg2 #e#d10ea #o7e1 + - ++ -- +- -+ + 1+ 1- +1+ -1- 12e6.
++nan.1 +inf.00 -inf.0e1 #e+ #I+ .. .4. ..2 #D#E. #b#o0 #e+inf.0 #E+Nan.0 #e#x#e
 ;==============================================================================
 ;; Strings/identifiers:
 "\\\t\r\a\ffic" "Newline at my end\n" " one\| string\"" | one \" identifier \||
@@ -79,8 +80,32 @@ end-of-this-here-string
 (define identity (lambda thing thing))
 (define identity (lambda thing #;#;#; thing thing #|thing|# thing thing))
 
-(define v0 98) (define v1 #f) (define v2 #t) (define v3 #!void) (define v4 #())
-(define v5 (quote #&50)) (define v6 |r\r|) (define v7 "t\tt") (define v8 #\tab)
+(define (compose f g)
+  (lambda args
+    (call-with-values (lambda () (apply g args))
+      f)))
+
+(define (iterate n)
+  (lambda (f)
+    (if (positive? n)
+        (compose f ((iterate (- n 1)) f))
+        identity)))
+
+(define (|generic root via Newton's method| n)
+  (define (|sufficiently small change from x to y?| x y)
+    (> 1e-10 (abs (- (/ x y) 1))))
+  (lambda (x)
+    (define (|produce another guess| guess)
+      (let ((n-1 (- n 1)))
+        (/ (+ (* n-1 guess) (/ x (expt guess n-1))) n)))
+    (let |try another time| ((|previous guess| -inf.0) (guess #i1))
+         (if (|sufficiently small change from x to y?| |previous guess| guess)
+             guess
+             (|try another time| guess (|produce another guess| guess))))))
+
+(when (< 2.71 (expt ((|generic root via Newton's method| 1e11) 2) 1e11))
+  (define-values (v0 v1 v2 v3 v4 v5) (values 98 #f #t #!void #() #&50)))
+(define v6 |r\r|) (define v7 "t\tt") (define v8 #\tab)
 
 ;; from tests/mix.scm
 (define (f1) 'ok)

@@ -11,4 +11,5 @@
   (include "comment-mesg-handlers.scm")
   (include "binding-mesg-handlers.scm")
   (include "other-mesg-handlers.scm")
+  (include "numeric-mesg-handlers.scm")
   (include "adornment.scm"))
