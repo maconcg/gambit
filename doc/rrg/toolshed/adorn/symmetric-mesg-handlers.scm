@@ -1,185 +1,334 @@
-(define (ident/string-mesg-alist base)
-  (list (cons 'base base) (cons 'unmatched (->unmatched base))
-        (cons 'begin (->begin base)) (cons 'end (->end base))
-        (cons 'hex-x (->hex-x base)) (cons 'hex-U (->hex-U base))
-        (cons 'hex-u (->hex-u base)) (cons 'backslash (->backslash base))
-        (cons 'nil-esc (->nil-esc base)) (cons 'octal-1 (->octal-1 base))
-        (cons 'octal-2 (->octal-2 base)) (cons 'octal-3 (->octal-3 base))))
+;; '( sv-define defun-param defun-proc sv-let named-let lambda-bind
+;;    lambda-rest mv-let mv-define case-lambda-bind case-lambda-rest )
 
-(define (^ident/string-dispatch! base-sym delim-char end!)
-  (define sym-alist (ident/string-mesg-alist base-sym))
-  (define reversed-alist (map (lambda (p) (cons (cdr p) (car p))) sym-alist))
-  (define (generic->specific sym) (cdr (assq sym sym-alist)))
-  (define (specific->generic sym) (cdr (assq sym reversed-alist)))
-  (define (generic->handler sym)
-    (define (^handle:ident/string! base-sym delim-char end!)
-      (let ((backslash (->backslash base-sym)))
-        (lambda (ac-list nc)
-          (cond ((char=? nc delim-char) (end! ac-list nc base-sym))
-                ((char=? nc #\\) (adorn-char nc base-sym backslash))
-                (else (adorn-char nc base-sym base-sym))))))
-    (define (^handle:ident/string-backslash! base-sym)
-      (let ((esc (->esc base-sym)) (hex-x (->hex-x base-sym))
-            (hex-u (->hex-u base-sym)) (hex-U (->hex-U base-sym))
-            (nil-esc (->nil-esc base-sym)) (octal-1 (->octal-1 base-sym)))
-        (lambda (nc pac)
-          (cond ((char=? nc #\x) (adorn-char nc base-sym hex-x))
-                ((char=? nc #\u) (adorn-char nc base-sym hex-u))
-                ((char=? nc #\U) (adorn-char nc base-sym hex-U))
-                ((char=? nc #\newline)
-                 (set-kind! pac esc)
-                 (adorn-char nc esc nil-esc))
-                ((memc nc octal-chars)
-                 (set-kind! pac esc)
-                 (adorn-char nc esc octal-1))
-                ((memc nc ident/string-mnemonic-escape-chars)
-                 (set-kind! pac esc)
-                 (adorn-char nc esc base-sym))
-                (else (adorn-char nc 'invalid 'base-sym))))))
-    (define (^handle:ident/string-hex-Uu! base-sym sym delim-char end!)
-      (let ((ending (car (reverse (string->list (symbol->string sym)))))
-            (esc (->esc base-sym)) (backslash (->backslash base-sym)))
-        (let ((hex-Uu/target (if (char=? ending #\U)
-                                 (cons (->hex-U base-sym) 8)
-                                 (cons (->hex-u base-sym) 4))))
-          (let ((hex-Uu (car hex-Uu/target)) (target (cdr hex-Uu/target)))
-            (lambda (ac-list nc)
-              (cond ((char=? nc delim-char) (end! ac-list nc base-sym))
-                    ((memc-ci nc hexadecimal-chars)
-                     (let ((total (distance-until ac-list backslash)))
-                       (if (> target total)
-                           (adorn-char nc base-sym hex-Uu)
-                           (begin (revise-until! ac-list esc (+ target 1))
-                                  (adorn-char nc esc base-sym)))))
-                    (else (adorn-char nc 'invalid base-sym))))))))
-    (define (^handle:ident/string-hex-x! base-sym delim-char end!)
-      (let ((backslash (->backslash base-sym)) (esc (->esc base-sym))
-            (hex-x (->hex-x base-sym)))
-        (lambda (ac-list nc)
-          (cond ((char=? nc delim-char) (end! ac-list nc base-sym))
-                ((char=? nc #\;)
-                 (revise-until! ac-list esc backslash)
-                 (adorn-char nc esc base-sym))
-                ((memc-ci nc hexadecimal-chars)
-                 (adorn-char nc base-sym hex-x))
-                (else (adorn-char nc 'invalid base-sym))))))
-    (define (^handle:ident/string-nil-esc! base-sym delim-char end!)
-      (let ((backslash (->backslash base-sym)) (esc (->esc base-sym))
-            (nil-esc (->nil-esc base-sym)))
-        (lambda (ac-list nc)
-          (cond ((char=? nc delim-char) (end! ac-list nc base-sym))
-                ((char=? nc #\\) (adorn-char nc base-sym backslash))
-                ((memc nc '(#\space #\tab)) (adorn-char nc esc nil-esc))
-                (else (adorn-char nc base-sym base-sym))))))
-    (define (^handle:ident/string-octal-1! base-sym delim-char end!)
-      (let ((backslash (->backslash base-sym)) (esc (->esc base-sym))
-            (octal-2 (->octal-2 base-sym)))
-        (lambda (ac-list nc)
-          (cond ((char=? nc delim-char) (end! ac-list nc base-sym))
-                ((char=? nc #\\) (adorn-char nc base-sym backslash))
-                ((memc nc octal-chars) (adorn-char nc esc octal-2))
-                (else (adorn-char nc base-sym base-sym))))))
-    (define (^handle:ident/string-octal-2! base-sym delim-char end!)
-      (let ((backslash (->backslash base-sym)) (esc (->esc base-sym))
-            (octal-1 (->octal-1 base-sym)) (octal-3 (->octal-3 base-sym)))
-        (lambda (ac-list nc)
-          (cond ((char=? nc delim-char) (end! ac-list nc base-sym))
-                ((char=? nc #\\) (adorn-char nc base-sym backslash))
-                ((memc nc octal-chars)
-                 (if (memc (get-char (cadr ac-list)) '(#\0 #\1 #\2 #\3))
-                     (adorn-char nc esc octal-3)
-                     (adorn-char nc base-sym base-sym)))
-                (else (adorn-char nc base-sym base-sym))))))
-    (cond ((memq sym '(base unmatched octal-3))
-           (^handle:ident/string! base-sym delim-char end!))
-          ((eq? sym 'backslash)
-           (^handle:ident/string-backslash! base-sym))
-          ((eq? sym 'hex-x)
-           (^handle:ident/string-hex-x! base-sym delim-char end!))
-          ((memq sym '(hex-U hex-u))
-           (^handle:ident/string-hex-Uu! base-sym sym delim-char end!))
-          ((eq? sym 'nil-esc)
-           (^handle:ident/string-nil-esc! base-sym delim-char end!))
-          ((eq? sym 'octal-1)
-           (^handle:ident/string-octal-1! base-sym delim-char end!))
-          ((eq? sym 'octal-2)
-           (^handle:ident/string-octal-2! base-sym delim-char end!))
-          (else try-nc!)))
-  (lambda (ac-list nc pac pm)
-    (let* ((generic-sym (specific->generic pm))
-           (handler (generic->handler generic-sym)))
-      (cond ((eq? generic-sym 'backslash) (handler nc pac))
-            (else (handler ac-list nc))))))
+(define (string-esc? ac) (eq? (get-kind ac) 'string-esc))
+(define (ident-esc? ac) (eq? (get-kind ac) 'ident-esc))
+(define (sv-define-ident-esc? ac) (eq? (get-kind ac) 'sv-define-ident-esc))
+(define (defun-param-ident-esc? ac) (eq? (get-kind ac) 'defun-param-ident-esc))
+(define (defun-proc-ident-esc? ac) (eq? (get-kind ac) 'defun-proc-ident-esc))
+(define (sv-let-ident-esc? ac) (eq? (get-kind ac) 'sv-let-ident-esc))
+(define (named-let-ident-esc? ac) (eq? (get-kind ac) 'named-let-ident-esc))
+(define (lambda-bind-ident-esc? ac) (eq? (get-kind ac) 'lambda-bind-ident-esc))
+(define (lambda-rest-ident-esc? ac) (eq? (get-kind ac) 'lambda-rest-ident-esc))
+(define (mv-let-ident-esc? ac) (eq? (get-kind ac) 'mv-let-ident-esc))
+(define (mv-define-ident-esc? ac) (eq? (get-kind ac) 'mv-define-ident-esc))
+(define (case-lambda-bind-ident-esc? ac)
+  (eq? (get-kind ac) 'case-lambda-bind-ident-esc))
+(define (case-lambda-rest-ident-esc? ac)
+  (eq? (get-kind ac) 'case-lambda-rest-ident-esc))
 
-(define string-dispatch! (^ident/string-dispatch! 'string #\" end-symmetric!))
+(define (^invalidate/maybe-end! base-sym delim-char predicate?)
+  (lambda (ac-list nc)
+    (revise-while! ac-list base-sym predicate?)
+    (cond ((char=? nc delim-char) (end-symmetric! ac-list nc base-sym))
+          (else (adorn-char nc 'invalid base-sym)))))
 
-(define (^ident-dispatch! kind)
-  (^ident/string-dispatch! kind #\| end-symmetric!))
+(define invalidate/maybe-end-string-esc!
+  (^invalidate/maybe-end! 'string #\" string-esc?))
+(define invalidate/maybe-end-ident-esc!
+  (^invalidate/maybe-end! 'ident #\| ident-esc?))
+(define invalidate/maybe-end-sv-define-ident-esc!
+  (^invalidate/maybe-end! 'sv-define-ident #\| sv-define-ident-esc?))
+(define invalidate/maybe-end-defun-param-ident-esc!
+  (^invalidate/maybe-end! 'defun-param-ident #\| defun-param-ident-esc?))
+(define invalidate/maybe-end-defun-proc-ident-esc!
+  (^invalidate/maybe-end! 'defun-proc-ident #\| defun-proc-ident-esc?))
+(define invalidate/maybe-end-sv-let-ident-esc!
+  (^invalidate/maybe-end! 'sv-let-ident #\| sv-let-ident-esc?))
+(define invalidate/maybe-end-named-let-ident-esc!
+  (^invalidate/maybe-end! 'named-let-ident #\| named-let-ident-esc?))
+(define invalidate/maybe-end-lambda-bind-ident-esc!
+  (^invalidate/maybe-end! 'lambda-bind-ident #\| lambda-bind-ident-esc?))
+(define invalidate/maybe-end-lambda-rest-ident-esc!
+  (^invalidate/maybe-end! 'lambda-rest-ident #\| lambda-rest-ident-esc?))
+(define invalidate/maybe-end-mv-let-ident-esc!
+  (^invalidate/maybe-end! 'mv-let-ident #\| mv-let-ident-esc?))
+(define invalidate/maybe-end-mv-define-ident-esc!
+  (^invalidate/maybe-end! 'mv-define-ident #\| mv-define-ident-esc?))
+(define invalidate/maybe-end-case-lambda-bind-esc!
+  (^invalidate/maybe-end! 'case-lambda-bind #\| case-lambda-bind-ident-esc?))
+(define invalidate/maybe-end-case-lambda-rest-esc!
+  (^invalidate/maybe-end! 'case-lambda-rest #\| case-lambda-rest-ident-esc?))
 
-;; For ||-delimiter identifiers, plus various identifier "sub-kinds"
-(define ident-dispatch!             (^ident-dispatch! 'ident))
-(define defun-proc-ident-dispatch!  (^ident-dispatch! 'defun-proc-ident))
-(define defun-param-ident-dispatch! (^ident-dispatch! 'defun-param-ident))
-(define sv-define-ident-dispatch!   (^ident-dispatch! 'sv-define-ident))
-(define mv-define-ident-dispatch!   (^ident-dispatch! 'mv-define-ident))
-(define named-let-ident-dispatch!   (^ident-dispatch! 'named-let-ident))
-(define sv-let-ident-dispatch!      (^ident-dispatch! 'sv-let-ident))
-(define mv-let-ident-dispatch!      (^ident-dispatch! 'mv-let-ident))
-(define lambda-bind-ident-dispatch! (^ident-dispatch! 'lambda-bind-ident))
-(define lambda-rest-ident-dispatch! (^ident-dispatch! 'lambda-rest-ident))
-(define key-param-ident-dispatch!   (^ident-dispatch! 'key-param-ident))
-(define opt-param-ident-dispatch!   (^ident-dispatch! 'opt-param-ident))
-(define rest-param-ident-dispatch!  (^ident-dispatch! 'rest-param-ident))
-(define key-init-ident-dispatch!    (^ident-dispatch! 'key-init-param-ident))
-(define opt-init-ident-dispatch!    (^ident-dispatch! 'opt-init-param-ident))
-(define case-lambda-bind-ident-dispatch!
-  (^ident-dispatch! 'case-lambda-bind-ident))
-(define case-lambda-rest-ident-dispatch!
-  (^ident-dispatch! 'case-lambda-rest-ident))
+(define (handle:string! ac-list nc)
+  (cond ((char=? nc #\\) (adorn-char nc 'string-esc 'string-backslash))
+        ((char=? nc #\") (end-symmetric! ac-list nc 'string))
+        (else (adorn-char nc 'string 'string))))
 
-;; For datum-commented identifier/string data
-(define datumc-string-dispatch!
-  (^ident/string-dispatch! 'datumc-string #\" datumc:end-symmetric!))
-(define datumc-ident-dispatch!
-  (^ident/string-dispatch! 'datumc-ident #\| datumc:end-symmetric!))
-(define datumc-compound-string-dispatch!
-  (^ident/string-dispatch! 'datumc-compound-string #\" end-symmetric!))
-(define datumc-compound-ident-dispatch!
-  (^ident/string-dispatch! 'datumc-compound-ident #\| end-symmetric!))
-(define (^ident-dispatch! kind)
-  (^ident/string-dispatch! kind #\| end-symmetric!))
+(define (handle:string-esc! ac-list nc pm)
+  (cond ((eq? pm 'string-backslash)    (handle:string-backslash! ac-list nc))
+        ((eq? pm 'string-nil)          (handle:string-nil! ac-list nc))
+        ((eq? pm 'string-hex-x)        (handle:string-hex-x! ac-list nc))
+        ((eq? pm 'string-octal-long)   (handle:string-octal-long! ac-list nc))
+        ((eq? pm 'string-octal-long1)  (handle:string-octal-long1! ac-list nc))
+        ((eq? pm 'string-octal-short)  (handle:string-octal-short! ac-list nc))
+        ((eq? pm 'string-hex-u)        (handle:string-hex-u! ac-list nc))
+        ((eq? pm 'string-hex-u1)       (handle:string-hex-u1! ac-list nc))
+        ((eq? pm 'string-hex-u2)       (handle:string-hex-u2! ac-list nc))
+        ((eq? pm 'string-hex-u3)       (handle:string-hex-u3! ac-list nc))
+        ((eq? pm 'string-hex-U)        (handle:string-hex-U! ac-list nc))
+        ((eq? pm 'string-hex-U1)       (handle:string-hex-U1! ac-list nc))
+        ((eq? pm 'string-hex-U2)       (handle:string-hex-U2! ac-list nc))
+        ((eq? pm 'string-hex-U3)       (handle:string-hex-U3! ac-list nc))
+        ((eq? pm 'string-hex-U4)       (handle:string-hex-U4! ac-list nc))
+        ((eq? pm 'string-hex-U5)       (handle:string-hex-U5! ac-list nc))
+        ((eq? pm 'string-hex-U6)       (handle:string-hex-U6! ac-list nc))
+        ((eq? pm 'string-hex-U7)       (handle:string-hex-U7! ac-list nc))
+        (else #f)))
 
-(define (try-ident/string-pm! ac-list nc pac pm) 
-  (define (ident/string-mesg-list base)
-    (map cdr (ident/string-mesg-alist base)))
-  (define ident/string-mesg-lists
-    (map ident/string-mesg-list ident/string-base-mesgs))
-  (define (pm->mesgs pm) (assq pm ident/string-mesg-lists))
-  ((cond ((memq pm (pm->mesgs 'sv-define-ident))   sv-define-ident-dispatch!)
-         ((memq pm (pm->mesgs 'defun-proc-ident))  defun-proc-ident-dispatch!)
-         ((memq pm (pm->mesgs 'defun-param-ident)) defun-param-ident-dispatch!)
-         ((memq pm (pm->mesgs 'sv-let-ident))      sv-let-ident-dispatch!)
-         ((memq pm (pm->mesgs 'named-let-ident))   named-let-ident-dispatch!)
-         ((memq pm (pm->mesgs 'string))            string-dispatch!)
-         ((memq pm (pm->mesgs 'ident))             ident-dispatch!)
-         ((memq pm (pm->mesgs 'lambda-bind-ident)) lambda-bind-ident-dispatch!)
-         ((memq pm (pm->mesgs 'lambda-rest-ident)) lambda-rest-ident-dispatch!)
-         ((memq pm (pm->mesgs 'datumc-string))     datumc-string-dispatch!)
-         ((memq pm (pm->mesgs 'datumc-ident))      datumc-ident-dispatch!)
-         ((memq pm (pm->mesgs 'key-param-ident))   key-param-ident-dispatch!)
-         ((memq pm (pm->mesgs 'opt-param-ident))   opt-param-ident-dispatch!)
-         ((memq pm (pm->mesgs 'rest-param-ident))  rest-param-ident-dispatch!)
-         ((memq pm (pm->mesgs 'key-init-param-ident)) key-init-ident-dispatch!)
-         ((memq pm (pm->mesgs 'opt-init-param-ident)) key-init-ident-dispatch!)
-         ((memq pm (pm->mesgs 'mv-define-ident))   mv-define-ident-dispatch!)
-         ((memq pm (pm->mesgs 'mv-let-ident))      mv-let-ident-dispatch!)
-         ((memq pm (pm->mesgs 'datumc-compound-string))
-          datumc-compound-string-dispatch!)
-         ((memq pm (pm->mesgs 'datumc-compound-ident))
-          datumc-compound-ident-dispatch!)
-         ((memq pm (pm->mesgs 'case-lambda-bind-ident))
-          case-lambda-bind-ident-dispatch!)
-         ((memq pm (pm->mesgs 'case-lambda-rest-ident))
-          case-lambda-rest-ident-dispatch!)
-         (else (lambda x #f)))
-   ac-list nc pac pm))
+(define (try-string-pm! ac-list nc pac pm)
+  (cond ((memq pm '(string string-unmatched)) (handle:string! ac-list nc))
+        ((eq? (get-kind pac) 'string-esc) (handle:string-esc! ac-list nc pm))
+        (else #f)))
+
+(define (try-ident-pm! ac-list nc pac pm)
+  (cond ((memq pm '(ident ident-unmatched)) (handle:ident! ac-list nc))
+        ((eq? (get-kind pac) 'ident-esc) (handle:ident-esc! ac-list nc pm))
+        (else #f)))
+
+(define (^handle:symmetric! base-sym backslash-sym esc-sym delim-char)
+  (lambda (ac-list nc)
+    (cond ((char=? nc #\\) (adorn-char nc esc-sym backslash-sym))
+          ((char=? nc delim-char) (end-symmetric! ac-list nc base-sym))
+          (else (adorn-char nc base-sym base-sym)))))
+
+(define handle:ident!
+  (^handle:symmetric! 'ident 'ident-backslash 'ident-esc #\|))
+
+(define (^handle:symmetric-backslash! base-sym esc-sym hex-x-sym hex-u-sym
+                                      hex-U-sym nil-sym
+                                      octal-long-sym octal-short-sym
+                                      invalidate/maybe-end!)
+  (lambda (ac-list nc)
+    (cond ((char=? nc #\x) (adorn-char nc esc-sym hex-x-sym))
+          ((char=? nc #\u) (adorn-char nc esc-sym hex-u-sym))
+          ((char=? nc #\U) (adorn-char nc esc-sym hex-U-sym))
+          ((char=? nc #\newline) (adorn-char nc esc-sym nil-sym))
+          ((memc nc mnemonic-escape-chars) (adorn-char nc esc-sym base-sym))
+          ((memc nc '(#\0 #\1 #\2 #\3))
+           (adorn-char nc esc-sym octal-long-sym))
+          ((memc nc '(#\4 #\5 #\6 #\7))
+           (adorn-char nc esc-sym octal-short-sym))
+          (else (invalidate/maybe-end! ac-list nc)))))
+
+(define (^handle:symmetric-nil! delim-char base-sym backslash-sym esc-sym
+                                nil-sym)
+  (lambda (ac-list nc)
+    (cond ((memc nc '(#\space #\tab)) (adorn-char nc esc-sym nil-sym))
+          ((char=? nc #\\) (adorn-char nc esc-sym backslash-sym))
+          ((char=? nc delim-char) (end-symmetric! ac-list nc base-sym))
+          (else (adorn-char nc base-sym base-sym)))))
+
+(define (^handle:symmetric-hex-x! base-sym esc-sym hex-x-sym
+                                  invalidate/maybe-end!)
+  (lambda (ac-list nc)
+    (cond ((char=? nc #\;) (adorn-char nc esc-sym base-sym))
+          ((memc-ci nc hexadecimal-chars)
+           (adorn-char nc esc-sym hex-x-sym))
+          (else (invalidate/maybe-end! ac-list nc)))))
+
+(define (^handle:symmetric-octal-long! delim-char base-sym backslash-sym
+                                       esc-sym next-sym)
+  (lambda (ac-list nc)
+    (cond ((memc nc octal-chars) (adorn-char nc esc-sym next-sym))
+          ((char=? nc delim-char) (end-symmetric! ac-list nc base-sym))
+          ((char=? nc #\\) (adorn-char nc esc-sym backslash-sym))
+          (else (adorn-char nc base-sym base-sym)))))
+
+(define (^handle:symmetric-octal-long1! delim-char base-sym backslash-sym
+                                        esc-sym)
+  (lambda (ac-list nc)
+    (cond ((memc nc octal-chars) (adorn-char nc esc-sym base-sym))
+          ((char=? nc delim-char) (end-symmetric! ac-list nc base-sym))
+          ((char=? nc #\\) (adorn-char nc esc-sym backslash-sym))
+          (else (adorn-char nc base-sym base-sym)))))
+
+(define (^handle:symmetric-octal-short! delim-char base-sym backslash-sym
+                                        esc-sym)
+  (lambda (ac-list nc)
+    (cond ((memc nc octal-chars) (adorn-char nc esc-sym base-sym))
+          ((char=? nc #\") (end-symmetric! ac-list nc base-sym))
+          ((char=? nc #\\) (adorn-char nc esc-sym backslash-sym))
+          (else (adorn-char nc base-sym base-sym)))))
+
+(define (^handle:symmetric-hex-Uu! esc-sym next-sym invalidate/maybe-end!)
+  (lambda (ac-list nc)
+    (cond ((memc-ci nc hexadecimal-chars) (adorn-char nc esc-sym next-sym))
+          (else (invalidate/maybe-end! ac-list nc)))))
+
+(define-macro (define-symmetric-handlers
+                delim-char base-sym
+                backslash-sym backslash-handler
+                esc-sym
+                invalidate/maybe-end!
+                u-sym u-handler
+                u1-sym u1-handler
+                u2-sym u2-handler
+                u3-sym u3-handler
+                U-sym U-handler
+                U1-sym U1-handler
+                U2-sym U2-handler
+                U3-sym U3-handler
+                U4-sym U4-handler
+                U5-sym U5-handler
+                U6-sym U6-handler
+                U7-sym U7-handler
+                x-sym x-handler
+                nil-sym nil-handler
+                octal-short-sym octal-short-handler
+                octal-long-sym octal-long-handler
+                octal-long1-sym octal-long1-handler)
+  `(begin (define ,u-handler (^handle:symmetric-hex-Uu!
+                              ,esc-sym ,u1-sym ,invalidate/maybe-end!))
+          (define ,u1-handler (^handle:symmetric-hex-Uu!
+                               ,esc-sym ,u2-sym ,invalidate/maybe-end!))
+          (define ,u2-handler (^handle:symmetric-hex-Uu!
+                               ,esc-sym ,u3-sym ,invalidate/maybe-end!))
+          (define ,u3-handler (^handle:symmetric-hex-Uu!
+                               ,esc-sym ,base-sym ,invalidate/maybe-end!))
+          (define ,U-handler (^handle:symmetric-hex-Uu!
+                              ,esc-sym ,U1-sym ,invalidate/maybe-end!))
+          (define ,U1-handler (^handle:symmetric-hex-Uu!
+                               ,esc-sym ,U2-sym ,invalidate/maybe-end!))
+          (define ,U2-handler (^handle:symmetric-hex-Uu!
+                               ,esc-sym ,U3-sym ,invalidate/maybe-end!))
+          (define ,U3-handler (^handle:symmetric-hex-Uu!
+                               ,esc-sym ,U4-sym ,invalidate/maybe-end!))
+          (define ,U4-handler (^handle:symmetric-hex-Uu!
+                               ,esc-sym ,U5-sym ,invalidate/maybe-end!))
+          (define ,U5-handler (^handle:symmetric-hex-Uu!
+                               ,esc-sym ,U6-sym ,invalidate/maybe-end!))
+          (define ,U6-handler (^handle:symmetric-hex-Uu!
+                               ,esc-sym ,U7-sym ,invalidate/maybe-end!))
+          (define ,U7-handler (^handle:symmetric-hex-Uu!
+                               ,esc-sym ,base-sym ,invalidate/maybe-end!))
+          (define ,x-handler (^handle:symmetric-hex-x!
+                              ,base-sym ,esc-sym ,x-sym
+                              ,invalidate/maybe-end!))
+          (define ,nil-handler (^handle:symmetric-nil!
+                                ,delim-char ,base-sym ,backslash-sym
+                                ,esc-sym ,nil-sym))
+          (define ,octal-short-handler (^handle:symmetric-octal-short!
+                                        ,delim-char ,base-sym ,backslash-sym
+                                        ,esc-sym))
+          (define ,octal-long-handler (^handle:symmetric-octal-long!
+                                       ,delim-char ,base-sym ,backslash-sym
+                                       ,esc-sym ,octal-long1-sym))
+          (define ,octal-long1-handler (^handle:symmetric-octal-long1!
+                                        ,delim-char ,base-sym ,backslash-sym
+                                        ,esc-sym))
+          (define ,backslash-handler (^handle:symmetric-backslash!
+                                      ,base-sym ,esc-sym ,x-sym ,u-sym
+                                      ,U-sym ,nil-sym ,octal-long-sym
+                                      ,octal-short-sym
+                                      ,invalidate/maybe-end!))))
+
+(define-symmetric-handlers
+  #\| 'string
+  'string-backslash handle:string-backslash!
+  'string-esc
+  invalidate/maybe-end-string-esc!
+  'string-hex-u handle:string-hex-u!
+  'string-hex-u1 handle:string-hex-u1!
+  'string-hex-u2 handle:string-hex-u2!
+  'string-hex-u3 handle:string-hex-u3!
+  'string-hex-U handle:string-hex-U!
+  'string-hex-U1 handle:string-hex-U1!
+  'string-hex-U2 handle:string-hex-U2!
+  'string-hex-U3 handle:string-hex-U3!
+  'string-hex-U4 handle:string-hex-U4!
+  'string-hex-U5 handle:string-hex-U5!
+  'string-hex-U6 handle:string-hex-U6!
+  'string-hex-U7 handle:string-hex-U7!
+  'string-hex-x handle:string-hex-x!
+  'string-nil handle:string-nil!
+  'string-octal-short handle:string-octal-short!
+  'string-octal-long handle:string-octal-long!
+  'string-octal-long1 handle:string-octal-long1!)
+
+(define-symmetric-handlers
+  #\| 'ident
+  'ident-backslash handle:ident-backslash!
+  'ident-esc
+  invalidate/maybe-end-ident-esc!
+  'ident-hex-u handle:ident-hex-u!
+  'ident-hex-u1 handle:ident-hex-u1!
+  'ident-hex-u2 handle:ident-hex-u2!
+  'ident-hex-u3 handle:ident-hex-u3!
+  'ident-hex-U handle:ident-hex-U!
+  'ident-hex-U1 handle:ident-hex-U1!
+  'ident-hex-U2 handle:ident-hex-U2!
+  'ident-hex-U3 handle:ident-hex-U3!
+  'ident-hex-U4 handle:ident-hex-U4!
+  'ident-hex-U5 handle:ident-hex-U5!
+  'ident-hex-U6 handle:ident-hex-U6!
+  'ident-hex-U7 handle:ident-hex-U7!
+  'ident-hex-x handle:ident-hex-x!
+  'ident-nil handle:ident-nil!
+  'ident-octal-short handle:ident-octal-short!
+  'ident-octal-long handle:ident-octal-long!
+  'ident-octal-long1 handle:ident-octal-long1!)
+
+(define (^handle:symmetric-esc! backslash-sym backslash-handler
+                                nil-sym nil-handler
+                                hex-x-sym hex-x-handler
+                                hex-u-sym hex-u-handler
+                                hex-u1-sym hex-u1-handler
+                                hex-u2-sym hex-u2-handler
+                                hex-u3-sym hex-u3-handler
+                                hex-U-sym hex-U-handler
+                                hex-U1-sym hex-U1-handler
+                                hex-U2-sym hex-U2-handler
+                                hex-U3-sym hex-U3-handler
+                                hex-U4-sym hex-U4-handler
+                                hex-U5-sym hex-U5-handler
+                                hex-U6-sym hex-U6-handler
+                                hex-U7-sym hex-U7-handler
+                                octal-long-sym octal-long-handler
+                                octal-long1-sym octal-long1-handler
+                                octal-short-sym octal-short-handler)
+  (lambda (ac-list nc pm)
+    (cond ((eq? pm backslash-sym)    (backslash-handler ac-list nc))
+          ((eq? pm nil-sym)          (nil-handler ac-list nc))
+          ((eq? pm hex-x-sym)        (hex-x-handler ac-list nc))
+          ((eq? pm octal-long-sym)   (octal-long-handler ac-list nc))
+          ((eq? pm octal-long1-sym)  (octal-long1-handler ac-list nc))
+          ((eq? pm octal-short-sym)  (octal-short-handler ac-list nc))
+          ((eq? pm hex-u-sym)        (hex-u-handler ac-list nc))
+          ((eq? pm hex-u1-sym)       (hex-u1-handler ac-list nc))
+          ((eq? pm hex-u2-sym)       (hex-u2-handler ac-list nc))
+          ((eq? pm hex-u3-sym)       (hex-u3-handler ac-list nc))
+          ((eq? pm hex-U-sym)        (hex-U-handler ac-list nc))
+          ((eq? pm hex-U1-sym)       (hex-U1-handler ac-list nc))
+          ((eq? pm hex-U2-sym)       (hex-U2-handler ac-list nc))
+          ((eq? pm hex-U3-sym)       (hex-U3-handler ac-list nc))
+          ((eq? pm hex-U4-sym)       (hex-U4-handler ac-list nc))
+          ((eq? pm hex-U5-sym)       (hex-U5-handler ac-list nc))
+          ((eq? pm hex-U6-sym)       (hex-U6-handler ac-list nc))
+          ((eq? pm hex-U7-sym)       (hex-U7-handler ac-list nc))
+          (else #f))))
+
+(define handle:ident-esc!
+  (^handle:symmetric-esc! 'ident-backslash handle:ident-backslash!
+                          'ident-nil handle:ident-nil!
+                          'ident-hex-x handle:ident-hex-x!
+                          'ident-hex-u handle:ident-hex-u!
+                          'ident-hex-u1 handle:ident-hex-u1!
+                          'ident-hex-u2 handle:ident-hex-u2!
+                          'ident-hex-u3 handle:ident-hex-u3!
+                          'ident-hex-U handle:ident-hex-U!
+                          'ident-hex-U1 handle:ident-hex-U1!
+                          'ident-hex-U2 handle:ident-hex-U2!
+                          'ident-hex-U3 handle:ident-hex-U3!
+                          'ident-hex-U4 handle:ident-hex-U4!
+                          'ident-hex-U5 handle:ident-hex-U5!
+                          'ident-hex-U6 handle:ident-hex-U6!
+                          'ident-hex-U7 handle:ident-hex-U7!
+                          'ident-octal-long handle:ident-octal-long!
+                          'ident-octal-long1 handle:ident-octal-long1!
+                          'ident-octal-short handle:ident-octal-short!))
+
+(define (try-symmetric-pm! ac-list nc pac pm)
+  (or (try-string-pm! ac-list nc pac pm)
+      (try-ident-pm! ac-list nc pac pm)
+      #f))

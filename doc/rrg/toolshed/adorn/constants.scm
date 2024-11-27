@@ -9,7 +9,7 @@
 (define decimal-chars (append octal-chars '(#\8 #\9)))
 (define hexadecimal-chars (append decimal-chars '(#\a #\b #\c #\d #\e #\f)))
 
-(define ident/string-mnemonic-escape-chars
+(define mnemonic-escape-chars
   '(#\a #\b #\f #\n #\r #\t #\v #\" #\\ #\| #\? #\space))
 (define directives '("#!fold-case" "#!no-fold-case"))
 (define dsssl-sharp-objects '("#!key" "#!optional" "#!rest"))
