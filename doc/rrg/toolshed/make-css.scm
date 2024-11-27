@@ -133,18 +133,18 @@ pre.lisp-preformatted {
     span.datum-ref {color: <datum-ref>}
     span.define-like-bind, span.define-like-esc {color: <define-like-bind>}
     span.dot {color: <dot>}
+    span.dsssl, span.sharp {color: <sharp>}
     span.ident, span.ident-esc {color: <ident>}
     span.hs-begin {color: <hs-begin>}
     span.hs-key {color: <hs-key>}
     span.invalid {color: <invalid>}
-    span.keyword, span.key-param, span.key-init-param {color: <keyword>}
+    span.keyword, span.key-bind, span.key-init {color: <keyword>}
     span.let-like-bind, span.let-like-esc {color: <let-like-bind>}
     span.number {color: <number>}
     span.ok {color: <ok>}
     span.problem {background-color: <problem>}
     span.repl-ref {color: <repl-ref>}
     span.serial-ref {color: <serial-ref>}
-    span.sharp {color: <sharp>}
     span.shebang {color: <shebang>}
     span.string, span.string-esc {color: <string>}
     span.syntax {color: <syntax>}
@@ -156,7 +156,7 @@ END
 (define examples-noncolor-css #<<END
 pre.lisp-preformatted {
     font-size: 1.1em;
-    span.atmosphere, span.sharp { font-style: oblique }
+    span.atmosphere, span.dsssl { font-style: oblique }
     span.char-body, span.define-like-esc, span.ident-esc, span.let-like-esc,
       span.string-esc {
         font-weight: bold

@@ -95,20 +95,21 @@
 (define (reverse+simplify-kinds! ac-list)
   (define define-like-binds
     '(defun-proc defun-proc-ident sv-define sv-define-ident mv-define
-       mv-define-ident))
+       mv-define-ident mv-define-rest mv-define-rest-ident ))
   (define define-like-escapes
-    '( defun-proc-ident-esc sv-define-ident-esc mv-define-ident-esc ))
+    '( defun-proc-ident-esc sv-define-ident-esc mv-define-ident-esc
+       mv-define-rest-ident-esc ))
   (define let-like-binds
     '( defun-param defun-param-ident named-let named-let-ident sv-let
-       sv-let-ident mv-let mv-let-ident lambda-bind lambda-bind-ident
-       lambda-rest lambda-rest-ident case-lambda-bind case-lambda-bind-ident
-       case-lambda-rest case-lambda-rest-ident opt-param opt-param-ident
-       opt-init-param opt-init-param-ident rest-param rest-param-ident ))
+       sv-let-ident mv-let mv-let-ident mv-let-rest mv-let-rest-ident
+       lambda-bind lambda-bind-ident lambda-rest lambda-rest-ident
+       case-lambda-bind case-lambda-bind-ident opt-bind opt-bind-ident
+       opt-init opt-init-ident rest-bind rest-bind-ident ))
   (define let-like-escapes
     '( defun-param-ident-esc named-let-ident-esc sv-let-ident-esc
        mv-let-ident-esc lambda-bind-ident-esc lambda-rest-ident-esc
-       case-lambda-bind-ident-esc case-lambda-rest-ident-esc
-       opt-param-ident-esc opt-init-param-ident-esc rest-param-ident-esc ))
+       case-lambda-bind-ident-esc opt-bind-ident-esc opt-init-ident-esc
+       rest-bind-ident-esc ))
   (define syntax-kinds '(rt-syntax aux-syntax))
   (define empty-compound-kinds (map ->empty compound-kinds))
   (let simplify! ((unsimplified ac-list) (simplified '()))

@@ -10,6 +10,11 @@
 (define (mv-let-ident-esc? ac) (eq? (get-kind ac) 'mv-let-ident-esc))
 (define (mv-let-rest-ident-esc? ac) (eq? (get-kind ac) 'mv-let-rest-ident-esc))
 (define (mv-define-ident-esc? ac) (eq? (get-kind ac) 'mv-define-ident-esc))
+(define (key-bind-ident-esc? ac) (eq? (get-kind ac) 'key-bind-ident-esc))
+(define (opt-bind-ident-esc? ac) (eq? (get-kind ac) 'opt-bind-ident-esc))
+(define (rest-bind-ident-esc? ac) (eq? (get-kind ac) 'rest-bind-ident-esc))
+(define (key-init-ident-esc? ac) (eq? (get-kind ac) 'key-init-ident-esc))
+(define (opt-init-ident-esc? ac) (eq? (get-kind ac) 'opt-init-ident-esc))
 
 (define (mv-define-rest-ident-esc? ac)
   (eq? (get-kind ac) 'mv-define-rest-ident-esc))
@@ -54,6 +59,16 @@
   (^invalidate/maybe-end! 'case-lambda-bind #\| case-lambda-bind-ident-esc?))
 (define invalidate/maybe-end-case-lambda-rest-ident-esc!
   (^invalidate/maybe-end! 'case-lambda-rest #\| case-lambda-rest-ident-esc?))
+(define invalidate/maybe-end-key-bind-ident-esc!
+  (^invalidate/maybe-end! 'key-bind-ident #\| key-bind-ident-esc?))
+(define invalidate/maybe-end-opt-bind-ident-esc!
+  (^invalidate/maybe-end! 'opt-bind-ident #\| opt-bind-ident-esc?))
+(define invalidate/maybe-end-rest-bind-ident-esc!
+  (^invalidate/maybe-end! 'rest-bind-ident #\| rest-bind-ident-esc?))
+(define invalidate/maybe-end-key-init-ident-esc!
+  (^invalidate/maybe-end! 'key-init-ident #\| key-init-ident-esc?))
+(define invalidate/maybe-end-opt-init-ident-esc!
+  (^invalidate/maybe-end! 'opt-init-ident #\| opt-init-ident-esc?))
 
 (define (^handle:symmetric! base-sym backslash-sym esc-sym delim-char)
   (lambda (ac-list nc)
@@ -278,30 +293,6 @@
   (cond ((memq pm '(string string-unmatched)) (handle:string! ac-list nc))
         ((eq? (get-kind pac) 'string-esc) (handle:string-esc! ac-list nc pm))
         (else #f)))
-
-(define-symmetric-handlers
-  #\|
-  'ident handle:ident!
-  'ident-backslash handle:ident-backslash!
-  'ident-esc handle:ident-esc!
-  invalidate/maybe-end-ident-esc!
-  'ident-hex-u handle:ident-hex-u!
-  'ident-hex-u1 handle:ident-hex-u1!
-  'ident-hex-u2 handle:ident-hex-u2!
-  'ident-hex-u3 handle:ident-hex-u3!
-  'ident-hex-U handle:ident-hex-U!
-  'ident-hex-U1 handle:ident-hex-U1!
-  'ident-hex-U2 handle:ident-hex-U2!
-  'ident-hex-U3 handle:ident-hex-U3!
-  'ident-hex-U4 handle:ident-hex-U4!
-  'ident-hex-U5 handle:ident-hex-U5!
-  'ident-hex-U6 handle:ident-hex-U6!
-  'ident-hex-U7 handle:ident-hex-U7!
-  'ident-hex-x handle:ident-hex-x!
-  'ident-nil handle:ident-nil!
-  'ident-octal-short handle:ident-octal-short!
-  'ident-octal-long handle:ident-octal-long!
-  'ident-octal-long1 handle:ident-octal-long1!)
 
 (define-symmetric-handlers
   #\|
@@ -709,36 +700,157 @@
 
 (define-symmetric-handlers
   #\|
-  'case-lambda-rest-ident handle:case-lambda-rest-ident!
-  'case-lambda-rest-ident-backslash handle:case-lambda-rest-ident-backslash!
-  'case-lambda-rest-ident-esc handle:case-lambda-rest-ident-esc!
-  invalidate/maybe-end-case-lambda-rest-ident-esc!
-  'case-lambda-rest-ident-hex-u handle:case-lambda-rest-ident-hex-u!
-  'case-lambda-rest-ident-hex-u1 handle:case-lambda-rest-ident-hex-u1!
-  'case-lambda-rest-ident-hex-u2 handle:case-lambda-rest-ident-hex-u2!
-  'case-lambda-rest-ident-hex-u3 handle:case-lambda-rest-ident-hex-u3!
-  'case-lambda-rest-ident-hex-U handle:case-lambda-rest-ident-hex-U!
-  'case-lambda-rest-ident-hex-U1 handle:case-lambda-rest-ident-hex-U1!
-  'case-lambda-rest-ident-hex-U2 handle:case-lambda-rest-ident-hex-U2!
-  'case-lambda-rest-ident-hex-U3 handle:case-lambda-rest-ident-hex-U3!
-  'case-lambda-rest-ident-hex-U4 handle:case-lambda-rest-ident-hex-U4!
-  'case-lambda-rest-ident-hex-U5 handle:case-lambda-rest-ident-hex-U5!
-  'case-lambda-rest-ident-hex-U6 handle:case-lambda-rest-ident-hex-U6!
-  'case-lambda-rest-ident-hex-U7 handle:case-lambda-rest-ident-hex-U7!
-  'case-lambda-rest-ident-hex-x handle:case-lambda-rest-ident-hex-x!
-  'case-lambda-rest-ident-nil handle:case-lambda-rest-ident-nil!
-  'case-lambda-rest-ident-octal-short
-  handle:case-lambda-rest-ident-octal-short!
-  'case-lambda-rest-ident-octal-long
-  handle:case-lambda-rest-ident-octal-long!
-  'case-lambda-rest-ident-octal-long1
-  handle:case-lambda-rest-ident-octal-long1!)
+  'key-bind-ident handle:key-bind-ident!
+  'key-bind-ident-backslash handle:key-bind-ident-backslash!
+  'key-bind-ident-esc handle:key-bind-ident-esc!
+  invalidate/maybe-end-key-bind-ident-esc!
+  'key-bind-ident-hex-u handle:key-bind-ident-hex-u!
+  'key-bind-ident-hex-u1 handle:key-bind-ident-hex-u1!
+  'key-bind-ident-hex-u2 handle:key-bind-ident-hex-u2!
+  'key-bind-ident-hex-u3 handle:key-bind-ident-hex-u3!
+  'key-bind-ident-hex-U handle:key-bind-ident-hex-U!
+  'key-bind-ident-hex-U1 handle:key-bind-ident-hex-U1!
+  'key-bind-ident-hex-U2 handle:key-bind-ident-hex-U2!
+  'key-bind-ident-hex-U3 handle:key-bind-ident-hex-U3!
+  'key-bind-ident-hex-U4 handle:key-bind-ident-hex-U4!
+  'key-bind-ident-hex-U5 handle:key-bind-ident-hex-U5!
+  'key-bind-ident-hex-U6 handle:key-bind-ident-hex-U6!
+  'key-bind-ident-hex-U7 handle:key-bind-ident-hex-U7!
+  'key-bind-ident-hex-x handle:key-bind-ident-hex-x!
+  'key-bind-ident-nil handle:key-bind-ident-nil!
+  'key-bind-ident-octal-short handle:key-bind-ident-octal-short!
+  'key-bind-ident-octal-long handle:key-bind-ident-octal-long!
+  'key-bind-ident-octal-long1 handle:key-bind-ident-octal-long1!)
 
-(define (try-case-lambda-rest-ident-pm! ac-list nc pac pm)
-  (cond ((memq pm '(case-lambda-rest-ident case-lambda-rest-ident-unmatched))
-         (handle:case-lambda-rest-ident! ac-list nc))
-        ((eq? (get-kind pac) 'case-lambda-rest-ident-esc)
-         (handle:case-lambda-rest-ident-esc! ac-list nc pm))
+(define (try-key-bind-ident-pm! ac-list nc pac pm)
+  (cond ((memq pm '(key-bind-ident key-bind-ident-unmatched))
+         (handle:key-bind-ident! ac-list nc))
+        ((eq? (get-kind pac) 'key-bind-ident-esc)
+         (handle:key-bind-ident-esc! ac-list nc pm))
+        (else #f)))
+
+(define-symmetric-handlers
+  #\|
+  'opt-bind-ident handle:opt-bind-ident!
+  'opt-bind-ident-backslash handle:opt-bind-ident-backslash!
+  'opt-bind-ident-esc handle:opt-bind-ident-esc!
+  invalidate/maybe-end-opt-bind-ident-esc!
+  'opt-bind-ident-hex-u handle:opt-bind-ident-hex-u!
+  'opt-bind-ident-hex-u1 handle:opt-bind-ident-hex-u1!
+  'opt-bind-ident-hex-u2 handle:opt-bind-ident-hex-u2!
+  'opt-bind-ident-hex-u3 handle:opt-bind-ident-hex-u3!
+  'opt-bind-ident-hex-U handle:opt-bind-ident-hex-U!
+  'opt-bind-ident-hex-U1 handle:opt-bind-ident-hex-U1!
+  'opt-bind-ident-hex-U2 handle:opt-bind-ident-hex-U2!
+  'opt-bind-ident-hex-U3 handle:opt-bind-ident-hex-U3!
+  'opt-bind-ident-hex-U4 handle:opt-bind-ident-hex-U4!
+  'opt-bind-ident-hex-U5 handle:opt-bind-ident-hex-U5!
+  'opt-bind-ident-hex-U6 handle:opt-bind-ident-hex-U6!
+  'opt-bind-ident-hex-U7 handle:opt-bind-ident-hex-U7!
+  'opt-bind-ident-hex-x handle:opt-bind-ident-hex-x!
+  'opt-bind-ident-nil handle:opt-bind-ident-nil!
+  'opt-bind-ident-octal-short handle:opt-bind-ident-octal-short!
+  'opt-bind-ident-octal-long handle:opt-bind-ident-octal-long!
+  'opt-bind-ident-octal-long1 handle:opt-bind-ident-octal-long1!)
+
+(define (try-opt-bind-ident-pm! ac-list nc pac pm)
+  (cond ((memq pm '(opt-bind-ident opt-bind-ident-unmatched))
+         (handle:opt-bind-ident! ac-list nc))
+        ((eq? (get-kind pac) 'opt-bind-ident-esc)
+         (handle:opt-bind-ident-esc! ac-list nc pm))
+        (else #f)))
+
+(define-symmetric-handlers
+  #\|
+  'rest-bind-ident handle:rest-bind-ident!
+  'rest-bind-ident-backslash handle:rest-bind-ident-backslash!
+  'rest-bind-ident-esc handle:rest-bind-ident-esc!
+  invalidate/maybe-end-rest-bind-ident-esc!
+  'rest-bind-ident-hex-u handle:rest-bind-ident-hex-u!
+  'rest-bind-ident-hex-u1 handle:rest-bind-ident-hex-u1!
+  'rest-bind-ident-hex-u2 handle:rest-bind-ident-hex-u2!
+  'rest-bind-ident-hex-u3 handle:rest-bind-ident-hex-u3!
+  'rest-bind-ident-hex-U handle:rest-bind-ident-hex-U!
+  'rest-bind-ident-hex-U1 handle:rest-bind-ident-hex-U1!
+  'rest-bind-ident-hex-U2 handle:rest-bind-ident-hex-U2!
+  'rest-bind-ident-hex-U3 handle:rest-bind-ident-hex-U3!
+  'rest-bind-ident-hex-U4 handle:rest-bind-ident-hex-U4!
+  'rest-bind-ident-hex-U5 handle:rest-bind-ident-hex-U5!
+  'rest-bind-ident-hex-U6 handle:rest-bind-ident-hex-U6!
+  'rest-bind-ident-hex-U7 handle:rest-bind-ident-hex-U7!
+  'rest-bind-ident-hex-x handle:rest-bind-ident-hex-x!
+  'rest-bind-ident-nil handle:rest-bind-ident-nil!
+  'rest-bind-ident-octal-short handle:rest-bind-ident-octal-short!
+  'rest-bind-ident-octal-long handle:rest-bind-ident-octal-long!
+  'rest-bind-ident-octal-long1 handle:rest-bind-ident-octal-long1!)
+
+(define (try-rest-bind-ident-pm! ac-list nc pac pm)
+  (cond ((memq pm '(rest-bind-ident rest-bind-ident-unmatched))
+         (handle:rest-bind-ident! ac-list nc))
+        ((eq? (get-kind pac) 'rest-bind-ident-esc)
+         (handle:rest-bind-ident-esc! ac-list nc pm))
+        (else #f)))
+
+(define-symmetric-handlers
+  #\|
+  'key-init-ident handle:key-init-ident!
+  'key-init-ident-backslash handle:key-init-ident-backslash!
+  'key-init-ident-esc handle:key-init-ident-esc!
+  invalidate/maybe-end-key-init-ident-esc!
+  'key-init-ident-hex-u handle:key-init-ident-hex-u!
+  'key-init-ident-hex-u1 handle:key-init-ident-hex-u1!
+  'key-init-ident-hex-u2 handle:key-init-ident-hex-u2!
+  'key-init-ident-hex-u3 handle:key-init-ident-hex-u3!
+  'key-init-ident-hex-U handle:key-init-ident-hex-U!
+  'key-init-ident-hex-U1 handle:key-init-ident-hex-U1!
+  'key-init-ident-hex-U2 handle:key-init-ident-hex-U2!
+  'key-init-ident-hex-U3 handle:key-init-ident-hex-U3!
+  'key-init-ident-hex-U4 handle:key-init-ident-hex-U4!
+  'key-init-ident-hex-U5 handle:key-init-ident-hex-U5!
+  'key-init-ident-hex-U6 handle:key-init-ident-hex-U6!
+  'key-init-ident-hex-U7 handle:key-init-ident-hex-U7!
+  'key-init-ident-hex-x handle:key-init-ident-hex-x!
+  'key-init-ident-nil handle:key-init-ident-nil!
+  'key-init-ident-octal-short handle:key-init-ident-octal-short!
+  'key-init-ident-octal-long handle:key-init-ident-octal-long!
+  'key-init-ident-octal-long1 handle:key-init-ident-octal-long1!)
+
+(define (try-key-init-ident-pm! ac-list nc pac pm)
+  (cond ((memq pm '(key-init-ident key-init-ident-unmatched))
+         (handle:key-init-ident! ac-list nc))
+        ((eq? (get-kind pac) 'key-init-ident-esc)
+         (handle:key-init-ident-esc! ac-list nc pm))
+        (else #f)))
+
+(define-symmetric-handlers
+  #\|
+  'opt-init-ident handle:opt-init-ident!
+  'opt-init-ident-backslash handle:opt-init-ident-backslash!
+  'opt-init-ident-esc handle:opt-init-ident-esc!
+  invalidate/maybe-end-opt-init-ident-esc!
+  'opt-init-ident-hex-u handle:opt-init-ident-hex-u!
+  'opt-init-ident-hex-u1 handle:opt-init-ident-hex-u1!
+  'opt-init-ident-hex-u2 handle:opt-init-ident-hex-u2!
+  'opt-init-ident-hex-u3 handle:opt-init-ident-hex-u3!
+  'opt-init-ident-hex-U handle:opt-init-ident-hex-U!
+  'opt-init-ident-hex-U1 handle:opt-init-ident-hex-U1!
+  'opt-init-ident-hex-U2 handle:opt-init-ident-hex-U2!
+  'opt-init-ident-hex-U3 handle:opt-init-ident-hex-U3!
+  'opt-init-ident-hex-U4 handle:opt-init-ident-hex-U4!
+  'opt-init-ident-hex-U5 handle:opt-init-ident-hex-U5!
+  'opt-init-ident-hex-U6 handle:opt-init-ident-hex-U6!
+  'opt-init-ident-hex-U7 handle:opt-init-ident-hex-U7!
+  'opt-init-ident-hex-x handle:opt-init-ident-hex-x!
+  'opt-init-ident-nil handle:opt-init-ident-nil!
+  'opt-init-ident-octal-short handle:opt-init-ident-octal-short!
+  'opt-init-ident-octal-long handle:opt-init-ident-octal-long!
+  'opt-init-ident-octal-long1 handle:opt-init-ident-octal-long1!)
+
+(define (try-opt-init-ident-pm! ac-list nc pac pm)
+  (cond ((memq pm '(opt-init-ident opt-init-ident-unmatched))
+         (handle:opt-init-ident! ac-list nc))
+        ((eq? (get-kind pac) 'opt-init-ident-esc)
+         (handle:opt-init-ident-esc! ac-list nc pm))
         (else #f)))
 
 (define (try-symmetric-pm! ac-list nc pac pm)
@@ -754,7 +866,11 @@
       (try-mv-let-ident-pm! ac-list nc pac pm)
       (try-mv-define-ident-pm! ac-list nc pac pm)
       (try-case-lambda-bind-ident-pm! ac-list nc pac pm)
-      (try-case-lambda-rest-ident-pm! ac-list nc pac pm)
       (try-mv-let-rest-ident-pm! ac-list nc pac pm)
       (try-mv-define-rest-ident-pm! ac-list nc pac pm)
+      (try-key-bind-ident-pm! ac-list nc pac pm)
+      (try-opt-bind-ident-pm! ac-list nc pac pm)
+      (try-rest-bind-ident-pm! ac-list nc pac pm)
+      (try-key-init-ident-pm! ac-list nc pac pm)
+      (try-opt-init-ident-pm! ac-list nc pac pm)
       #f))

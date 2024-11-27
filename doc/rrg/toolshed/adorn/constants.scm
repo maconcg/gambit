@@ -109,21 +109,27 @@
 
 (define let-mesgs '(named-let sv-let mv-let mv-let-rest))
 
-(define lambda-bind-mesgs
-  '(lambda-bind lambda-rest case-lambda-bind))
+(define lambda-bind-mesgs '(lambda-bind lambda-rest case-lambda-bind))
 
-(define bind-mesgs (append define-mesgs let-mesgs lambda-bind-mesgs))
+(define dsssl-bind-mesgs '(key-bind opt-bind key-init opt-init))
+
+(define bind-mesgs
+  (append dsssl-bind-mesgs define-mesgs let-mesgs lambda-bind-mesgs))
 
 (define sublist-begin-mesgs
-'( sublist-unmatched              sublist-begin
-   subdefun-unmatched             subdefun-begin
-   sublambda-bind-list-unmatched  sublambda-bind-list-begin
-   sublet-sv-outer-unmatched      sublet-sv-outer-begin
-   sublet-sv-inner-unmatched      sublet-sv-inner-begin
-   sublet-mv-outermost-unmatched  sublet-mv-outermost-begin
-   sublet-mv-outer-unmatched      sublet-mv-outer-begin
-   sublet-mv-inner-unmatched      sublet-mv-inner-begin
-   subdefine-mv-list-unmatched    subdefine-mv-list-begin ))
+'( sublist-unmatched               sublist-begin
+   subdefun-unmatched              subdefun-begin
+   sublambda-bind-list-unmatched   sublambda-bind-list-begin
+   sublet-sv-outer-unmatched       sublet-sv-outer-begin
+   sublet-sv-inner-unmatched       sublet-sv-inner-begin
+   sublet-mv-outermost-unmatched   sublet-mv-outermost-begin
+   sublet-mv-outer-unmatched       sublet-mv-outer-begin
+   sublet-mv-inner-unmatched       sublet-mv-inner-begin
+   subdefine-mv-list-unmatched     subdefine-mv-list-begin
+   subcase-lambda-outer-unmatched  subcase-lambda-outer-begin
+   subcase-lambda-inner-unmatched  subcase-lambda-inner-begin
+   subcompound-key-unmatched       subcompound-key-begin
+   subcompound-opt-unmatched       subcompound-opt-begin ))
 
 (define list-begin-mesgs
   (append sublist-begin-mesgs '(list-unmatched list-begin)))
@@ -132,25 +138,30 @@
   (append sublist-begin-mesgs
           '( sublist-end subdefun-end sublambda-bind-list-end
              sublet-sv-outer-end sublet-sv-inner-end sublet-mv-outermost-end
-             sublet-mv-outer-end sublet-mv-inner-end subdef-mv-end )))
+             sublet-mv-outer-end sublet-mv-inner-end subdef-mv-end
+             subcase-lambda-inner-end subcompound-key-end
+             subcompound-opt-end )))
 
 (define list-delimiter-mesgs
   (append sublist-delimiter-mesgs list-begin-mesgs '(list-end)))
 
 (define list-end-mesgs '(sublist-end list-end))
 
-(define dsssl-compounds '(key-compound opt-compound))
+(define dsssl-compounds '(compound-key compound-opt))
+
+(define binding-compounds
+  (append '(defun lambda-bind-list let-sv-inner case-lambda-inner)
+          dsssl-compounds))
 
 (define compound-kinds
-  (append '( list vector defun lambda-bind-list let-sv-outer let-sv-inner
-             let-mv-outermost let-mv-outer let-mv-inner define-mv-list
-             case-lambda-outer case-lambda-inner )
-          hvector-kinds dsssl-compounds))
+  (append '( list vector let-sv-outer let-mv-outermost let-mv-outer
+             let-mv-inner define-mv-list case-lambda-outer )
+          binding-compounds hvector-kinds))
 
 (define ident/string-base-mesgs
   '( string datumc-string datumc-compound-string ident datumc-ident
      datumc-compound-ident defun-proc-ident defun-param-ident sv-define-ident
      mv-define-ident mv-define-rest-ident named-let-ident sv-let-ident
      mv-let-ident mv-let-rest-ident lambda-bind-list lambda-rest-ident
-     case-lambda-bind-ident key-param-ident key-init-param-ident
-     opt-param-ident opt-init-param-ident rest-param-ident ))
+     case-lambda-bind-ident key-bind-ident opt-bind-ident rest-bind-ident
+     key-init-ident opt-init-ident ))
