@@ -8,7 +8,11 @@
 (define (lambda-bind-ident-esc? ac) (eq? (get-kind ac) 'lambda-bind-ident-esc))
 (define (lambda-rest-ident-esc? ac) (eq? (get-kind ac) 'lambda-rest-ident-esc))
 (define (mv-let-ident-esc? ac) (eq? (get-kind ac) 'mv-let-ident-esc))
+(define (mv-let-rest-ident-esc? ac) (eq? (get-kind ac) 'mv-let-rest-ident-esc))
 (define (mv-define-ident-esc? ac) (eq? (get-kind ac) 'mv-define-ident-esc))
+
+(define (mv-define-rest-ident-esc? ac)
+  (eq? (get-kind ac) 'mv-define-rest-ident-esc))
 (define (case-lambda-bind-ident-esc? ac)
   (eq? (get-kind ac) 'case-lambda-bind-ident-esc))
 (define (case-lambda-rest-ident-esc? ac)
@@ -40,8 +44,12 @@
   (^invalidate/maybe-end! 'lambda-rest-ident #\| lambda-rest-ident-esc?))
 (define invalidate/maybe-end-mv-let-ident-esc!
   (^invalidate/maybe-end! 'mv-let-ident #\| mv-let-ident-esc?))
+(define invalidate/maybe-end-mv-let-rest-ident-esc!
+  (^invalidate/maybe-end! 'mv-let-rest-ident #\| mv-let-rest-ident-esc?))
 (define invalidate/maybe-end-mv-define-ident-esc!
   (^invalidate/maybe-end! 'mv-define-ident #\| mv-define-ident-esc?))
+(define invalidate/maybe-end-mv-define-rest-ident-esc!
+  (^invalidate/maybe-end! 'mv-define-rest-ident #\| mv-define-rest-ident-esc?))
 (define invalidate/maybe-end-case-lambda-bind-ident-esc!
   (^invalidate/maybe-end! 'case-lambda-bind #\| case-lambda-bind-ident-esc?))
 (define invalidate/maybe-end-case-lambda-rest-ident-esc!
@@ -574,6 +582,37 @@
 
 (define-symmetric-handlers
   #\|
+  'mv-let-rest-ident handle:mv-let-rest-ident!
+  'mv-let-rest-ident-backslash handle:mv-let-rest-ident-backslash!
+  'mv-let-rest-ident-esc handle:mv-let-rest-ident-esc!
+  invalidate/maybe-end-mv-let-rest-ident-esc!
+  'mv-let-rest-ident-hex-u handle:mv-let-rest-ident-hex-u!
+  'mv-let-rest-ident-hex-u1 handle:mv-let-rest-ident-hex-u1!
+  'mv-let-rest-ident-hex-u2 handle:mv-let-rest-ident-hex-u2!
+  'mv-let-rest-ident-hex-u3 handle:mv-let-rest-ident-hex-u3!
+  'mv-let-rest-ident-hex-U handle:mv-let-rest-ident-hex-U!
+  'mv-let-rest-ident-hex-U1 handle:mv-let-rest-ident-hex-U1!
+  'mv-let-rest-ident-hex-U2 handle:mv-let-rest-ident-hex-U2!
+  'mv-let-rest-ident-hex-U3 handle:mv-let-rest-ident-hex-U3!
+  'mv-let-rest-ident-hex-U4 handle:mv-let-rest-ident-hex-U4!
+  'mv-let-rest-ident-hex-U5 handle:mv-let-rest-ident-hex-U5!
+  'mv-let-rest-ident-hex-U6 handle:mv-let-rest-ident-hex-U6!
+  'mv-let-rest-ident-hex-U7 handle:mv-let-rest-ident-hex-U7!
+  'mv-let-rest-ident-hex-x handle:mv-let-rest-ident-hex-x!
+  'mv-let-rest-ident-nil handle:mv-let-rest-ident-nil!
+  'mv-let-rest-ident-octal-short handle:mv-let-rest-ident-octal-short!
+  'mv-let-rest-ident-octal-long handle:mv-let-rest-ident-octal-long!
+  'mv-let-rest-ident-octal-long1 handle:mv-let-rest-ident-octal-long1!)
+
+(define (try-mv-let-rest-ident-pm! ac-list nc pac pm)
+  (cond ((memq pm '(mv-let-rest-ident mv-let-rest-ident-unmatched))
+         (handle:mv-let-rest-ident! ac-list nc))
+        ((eq? (get-kind pac) 'mv-let-rest-ident-esc)
+         (handle:mv-let-rest-ident-esc! ac-list nc pm))
+        (else #f)))
+
+(define-symmetric-handlers
+  #\|
   'mv-define-ident handle:mv-define-ident!
   'mv-define-ident-backslash handle:mv-define-ident-backslash!
   'mv-define-ident-esc handle:mv-define-ident-esc!
@@ -597,10 +636,41 @@
   'mv-define-ident-octal-long1 handle:mv-define-ident-octal-long1!)
 
 (define (try-mv-define-ident-pm! ac-list nc pac pm)
-  (cond ((memq pm '(mv-define-ident mv-define-ident-unmatched))
-         (handle:mv-define-ident! ac-list nc))
-        ((eq? (get-kind pac) 'mv-define-ident-esc)
-         (handle:mv-define-ident-esc! ac-list nc pm))
+  (cond ((memq pm '(mv-define-rest-ident mv-define-rest-ident-unmatched))
+         (handle:mv-define-rest-ident! ac-list nc))
+        ((eq? (get-kind pac) 'mv-define-rest-ident-esc)
+         (handle:mv-define-rest-ident-esc! ac-list nc pm))
+        (else #f)))
+
+(define-symmetric-handlers
+  #\|
+  'mv-define-rest-ident handle:mv-define-rest-ident!
+  'mv-define-rest-ident-backslash handle:mv-define-rest-ident-backslash!
+  'mv-define-rest-ident-esc handle:mv-define-rest-ident-esc!
+  invalidate/maybe-end-mv-define-rest-ident-esc!
+  'mv-define-rest-ident-hex-u handle:mv-define-rest-ident-hex-u!
+  'mv-define-rest-ident-hex-u1 handle:mv-define-rest-ident-hex-u1!
+  'mv-define-rest-ident-hex-u2 handle:mv-define-rest-ident-hex-u2!
+  'mv-define-rest-ident-hex-u3 handle:mv-define-rest-ident-hex-u3!
+  'mv-define-rest-ident-hex-U handle:mv-define-rest-ident-hex-U!
+  'mv-define-rest-ident-hex-U1 handle:mv-define-rest-ident-hex-U1!
+  'mv-define-rest-ident-hex-U2 handle:mv-define-rest-ident-hex-U2!
+  'mv-define-rest-ident-hex-U3 handle:mv-define-rest-ident-hex-U3!
+  'mv-define-rest-ident-hex-U4 handle:mv-define-rest-ident-hex-U4!
+  'mv-define-rest-ident-hex-U5 handle:mv-define-rest-ident-hex-U5!
+  'mv-define-rest-ident-hex-U6 handle:mv-define-rest-ident-hex-U6!
+  'mv-define-rest-ident-hex-U7 handle:mv-define-rest-ident-hex-U7!
+  'mv-define-rest-ident-hex-x handle:mv-define-rest-ident-hex-x!
+  'mv-define-rest-ident-nil handle:mv-define-rest-ident-nil!
+  'mv-define-rest-ident-octal-short handle:mv-define-rest-ident-octal-short!
+  'mv-define-rest-ident-octal-long handle:mv-define-rest-ident-octal-long!
+  'mv-define-rest-ident-octal-long1 handle:mv-define-rest-ident-octal-long1!)
+
+(define (try-mv-define-rest-ident-pm! ac-list nc pac pm)
+  (cond ((memq pm '(mv-define-rest-ident mv-define-rest-ident-unmatched))
+         (handle:mv-define-rest-ident! ac-list nc))
+        ((eq? (get-kind pac) 'mv-define-rest-ident-esc)
+         (handle:mv-define-rest-ident-esc! ac-list nc pm))
         (else #f)))
 
 (define-symmetric-handlers
@@ -685,4 +755,6 @@
       (try-mv-define-ident-pm! ac-list nc pac pm)
       (try-case-lambda-bind-ident-pm! ac-list nc pac pm)
       (try-case-lambda-rest-ident-pm! ac-list nc pac pm)
+      (try-mv-let-rest-ident-pm! ac-list nc pac pm)
+      (try-mv-define-rest-ident-pm! ac-list nc pac pm)
       #f))

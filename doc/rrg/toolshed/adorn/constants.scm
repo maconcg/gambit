@@ -46,22 +46,22 @@
 (define (plus-## strings)
   (append strings (map (lambda (s) (string-append "##" s)) strings)))
 
-;; There's probably some way to populate this list programatically.
-(define runtime-syntax
-  (map string->list
-       (plus-##
-        '("and" "begin" "c-declare" "c-define" "c-define-type" "c-initialize"
-          "c-lambda" "case" "case-lambda" "cond" "cond-expand" "declare"
-          "define" "define-library" "define-macro" "define-prim"
-          "define-prim&proc" "define-record-type" "define-runtime-macro"
-          "define-runtime-syntax" "define-structure" "define-syntax"
-          "define-type" "define-type-of-thread" "define-values" "delay"
-          "delay-force" "do" "future" "guard" "if" "import" "include"
-          "include-ci" "\x3bb;" "lambda" "let" "let*" "let*-values"
-          "let-values" "letrec" "letrec*" "letrec*-values" "letrec-values"
-          "load" "namespace" "or" "parameterize" "quasiquote" "quote"
-          "r7rs-guard" "receive" "set!" "syntax-error" "syntax-rules"
-          "this-source-file" "unless" "when"))))
+;There's probably some way to populate this list programatically.
+;(define runtime-syntax
+;  (map string->list
+;       (plus-##
+;        '("and" "begin" "c-declare" "c-define" "c-define-type" "c-initialize"
+;          "c-lambda" "case" "case-lambda" "cond" "cond-expand" "declare"
+;          "define" "define-library" "define-macro" "define-prim"
+;          "define-prim&proc" "define-record-type" "define-runtime-macro"
+;          "define-runtime-syntax" "define-structure" "define-syntax"
+;          "define-type" "define-type-of-thread" "define-values" "delay"
+;          "delay-force" "do" "future" "guard" "if" "import" "include"
+;          "include-ci" "\x3bb;" "lambda" "let" "let*" "let*-values"
+;          "let-values" "letrec" "letrec*" "letrec*-values" "letrec-values"
+;          "load" "namespace" "or" "parameterize" "quasiquote" "quote"
+;          "r7rs-guard" "receive" "set!" "syntax-error" "syntax-rules"
+;          "this-source-file" "unless" "when"))))
 
 (define sv-define-syntax
   (map string->list (plus-## '("define" "define-prim" "define-prim&proc"
@@ -82,7 +82,11 @@
 (define case-lambda-syntax (map string->list (plus-## '("case-lambda"))))
 
 (define runtime-syntax
-  (append sv-define-syntax sv-let-syntax lambda-syntax
+  (append sv-define-syntax
+          sv-let-syntax
+          lambda-syntax
+          mv-let-syntax
+          mv-define-syntax
           (map string->list
                (plus-##
                 '("and" "begin" "c-declare" "c-define" "c-define-type"
@@ -99,9 +103,10 @@
 (define else-is-syntax-syntax
   (map string->list (plus-## '("cond" "case" "macro-case-target"))))
 
-(define define-mesgs '(sv-define mv-define defun-proc defun-param))
+(define define-mesgs
+  '(sv-define defun-proc defun-param mv-define mv-define-rest))
 
-(define let-mesgs '(named-let sv-let mv-let))
+(define let-mesgs '(named-let sv-let mv-let mv-let-rest))
 
 (define lambda-bind-mesgs
   '(lambda-bind lambda-rest case-lambda-bind case-lambda-rest))
@@ -117,7 +122,7 @@
    sublet-mv-outermost-unmatched  sublet-mv-outermost-begin
    sublet-mv-outer-unmatched      sublet-mv-outer-begin
    sublet-mv-inner-unmatched      sublet-mv-inner-begin
-   subdef-mv-unmatched            subdef-mv-begin ))
+   subdefine-mv-list-unmatched    subdefine-mv-list-begin ))
 
 (define list-begin-mesgs
   (append sublist-begin-mesgs '(list-unmatched list-begin)))
@@ -137,13 +142,14 @@
 
 (define compound-kinds
   (append '( list vector defun lambda-bind-list let-sv-outer let-sv-inner
-             let-mv-outermost let-mv-outer let-mv-inner def-mv )
+             let-mv-outermost let-mv-outer let-mv-inner define-mv-list )
           hvector-kinds dsssl-compounds))
 
 (define ident/string-base-mesgs
   '( string datumc-string datumc-compound-string ident datumc-ident
      datumc-compound-ident defun-proc-ident defun-param-ident sv-define-ident
-     mv-define-ident named-let-ident sv-let-ident mv-let-ident
-     lambda-bind-list lambda-rest-ident case-lambda-bind-ident
-     case-lambda-rest-ident key-param-ident key-init-param-ident
-     opt-param-ident opt-init-param-ident rest-param-ident ))
+     mv-define-ident mv-define-rest-ident named-let-ident sv-let-ident
+     mv-let-ident mv-let-rest-ident lambda-bind-list lambda-rest-ident
+     case-lambda-bind-ident case-lambda-rest-ident key-param-ident
+     key-init-param-ident opt-param-ident opt-init-param-ident
+     rest-param-ident ))

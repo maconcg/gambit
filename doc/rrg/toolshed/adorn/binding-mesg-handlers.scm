@@ -130,7 +130,8 @@
           ((char=? nc #\|) (begin-symmetric ac-list nc ident-sym))
           ((memc nc abbrev-chars) (adorn-char nc 'abbrev ~sym))
           ((and (char=? nc #\@) (char=? (get-char pac)) #\,)
-           (adorn-char nc #\@ 'abbrev ~sym))
+           (adorn-char nc 'abbrev ~sym))
+          ((memc nc delim-chars) (try-nc! ac-list nc))
           (else (adorn-char nc sym sym)))))
 
 (define ^handle~sv-define-pm!
@@ -166,6 +167,18 @@
   (^handle~bind-pm! 'defun-param '~defun-param 'defun-param-ident))
 
 (define handle~sv-let-pm! (^handle~bind-pm! 'sv-let '~sv-let 'sv-let-ident))
+(define handle~mv-let-pm! (^handle~bind-pm! 'mv-let '~mv-let 'mv-let-ident))
+
+(define ^handle~~mv-define-pm!
+  (^handle~bind-pm! 'mv-define-rest '~~mv-define 'mv-define-rest-ident))
+
+(define (handle~~mv-define-pm! ac-list nc pac)
+  (cond ((memc nc compound-begin-chars)
+         (begin-compound! ac-list nc 'define-mv-list))
+        (else (^handle~~mv-define-pm! ac-list nc pac))))
+
+(define handle~mv-define-pm!
+  (^handle~bind-pm! 'mv-define '~mv-define 'mv-define-ident))
 
 (define (^handle~outer-pm! next-compound-sym mesg)
   (lambda (ac-list nc pac)
@@ -179,6 +192,18 @@
 
 (define handle~~~let-sv-pm! (^handle~outer-pm! 'let-sv-outer '~~~let-sv))
 (define handle~~let-sv-pm! (^handle~outer-pm! 'let-sv-inner '~~let-sv))
+
+(define handle~~~~let-mv-pm! (^handle~outer-pm! 'let-mv-outermost '~~~~let-mv))
+(define handle~~~let-mv-pm! (^handle~outer-pm! 'let-mv-outer '~~~let-mv))
+
+(define ^handle~~let-mv-pm! (^handle~outer-pm! 'let-mv-inner '~~let-mv))
+
+(define (handle~~let-mv-pm! ac-list nc pac)
+  (cond ((char=? nc #\|) (begin-symmetric ac-list nc 'mv-let-rest-ident))
+        ((memc nc delim-chars) (^handle~~let-mv-pm! ac-list nc pac))
+        ((and (char=? nc #\@) (char=? (get-char pac) #\,))
+         (^handle~~let-mv-pm! ac-list nc pac))
+        (else (adorn-char nc 'mv-let-rest 'mv-let-rest))))
 ;==============================================================================
 (define (^handle:bind-pm! sym ~next-mesg)
   (lambda (ac-list nc)
@@ -194,19 +219,29 @@
 (define handle:sv-let-pm!      (^handle:bind-pm! 'sv-let #f))
 (define handle:lambda-bind-pm! (^handle:bind-pm! 'lambda-bind '~lambda-bind))
 (define handle:lambda-rest-pm! (^handle:bind-pm! 'lambda-rest #f))
+(define handle:mv-let-pm!      (^handle:bind-pm! 'mv-let '~mv-let))
+(define handle:mv-let-rest-pm! (^handle:bind-pm! 'mv-let-rest #f))
+(define handle:mv-define-pm!   (^handle:bind-pm! 'mv-define '~mv-define))
+(define handle:mv-define-rest-pm! (^handle:bind-pm! 'mv-define-rest #f))
 ;==============================================================================
 (define (try-bind-pm! ac-list nc pac pm)
-  (cond ((eq? pm 'sv-define)     (handle:sv-define-pm! ac-list nc))
-        ((eq? pm 'lambda-bind)   (handle:lambda-bind-pm! ac-list nc))
-        ((eq? pm 'lambda-rest)   (handle:lambda-rest-pm! ac-list nc))
-        ((eq? pm 'sv-let)        (handle:sv-let-pm! ac-list nc))
-        ((eq? pm 'named-let)     (handle:named-let-pm! ac-list nc))
-        ((eq? pm 'defun-proc)    (handle:defun-proc-pm! ac-list nc))
-        ((eq? pm 'defun-param)   (handle:defun-param-pm! ac-list nc))
-        ((eq? pm '~~~let-sv)     (handle~~~let-sv-pm! ac-list nc pac))
-        ((eq? pm '~sv-define)    (handle~sv-define-pm! ac-list nc pac))
-        ((eq? pm '~named/sv-let) (handle~named/sv-let-pm! ac-list nc pac))
-        ((eq? pm '~defun-param)  (handle~defun-param-pm! ac-list nc pac))
+  (cond ((eq? pm 'sv-define)      (handle:sv-define-pm! ac-list nc))
+        ((eq? pm 'lambda-bind)    (handle:lambda-bind-pm! ac-list nc))
+        ((eq? pm 'lambda-rest)    (handle:lambda-rest-pm! ac-list nc))
+        ((eq? pm 'sv-let)         (handle:sv-let-pm! ac-list nc))
+        ((eq? pm 'named-let)      (handle:named-let-pm! ac-list nc))
+        ((eq? pm 'defun-proc)     (handle:defun-proc-pm! ac-list nc))
+        ((eq? pm 'defun-param)    (handle:defun-param-pm! ac-list nc))
+        ((eq? pm 'mv-let)         (handle:mv-let-pm! ac-list nc))
+        ((eq? pm 'mv-let-rest)    (handle:mv-let-rest-pm! ac-list nc))
+        ((eq? pm 'mv-define)      (handle:mv-define-pm! ac-list nc))
+        ((eq? pm 'mv-define-rest) (handle:mv-define-rest-pm! ac-list nc))
+        ((eq? pm '~~~let-sv)      (handle~~~let-sv-pm! ac-list nc pac))
+        ((eq? pm '~sv-define)     (handle~sv-define-pm! ac-list nc pac))
+        ((eq? pm '~named/sv-let)  (handle~named/sv-let-pm! ac-list nc pac))
+        ((eq? pm '~defun-param)   (handle~defun-param-pm! ac-list nc pac))
+        ((eq? pm '~~~~let-mv)     (handle~~~~let-mv-pm! ac-list nc pac))
+        ((eq? pm '~~mv-define)    (handle~~mv-define-pm! ac-list nc pac))
         ((eq? pm '~lambda-bind/rest)
          (handle~lambda-bind/rest-pm! ac-list nc pac))
         ((memq pm '(~lambda-bind sublambda-bind-list-unmatched))
@@ -217,14 +252,17 @@
          (handle~sv-let-pm! ac-list nc pac))
         ((memq pm '(~~let-sv sublet-sv-outer-unmatched sublet-sv-inner-end))
          (handle~~let-sv-pm! ac-list nc pac))
+        ((memq pm '(~mv-let sublet-mv-inner-unmatched))
+         (handle~mv-let-pm! ac-list nc pac))
+        ((memq pm '(~~let-mv sublet-mv-outer-unmatched))
+         (handle~~let-mv-pm! ac-list nc pac))
+        ((memq pm '(~~~let-mv sublet-mv-outermost-unmatched
+                              sublet-mv-outer-end))
+         (handle~~~let-mv-pm! ac-list nc pac))
+        ((memq pm '(~mv-define subdefine-mv-list-unmatched))
+         (handle~mv-define-pm! ac-list nc pac))
         (else #f)))
 
-                  ;;             ((matches-one-of? lambda-syntax operator)
-                  ;;              '~lambda-bind)
-                  ;;             ((matches-one-of? mv-let-syntax operator)
-                  ;;              '~mv-let)
-                  ;;             ((matches-one-of? mv-define-syntax operator)
-                  ;;              '~mv-define)
                   ;;             ((matches-one-of? case-lambda-syntax operator)
                   ;;              '~case-lambda-bind)
 
