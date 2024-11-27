@@ -87,6 +87,7 @@
           lambda-syntax
           mv-let-syntax
           mv-define-syntax
+          case-lambda-syntax
           (map string->list
                (plus-##
                 '("and" "begin" "c-declare" "c-define" "c-define-type"
@@ -109,7 +110,7 @@
 (define let-mesgs '(named-let sv-let mv-let mv-let-rest))
 
 (define lambda-bind-mesgs
-  '(lambda-bind lambda-rest case-lambda-bind case-lambda-rest))
+  '(lambda-bind lambda-rest case-lambda-bind))
 
 (define bind-mesgs (append define-mesgs let-mesgs lambda-bind-mesgs))
 
@@ -142,7 +143,8 @@
 
 (define compound-kinds
   (append '( list vector defun lambda-bind-list let-sv-outer let-sv-inner
-             let-mv-outermost let-mv-outer let-mv-inner define-mv-list )
+             let-mv-outermost let-mv-outer let-mv-inner define-mv-list
+             case-lambda-outer case-lambda-inner )
           hvector-kinds dsssl-compounds))
 
 (define ident/string-base-mesgs
@@ -150,6 +152,5 @@
      datumc-compound-ident defun-proc-ident defun-param-ident sv-define-ident
      mv-define-ident mv-define-rest-ident named-let-ident sv-let-ident
      mv-let-ident mv-let-rest-ident lambda-bind-list lambda-rest-ident
-     case-lambda-bind-ident case-lambda-rest-ident key-param-ident
-     key-init-param-ident opt-param-ident opt-init-param-ident
-     rest-param-ident ))
+     case-lambda-bind-ident key-param-ident key-init-param-ident
+     opt-param-ident opt-init-param-ident rest-param-ident ))

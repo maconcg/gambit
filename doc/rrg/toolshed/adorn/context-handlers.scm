@@ -29,7 +29,7 @@
                               ((matches-one-of? mv-define-syntax operator)
                                '~~mv-define)
                               ((matches-one-of? case-lambda-syntax operator)
-                               '~~case-lambda-bind/rest)
+                               '~~~case-lambda)
                               (else #f))))
              (adorn-char nc 'whitespace mesg)))
           ((memc nc delim-chars)
