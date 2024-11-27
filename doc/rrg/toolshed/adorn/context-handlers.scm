@@ -23,7 +23,7 @@
                               ((matches-one-of? sv-let-syntax operator)
                                '~~~let-sv)
                               ((matches-one-of? lambda-syntax operator)
-                               '~lambda-bind/rest)
+                               '~~lambda-bind)
                               ((matches-one-of? mv-let-syntax operator)
                                '~~~~let-mv)
                               ((matches-one-of? mv-define-syntax operator)
