@@ -70,9 +70,12 @@
 (define (operator-position? ac-list)
   ;; Would the next character be in the operator position of a list?
   (and (not (null? ac-list))
-       (let ((ac (car ac-list)))
-         (or (memq (get-mesg ac) list-begin-mesgs)
-             (and (atmosphere? ac) (operator-position? (cdr ac-list)))))))
+       (let* ((ac (car ac-list)) (mesg (get-mesg ac)))
+         (or (memq mesg list-begin-mesgs)
+             (cond ((eq? mesg 'linec-end)
+                    (operator-position? (car (get-stack ac))))
+                   ((atmosphere? ac) (operator-position? (cdr ac-list)))
+                   (else #f))))))
 
 (define (rt-syntax-operator ac-list)
   ;; Returns the operator of the current list if that list begins with the kind
@@ -90,6 +93,7 @@
                              rest
                              (skip (cdr rest) (+ i 1)))) '()))
                 ((memq mesg list-begin-mesgs) buffer)
+                ((eq? mesg 'linec-end) (seek (car (get-stack ac)) '()))
                 (else (seek (cdr rest) '())))))))
 
 (define (start-of-list ac-list)
@@ -108,6 +112,7 @@
                                           rest
                                           (skip (cdr ac-list) (+ i 1))))
                                     (car stack)))))
+              ((eq? mesg 'linec-end) (start-of-list (car (get-stack ac))))
               (else (start-of-list (cdr ac-list)))))))
 
 (define (up-list ac-list)
@@ -168,9 +173,11 @@
   (lambda (ac-list mesg-list)
     (let looking/peeking-loop ((rest ac-list))
       (and (not (null? rest))
-           (let ((ac (car rest)))
-             (cond ((predicate? ac) (looking/peeking-loop (cdr rest)))
-                   (else (memq (get-mesg ac) mesg-list))))))))
+           (let* ((ac (car rest)) (mesg (get-mesg ac)))
+             (cond ((eq? mesg 'linec-end)
+                    (looking/peeking-loop (car (get-stack ac))))
+                   ((predicate? ac) (looking/peeking-loop (cdr rest)))
+                   (else (memq mesg mesg-list))))))))
 
 ;; These names aren't the best.  Possible mnemonic: "looking-at" is true if the
 ;; target is visible without obstruction; "peeking-at" is true if the target is
@@ -449,10 +456,11 @@
 (define (^end-compound! sub-mesg? peer/empty?/distance ->sub-begin ->sub-end)
   ;; End a compound datum and maybe adjust the kinds of the begin/end chars.
   (define (compound-kind->distance symbol)
-    (cond ((memq symbol (append '(list datumc-compound) dsssl-compounds)) 1)
-          ((eq? symbol 'vector) 2)
-          ((memq symbol '(u8vector s8vector)) 4)
-          (else 5)))
+    (cond ((eq? symbol 'vector) 2)
+          ((memq symbol '( u8vector s8vector )) 4)
+          ((memq symbol '( u16vector u32vector u64vector s16vector s32vector
+                           s64vector f32vector f64vector )) 5)
+          (else 1)))
   (lambda (ac-list nc)
     (let ((p/e/d (peer/empty?/distance ac-list)))
       (let ((from-peer (car p/e/d)) (empty (cadr p/e/d)) (dist (cddr p/e/d)))

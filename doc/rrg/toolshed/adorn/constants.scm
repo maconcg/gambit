@@ -1,9 +1,13 @@
 ;; Copyright (c) 2024 by Macon Gambill, all rights reserved.
 
-(define delim-chars '(#\) #\( #\space #\newline #\tab #\" #\; #\| #\' #\` #\\))
 (define whitespace-chars '(#\space #\newline #\tab))
 (define compound-begin-chars '(#\( #\[ #\{))
 (define compound-end-chars '(#\) #\] #\}))
+(define abbrev-chars '(#\' #\` #\,))
+(define delim-chars
+  (append whitespace-chars compound-begin-chars compound-end-chars abbrev-chars
+          '(#\" #\; #\| #\\)))
+
 (define binary-chars '(#\0 #\1))
 (define octal-chars (append binary-chars '(#\2 #\3 #\4 #\5 #\6 #\7)))
 (define decimal-chars (append octal-chars '(#\8 #\9)))
@@ -11,16 +15,21 @@
 
 (define mnemonic-escape-chars
   '(#\a #\b #\f #\n #\r #\t #\v #\" #\\ #\| #\? #\space))
-(define directives '("#!fold-case" "#!no-fold-case"))
-(define dsssl-sharp-objects '("#!key" "#!optional" "#!rest"))
-(define sharp-objects (append dsssl-sharp-objects '("#!eof" "#!void")))
-(define short-named-chars '("#\\esc" "#\\nul"))
+(define directives
+  (map string->list '("#!fold-case" "#!no-fold-case")))
+(define dsssl-sharp-objects
+  (map string->list '("#!key" "#!optional" "#!rest")))
+(define sharp-objects
+  (append dsssl-sharp-objects (map string->list '("#!eof" "#!void"))))
+(define short-named-chars
+  (map string->list '("#\\esc" "#\\nul")))
 (define long-named-chars
-  '("#\\null" "#\\alarm" "#\\backspace" "#\\tab" "#\\space" "#\\newline"
-    "#\\return" "#\\delete" "#\\escape" "#\\page" "#\\vtab" "#\\linefeed"))
-(define fvector-strings '("#f32(" "#f64("))
-(define svector-strings '("#s8(" "#s16(" "#s32(" "#s64("))
-(define uvector-strings '("#u8(" "#u16(" "#u32(" "#u64("))
+  (map string->list '("#\\null" "#\\alarm" "#\\backspace" "#\\tab" "#\\space"
+                      "#\\newline" "#\\return" "#\\delete" "#\\escape"
+                      "#\\page" "#\\vtab" "#\\linefeed")))
+(define fvectors (map string->list '("#f32(" "#f64(")))
+(define svectors (map string->list '("#s8(" "#s16(" "#s32(" "#s64(")))
+(define uvectors (map string->list '("#u8(" "#u16(" "#u32(" "#u64(")))
 (define fvector-kinds '(f32vector f64vector))
 (define svector-kinds '(s8vector s16vector s32vector s64vector))
 (define uvector-kinds '(u8vector u16vector u32vector u64vector))
@@ -39,48 +48,102 @@
 
 ;; There's probably some way to populate this list programatically.
 (define runtime-syntax
-  (plus-##
-   '("and" "begin" "c-declare" "c-define" "c-define-type" "c-initialize"
-     "c-lambda" "case" "case-lambda" "cond" "cond-expand" "declare" "define"
-     "define-library" "define-macro" "define-prim" "define-prim&proc"
-     "define-record-type" "define-runtime-macro" "define-runtime-syntax"
-     "define-structure" "define-syntax" "define-type" "define-type-of-thread"
-     "define-values" "delay" "delay-force" "do" "future" "guard" "if" "import"
-     "include" "include-ci" "\x3bb;" "lambda" "let" "let*" "let*-values"
-     "let-values" "letrec" "letrec*" "letrec*-values" "letrec-values" "load"
-     "namespace" "or" "parameterize" "quasiquote" "quote" "r7rs-guard"
-     "receive" "set!" "syntax-error" "syntax-rules" "this-source-file"
-     "unless" "when")))
+  (map string->list
+       (plus-##
+        '("and" "begin" "c-declare" "c-define" "c-define-type" "c-initialize"
+          "c-lambda" "case" "case-lambda" "cond" "cond-expand" "declare"
+          "define" "define-library" "define-macro" "define-prim"
+          "define-prim&proc" "define-record-type" "define-runtime-macro"
+          "define-runtime-syntax" "define-structure" "define-syntax"
+          "define-type" "define-type-of-thread" "define-values" "delay"
+          "delay-force" "do" "future" "guard" "if" "import" "include"
+          "include-ci" "\x3bb;" "lambda" "let" "let*" "let*-values"
+          "let-values" "letrec" "letrec*" "letrec*-values" "letrec-values"
+          "load" "namespace" "or" "parameterize" "quasiquote" "quote"
+          "r7rs-guard" "receive" "set!" "syntax-error" "syntax-rules"
+          "this-source-file" "unless" "when"))))
 
 (define sv-define-syntax
-  (plus-## '("define" "define-prim" "define-prim&proc" "define-record-type")))
+  (map string->list (plus-## '("define" "define-prim" "define-prim&proc"
+                               "define-record-type"))))
 
 (define sv-let-syntax
-  (plus-## '("let" "let*" "letrec" "letrec*" "parameterize")))
+  (map string->list
+       (plus-## '("let" "let*" "letrec" "letrec*" "parameterize"))))
 
-(define else-is-syntax-syntax (plus-## '("cond" "case" "macro-case-target")))
+(define lambda-syntax (map string->list (plus-## '("\x3bb;" "lambda"))))
+
+(define mv-let-syntax
+  (map string->list (plus-## '("let*-values" "let-values" "letrec*-values"
+                               "letrec-values"))))
+
+(define mv-define-syntax (map string->list (plus-## '("define-values"))))
+
+(define case-lambda-syntax (map string->list (plus-## '("case-lambda"))))
+
+(define runtime-syntax
+  (append sv-define-syntax sv-let-syntax lambda-syntax
+          (map string->list
+               (plus-##
+                '("and" "begin" "c-declare" "c-define" "c-define-type"
+                  "c-initialize" "c-lambda" "case" "cond" "cond-expand"
+                  "declare" "define-library" "define-macro"
+                  "define-runtime-macro" "define-runtime-syntax"
+                  "define-structure" "define-syntax" "define-type"
+                  "define-type-of-thread" "delay" "delay-force" "do" "future"
+                  "guard" "if" "import" "include" "include-ci" "load"
+                  "namespace" "or" "quasiquote" "quote" "r7rs-guard" "receive"
+                  "set!" "syntax-error" "syntax-rules" "this-source-file"
+                  "unless" "when")))))
+
+(define else-is-syntax-syntax
+  (map string->list (plus-## '("cond" "case" "macro-case-target"))))
 
 (define define-mesgs '(sv-define mv-define defun-proc defun-param))
+
 (define let-mesgs '(named-let sv-let mv-let))
+
 (define lambda-bind-mesgs
   '(lambda-bind lambda-rest case-lambda-bind case-lambda-rest))
+
 (define bind-mesgs (append define-mesgs let-mesgs lambda-bind-mesgs))
 
-(define sublist-begin-mesgs '(sublist-unmatched sublist-begin))
+(define sublist-begin-mesgs
+'( sublist-unmatched              sublist-begin
+   subdefun-unmatched             subdefun-begin
+   sublambda-bind-list-unmatched  sublambda-bind-list-begin
+   sublet-sv-outer-unmatched      sublet-sv-outer-begin
+   sublet-sv-inner-unmatched      sublet-sv-inner-begin
+   sublet-mv-outermost-unmatched  sublet-mv-outermost-begin
+   sublet-mv-outer-unmatched      sublet-mv-outer-begin
+   sublet-mv-inner-unmatched      sublet-mv-inner-begin
+   subdef-mv-unmatched            subdef-mv-begin ))
+
 (define list-begin-mesgs
   (append sublist-begin-mesgs '(list-unmatched list-begin)))
-(define sublist-delimiter-mesgs (append sublist-begin-mesgs '(sublist-end)))
+
+(define sublist-delimiter-mesgs
+  (append sublist-begin-mesgs
+          '( sublist-end subdefun-end sublambda-bind-list-end
+             sublet-sv-outer-end sublet-sv-inner-end sublet-mv-outermost-end
+             sublet-mv-outer-end sublet-mv-inner-end subdef-mv-end )))
+
 (define list-delimiter-mesgs
   (append sublist-delimiter-mesgs list-begin-mesgs '(list-end)))
+
 (define list-end-mesgs '(sublist-end list-end))
 
 (define dsssl-compounds '(key-compound opt-compound))
-(define compound-kinds (append '(list vector) dsssl-compounds hvector-kinds))
+
+(define compound-kinds
+  (append '( list vector defun lambda-bind-list let-sv-outer let-sv-inner
+             let-mv-outermost let-mv-outer let-mv-inner def-mv )
+          hvector-kinds dsssl-compounds))
 
 (define ident/string-base-mesgs
   '( string datumc-string datumc-compound-string ident datumc-ident
      datumc-compound-ident defun-proc-ident defun-param-ident sv-define-ident
      mv-define-ident named-let-ident sv-let-ident mv-let-ident
-     lambda-bind-ident lambda-rest-ident case-lambda-bind-ident
+     lambda-bind-list lambda-rest-ident case-lambda-bind-ident
      case-lambda-rest-ident key-param-ident key-init-param-ident
      opt-param-ident opt-init-param-ident rest-param-ident ))
