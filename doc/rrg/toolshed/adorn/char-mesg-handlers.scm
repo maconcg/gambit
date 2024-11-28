@@ -9,7 +9,7 @@
 (define (handle:char-2! ac-list nc)
   (cond ((memc nc delim-chars) (try-nc! ac-list nc))
         (else (let ((tested (append (chars-until ac-list 1) (list nc))))
-                (cond ((could-match-one-of? long-named-chars tested)
+                (cond ((could-match-one-of? named-chars tested)
                        (revise-until! ac-list 'char 1)
                        (adorn-char nc 'char 'char-3))
                       (else (revise-until! ac-list 'char 1)
@@ -21,7 +21,7 @@
                 (cond ((matches-one-of? short-named-chars tested)
                        (revise-until! ac-list 'char-body 2)
                        (adorn-char nc 'char-body 'char-4+))
-                      ((could-match-one-of? long-named-chars tested)
+                      ((could-match-one-of? named-chars tested)
                        (adorn-char nc 'char 'char-4+))
                       (else (adorn-char nc 'invalid 'invalid)))))))
 

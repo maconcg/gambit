@@ -25,6 +25,7 @@
 (define long-named-chars
   (map string->list '("null" "alarm" "backspace" "space" "newline" "return"
                       "delete" "escape" "page" "vtab" "linefeed")))
+(define named-chars (append long-named-chars short-named-chars))
 (define fvectors (map string->list '("#f32(" "#f64(")))
 (define svectors (map string->list '("#s8(" "#s16(" "#s32(" "#s64(")))
 (define uvectors (map string->list '("#u8(" "#u16(" "#u32(" "#u64(")))
