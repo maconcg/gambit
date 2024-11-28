@@ -77,8 +77,8 @@
                   "declare" "define-library" "define-macro"
                   "define-runtime-macro" "define-runtime-syntax"
                   "define-structure" "define-syntax" "define-type"
-                  "define-type-of-thread" "delay" "delay-force" "do" "future"
-                  "guard" "if" "import" "include" "include-ci" "load"
+                  "define-type-of-thread" "delay" "delay-force" "do" "else"
+                  "future" "guard" "if" "import" "include" "include-ci" "load"
                   "namespace" "or" "quasiquote" "quote" "r7rs-guard" "receive"
                   "set!" "syntax-error" "syntax-rules" "this-source-file"
                   "unless" "when")))))

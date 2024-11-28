@@ -8,6 +8,8 @@
         (try-datumc-linec-pm! ac-list nc pm)
         (try-directive/sharp-pm! ac-list nc pm)
         (try-else-pm! ac-list nc pm)
+        (try-equal-sign-pm! ac-list nc pm)
+        (try-fat-arrow-pm! ac-list nc pm)
         (try-hs-pm! ac-list nc pm)
         (try-symmetric-pm! ac-list nc pac pm)
         (try-invalid-pm! ac-list nc pm)
@@ -21,97 +23,113 @@
         (try-rt-syntax-pm! ac-list nc pac pm)
         (try-shebang-pm! ac-list nc pm))))
 
-(define (try-nc! ac-list nc)
-  (define (^handle-potential-decimal kind ~mesg)
-    (lambda (ac-list nc)
-      (cond ((null? ac-list) (adorn-char nc kind ~mesg))
-            (else (let ((pac (car ac-list)))
-                    (if (or (memq (get-kind pac) (cons 'box atmosphere-kinds))
-                            (memc (get-char pac) delim-chars))
-                        (adorn-char nc kind ~mesg)
-                        (adorn-without-context nc)))))))
-  (define handle-decimal-char (^handle-potential-decimal 'number 'dec.num))
-  (define handle-dot (^handle-potential-decimal 'default '~dec-num))
-  (define handle-plus/minus
-    (^handle-potential-decimal 'default '~inf/nan/dec.num))
-  (define (adorn-without-context nc)
-    (cond ((char=? nc #\\) (adorn-char nc 'infix #f))
-          ((char=? nc #\|) (adorn-char nc 'ident #f))
-          ((char=? nc #\") (adorn-char nc 'string #f))
-          ((char=? nc #\') (adorn-char nc 'abbrev 'quote))
-          ((char=? nc #\`) (adorn-char nc 'abbrev 'quasiquote))
-          ((char=? nc #\,) (adorn-char nc 'abbrev 'unquote))
-          ((memc nc whitespace-chars) (adorn-char nc 'whitespace #f))
-          (else (adorn-char nc 'default #f))))
-  (define (handle-octothorpe ac-list nc)
-    (cond ((null? ac-list) (adorn-char nc 'default 'octothorpe))
+(define (^handle:potential-decimal kind ~mesg)
+  (lambda (ac-list nc)
+    (cond ((null? ac-list) (adorn-char nc kind ~mesg))
           (else (let ((pac (car ac-list)))
-                    (if (or (memq (get-kind pac) (cons 'box atmosphere-kinds))
-                            (memc (get-char pac) delim-chars))
-                        (adorn-char nc 'default 'octothorpe)
-                        (adorn-char nc 'default #f))))))
-  (define (handle-semicolon ac-list nc)
-    (let ((ac (adorn-char nc 'linec 'linec)))
-      (set-stack! ac (list (cons ac ac-list)))
-      ac))
+                  (if (or (memq (get-kind pac) (cons 'box atmosphere-kinds))
+                          (memc (get-char pac) delim-chars))
+                      (adorn-char nc kind ~mesg)
+                      (adorn-without-context nc)))))))
+
+(define handle:decimal-char (^handle:potential-decimal 'number 'dec.num))
+
+(define handle:dot (^handle:potential-decimal 'default '~dec-num))
+
+(define handle:plus/minus
+  (^handle:potential-decimal 'default '~inf/nan/dec.num))
+
+(define (adorn-without-context nc)
+  (cond ((char=? nc #\\) (adorn-char nc 'infix #f))
+        ((char=? nc #\|) (adorn-char nc 'ident #f))
+        ((char=? nc #\") (adorn-char nc 'string #f))
+        ((char=? nc #\=) (adorn-char nc 'default 'equal-sign))
+        ((char=? nc #\') (adorn-char nc 'abbrev 'quote))
+        ((char=? nc #\`) (adorn-char nc 'abbrev 'quasiquote))
+        ((char=? nc #\,) (adorn-char nc 'abbrev 'unquote))
+        ((memc nc whitespace-chars) (adorn-char nc 'whitespace #f))
+        (else (adorn-char nc 'default #f))))
+
+(define (handle:octothorpe ac-list nc)
+  (cond ((null? ac-list) (adorn-char nc 'default 'octothorpe))
+        (else (let ((pac (car ac-list)))
+                (if (or (memq (get-kind pac) (cons 'box atmosphere-kinds))
+                        (memc (get-char pac) delim-chars))
+                    (adorn-char nc 'default 'octothorpe)
+                    (adorn-char nc 'default #f))))))
+
+(define (handle:semicolon ac-list nc)
+  (let ((ac (adorn-char nc 'linec 'linec)))
+    (set-stack! ac (list (cons ac ac-list)))
+    ac))
+
+(define (try-nc! ac-list nc)
   (cond ((char=? nc #\") (begin-symmetric ac-list nc 'string))
         ((char=? nc #\|) (begin-symmetric ac-list nc 'ident))
-        ((char=? nc #\.) (handle-dot ac-list nc))
-        ((char=? nc #\#) (handle-octothorpe ac-list nc))
-        ((char=? nc #\;) (handle-semicolon ac-list nc))
+        ((char=? nc #\.) (handle:dot ac-list nc))
+        ((char=? nc #\#) (handle:octothorpe ac-list nc))
+        ((char=? nc #\;) (handle:semicolon ac-list nc))
         ((memc nc compound-begin-chars) (begin-compound! ac-list nc 'list))
         ((memc nc compound-end-chars) (end-compound! ac-list nc))
-        ((memc nc decimal-chars) (handle-decimal-char ac-list nc))
-        ((memc nc '(#\- #\+)) (handle-plus/minus ac-list nc))
+        ((memc nc decimal-chars) (handle:decimal-char ac-list nc))
+        ((memc nc '(#\- #\+)) (handle:plus/minus ac-list nc))
         (else (adorn-without-context nc))))
 
+(define (adorn-loop! unadorned adorned)
+  (if (null? unadorned)
+      adorned
+      (adorn-loop! (cdr unadorned)
+                   (cons (let ((nc (car unadorned)))
+                           (cond ((null? adorned) (try-nc! adorned nc))
+                                 (else (let ((pac (car adorned)))
+                                         (or (try-pm! adorned nc pac)
+                                             (try-context! adorned nc pac)
+                                             (try-nc! adorned nc))))))
+                         adorned))))
+
+(define (maybe-handle:shebang chars adorned)
+  (if (and (null? adorned) (not (null? chars)) (not (null? (cdr chars)))
+           (char=? (car chars) #\#) (char=? (cadr chars) #\!))
+      (let ((trunc (cddr chars)))
+        (if (and (not (null? trunc)) (memc (car trunc) '(#\/ #\space #\tab)))
+            (let ((first-ac (adorn-char #\# 'shebang 'shebang))
+                  (second-ac (adorn-char #\! 'shebang 'shebang)))
+              (adorn-loop! trunc (list second-ac first-ac)))
+            (adorn-loop! chars adorned)))
+      (adorn-loop! chars adorned)))
+
 (define (adorn! chars . so-far)
-  (define (adorn-loop! unadorned adorned)
-    (if (null? unadorned)
-        adorned
-        (adorn-loop! (cdr unadorned)
-                     (cons (let ((nc (car unadorned)))
-                             (cond ((null? adorned) (try-nc! adorned nc))
-                                   (else (let ((pac (car adorned)))
-                                           (or (try-pm! adorned nc pac)
-                                               (try-context! adorned nc pac)
-                                               (try-nc! adorned nc))))))
-                           adorned))))
-  (define (maybe-handle:shebang chars adorned)
-    (if (and (null? adorned) (not (null? chars)) (not (null? (cdr chars)))
-             (char=? (car chars) #\#) (char=? (cadr chars) #\!))
-        (let ((trunc (cddr chars)))
-          (if (and (not (null? trunc)) (memc (car trunc) '(#\/ #\space #\tab)))
-              (let ((first-ac (adorn-char #\# 'shebang 'shebang))
-                    (second-ac (adorn-char #\! 'shebang 'shebang)))
-                (adorn-loop! trunc (list second-ac first-ac)))
-              (adorn-loop! chars adorned)))
-        (adorn-loop! chars adorned)))
   (let ((char-list (cond ((string? chars) (string->list chars))
                          ((char? chars) (list chars))
                          (else chars))))
     (maybe-handle:shebang char-list (if (null? so-far) so-far (car so-far)))))
 
+(define define-like-binds
+  '(defun-proc defun-proc-ident sv-define sv-define-ident mv-define
+     mv-define-ident mv-define-rest mv-define-rest-ident ))
+
+(define define-like-escapes
+  '( defun-proc-ident-esc sv-define-ident-esc mv-define-ident-esc
+     mv-define-rest-ident-esc ))
+
+(define let-like-binds
+  '( defun-param defun-param-ident named-let named-let-ident sv-let
+     sv-let-ident mv-let mv-let-ident mv-let-rest mv-let-rest-ident
+     lambda-bind lambda-bind-ident lambda-rest lambda-rest-ident
+     case-lambda-bind case-lambda-bind-ident opt-bind opt-bind-ident
+     opt-init opt-init-ident rest-bind rest-bind-ident ))
+
+(define let-like-escapes
+  '( defun-param-ident-esc named-let-ident-esc sv-let-ident-esc
+     mv-let-ident-esc lambda-bind-ident-esc lambda-rest-ident-esc
+     case-lambda-bind-ident-esc opt-bind-ident-esc opt-init-ident-esc
+     rest-bind-ident-esc ))
+
+(define syntax-kinds '(rt-syntax aux-syntax))
+
+(define empty-compound-kinds (map ->empty compound-kinds))
+
 (define (reverse+simplify-kinds! ac-list)
-  (define define-like-binds
-    '(defun-proc defun-proc-ident sv-define sv-define-ident mv-define
-       mv-define-ident mv-define-rest mv-define-rest-ident ))
-  (define define-like-escapes
-    '( defun-proc-ident-esc sv-define-ident-esc mv-define-ident-esc
-       mv-define-rest-ident-esc ))
-  (define let-like-binds
-    '( defun-param defun-param-ident named-let named-let-ident sv-let
-       sv-let-ident mv-let mv-let-ident mv-let-rest mv-let-rest-ident
-       lambda-bind lambda-bind-ident lambda-rest lambda-rest-ident
-       case-lambda-bind case-lambda-bind-ident opt-bind opt-bind-ident
-       opt-init opt-init-ident rest-bind rest-bind-ident ))
-  (define let-like-escapes
-    '( defun-param-ident-esc named-let-ident-esc sv-let-ident-esc
-       mv-let-ident-esc lambda-bind-ident-esc lambda-rest-ident-esc
-       case-lambda-bind-ident-esc opt-bind-ident-esc opt-init-ident-esc
-       rest-bind-ident-esc ))
-  (define syntax-kinds '(rt-syntax aux-syntax))
-  (define empty-compound-kinds (map ->empty compound-kinds))
   (let simplify! ((unsimplified ac-list) (simplified '()))
     (if (null? unsimplified)
         simplified

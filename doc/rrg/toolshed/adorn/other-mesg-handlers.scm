@@ -213,3 +213,21 @@
              (else (revise-until! ac-list 'default 'octothorpe)
                    (adorn-char nc 'default #f)))))
 
+(define (try-else-pm! ac-list nc pm)
+  (and (eq? pm 'else) (handle:else-pm! ac-list nc)))
+
+(define (try-equal-sign-pm! ac-list nc pm)
+  (and (eq? pm 'equal-sign)
+       (char=? nc #\>)
+       (not (operator-position? ac-list))
+       (let ((operator (rt-syntax-operator (up-list ac-list))))
+         (cond ((matches-one-of? else-is-syntax-syntax operator)
+                (revise-until! ac-list 'aux-syntax 1)
+                (adorn-char nc 'aux-syntax 'fat-arrow))
+               (else (adorn-char nc 'default #f))))))
+
+(define (try-fat-arrow-pm! ac-list nc pm)
+  (and (eq? pm 'fat-arrow)
+       (cond ((memc nc delim-chars) (try-nc! ac-list nc))
+             (else (revise-until! ac-list 'default 2)
+                   (adorn-char nc 'default #f)))))
