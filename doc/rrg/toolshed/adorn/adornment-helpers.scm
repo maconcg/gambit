@@ -357,14 +357,15 @@
   (and symbol
        (string=? "datumc-sub" (string-copy (symbol->string symbol) 0 10))))
 
+(define (compound-kind->distance symbol)
+  (cond ((eq? symbol 'vector) 2)
+        ((memq symbol '( u8vector s8vector )) 4)
+        ((memq symbol '( u16vector u32vector u64vector s16vector s32vector
+                         s64vector f32vector f64vector )) 5)
+        (else 1)))
+
 (define (^end-compound! sub-mesg? peer/empty?/distance ->sub-begin ->sub-end)
   ;; End a compound datum and maybe adjust the kinds of the begin/end chars.
-  (define (compound-kind->distance symbol)
-    (cond ((eq? symbol 'vector) 2)
-          ((memq symbol '( u8vector s8vector )) 4)
-          ((memq symbol '( u16vector u32vector u64vector s16vector s32vector
-                           s64vector f32vector f64vector )) 5)
-          (else 1)))
   (lambda (ac-list nc)
     (let ((p/e/d (peer/empty?/distance ac-list)))
       (let ((from-peer (car p/e/d)) (empty (cadr p/e/d)) (dist (cddr p/e/d)))
