@@ -21,10 +21,10 @@
   (map string->list '("#!key" "#!optional" "#!rest")))
 (define sharp-objects
   (append dsssl-sharp-objects (map string->list '("#!eof" "#!void"))))
-(define short-named-chars (map string->list '("esc" "nul")))
+(define short-named-chars (map string->list '("esc" "nul" "tab")))
 (define long-named-chars
-  (map string->list '("null" "alarm" "backspace" "tab" "space" "newline"
-                      "return" "delete" "escape" "page" "vtab" "linefeed")))
+  (map string->list '("null" "alarm" "backspace" "space" "newline" "return"
+                      "delete" "escape" "page" "vtab" "linefeed")))
 (define fvectors (map string->list '("#f32(" "#f64(")))
 (define svectors (map string->list '("#s8(" "#s16(" "#s32(" "#s64(")))
 (define uvectors (map string->list '("#u8(" "#u16(" "#u32(" "#u64(")))
