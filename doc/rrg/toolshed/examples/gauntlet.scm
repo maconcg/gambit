@@ -80,7 +80,7 @@ end-of-this-here-string
 (define identity (lambda thing thing))
 (define identity (lambda thing #;#;#; thing thing #|thing|# thing thing))
 
-(define (compose f g)
+(define (compose |\x66;| g)
   (lambda args
     (call-with-values (lambda () (apply g args))
       f)))

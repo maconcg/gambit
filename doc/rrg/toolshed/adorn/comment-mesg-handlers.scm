@@ -38,10 +38,8 @@
 
 (define (handle~datumc-compound! ac-list nc)
   (cond ((char=? nc #\#) (adorn-char nc 'datumc '~datumc-compound))
-        ((char=? nc #\")
-         (adorn-char nc 'datumc 'datumc-compound-string-unmatched))
-        ((char=? nc #\|)
-         (adorn-char nc 'datumc 'datumc-compound-ident-unmatched))
+        ((char=? nc #\") (adorn-char nc 'datumc 'datumc-compound-string))
+        ((char=? nc #\|) (adorn-char nc 'datumc 'datumc-compound-ident))
         ((memc nc compound-begin-chars) (begin-datumc-compound! ac-list nc))
         ((memc nc compound-end-chars) (datumc:end-compound! ac-list nc))
         (else (adorn-char nc 'datumc '~datumc-compound))))
@@ -159,9 +157,12 @@
                   (if (memc nc delim-chars)
                       (maybe-end-datumc! ac-list nc pac pm)
                       (adorn-char nc 'datumc 'datumc-simple)))))))
-(define handle:datumc~fvector! (handle:datumc~hvector! '~datumc-fvector fvectors))
-(define handle:datumc~svector! (handle:datumc~hvector! '~datumc-svector svectors))
-(define handle:datumc~uvector! (handle:datumc~hvector! '~datumc-uvector uvectors))
+(define handle:datumc~fvector!
+  (handle:datumc~hvector! '~datumc-fvector fvectors))
+(define handle:datumc~svector!
+  (handle:datumc~hvector! '~datumc-svector svectors))
+(define handle:datumc~uvector!
+  (handle:datumc~hvector! '~datumc-uvector uvectors))
 
 (define (handle~datumc-directive! ac-list nc pac pm)
   (let ((tested (append (chars-until ac-list 'datumc#) (list nc))))
@@ -199,6 +200,38 @@
         ((memc nc delim-chars) (maybe-end-datumc! ac-list nc pac pm))
         (else (adorn-char nc 'datumc 'datumc-simple))))
 
+(define (^handle:datumc-symmetric! delim-char backslash-sym kind)
+  (lambda (ac-list nc)
+    (cond ((char=? nc #\\) (adorn-char nc 'datumc backslash-sym))
+          ((char=? nc delim-char) (datumc:end-symmetric! ac-list nc kind))
+          (else (adorn-char nc 'datumc kind)))))
+
+(define handle:datumc-string
+  (^handle:datumc-symmetric! #\" 'datumc-string-backslash 'datumc-string))
+(define (handle:datumc-string-backslash ac-list nc)
+  (adorn-char nc 'datumc 'datumc-string))
+
+(define (handle:datumc-compound-string ac-list nc)
+  (cond ((char=? nc #\\)
+         (adorn-char nc 'datumc 'datumc-compound-string-backslash))
+        ((char=? nc #\") (adorn-char nc 'datumc '~datumc-compound))
+        (else (adorn-char nc 'datumc 'datumc-compound-string))))
+(define (handle:datumc-compound-string-backslash ac-list nc)
+  (adorn-char nc 'datumc 'datumc-compound-string))
+
+(define handle:datumc-ident
+  (^handle:datumc-symmetric! #\" 'datumc-ident-backslash 'datumc-ident))
+(define (handle:datumc-ident-backslash ac-list nc)
+  (adorn-char nc 'datumc 'datumc-ident))
+
+(define (handle:datumc-compound-ident ac-list nc)
+  (cond ((char=? nc #\\)
+         (adorn-char nc 'datumc 'datumc-compound-ident-backslash))
+        ((char=? nc #\") (adorn-char nc 'datumc '~datumc-compound))
+        (else (adorn-char nc 'datumc 'datumc-compound-ident))))
+(define (handle:datumc-compound-ident-backslash ac-list nc)
+  (adorn-char nc 'datumc 'datumc-compound-ident))
+
 (define (try-nestc-pm! ac-list nc pac pm)
   (cond ((memq pm '(nestc nestc-begin nestc+ nestc-)) (handle:nestc nc))
         ((eq? pm '~nestc+) (handle~nestc+! ac-list nc pac))
@@ -225,4 +258,20 @@
    ((eq? pm '~datumc-svector)   (handle:datumc~svector! ac-list nc pac pm))
    ((eq? pm '~datumc-uvector)   (handle:datumc~uvector! ac-list nc pac pm))
    ((eq? pm '~datumc-directive) (handle~datumc-directive! ac-list nc pac pm))
+   ((memq pm '(datumc-string datumc-string-unmatched))
+    (handle:datumc-string ac-list nc))
+   ((memq pm '(datumc-ident datumc-ident-unmatched))
+    (handle:datumc-ident ac-list nc))
+   ((memq pm '(datumc-compound-string datumc-compound-string))
+    (handle:datumc-compound-string ac-list nc))
+   ((memq pm '(datumc-compound-ident datumc-compound-ident))
+    (handle:datumc-compound-ident ac-list nc))
+   ((eq? pm 'datumc-string-backslash)
+    (handle:datumc-string-backslash ac-list nc))
+   ((eq? pm 'datumc-ident-backslash)
+    (handle:datumc-ident-backslash ac-list nc))
+   ((eq? pm 'datumc-compound-string-backslash)
+    (handle:datumc-compound-string-backslash ac-list nc))
+   ((eq? pm 'datumc-compound-ident-backslash)
+    (handle:datumc-compound-ident-backslash ac-list nc))
    (else #f)))
