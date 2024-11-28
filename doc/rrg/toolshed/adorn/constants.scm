@@ -21,12 +21,10 @@
   (map string->list '("#!key" "#!optional" "#!rest")))
 (define sharp-objects
   (append dsssl-sharp-objects (map string->list '("#!eof" "#!void"))))
-(define short-named-chars
-  (map string->list '("#\\esc" "#\\nul")))
+(define short-named-chars (map string->list '("esc" "nul")))
 (define long-named-chars
-  (map string->list '("#\\null" "#\\alarm" "#\\backspace" "#\\tab" "#\\space"
-                      "#\\newline" "#\\return" "#\\delete" "#\\escape"
-                      "#\\page" "#\\vtab" "#\\linefeed")))
+  (map string->list '("null" "alarm" "backspace" "tab" "space" "newline"
+                      "return" "delete" "escape" "page" "vtab" "linefeed")))
 (define fvectors (map string->list '("#f32(" "#f64(")))
 (define svectors (map string->list '("#s8(" "#s16(" "#s32(" "#s64(")))
 (define uvectors (map string->list '("#u8(" "#u16(" "#u32(" "#u64(")))
@@ -46,23 +44,6 @@
 (define (plus-## strings)
   (append strings (map (lambda (s) (string-append "##" s)) strings)))
 
-;There's probably some way to populate this list programatically.
-;(define runtime-syntax
-;  (map string->list
-;       (plus-##
-;        '("and" "begin" "c-declare" "c-define" "c-define-type" "c-initialize"
-;          "c-lambda" "case" "case-lambda" "cond" "cond-expand" "declare"
-;          "define" "define-library" "define-macro" "define-prim"
-;          "define-prim&proc" "define-record-type" "define-runtime-macro"
-;          "define-runtime-syntax" "define-structure" "define-syntax"
-;          "define-type" "define-type-of-thread" "define-values" "delay"
-;          "delay-force" "do" "future" "guard" "if" "import" "include"
-;          "include-ci" "\x3bb;" "lambda" "let" "let*" "let*-values"
-;          "let-values" "letrec" "letrec*" "letrec*-values" "letrec-values"
-;          "load" "namespace" "or" "parameterize" "quasiquote" "quote"
-;          "r7rs-guard" "receive" "set!" "syntax-error" "syntax-rules"
-;          "this-source-file" "unless" "when"))))
-
 (define sv-define-syntax
   (map string->list (plus-## '("define" "define-prim" "define-prim&proc"
                                "define-record-type"))))
@@ -81,6 +62,7 @@
 
 (define case-lambda-syntax (map string->list (plus-## '("case-lambda"))))
 
+;There's probably some way to populate this list programatically.
 (define runtime-syntax
   (append sv-define-syntax
           sv-let-syntax

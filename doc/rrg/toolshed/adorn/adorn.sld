@@ -10,6 +10,7 @@
   (include "symmetric-mesg-handlers.scm")
   (include "comment-mesg-handlers.scm")
   (include "binding-mesg-handlers.scm")
+  (include "char-mesg-handlers.scm")
   (include "other-mesg-handlers.scm")
   (include "context-handlers.scm")
   (include "numeric-mesg-handlers.scm")
