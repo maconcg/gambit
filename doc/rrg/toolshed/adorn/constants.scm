@@ -42,26 +42,28 @@
 (define comment-kinds (append '(linec nestc) datumc-kinds datumc-escape-kinds))
 (define atmosphere-kinds (append '(whitespace directive) comment-kinds))
 
-(define (plus-## strings)
+(define (+prims strings)
   (append strings (map (lambda (s) (string-append "##" s)) strings)))
 
 (define sv-define-syntax
-  (map string->list (plus-## '("define" "define-prim" "define-prim&proc"
-                               "define-record-type"))))
+  (map string->list (+prims '("define" "define-prim" "define-record-type"))))
+
+(define define-proc-syntax
+  (map string->list (+prims '("define-procedure" "define-prim&proc"))))
 
 (define sv-let-syntax
   (map string->list
-       (plus-## '("let" "let*" "letrec" "letrec*" "parameterize"))))
+       (+prims '("let" "let*" "letrec" "letrec*" "parameterize"))))
 
-(define lambda-syntax (map string->list (plus-## '("\x3bb;" "lambda"))))
+(define lambda-syntax (map string->list (+prims '("\x3bb;" "lambda"))))
 
 (define mv-let-syntax
-  (map string->list (plus-## '("let*-values" "let-values" "letrec*-values"
+  (map string->list (+prims '("let*-values" "let-values" "letrec*-values"
                                "letrec-values"))))
 
-(define mv-define-syntax (map string->list (plus-## '("define-values"))))
+(define mv-define-syntax (map string->list (+prims '("define-values"))))
 
-(define case-lambda-syntax (map string->list (plus-## '("case-lambda"))))
+(define case-lambda-syntax (map string->list (+prims '("case-lambda"))))
 
 ;There's probably some way to populate this list programatically.
 (define runtime-syntax
@@ -71,24 +73,25 @@
           mv-let-syntax
           mv-define-syntax
           case-lambda-syntax
+          define-proc-syntax
           (map string->list
-               (plus-##
-                '("and" "begin" "c-declare" "c-define" "c-define-type"
-                  "c-initialize" "c-lambda" "case" "cond" "cond-expand"
-                  "declare" "define-library" "define-macro"
-                  "define-runtime-macro" "define-runtime-syntax"
-                  "define-structure" "define-syntax" "define-type"
-                  "define-type-of-thread" "delay" "delay-force" "do" "else"
-                  "future" "guard" "if" "import" "include" "include-ci" "load"
-                  "namespace" "or" "quasiquote" "quote" "r7rs-guard" "receive"
-                  "set!" "syntax-error" "syntax-rules" "this-source-file"
-                  "unless" "when")))))
+               (+prims '("and" "begin" "c-declare" "c-define" "c-define-type"
+                         "c-initialize" "c-lambda" "case" "cond" "cond-expand"
+                         "declare" "define-library" "define-macro"
+                         "define-runtime-macro" "define-runtime-syntax"
+                         "define-structure" "define-syntax" "define-type"
+                         "define-type-of-thread" "delay" "delay-force" "do"
+                         "else" "future" "guard" "if" "import" "include"
+                         "include-ci" "load" "namespace" "or" "quasiquote"
+                         "quote" "r7rs-guard" "receive" "set!" "syntax-error"
+                         "syntax-rules" "this-source-file" "unless" "when")))))
 
 (define else-is-syntax-syntax
-  (map string->list (plus-## '("cond" "case" "macro-case-target"))))
+  (map string->list (+prims '("cond" "case" "macro-case-target"))))
 
 (define define-mesgs
-  '(sv-define defun-proc defun-param mv-define mv-define-rest))
+  '( sv-define defun-proc defun-param mv-define mv-define-rest
+     defproc-defun-proc defproc-defun-param ))
 
 (define let-mesgs '(named-let sv-let mv-let mv-let-rest))
 
@@ -112,7 +115,9 @@
    subcase-lambda-outer-unmatched  subcase-lambda-outer-begin
    subcase-lambda-inner-unmatched  subcase-lambda-inner-begin
    subcompound-key-unmatched       subcompound-key-begin
-   subcompound-opt-unmatched       subcompound-opt-begin ))
+   subcompound-opt-unmatched       subcompound-opt-begin
+   subdefproc-defun-unmatched      subdefproc-defun-begin
+   subdefproc-inner-unmatched      subdefproc-inner-begin ))
 
 (define list-begin-mesgs
   (append sublist-begin-mesgs '(list-unmatched list-begin)))
@@ -123,7 +128,7 @@
              sublet-sv-outer-end sublet-sv-inner-end sublet-mv-outermost-end
              sublet-mv-outer-end sublet-mv-inner-end subdef-mv-end
              subcase-lambda-inner-end subcompound-key-end
-             subcompound-opt-end )))
+             subcompound-opt-end subdefproc-defun-end subdefproc-inner-end )))
 
 (define list-delimiter-mesgs
   (append sublist-delimiter-mesgs list-begin-mesgs '(list-end)))
@@ -133,7 +138,8 @@
 (define dsssl-compounds '(compound-key compound-opt))
 
 (define binding-compounds
-  (append '(defun lambda-bind-list let-sv-inner case-lambda-inner)
+  (append '( defun lambda-bind-list let-sv-inner case-lambda-inner
+             defproc-defun defproc-inner )
           dsssl-compounds))
 
 (define compound-kinds
@@ -147,4 +153,5 @@
      mv-define-ident mv-define-rest-ident named-let-ident sv-let-ident
      mv-let-ident mv-let-rest-ident lambda-bind-list lambda-rest-ident
      case-lambda-bind-ident key-bind-ident opt-bind-ident rest-bind-ident
-     key-init-ident opt-init-ident ))
+     key-init-ident opt-init-ident defproc-proc-ident defproc-param-ident
+     defproc-spec-ident ))
