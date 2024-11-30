@@ -27,10 +27,75 @@
 (define (->begin         symbol) ((append-to-symbol "-begin")     symbol))
 (define (->empty         symbol) ((append-to-symbol "-empty")     symbol))
 (define (->end           symbol) ((append-to-symbol "-end")       symbol))
+(define (->ident         symbol) ((append-to-symbol "-ident")     symbol))
+(define (->inert         symbol) ((append-to-symbol "-inert")     symbol))
 (define (->unmatched     symbol) ((append-to-symbol "-unmatched") symbol))
 (define (->sub-unmatched symbol) (->sub symbol "-unmatched"))
 (define (->sub-begin     symbol) (->sub symbol "-begin"))
 (define (->sub-end       symbol) (->sub symbol "-end"))
+
+(define (->inert-ident symbol)
+  (string->symbol (string-append (symbol->string symbol) "-inert-ident")))
+
+(define dsssl-binds '(key-bind opt-bind rest-bind key-init opt-init))
+
+(define lambda-binds '(lambda-bind lambda-rest case-lambda-bind))
+
+(define let-binds '(named-let sv-let mv-let mv-let-rest))
+
+(define define-binds
+  '( sv-define defun-proc defun-param mv-define mv-define-rest
+     defproc-proc defproc-param defproc-spec ))
+
+(define binds (append define-binds let-binds lambda-binds dsssl-binds))
+
+(define dsssl-compounds '(compound-key compound-opt))
+
+(define def-like-compounds '(defun defproc))
+
+(define let-like-compounds
+  (append '(lambda-bind-list let-sv-inner case-lambda-inner defproc-inner)
+          dsssl-compounds))
+
+(define binding-compounds (append def-like-compounds let-like-compounds))
+
+(define inert-binding-compounds (map ->inert binding-compounds))
+
+(define non-binding-list-compounds
+  (append '( list let-sv-outer let-mv-outermost let-mv-outer let-mv-inner
+             define-mv-list case-lambda-outer )
+          inert-binding-compounds))
+
+(define vector-compounds (cons 'vector hvector-kinds))
+
+(define list-compounds (append binding-compounds non-binding-list-compounds))
+
+(define compound-kinds (append list-compounds vector-compounds))
+
+(define sublist-mesgs (map ->sub list-compounds))
+
+(define sublist-begin-mesgs
+  (append (map ->unmatched sublist-mesgs) (map ->begin list-compounds)))
+
+(define list-begin-mesgs
+  (append sublist-begin-mesgs (list (->unmatched 'list) (->begin 'list))))
+
+(define sublist-delimiter-mesgs
+  (append sublist-begin-mesgs (map ->end sublist-mesgs)))
+
+(define list-delimiter-mesgs
+  (cons (->end 'list) (append sublist-delimiter-mesgs list-begin-mesgs)))
+
+(define list-end-mesgs (list (->sub-end 'list) (->end 'list)))
+
+(define string-base-mesgs '(string datumc-string datumc-compound-string))
+
+(define ident-base-mesgs
+  (let ((base-syms (append '(datumc datumc-compound) binds)))
+    (let ((ert (map ->ident base-syms)) (inert (map ->inert-ident binds)))
+      (append '(ident) ert inert))))
+
+(define ident/string-base-mesgs (append string-base-mesgs ident-base-mesgs))
 
 (define compound-end-mesgs (map ->end compound-kinds))
 (define subcompound-end-mesgs (map ->sub compound-end-mesgs))
@@ -45,7 +110,6 @@
   (map ->unmatched '(datumc-compound datumc-subcompound)))
 (define datumc-compound-peering-mesgs
   (cons 'datumc-subcompound-end datumc-compound-unmatched-mesgs))
-
 ;======================= Navigation/context procedures ========================
 ;; It would perhaps be more efficient (and maybe more painful) to use analogous
 ;; procedures that use pointers exclusively (e.g., the "stack" field).  It also
