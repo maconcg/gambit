@@ -63,49 +63,46 @@
           (else (invalidate/maybe-end! ac-list nc)))))
 
 (define (^handle:symmetric-esc! backslash-sym backslash-handler
-                                nil-sym nil-handler
-                                hex-x-sym hex-x-handler
-                                hex-u-sym hex-u-handler
-                                hex-u1-sym hex-u1-handler
-                                hex-u2-sym hex-u2-handler
-                                hex-u3-sym hex-u3-handler
-                                hex-U-sym hex-U-handler
-                                hex-U1-sym hex-U1-handler
-                                hex-U2-sym hex-U2-handler
-                                hex-U3-sym hex-U3-handler
-                                hex-U4-sym hex-U4-handler
-                                hex-U5-sym hex-U5-handler
-                                hex-U6-sym hex-U6-handler
-                                hex-U7-sym hex-U7-handler
-                                oct-long-sym oct-long-handler
+                                nil-sym       nil-handler
+                                hex-x-sym     hex-x-handler
+                                hex-u-sym     hex-u-handler
+                                hex-u1-sym    hex-u1-handler
+                                hex-u2-sym    hex-u2-handler
+                                hex-u3-sym    hex-u3-handler
+                                hex-U-sym     hex-U-handler
+                                hex-U1-sym    hex-U1-handler
+                                hex-U2-sym    hex-U2-handler
+                                hex-U3-sym    hex-U3-handler
+                                hex-U4-sym    hex-U4-handler
+                                hex-U5-sym    hex-U5-handler
+                                hex-U6-sym    hex-U6-handler
+                                hex-U7-sym    hex-U7-handler
+                                oct-long-sym  oct-long-handler
                                 oct-long1-sym oct-long1-handler
                                 oct-short-sym oct-short-handler)
   (lambda (ac-list nc pm)
     (cond ((eq? pm backslash-sym) (backslash-handler ac-list nc))
-          ((eq? pm nil-sym)       (nil-handler ac-list nc))
-          ((eq? pm hex-x-sym)     (hex-x-handler ac-list nc))
-          ((eq? pm oct-long-sym)  (oct-long-handler ac-list nc))
+          ((eq? pm nil-sym)       (nil-handler       ac-list nc))
+          ((eq? pm hex-x-sym)     (hex-x-handler     ac-list nc))
+          ((eq? pm oct-long-sym)  (oct-long-handler  ac-list nc))
           ((eq? pm oct-long1-sym) (oct-long1-handler ac-list nc))
           ((eq? pm oct-short-sym) (oct-short-handler ac-list nc))
-          ((eq? pm hex-u-sym)     (hex-u-handler ac-list nc))
-          ((eq? pm hex-u1-sym)    (hex-u1-handler ac-list nc))
-          ((eq? pm hex-u2-sym)    (hex-u2-handler ac-list nc))
-          ((eq? pm hex-u3-sym)    (hex-u3-handler ac-list nc))
-          ((eq? pm hex-U-sym)     (hex-U-handler ac-list nc))
-          ((eq? pm hex-U1-sym)    (hex-U1-handler ac-list nc))
-          ((eq? pm hex-U2-sym)    (hex-U2-handler ac-list nc))
-          ((eq? pm hex-U3-sym)    (hex-U3-handler ac-list nc))
-          ((eq? pm hex-U4-sym)    (hex-U4-handler ac-list nc))
-          ((eq? pm hex-U5-sym)    (hex-U5-handler ac-list nc))
-          ((eq? pm hex-U6-sym)    (hex-U6-handler ac-list nc))
-          ((eq? pm hex-U7-sym)    (hex-U7-handler ac-list nc))
+          ((eq? pm hex-u-sym)     (hex-u-handler     ac-list nc))
+          ((eq? pm hex-u1-sym)    (hex-u1-handler    ac-list nc))
+          ((eq? pm hex-u2-sym)    (hex-u2-handler    ac-list nc))
+          ((eq? pm hex-u3-sym)    (hex-u3-handler    ac-list nc))
+          ((eq? pm hex-U-sym)     (hex-U-handler     ac-list nc))
+          ((eq? pm hex-U1-sym)    (hex-U1-handler    ac-list nc))
+          ((eq? pm hex-U2-sym)    (hex-U2-handler    ac-list nc))
+          ((eq? pm hex-U3-sym)    (hex-U3-handler    ac-list nc))
+          ((eq? pm hex-U4-sym)    (hex-U4-handler    ac-list nc))
+          ((eq? pm hex-U5-sym)    (hex-U5-handler    ac-list nc))
+          ((eq? pm hex-U6-sym)    (hex-U6-handler    ac-list nc))
+          ((eq? pm hex-U7-sym)    (hex-U7-handler    ac-list nc))
           (else #f))))
 
-(define (sym-ends-with-ident? sym)
-  (backmatch '(#\i #\d #\e #\n #\t) (symbol->string sym)))
-
 (define (^try-symm-pm! sym)
-  (let ((delim           (if (sym-ends-with-ident? sym) #\| #\"))
+  (let ((delim           (if (backmatch "ident" (symbol->string sym)) #\| #\"))
         (unmatched-sym   ((append-to-symbol "-unmatched")   sym))
         (backslash-sym   ((append-to-symbol "-backslash")   sym))
         (esc-sym         ((append-to-symbol "-esc")         sym))
