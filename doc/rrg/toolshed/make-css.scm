@@ -131,7 +131,7 @@ pre.lisp-preformatted {
     span.compound-empty {color: <compound-empty>}
     span.datum-label {color: <datum-label>}
     span.datum-ref {color: <datum-ref>}
-    span.define-like-bind, span.define-like-esc {color: <define-like-bind>}
+    span.def-like-bind, span.def-like-esc {color: <def-like-bind>}
     span.dot {color: <dot>}
     span.dsssl, span.sharp {color: <sharp>}
     span.ident, span.ident-esc {color: <ident>}
@@ -157,7 +157,7 @@ END
 pre.lisp-preformatted {
     font-size: 1.1em;
     span.atmosphere, span.dsssl { font-style: oblique }
-    span.char-body, span.define-like-esc, span.ident-esc, span.let-like-esc,
+    span.char-body, span.def-like-esc, span.ident-esc, span.let-like-esc,
       span.string-esc {
         font-weight: bold
     }
@@ -368,7 +368,7 @@ END
     (( boolean ) 'yellow-warmer)
     (( char ) 'red-faint)
     (( compound-empty default ) 'fg-main)
-    (( datum-label define-like-bind define-like-esc ) 'magenta)
+    (( datum-label def-like-bind def-like-esc ) 'magenta)
     (( box datum-ref repl-ref serial-ref ) 'fg-alt)
     (( hs-key sharp ) 'yellow)
     (( ident ident-esc ) 'fg-main)
@@ -407,7 +407,7 @@ END
   (case kind
     (( abbrev atmosphere shebang ) 'cm-comment)
     (( boolean ) 'cm-atom)
-    (( char compound-empty datum-label define-like-bind define-like-esc dot ok
+    (( char compound-empty datum-label def-like-bind def-like-esc dot ok
        default invalid keyword key-param key-init-param ident ident-esc
        let-like-bind let-like-esc hs-key sharp box datum-ref repl-ref hs-begin
        serial-ref ) 'fg-main)

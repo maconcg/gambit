@@ -12,7 +12,6 @@
     ((char kind mesg) (make-adorned-char char kind mesg #f '()))
     ((char kind mesg hop) (make-adorned-char char kind mesg hop '()))
     ((char kind mesg hop stack) (make-adorned-char char kind mesg hop stack))))
-
 ;======================= Symbol manipulation procedures =======================
 (define (append-to-symbol string)
   (lambda (symbol)

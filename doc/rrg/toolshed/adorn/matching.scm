@@ -1,5 +1,5 @@
-(define (memc c l) (member c l char=?))
-(define (memc-ci c l) (member c l char-ci=?))
+(define (memc char char-list) (member char char-list char=?))
+(define (memc-ci char char-list) (member char char-list char-ci=?))
 
 (define (char-list-backmatch goal actual)
   (let backmatch-loop ((goal (reverse goal)) (actual-rest (reverse actual)))
