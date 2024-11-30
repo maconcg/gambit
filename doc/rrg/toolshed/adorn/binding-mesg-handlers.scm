@@ -1,70 +1,80 @@
-(define (^handle~bind-pm! sym ~sym ident-sym)
-  (lambda (ac-list nc pac)
-    (cond ((memc nc whitespace-chars) (adorn-char nc 'whitespace ~sym))
-          ((char=? nc #\|) (begin-symmetric ac-list nc ident-sym))
-          ((memc nc abbrev-chars) (adorn-char nc 'abbrev ~sym))
-          ((and (char=? nc #\@) (char=? (get-char pac)) #\,)
-           (adorn-char nc 'abbrev ~sym))
-          ((memc nc delim-chars) (try-nc! ac-list nc))
-          ((and (char=? nc #\#)
-                (memq (get-kind pac)
-                      (append atmosphere-kinds binding-compounds)))
-           (adorn-char nc sym 'binding#))
-          (else (adorn-char nc sym sym)))))
+(define (^handle~bind! sym ~sym ident-sym)
+  (let ((beginning-kinds (append atmosphere-kinds binding-compounds)))
+    (lambda (ac-list nc pac)
+      (cond ((memc nc whitespace-chars) (adorn-char nc 'whitespace ~sym))
+            ((char=? nc #\|) (begin-symmetric ac-list nc ident-sym))
+            ((memc nc abbrev-chars) (adorn-char nc 'abbrev ~sym))
+            ((and (char=? nc #\@) (char=? (get-char pac)) #\,)
+             (adorn-char nc 'abbrev ~sym))
+            ((memc nc delim-chars) (try-nc! ac-list nc))
+            ((and (char=? nc #\#) (memq (get-kind pac) beginning-kinds))
+             (adorn-char nc sym 'binding#))
+            (else (adorn-char nc sym sym))))))
 
-(define ^handle~sv-define-pm!
-  (^handle~bind-pm! 'sv-define '~sv-define 'sv-define-ident))
+(define ^handle~sv-define!
+  (^handle~bind! 'sv-define '~sv-define 'sv-define-ident))
 
-(define (handle~sv-define-pm! ac-list nc pac)
+(define (handle~sv-define! ac-list nc pac)
   (cond ((memc nc compound-begin-chars) (begin-compound! ac-list nc 'defun))
-        (else (^handle~sv-define-pm! ac-list nc pac))))
+        (else (^handle~sv-define! ac-list nc pac))))
 
-(define ^handle~named/sv-let-pm!
-  (^handle~bind-pm! 'named-let '~named/sv-let 'named-let-ident))
+(define ^handle~named/sv-let!
+  (^handle~bind! 'named-let '~named/sv-let 'named-let-ident))
 
-(define (handle~named/sv-let-pm! ac-list nc pac)
+(define (handle~named/sv-let! ac-list nc pac)
   (cond ((memc nc compound-begin-chars)
          (begin-compound! ac-list nc 'let-sv-outer))
-        (else (^handle~named/sv-let-pm! ac-list nc pac))))
+        (else (^handle~named/sv-let! ac-list nc pac))))
 
-(define ^handle~~lambda-bind-pm!
-  (^handle~bind-pm! 'lambda-rest '~lambda-bind 'lambda-rest-ident))
+(define ^handle~~lambda-bind!
+  (^handle~bind! 'lambda-rest '~lambda-bind 'lambda-rest-ident))
 
-(define (handle~~lambda-bind-pm! ac-list nc pac)
+(define (handle~~lambda-bind! ac-list nc pac)
   (cond ((memc nc compound-begin-chars)
          (begin-compound! ac-list nc 'lambda-bind-list))
-        (else (^handle~~lambda-bind-pm! ac-list nc pac))))
+        (else (^handle~~lambda-bind! ac-list nc pac))))
 
-(define handle~lambda-bind-pm!
-  (^handle~bind-pm! 'lambda-bind '~lambda-bind 'lambda-bind-ident))
+(define handle~lambda-bind!
+  (^handle~bind! 'lambda-bind '~lambda-bind 'lambda-bind-ident))
 
-(define handle~defun-proc-pm!
-  (^handle~bind-pm! 'defun-proc '~defun-proc 'defun-proc-ident))
+(define handle~defun-proc!
+  (^handle~bind! 'defun-proc '~defun-proc 'defun-proc-ident))
 
-(define handle~defun-param-pm!
-  (^handle~bind-pm! 'defun-param '~defun-param 'defun-param-ident))
+(define handle~defun-param!
+  (^handle~bind! 'defun-param '~defun-param 'defun-param-ident))
 
-(define handle~sv-let-pm! (^handle~bind-pm! 'sv-let '~sv-let 'sv-let-ident))
-(define handle~mv-let-pm! (^handle~bind-pm! 'mv-let '~mv-let 'mv-let-ident))
+(define handle~defproc-proc!
+  (^handle~bind! 'defproc-proc '~defproc-proc 'defproc-proc-ident))
 
-(define ^handle~~mv-define-pm!
-  (^handle~bind-pm! 'mv-define-rest '~~mv-define 'mv-define-rest-ident))
+(define ^handle~defproc-param!
+  (^handle~bind! 'defproc-param '~defproc-param 'defproc-param-ident))
 
-(define (handle~~mv-define-pm! ac-list nc pac)
+(define (handle~defproc-param! ac-list nc pac)
+  (cond ((memc nc compound-begin-chars)
+         (begin-compound! ac-list nc 'defproc-inner))
+        (else (^handle~defproc-param! ac-list nc pac))))
+
+(define handle~defproc-spec!
+  (^handle~bind! 'defproc-spec '~defproc-spec 'defproc-spec-ident))
+
+(define handle~sv-let! (^handle~bind! 'sv-let '~sv-let 'sv-let-ident))
+(define handle~mv-let! (^handle~bind! 'mv-let '~mv-let 'mv-let-ident))
+
+(define ^handle~~mv-define!
+  (^handle~bind! 'mv-define-rest '~~mv-define 'mv-define-rest-ident))
+
+(define (handle~~mv-define! ac-list nc pac)
   (cond ((memc nc compound-begin-chars)
          (begin-compound! ac-list nc 'define-mv-list))
-        (else (^handle~~mv-define-pm! ac-list nc pac))))
+        (else (^handle~~mv-define! ac-list nc pac))))
 
-(define handle~mv-define-pm!
-  (^handle~bind-pm! 'mv-define '~mv-define 'mv-define-ident))
+(define handle~mv-define!
+  (^handle~bind! 'mv-define '~mv-define 'mv-define-ident))
 
-(define handle~case-lambda-pm!
-  (^handle~bind-pm! 'case-lambda-bind '~case-lambda 'case-lambda-bind-ident))
+(define handle~case-lambda!
+  (^handle~bind! 'case-lambda-bind '~case-lambda 'case-lambda-bind-ident))
 
-(define handle~defproc-proc-pm!
-  (^handle~bind-pm! 'defproc-proc '~defproc-proc 'defproc-proc-ident))
-
-(define (^handle~outer-pm! next-compound-sym mesg)
+(define (^handle~outer! next-compound-sym mesg)
   (lambda (ac-list nc pac)
     (cond ((memc nc compound-begin-chars)
            (begin-compound! ac-list nc next-compound-sym))
@@ -74,38 +84,29 @@
            (adorn-char nc 'abbrev mesg))
           (else (try-nc! ac-list nc)))))
 
-(define handle~~~let-sv-pm! (^handle~outer-pm! 'let-sv-outer '~~~let-sv))
-(define handle~~let-sv-pm! (^handle~outer-pm! 'let-sv-inner '~~let-sv))
+(define handle~~~let-sv! (^handle~outer! 'let-sv-outer '~~~let-sv))
+(define handle~~let-sv! (^handle~outer! 'let-sv-inner '~~let-sv))
 
-(define handle~~~~let-mv-pm! (^handle~outer-pm! 'let-mv-outermost '~~~~let-mv))
-(define handle~~~let-mv-pm! (^handle~outer-pm! 'let-mv-outer '~~~let-mv))
+(define handle~~~~let-mv! (^handle~outer! 'let-mv-outermost '~~~~let-mv))
+(define handle~~~let-mv! (^handle~outer! 'let-mv-outer '~~~let-mv))
 
-(define ^handle~~let-mv-pm! (^handle~outer-pm! 'let-mv-inner '~~let-mv))
+(define ^handle~~let-mv! (^handle~outer! 'let-mv-inner '~~let-mv))
 
-(define (handle~~let-mv-pm! ac-list nc pac)
+(define (handle~~let-mv! ac-list nc pac)
   (cond ((char=? nc #\|) (begin-symmetric ac-list nc 'mv-let-rest-ident))
-        ((memc nc delim-chars) (^handle~~let-mv-pm! ac-list nc pac))
+        ((memc nc delim-chars) (^handle~~let-mv! ac-list nc pac))
         ((and (char=? nc #\@) (char=? (get-char pac) #\,))
-         (^handle~~let-mv-pm! ac-list nc pac))
+         (^handle~~let-mv! ac-list nc pac))
         (else (adorn-char nc 'mv-let-rest 'mv-let-rest))))
 
-(define handle~~~case-lambda-pm!
-  (^handle~outer-pm! 'case-lambda-outer '~~~case-lambda))
-(define handle~~case-lambda-pm!
-  (^handle~outer-pm! 'case-lambda-inner '~~case-lambda))
+(define handle~~~case-lambda!
+  (^handle~outer! 'case-lambda-outer '~~~case-lambda))
+(define handle~~case-lambda!
+  (^handle~outer! 'case-lambda-inner '~~case-lambda))
 
-(define handle~defproc-defun-pm!
-  (^handle~outer-pm! 'defproc-defun '~defproc-proc))
-
-(define ^handle~defproc-param-pm!
-  (^handle~bind-pm! 'defproc-proc '~defproc-proc 'defproc-proc-ident))
-
-(define (handle~defproc-param-pm! ac-list nc pac)
-  (cond ((memc nc compound-begin-chars)
-         (begin-compound! ac-list nc 'defproc-inner))
-        (else (^handle~defproc-param-pm! ac-list nc pac))))
+(define handle~~defproc! (^handle~outer! 'defproc '~~defproc))
 ;==============================================================================
-(define (^handle:bind-pm! sym ~next-mesg)
+(define (^handle:bind! sym ~next-mesg)
   (lambda (ac-list nc pac)
     (cond ((memc nc whitespace-chars)
            (if (char=? (get-char pac) #\.)
@@ -119,26 +120,26 @@
           ((memc nc delim-chars) (try-nc! ac-list nc))
           (else (adorn-char nc sym sym)))))
 
-(define handle:sv-define-pm!     (^handle:bind-pm! 'sv-define #f))
-(define handle:defun-proc-pm!    (^handle:bind-pm! 'defun-proc '~defun-param))
-(define handle:defun-param-pm!   (^handle:bind-pm! 'defun-param '~defun-param))
-(define handle:named-let-pm!     (^handle:bind-pm! 'named-let '~~~let-sv))
-(define handle:sv-let-pm!        (^handle:bind-pm! 'sv-let #f))
-(define handle:lambda-bind-pm!   (^handle:bind-pm! 'lambda-bind '~lambda-bind))
-(define handle:lambda-rest-pm!   (^handle:bind-pm! 'lambda-rest #f))
-(define handle:mv-let-pm!        (^handle:bind-pm! 'mv-let '~mv-let))
-(define handle:mv-let-rest-pm!   (^handle:bind-pm! 'mv-let-rest #f))
-(define handle:mv-define-pm!     (^handle:bind-pm! 'mv-define '~mv-define))
-(define handle:mv-define-rest-pm! (^handle:bind-pm! 'mv-define-rest #f))
-(define handle:case-lambda-bind-pm!
-  (^handle:bind-pm! 'case-lambda-bind '~case-lambda))
-(define handle:defproc-proc-pm!
-  (^handle:bind-pm! 'defproc-proc '~defproc-param))
-(define handle:defproc-param-pm!
-  (^handle:bind-pm! 'defproc-param '~defproc-param))
-(define handle:defproc-spec-pm! (^handle:bind-pm! 'defproc-spec #f))
+(define handle:sv-define!     (^handle:bind! 'sv-define #f))
+(define handle:defun-proc!    (^handle:bind! 'defun-proc '~defun-param))
+(define handle:defun-param!   (^handle:bind! 'defun-param '~defun-param))
+(define handle:named-let!     (^handle:bind! 'named-let '~~~let-sv))
+(define handle:sv-let!        (^handle:bind! 'sv-let #f))
+(define handle:lambda-bind!   (^handle:bind! 'lambda-bind '~lambda-bind))
+(define handle:lambda-rest!   (^handle:bind! 'lambda-rest #f))
+(define handle:mv-let!        (^handle:bind! 'mv-let '~mv-let))
+(define handle:mv-let-rest!   (^handle:bind! 'mv-let-rest #f))
+(define handle:mv-define!     (^handle:bind! 'mv-define '~mv-define))
+(define handle:mv-define-rest! (^handle:bind! 'mv-define-rest #f))
+(define handle:case-lambda-bind!
+  (^handle:bind! 'case-lambda-bind '~case-lambda))
+(define handle:defproc-proc!
+  (^handle:bind! 'defproc-proc '~defproc-param))
+(define handle:defproc-param!
+  (^handle:bind! 'defproc-param '~defproc-param))
+(define handle:defproc-spec! (^handle:bind! 'defproc-spec #f))
 ;==============================================================================
-(define (handle:binding#-pm! ac-list nc pac)
+(define (handle:binding#! ac-list nc pac)
   (cond ((char=? nc #\!) (adorn-char nc (get-kind pac) '~dsssl))
         ((memc nc compound-begin-chars)
          (set-mesg! pac 'octothorpe)
@@ -152,14 +153,14 @@
                     (set-kind! new-ac 'invalid))
                   new-ac)))))
 
-(define (handle~dsssl-pm! ac-list nc pac)
+(define (handle~dsssl! ac-list nc pac)
   (let ((kind (get-kind pac)))
     (cond ((char=? nc #\k) (adorn-char nc kind '~dsssl/key))
           ((char=? nc #\o) (adorn-char nc kind '~dsssl/opt))
           ((char=? nc #\r) (adorn-char nc kind '~dsssl/rest))
           (else (adorn-char nc 'invalid kind)))))
 
-(define (^handle~dsssl-pm! sym ~sym target)
+(define (^handle~dsssl! sym ~sym target)
   (lambda (ac-list nc pac)
     (let ((kind (get-kind pac)) (recents (chars-until ac-list 'binding#)))
       (let ((tested (append recents (list nc))))
@@ -170,14 +171,14 @@
                (adorn-char nc kind ~sym))
               (else (adorn-char nc 'invalid kind)))))))
 
-(define handle~dsssl/key-pm!
-  (^handle~dsssl-pm! 'dsssl/key '~dsssl/key (string->list "#!key")))
-(define handle~dsssl/opt-pm!
-  (^handle~dsssl-pm! 'dsssl/opt '~dsssl/opt (string->list "#!optional")))
-(define handle~dsssl/rest-pm!
-  (^handle~dsssl-pm! 'dsssl/rest '~dsssl/rest (string->list "#!rest")))
+(define handle~dsssl/key!
+  (^handle~dsssl! 'dsssl/key '~dsssl/key (string->list "#!key")))
+(define handle~dsssl/opt!
+  (^handle~dsssl! 'dsssl/opt '~dsssl/opt (string->list "#!optional")))
+(define handle~dsssl/rest!
+  (^handle~dsssl! 'dsssl/rest '~dsssl/rest (string->list "#!rest")))
 
-(define (^handle~dsssl-key/opt-pm! sym ~sym compound-kind)
+(define (^handle~dsssl-key/opt! sym ~sym compound-kind)
   (lambda (ac-list nc pac)
     (cond ((memc nc compound-begin-chars)
            (begin-compound! ac-list nc compound-kind))
@@ -189,113 +190,120 @@
           ((char=? nc #\#) (adorn-char nc sym 'binding#))
           (else (adorn-char nc sym sym)))))
 
-(define handle~~key-bind-pm!
-  (^handle~dsssl-key/opt-pm! 'key-bind '~~key-bind 'compound-key))
-(define handle~~opt-bind-pm!
-  (^handle~dsssl-key/opt-pm! 'opt-bind '~~opt-bind 'compound-opt))
+(define handle~~key-bind!
+  (^handle~dsssl-key/opt! 'key-bind '~~key-bind 'compound-key))
+(define handle~~opt-bind!
+  (^handle~dsssl-key/opt! 'opt-bind '~~opt-bind 'compound-opt))
 
-(define handle~rest-bind-pm!
-  (^handle~bind-pm! 'rest-bind '~rest-bind 'rest-bind-ident))
+(define handle~rest-bind!
+  (^handle~bind! 'rest-bind '~rest-bind 'rest-bind-ident))
 
-(define (handle:dsssl/key-pm! ac-list nc pac)
-  (cond ((memc nc delim-chars) (handle~~key-bind-pm! ac-list nc pac))
+(define (handle:dsssl/key! ac-list nc pac)
+  (cond ((memc nc delim-chars) (handle~~key-bind! ac-list nc pac))
         (else (adorn-char nc 'invalid '~~key-bind))))
 
-(define (handle:dsssl/opt-pm! ac-list nc pac)
-  (cond ((memc nc delim-chars) (handle~~opt-bind-pm! ac-list nc pac))
+(define (handle:dsssl/opt! ac-list nc pac)
+  (cond ((memc nc delim-chars) (handle~~opt-bind! ac-list nc pac))
         (else (adorn-char nc 'invalid '~~opt-bind))))
 
-(define (handle:dsssl/rest-pm! ac-list nc pac)
-  (cond ((memc nc delim-chars) (handle~rest-bind-pm! ac-list nc pac))
+(define (handle:dsssl/rest! ac-list nc pac)
+  (cond ((memc nc delim-chars) (handle~rest-bind! ac-list nc pac))
         (else (adorn-char nc 'invalid '~rest-bind))))
 
-(define handle:key-bind-pm! (^handle:bind-pm! 'key-bind '~~key-bind))
-(define handle:opt-bind-pm! (^handle:bind-pm! 'opt-bind '~~opt-bind))
-(define handle:rest-bind-pm! (^handle:bind-pm! 'rest-bind '~rest-bind))
+(define handle:key-bind! (^handle:bind! 'key-bind '~~key-bind))
+(define handle:opt-bind! (^handle:bind! 'opt-bind '~~opt-bind))
+(define handle:rest-bind! (^handle:bind! 'rest-bind '~rest-bind))
 
-(define handle:key-init-pm! (^handle:bind-pm! 'key-bind #f))
-(define handle:opt-init-pm! (^handle:bind-pm! 'opt-bind #f))
-(define handle:key-init-pm! (^handle:bind-pm! 'key-init #f))
-(define handle:opt-init-pm! (^handle:bind-pm! 'opt-init #f))
+(define handle:key-init! (^handle:bind! 'key-bind #f))
+(define handle:opt-init! (^handle:bind! 'opt-bind #f))
+(define handle:key-init! (^handle:bind! 'key-init #f))
+(define handle:opt-init! (^handle:bind! 'opt-init #f))
 
-(define handle~key-pm! (^handle~bind-pm! 'key-init '~key-init 'key-init-ident))
-(define handle~opt-pm! (^handle~bind-pm! 'opt-init '~opt-init 'opt-init-ident))
+(define handle~key! (^handle~bind! 'key-init '~key-init 'key-init-ident))
+(define handle~opt! (^handle~bind! 'opt-init '~opt-init 'opt-init-ident))
 ;==============================================================================
 (define (try-bind-pm! ac-list nc pac pm)
-  (cond ((eq? pm 'binding#)         (handle:binding#-pm! ac-list nc pac))
-        ((eq? pm 'sv-define)        (handle:sv-define-pm! ac-list nc pac))
-        ((eq? pm 'lambda-bind)      (handle:lambda-bind-pm! ac-list nc pac))
-        ((eq? pm 'lambda-rest)      (handle:lambda-rest-pm! ac-list nc pac))
-        ((eq? pm 'sv-let)           (handle:sv-let-pm! ac-list nc pac))
-        ((eq? pm 'named-let)        (handle:named-let-pm! ac-list nc pac))
-        ((eq? pm 'defun-proc)       (handle:defun-proc-pm! ac-list nc pac))
-        ((eq? pm 'defun-param)      (handle:defun-param-pm! ac-list nc pac))
-        ((eq? pm 'mv-let)           (handle:mv-let-pm! ac-list nc pac))
-        ((eq? pm 'mv-let-rest)      (handle:mv-let-rest-pm! ac-list nc pac))
-        ((eq? pm 'mv-define)        (handle:mv-define-pm! ac-list nc pac))
-        ((eq? pm 'mv-define-rest)   (handle:mv-define-rest-pm! ac-list nc pac))
-        ((eq? pm 'defproc-proc)     (handle:defproc-proc-pm! ac-list nc pac))
-        ((eq? pm 'key-bind)         (handle:key-bind-pm! ac-list nc pac))
-        ((eq? pm 'opt-bind)         (handle:opt-bind-pm! ac-list nc pac))
-        ((eq? pm 'rest-bind)        (handle:rest-bind-pm! ac-list nc pac))
-        ((eq? pm 'key-init)         (handle:key-init-pm! ac-list nc pac))
-        ((eq? pm 'opt-init)         (handle:opt-init-pm! ac-list nc pac))
-        ((eq? pm '~dsssl)           (handle~dsssl-pm! ac-list nc pac))
-        ((eq? pm '~dsssl/key)       (handle~dsssl/key-pm! ac-list nc pac))
-        ((eq? pm '~dsssl/opt)       (handle~dsssl/opt-pm! ac-list nc pac))
-        ((eq? pm '~dsssl/rest)      (handle~dsssl/rest-pm! ac-list nc pac))
-        ((eq? pm 'dsssl/key)        (handle:dsssl/key-pm! ac-list nc pac))
-        ((eq? pm 'dsssl/opt)        (handle:dsssl/opt-pm! ac-list nc pac))
-        ((eq? pm 'dsssl/rest)       (handle:dsssl/rest-pm! ac-list nc pac))
-        ((eq? pm '~rest-bind)       (handle~rest-bind-pm! ac-list nc pac))
-        ((eq? pm '~~lambda-bind)    (handle~~lambda-bind-pm! ac-list nc pac))
-        ((eq? pm '~sv-define)       (handle~sv-define-pm! ac-list nc pac))
-        ((eq? pm '~named/sv-let)    (handle~named/sv-let-pm! ac-list nc pac))
-        ((eq? pm '~~~~let-mv)       (handle~~~~let-mv-pm! ac-list nc pac))
-        ((eq? pm '~defproc-defun)   (handle~defproc-defun-pm! ac-list nc pac))
-        ((eq? pm 'case-lambda-bind)
-         (handle:case-lambda-bind-pm! ac-list nc pac))
-        ((memq pm '(~defun-param defun-proc-ident-end defun-param-ident-end))
-         (handle~defun-param-pm! ac-list nc pac))
-        ((memq pm '(~~~let-sv named-let-ident-end))
-         (handle~~~let-sv-pm! ac-list nc pac))
-        ((memq pm '(~~mv-define mv-define-ident-end))
-         (handle~~mv-define-pm! ac-list nc pac))
-        ((memq pm '(~key subcompound-key-unmatched))
-         (handle~key-pm! ac-list nc pac))
-        ((memq pm '(~opt subcompound-opt-unmatched))
-         (handle~opt-pm! ac-list nc pac))
-        ((memq pm '(~~key-bind subcompound-key-end))
-         (handle~~key-bind-pm! ac-list nc pac))
-        ((memq pm '(~~opt-bind subcompound-opt-end))
-         (handle~~opt-bind-pm! ac-list nc pac))
-        ((memq pm '(~lambda-bind lambda-bind-ident-end
-                                 sublambda-bind-list-unmatched))
-         (handle~lambda-bind-pm! ac-list nc pac))
-        ((memq pm '(~defun-proc subdefun-unmatched))
-         (handle~defun-proc-pm! ac-list nc pac))
-        ((memq pm '(~sv-let sublet-sv-inner-unmatched))
-         (handle~sv-let-pm! ac-list nc pac))
-        ((memq pm '(~~let-sv sublet-sv-outer-unmatched sublet-sv-inner-end))
-         (handle~~let-sv-pm! ac-list nc pac))
-        ((memq pm '(~mv-let mv-let-ident-end sublet-mv-inner-unmatched))
-         (handle~mv-let-pm! ac-list nc pac))
-        ((memq pm '(~~let-mv sublet-mv-outer-unmatched))
-         (handle~~let-mv-pm! ac-list nc pac))
-        ((memq pm '(~~~let-mv sublet-mv-outermost-unmatched
-                              sublet-mv-outer-end))
-         (handle~~~let-mv-pm! ac-list nc pac))
-        ((memq pm '(~mv-define subdefine-mv-list-unmatched))
-         (handle~mv-define-pm! ac-list nc pac))
-        ((memq pm '(~mv-define subdefine-mv-list-unmatched))
-         (handle~mv-define-pm! ac-list nc pac))
-        ((memq pm '(~case-lambda case-lambda-bind-ident-end
-                                 subcase-lambda-inner-unmatched))
-         (handle~case-lambda-pm! ac-list nc pac))
-        ((memq pm '(~~case-lambda subcase-lambda-outer-unmatched))
-         (handle~~case-lambda-pm! ac-list nc pac))
-        ((memq pm '(~~~case-lambda subcase-lambda-outer-end))
-         (handle~~~case-lambda-pm! ac-list nc pac))
-        ((memq pm '(~defproc-proc subdefproc-defun-unmatched))
-         (handle~defproc-proc-pm! ac-list nc pac))
-        (else #f)))
+  (let ((defun-proc~   '( ~defun-proc subdefun-unmatched ))
+        (sv-let-outer~ '( ~~~let-sv named-let-ident-end ))
+        (sv-let~       '( ~sv-let sublet-sv-inner-unmatched ))
+        (mv-let-inner~ '( ~~let-mv sublet-mv-outer-unmatched ))
+        (mv-let~       '( ~mv-let mv-let-ident-end sublet-mv-inner-unmatched ))
+        (case-lambda-outermost~ '( ~~~case-lambda subcase-lambda-outer-end ))
+        (case-lambda-outer~ '( ~~case-lambda subcase-lambda-outer-unmatched ))
+        (key-init~          '( ~key subcompound-key-unmatched ))
+        (opt-init~          '( ~opt subcompound-opt-unmatched ))
+        (key-bind~          '( ~~key-bind subcompound-key-end ))
+        (opt-bind~          '( ~~opt-bind subcompound-opt-end ))
+        (defproc-proc~      '( ~defproc-proc subdefproc-unmatched ))
+        (defun-param~       '( ~defun-param defun-proc-ident-end
+                               defun-param-ident-end ))
+        (lambda-bind~       '( ~lambda-bind lambda-bind-ident-end
+                               sublambda-bind-list-unmatched ))
+        (sv-let-inner~      '( ~~let-sv sublet-sv-outer-unmatched
+                               sublet-sv-inner-end ))
+        (mv-let-outer~      '( ~~~let-mv sublet-mv-outermost-unmatched
+                               sublet-mv-outer-end ))
+        (mv-define~         '( ~mv-define mv-define-ident-end
+                               subdefine-mv-list-unmatched ))
+        (case-lambda-bind~  '( ~case-lambda case-lambda-bind-ident-end
+                               subcase-lambda-inner-unmatched ))
+        (defproc-param~     '( ~defproc-param defproc-proc-ident-end
+                               defproc-param-ident-end subdefproc-inner-end ))
+        (defproc-spec~      '( ~defproc-spec subdefproc-inner-unmatched )))
+    (cond
+     ((eq? pm 'sv-define)            (handle:sv-define!        ac-list nc pac))
+     ((eq? pm 'lambda-bind)          (handle:lambda-bind!      ac-list nc pac))
+     ((eq? pm 'lambda-rest)          (handle:lambda-rest!      ac-list nc pac))
+     ((eq? pm 'sv-let)               (handle:sv-let!           ac-list nc pac))
+     ((eq? pm 'named-let)            (handle:named-let!        ac-list nc pac))
+     ((eq? pm 'defun-proc)           (handle:defun-proc!       ac-list nc pac))
+     ((eq? pm 'defun-param)          (handle:defun-param!      ac-list nc pac))
+     ((eq? pm 'mv-let)               (handle:mv-let!           ac-list nc pac))
+     ((eq? pm 'mv-let-rest)          (handle:mv-let-rest!      ac-list nc pac))
+     ((eq? pm 'mv-define)            (handle:mv-define!        ac-list nc pac))
+     ((eq? pm 'mv-define-rest)       (handle:mv-define-rest!   ac-list nc pac))
+     ((eq? pm 'case-lambda-bind)     (handle:case-lambda-bind! ac-list nc pac))
+     ((eq? pm 'defproc-param)        (handle:defproc-param!    ac-list nc pac))
+     ((eq? pm 'defproc-proc)         (handle:defproc-proc!     ac-list nc pac))
+     ((eq? pm 'defproc-spec)         (handle:defproc-spec!     ac-list nc pac))
+     ((eq? pm 'binding#)             (handle:binding#!         ac-list nc pac))
+     ((eq? pm 'key-bind)             (handle:key-bind!         ac-list nc pac))
+     ((eq? pm 'opt-bind)             (handle:opt-bind!         ac-list nc pac))
+     ((eq? pm 'rest-bind)            (handle:rest-bind!        ac-list nc pac))
+     ((eq? pm 'key-init)             (handle:key-init!         ac-list nc pac))
+     ((eq? pm 'opt-init)             (handle:opt-init!         ac-list nc pac))
+     ((eq? pm 'dsssl/key)            (handle:dsssl/key!        ac-list nc pac))
+     ((eq? pm 'dsssl/opt)            (handle:dsssl/opt!        ac-list nc pac))
+     ((eq? pm 'dsssl/rest)           (handle:dsssl/rest!       ac-list nc pac))
+     ((eq? pm '~dsssl)               (handle~dsssl!            ac-list nc pac))
+     ((eq? pm '~dsssl/key)           (handle~dsssl/key!        ac-list nc pac))
+     ((eq? pm '~dsssl/opt)           (handle~dsssl/opt!        ac-list nc pac))
+     ((eq? pm '~dsssl/rest)          (handle~dsssl/rest!       ac-list nc pac))
+     ((eq? pm '~rest-bind)           (handle~rest-bind!        ac-list nc pac))
+     ((eq? pm '~~lambda-bind)        (handle~~lambda-bind!     ac-list nc pac))
+     ((eq? pm '~sv-define)           (handle~sv-define!        ac-list nc pac))
+     ((eq? pm '~named/sv-let)        (handle~named/sv-let!     ac-list nc pac))
+     ((eq? pm '~~~~let-mv)           (handle~~~~let-mv!        ac-list nc pac))
+     ((eq? pm '~~defproc)            (handle~~defproc!         ac-list nc pac))
+     ((memq pm defun-param~)           (handle~defun-param!    ac-list nc pac))
+     ((memq pm sv-let-outer~)          (handle~~~let-sv!       ac-list nc pac))
+     ((memq pm sv-let-inner~)          (handle~~let-sv!        ac-list nc pac))
+     ((memq pm sv-let~)                (handle~sv-let!         ac-list nc pac))
+     ((memq pm mv-define~)             (handle~~mv-define!     ac-list nc pac))
+     ((memq pm key-init~)              (handle~key!            ac-list nc pac))
+     ((memq pm opt-init~)              (handle~opt!            ac-list nc pac))
+     ((memq pm key-bind~)              (handle~~key-bind!      ac-list nc pac))
+     ((memq pm opt-bind~)              (handle~~opt-bind!      ac-list nc pac))
+     ((memq pm lambda-bind~)           (handle~lambda-bind!    ac-list nc pac))
+     ((memq pm defun-proc~)            (handle~defun-proc!     ac-list nc pac))
+     ((memq pm mv-let-outer~)          (handle~~~let-mv!       ac-list nc pac))
+     ((memq pm mv-let-inner~)          (handle~~let-mv!        ac-list nc pac))
+     ((memq pm mv-let~)                (handle~mv-let!         ac-list nc pac))
+     ((memq pm mv-define~)             (handle~mv-define!      ac-list nc pac))
+     ((memq pm case-lambda-bind~)      (handle~case-lambda!    ac-list nc pac))
+     ((memq pm case-lambda-outer~)     (handle~~case-lambda!   ac-list nc pac))
+     ((memq pm case-lambda-outermost~) (handle~~case-lambda!   ac-list nc pac))
+     ((memq pm defproc-proc~)          (handle~defproc-proc!   ac-list nc pac))
+     ((memq pm defproc-param~)         (handle~defproc-param!  ac-list nc pac))
+     ((memq pm defproc-spec~)          (handle~defproc-spec!   ac-list nc pac))
+     (else #f))))

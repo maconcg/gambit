@@ -54,7 +54,7 @@
                              ((matches-one-of? case-lambda-syntax operator)
                               '~~~case-lambda)
                              ((matches-one-of? define-proc-syntax operator)
-                              '~defproc-defun)
+                              '~~defproc)
                              (else #f))))
                  (adorn-char nc 'whitespace mesg))))
           ((memc nc delim-chars)

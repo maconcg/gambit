@@ -49,7 +49,8 @@
   (map string->list (+prims '("define" "define-prim" "define-record-type"))))
 
 (define define-proc-syntax
-  (map string->list (+prims '("define-procedure" "define-prim&proc"))))
+  (map string->list
+       (+prims '("define-primitive" "define-procedure" "define-prim&proc"))))
 
 (define sv-let-syntax
   (map string->list
@@ -91,7 +92,7 @@
 
 (define define-mesgs
   '( sv-define defun-proc defun-param mv-define mv-define-rest
-     defproc-defun-proc defproc-defun-param ))
+     defproc-proc defproc-param defproc-spec ))
 
 (define let-mesgs '(named-let sv-let mv-let mv-let-rest))
 
@@ -116,7 +117,7 @@
    subcase-lambda-inner-unmatched  subcase-lambda-inner-begin
    subcompound-key-unmatched       subcompound-key-begin
    subcompound-opt-unmatched       subcompound-opt-begin
-   subdefproc-defun-unmatched      subdefproc-defun-begin
+   subdefproc-unmatched            subdefproc-begin
    subdefproc-inner-unmatched      subdefproc-inner-begin ))
 
 (define list-begin-mesgs
@@ -128,7 +129,7 @@
              sublet-sv-outer-end sublet-sv-inner-end sublet-mv-outermost-end
              sublet-mv-outer-end sublet-mv-inner-end subdef-mv-end
              subcase-lambda-inner-end subcompound-key-end
-             subcompound-opt-end subdefproc-defun-end subdefproc-inner-end )))
+             subcompound-opt-end subdefproc-end subdefproc-inner-end )))
 
 (define list-delimiter-mesgs
   (append sublist-delimiter-mesgs list-begin-mesgs '(list-end)))
@@ -138,8 +139,8 @@
 (define dsssl-compounds '(compound-key compound-opt))
 
 (define binding-compounds
-  (append '( defun lambda-bind-list let-sv-inner case-lambda-inner
-             defproc-defun defproc-inner )
+  (append '( defun lambda-bind-list let-sv-inner case-lambda-inner defproc
+             defproc-inner )
           dsssl-compounds))
 
 (define compound-kinds
