@@ -59,7 +59,7 @@
                     (adorn-char nc 'default #f))))))
 
 (define (handle:semicolon ac-list nc)
-  (let ((ac (adorn-char nc 'linec 'linec)))
+  (let ((ac (adorn-char nc 'linec 'linec 0)))
     (set-stack! ac (list (cons ac ac-list)))
     ac))
 

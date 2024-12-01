@@ -143,8 +143,12 @@
   (and (not (null? ac-list))
        (let* ((ac (car ac-list)) (mesg (get-mesg ac)))
          (or (memq mesg list-begin-mesgs)
-             (cond ((eq? mesg 'linec-end)
-                    (operator-position? (car (get-stack ac))))
+             (cond ;; ((memq mesg subcompound/comment-end-mesgs)
+                   ;;  (operator-position?
+                   ;;   (let skip ((rest (cdr ac-list)) (i (get-hop ac)))
+                   ;;     (if (zero? i)
+                   ;;         rest
+                   ;;         (skip (cdr rest) (+ i 1)))) '()))
                    ((atmosphere? ac) (operator-position? (cdr ac-list)))
                    (else #f))))))
 
@@ -160,9 +164,9 @@
                 ((memq mesg list-end-mesgs) '())
                 ((memq mesg subcompound/comment-end-mesgs)
                  (seek (let skip ((rest (cdr rest)) (i (get-hop ac)))
-                         (if (zero? i)
-                             rest
-                             (skip (cdr rest) (+ i 1)))) '()))
+                         (if (negative? i)
+                             (skip (cdr rest) (+ i 1))
+                             rest)) '()))
                 ((memq mesg list-begin-mesgs) buffer)
                 (else (seek (cdr rest) '())))))))
 

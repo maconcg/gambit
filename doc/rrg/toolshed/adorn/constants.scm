@@ -83,9 +83,10 @@
                          "define-structure" "define-syntax" "define-type"
                          "define-type-of-thread" "delay" "delay-force" "do"
                          "else" "future" "guard" "if" "import" "include"
-                         "include-ci" "load" "namespace" "or" "quasiquote"
-                         "quote" "r7rs-guard" "receive" "set!" "syntax-error"
-                         "syntax-rules" "this-source-file" "unless" "when")))))
+                         "include-ci" "load" "macro-case-target" "namespace"
+                         "or" "quasiquote" "quote" "r7rs-guard" "receive"
+                         "set!" "syntax-error" "syntax-rules"
+                         "this-source-file" "unless" "when")))))
 
 (define else-is-syntax-syntax
   (map string->list (+prims '("cond" "case" "macro-case-target"))))
