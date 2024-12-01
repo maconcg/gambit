@@ -18,6 +18,7 @@
                (else (let* ((stack (get-stack pac))
                             (resumed-context (cdar stack))
                             (ac (car (adorn! nc resumed-context))))
+                       (set-stack! pac '())
                        ac))))
         (else #f)))
 
@@ -34,8 +35,9 @@
         ((char=? nc #\;) (adorn-char nc 'linec 'datumc-linec))
         ((memc nc compound-begin-chars) (begin-datumc-compound! ac-list nc))
         ((memc nc '(#\) #\] #\})) (datumc:end-compound! ac-list nc))
-        ((or (memc nc '(#\space #\newline #\tab #\' #\` #\,))
-             (and (char=? nc #\@) (memc (get-char pac) '(#\' #\` #\,))))
+        ((or (memc nc whitespace-chars)
+             (memc nc abbrev-chars)
+             (and (char=? nc #\@) (memc (get-char pac) abbrev-chars)))
          (adorn-char nc 'datumc '~datumc))
         (else (adorn-char nc 'datumc 'datumc-simple-begin))))
 

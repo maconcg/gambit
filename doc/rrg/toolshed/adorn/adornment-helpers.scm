@@ -70,26 +70,35 @@
           inert-binding-compounds))
 
 (define vector-compounds (cons 'vector hvector-kinds))
-
+(define vector-end-mesgs (map ->end vector-compounds))
+(define subvector-end-mesgs (map ->sub vector-end-mesgs))
 (define list-compounds (append binding-compounds non-binding-list-compounds))
-
 (define compound-kinds (append list-compounds vector-compounds))
-
 (define sublist-mesgs (map ->sub list-compounds))
+(define sublist-end-mesgs (map ->end sublist-mesgs))
+(define subcompound-end-mesgs (append sublist-end-mesgs subvector-end-mesgs))
+(define comment-end-mesgs '(linec-end datumc-end nestc-end))
+(define subcompound/comment-end-mesgs
+  (append subcompound-end-mesgs comment-end-mesgs))
+
+(define sublist-unmatched-mesgs (map ->unmatched sublist-mesgs))
+
+(define list-unmatched-mesgs
+  (append sublist-unmatched-mesgs (map ->unmatched list-compounds)))
 
 (define sublist-begin-mesgs
-  (append (map ->unmatched sublist-mesgs) (map ->begin list-compounds)))
+  (append sublist-unmatched-mesgs (map ->begin list-compounds)))
 
 (define list-begin-mesgs
-  (append sublist-begin-mesgs (list (->unmatched 'list) (->begin 'list))))
+  (append
+   sublist-begin-mesgs list-unmatched-mesgs (map ->begin list-compounds)))
 
-(define sublist-delimiter-mesgs
-  (append sublist-begin-mesgs (map ->end sublist-mesgs)))
+(define sublist-delimiter-mesgs (append sublist-begin-mesgs sublist-end-mesgs))
+
+(define list-end-mesgs (map ->end list-compounds))
 
 (define list-delimiter-mesgs
-  (cons (->end 'list) (append sublist-delimiter-mesgs list-begin-mesgs)))
-
-(define list-end-mesgs (list (->sub-end 'list) (->end 'list)))
+  (append sublist-delimiter-mesgs list-begin-mesgs list-end-mesgs))
 
 (define string-base-mesgs '(string datumc-string datumc-compound-string))
 
@@ -148,14 +157,13 @@
         (let* ((ac (car rest)) (mesg (get-mesg ac)))
           (cond ((memq (get-kind ac) '(rt-syntax))
                  (seek (cdr rest) (cons (get-char ac) buffer)))
-                ((eq? mesg 'list-end) '())
-                ((eq? mesg 'sublist-end)
+                ((memq mesg list-end-mesgs) '())
+                ((memq mesg subcompound/comment-end-mesgs)
                  (seek (let skip ((rest (cdr rest)) (i (get-hop ac)))
                          (if (zero? i)
                              rest
                              (skip (cdr rest) (+ i 1)))) '()))
                 ((memq mesg list-begin-mesgs) buffer)
-                ((eq? mesg 'linec-end) (seek (car (get-stack ac)) '()))
                 (else (seek (cdr rest) '())))))))
 
 (define (start-of-list ac-list)
@@ -163,9 +171,9 @@
   (if (null? ac-list)
       '()
       (let* ((ac (car ac-list)) (mesg (get-mesg ac)))
-        (cond ((memq mesg '(list-unmatched sublist-unmatched)) ac-list)
-              ((eq? mesg 'list-end) '())
-              ((eq? mesg 'sublist-end)
+        (cond ((memq mesg list-unmatched-mesgs) ac-list)
+              ((memq mesg list-end-mesgs) '())
+              ((memq mesg subcompound/comment-end-mesgs)
                (let ((stack (get-stack ac)))
                  (start-of-list (if (null? stack)
                                     (let skip ((rest (cdr ac-list))
@@ -174,7 +182,6 @@
                                           rest
                                           (skip (cdr ac-list) (+ i 1))))
                                     (car stack)))))
-              ((eq? mesg 'linec-end) (start-of-list (car (get-stack ac))))
               (else (start-of-list (cdr ac-list)))))))
 
 (define (up-list ac-list)
