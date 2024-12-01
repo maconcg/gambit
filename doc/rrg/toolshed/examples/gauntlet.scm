@@ -94,6 +94,16 @@ end-of-this-here-string
         (compose f ((iterate (- n 1)) f))
         identity)))
 
+(define #|resume context after comment|# (max #;#; x x x;
+                                                       y)
+  (if (> x y)
+      x
+      y))
+
+(define-procedure (bits . ;
+                          (#;#() bool boolean))
+  ...)
+
 (define (|generic root via Newton's method| n)
   (define (|sufficiently small change from x to y?| x y)
     (> 1e-10 (abs (- (/ x y) 1))))
