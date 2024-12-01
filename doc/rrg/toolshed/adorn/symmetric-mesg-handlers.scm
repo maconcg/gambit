@@ -53,7 +53,7 @@
 (define (^handle:symmetric-oct-short! delim sym backslash-sym esc-sym)
   (lambda (ac-list nc)
     (cond ((memc nc octal-chars) (adorn-char nc esc-sym sym))
-          ((char=? nc #\") (end-symmetric! ac-list nc sym))
+          ((char=? nc delim) (end-symmetric! ac-list nc sym))
           ((char=? nc #\\) (adorn-char nc esc-sym backslash-sym))
           (else (adorn-char nc sym sym)))))
 
@@ -212,7 +212,8 @@
         (try-defproc-proc!     (^try-symm-pm! (transform 'defproc-proc)))
         (try-defproc-param!    (^try-symm-pm! (transform 'defproc-param)))
         (try-defproc-spec!     (^try-symm-pm! (transform 'defproc-spec)))
-        (try-rest-spec!        (^try-symm-pm! (transform 'rest-spec))))
+        (try-rest-spec!        (^try-symm-pm! (transform 'rest-spec)))
+        (try~rt-syntax!        (^try-symm-pm! (transform '~rt-syntax))))
     (lambda (ac-list nc pac pm)
       (or (try-sv-define!        ac-list nc pac pm)
           (try-defun-param!      ac-list nc pac pm)
@@ -234,7 +235,8 @@
           (try-defproc-param!    ac-list nc pac pm)
           (try-defproc-proc!     ac-list nc pac pm)
           (try-defproc-spec!     ac-list nc pac pm)
-          (try-rest-spec!        ac-list nc pac pm)))))
+          (try-rest-spec!        ac-list nc pac pm)
+          (try~rt-syntax!        ac-list nc pac pm)))))
 
 (define try-symmetric-pm!
   (let ((try-string! (^try-symm-pm! 'string))
