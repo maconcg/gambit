@@ -143,12 +143,12 @@
   (and (not (null? ac-list))
        (let* ((ac (car ac-list)) (mesg (get-mesg ac)))
          (or (memq mesg list-begin-mesgs)
-             (cond ;; ((memq mesg subcompound/comment-end-mesgs)
-                   ;;  (operator-position?
-                   ;;   (let skip ((rest (cdr ac-list)) (i (get-hop ac)))
-                   ;;     (if (zero? i)
-                   ;;         rest
-                   ;;         (skip (cdr rest) (+ i 1)))) '()))
+             (cond ((memq mesg subcompound/comment-end-mesgs)
+                    (operator-position?
+                     (let skip ((rest (cdr ac-list)) (i (get-hop ac)))
+                       (if (negative? i)
+                           (skip (cdr rest) (+ i 1))
+                           rest))))
                    ((atmosphere? ac) (operator-position? (cdr ac-list)))
                    (else #f))))))
 
@@ -182,9 +182,9 @@
                  (start-of-list (if (null? stack)
                                     (let skip ((rest (cdr ac-list))
                                                (i (get-hop ac)))
-                                      (if (zero? i)
-                                          rest
-                                          (skip (cdr ac-list) (+ i 1))))
+                                      (if (negative? i)
+                                          (skip (cdr ac-list) (+ i 1))
+                                          rest))
                                     (car stack)))))
               (else (start-of-list (cdr ac-list)))))))
 
@@ -390,10 +390,12 @@
 (define begin-compound!
   (^begin-compound! compound:peer/distance ->sub-unmatched))
 
-(define (begin-datumc-compound! ac-list nc)
-  ((^begin-compound! datumc-compound:peer/distance
-                     (lambda (kind) 'datumc-subcompound-unmatched))
-   ac-list nc 'datumc-compound))
+(define begin-datumc-compound!
+  (let ((^begin-datumc-compound!
+         (^begin-compound! datumc-compound:peer/distance
+                           (lambda (kind) 'datumc-subcompound-unmatched))))
+    (lambda (ac-list nc)
+      (^begin-datumc-compound! ac-list nc 'datumc-compound))))
 
 (define (^compound:peer/empty?/distance peering-mesgs end-mesgs empty-init)
   ;; Return a sublist starting from the peer character, whether the intervening
@@ -472,31 +474,33 @@
   (car ((^end-compound! subcompound-mesg? compound:peer/empty?/distance
                         ->sub-begin ->sub-end) ac-list nc)))
 
-(define (datumc:end-compound! ac-list nc)
+(define datumc:end-compound!
   ;; End a compound datum and also end the applicable datum comment.
-  (let ((ac/rest ((^end-compound! datumc-subcompound-mesg?
-                                  datumc-compound:peer/empty?/distance
-                                  (lambda (symbol) 'datumc-subcompound-begin)
-                                  (lambda (symbol) 'datumc-subcompound-end))
-                  ac-list nc)))
-    (let ((ac (car ac/rest)) (rest (cdr ac/rest)))
-      (when (eq? (get-mesg ac) 'datumc-compound-end)
-        (let ((p/d (datumc:peer/distance rest)))
-          (let ((from-peer (car p/d)) (distance-from-# (cdr p/d)))
-            (let* ((initial-# (car from-peer))
-                   (initial-#-stack (get-stack initial-#)))
-              (let ((top-peer (caar initial-#-stack))
-                    (popped-#-stack (cdr initial-#-stack)))
-                (when (null? popped-#-stack)
-                  (set-mesg! ac 'datumc-end)
-                  (set-stack! ac (cdar initial-#-stack)))
-                (let* ((intra-compound-distance (get-hop (car rest)))
-                       (~distance (+ intra-compound-distance distance-from-#))
-                       (total-distance (+ ~distance (get-hop top-peer))))
-                  (set-hop! ac (- total-distance))
-                  (set-hop! top-peer total-distance)
-                  (set-stack! initial-# popped-#-stack)))))))
-      ac)))
+  (let ((^datumc:end-compound! (^end-compound!
+                                datumc-subcompound-mesg?
+                                datumc-compound:peer/empty?/distance
+                                (lambda (symbol) 'datumc-subcompound-begin)
+                                (lambda (symbol) 'datumc-subcompound-end))))
+    (lambda (ac-list nc)
+      (let ((ac/rest (^datumc:end-compound! ac-list nc)))
+        (let ((ac (car ac/rest)) (rest (cdr ac/rest)))
+          (when (eq? (get-mesg ac) 'datumc-compound-end)
+            (let ((p/d (datumc:peer/distance rest)))
+              (let ((from-peer (car p/d)) (distance-from-# (cdr p/d)))
+                (let* ((initial-# (car from-peer))
+                       (initial-#-stack (get-stack initial-#)))
+                  (let ((top-peer (caar initial-#-stack))
+                        (popped-#-stack (cdr initial-#-stack)))
+                    (when (null? popped-#-stack)
+                      (set-mesg! ac 'datumc-end)
+                      (set-stack! ac (cdar initial-#-stack)))
+                    (let* ((intra-compound-dist (get-hop (car rest)))
+                           (~distance (+ intra-compound-dist distance-from-#))
+                           (total-distance (+ ~distance (get-hop top-peer))))
+                      (set-hop! ac (- total-distance))
+                      (set-hop! top-peer total-distance)
+                      (set-stack! initial-# popped-#-stack)))))))
+          ac)))))
 
 (define (symmetric:peer/distance ac-list kind)
   ;; Analogous to above, but for non-nestable datums whose beginning and ending
