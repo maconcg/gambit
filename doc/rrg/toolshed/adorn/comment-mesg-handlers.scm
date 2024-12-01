@@ -15,7 +15,10 @@
                 (let ((ac (adorn-char nc 'linec 'linec #f (get-stack pac))))
                   (set-stack! pac '())
                   ac))
-               (else (try-context! ac-list nc pac))))
+               (else (let* ((stack (get-stack pac))
+                            (before-linec (cdar stack))
+                            (ac (car (adorn! nc before-linec))))
+                       ac))))
         (else #f)))
 
 (define (try-datumc-linec-pm! ac-list nc pm)
