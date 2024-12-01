@@ -25,8 +25,10 @@
      (string->symbol (string-append "sub" (symbol->string symbol) ending)))))
 
 (define (->begin         symbol) ((append-to-symbol "-begin")     symbol))
+(define (->compound      symbol) ((append-to-symbol "-compound")  symbol))
 (define (->empty         symbol) ((append-to-symbol "-empty")     symbol))
 (define (->end           symbol) ((append-to-symbol "-end")       symbol))
+(define (->esc           symbol) ((append-to-symbol "-esc")       symbol))
 (define (->ident         symbol) ((append-to-symbol "-ident")     symbol))
 (define (->inert         symbol) ((append-to-symbol "-inert")     symbol))
 (define (->unmatched     symbol) ((append-to-symbol "-unmatched") symbol))
@@ -45,7 +47,7 @@
 
 (define define-binds
   '( sv-define defun-proc defun-param mv-define mv-define-rest
-     defproc-proc defproc-param defproc-spec ))
+     defproc-proc defproc-param defproc-spec rest-spec ))
 
 (define binds (append define-binds let-binds lambda-binds dsssl-binds))
 
@@ -54,12 +56,13 @@
 (define def-like-compounds '(defun defproc))
 
 (define let-like-compounds
-  (append '(lambda-bind-list let-sv-inner case-lambda-inner defproc-inner)
+  (append '( lambda-bind-list let-sv-inner case-lambda-inner defproc-inner
+             rest-spec-list )
           dsssl-compounds))
 
 (define binding-compounds (append def-like-compounds let-like-compounds))
 
-(define inert-binding-compounds (map ->inert binding-compounds))
+(define inert-binding-compounds (map ->compound (map ->inert binds)))
 
 (define non-binding-list-compounds
   (append '( list let-sv-outer let-mv-outermost let-mv-outer let-mv-inner
@@ -89,6 +92,11 @@
 (define list-end-mesgs (list (->sub-end 'list) (->end 'list)))
 
 (define string-base-mesgs '(string datumc-string datumc-compound-string))
+
+(define binding-ident-base-kinds (map ->ident binds))
+(define binding-inert-ident-kinds (map ->inert-ident binds))
+(define binding-ident-kinds
+  (append binding-ident-base-kinds binding-inert-ident-kinds))
 
 (define ident-base-mesgs
   (let ((base-syms (append '(datumc datumc-compound) binds)))

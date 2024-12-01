@@ -211,7 +211,8 @@
         (try-mv-define-rest!   (^try-symm-pm! (transform 'mv-define-rest)))
         (try-defproc-proc!     (^try-symm-pm! (transform 'defproc-proc)))
         (try-defproc-param!    (^try-symm-pm! (transform 'defproc-param)))
-        (try-defproc-spec!     (^try-symm-pm! (transform 'defproc-spec))))
+        (try-defproc-spec!     (^try-symm-pm! (transform 'defproc-spec)))
+        (try-rest-spec!        (^try-symm-pm! (transform 'rest-spec))))
     (lambda (ac-list nc pac pm)
       (or (try-sv-define!        ac-list nc pac pm)
           (try-defun-param!      ac-list nc pac pm)
@@ -232,7 +233,8 @@
           (try-case-lambda-bind! ac-list nc pac pm)
           (try-defproc-param!    ac-list nc pac pm)
           (try-defproc-proc!     ac-list nc pac pm)
-          (try-defproc-spec!     ac-list nc pac pm)))))
+          (try-defproc-spec!     ac-list nc pac pm)
+          (try-rest-spec!        ac-list nc pac pm)))))
 
 (define try-symmetric-pm!
   (let ((try-string! (^try-symm-pm! 'string))

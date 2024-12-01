@@ -104,43 +104,35 @@
                          (else chars))))
     (maybe-handle:shebang char-list (if (null? so-far) so-far (car so-far)))))
 
-(define (reverse+simplify-kinds! ac-list)
-  (let ((def-like-binds
-          '( defun-proc defun-proc-ident sv-define sv-define-ident mv-define
-             mv-define-ident mv-define-rest mv-define-rest-ident
-             defproc-proc defproc-proc-ident ))
-        (def-like-escapes
-          '( defun-proc-ident-esc sv-define-ident-esc mv-define-ident-esc
-             mv-define-rest-ident-esc defproc-proc-ident-esc ))
-        (let-like-binds
-         '( defun-param defun-param-ident named-let named-let-ident sv-let
-            sv-let-ident mv-let mv-let-ident mv-let-rest mv-let-rest-ident
-            lambda-bind lambda-bind-ident lambda-rest lambda-rest-ident
-            case-lambda-bind case-lambda-bind-ident opt-bind opt-bind-ident
-            opt-init opt-init-ident rest-bind rest-bind-ident defproc-param
-            defproc-param-ident defproc-spec defproc-spec-ident ))
-        (let-like-escapes
-         '( defun-param-ident-esc named-let-ident-esc sv-let-ident-esc
-            mv-let-ident-esc lambda-bind-ident-esc lambda-rest-ident-esc
-            case-lambda-bind-ident-esc opt-bind-ident-esc opt-init-ident-esc
-            rest-bind-ident-esc defproc-param-ident-esc
-            defproc-spec-ident-escdefproc-param-ident ))
+(define reverse+simplify-kinds!
+  (let ((def-like-syms '( defun-proc sv-define mv-define mv-define-rest
+                          defproc-proc ))
+        (let-like-syms '( defun-param named-let sv-let mv-let mv-let-rest
+                          lambda-bind lambda-rest case-lambda-bind
+                          opt-bind opt-init rest-bind defproc-param
+                          defproc-spec rest-spec ))
         (syntax-kinds '(rt-syntax aux-syntax))
-        (empty-compounds (map ->empty compound-kinds)))
-    (let simplify! ((unsimplified ac-list) (simplified '()))
-      (if (null? unsimplified)
-          simplified
-          (let* ((ac (car unsimplified)) (kind (get-kind ac)))
-            (cond ((eq? kind 'directive) (set-kind! ac 'atmosphere))
-                  ((eq? kind 'hs-body) (set-kind! ac 'string))
-                  ((eq? kind 'whitespace) (set-kind! ac 'default))
-                  ((memq kind '(false true)) (set-kind! ac 'boolean))
-                  ((memq kind def-like-binds) (set-kind! ac 'def-like-bind))
-                  ((memq kind def-like-escapes) (set-kind! ac 'def-like-esc))
-                  ((memq kind let-like-binds) (set-kind! ac 'let-like-bind))
-                  ((memq kind let-like-escapes) (set-kind! ac 'let-like-esc))
-                  ((memq kind comment-kinds) (set-kind! ac 'atmosphere))
-                  ((memq kind syntax-kinds) (set-kind! ac 'syntax))
-                  ((memq kind compound-kinds) (set-kind! ac 'compound))
-                  ((memq kind empty-compounds) (set-kind! ac 'compound-empty)))
-            (simplify! (cdr unsimplified) (cons ac simplified)))))))
+        (empty-kinds (map ->empty compound-kinds)))
+    (let ((def-like-binds (append def-like-syms (map ->ident def-like-syms)))
+          (def-like-escapes (map ->esc (map ->ident def-like-syms)))
+          (let-like-binds (append let-like-syms (map ->ident let-like-syms)))
+          (let-like-escapes (map ->esc (map ->ident let-like-syms))))
+      (lambda (ac-list)
+        (let simplify! ((unsimplified ac-list) (simplified '()))
+          (if (null? unsimplified)
+              simplified
+              (let* ((ac (car unsimplified)) (kind (get-kind ac)))
+                (cond
+                 ((eq? kind 'directive) (set-kind! ac 'atmosphere))
+                 ((eq? kind 'hs-body) (set-kind! ac 'string))
+                 ((eq? kind 'whitespace) (set-kind! ac 'default))
+                 ((memq kind '(false true)) (set-kind! ac 'boolean))
+                 ((memq kind def-like-binds) (set-kind! ac 'def-like-bind))
+                 ((memq kind def-like-escapes) (set-kind! ac 'def-like-esc))
+                 ((memq kind let-like-binds) (set-kind! ac 'let-like-bind))
+                 ((memq kind let-like-escapes) (set-kind! ac 'let-like-esc))
+                 ((memq kind comment-kinds) (set-kind! ac 'atmosphere))
+                 ((memq kind syntax-kinds) (set-kind! ac 'syntax))
+                 ((memq kind compound-kinds) (set-kind! ac 'compound))
+                 ((memq kind empty-kinds) (set-kind! ac 'compound-empty)))
+                (simplify! (cdr unsimplified) (cons ac simplified)))))))))

@@ -1,6 +1,19 @@
 (define (memc char char-list) (member char char-list char=?))
 (define (memc-ci char char-list) (member char char-list char-ci=?))
 
+(define char-complement
+  (let ((remberc (lambda (char char-list)
+                   (let loop ((old char-list) (new '()))
+                     (cond ((null? old) new)
+                           (else (let ((next (car old)))
+                                   (loop (cdr old) (if (char=? char next)
+                                                       new
+                                                       (cons next new))))))))))
+    (lambda (subset set)
+      (let loop ((subset subset) (new-set set))
+        (cond ((null? subset) new-set)
+              (else (loop (cdr subset) (remberc (car subset) new-set))))))))
+
 (define (char-list-backmatch goal actual)
   (let backmatch-loop ((goal (reverse goal)) (actual-rest (reverse actual)))
     (if (null? goal)
