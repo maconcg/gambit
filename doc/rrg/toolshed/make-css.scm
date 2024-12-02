@@ -147,7 +147,7 @@ pre.lisp-preformatted {
     span.serial-ref {color: <serial-ref>}
     span.shebang {color: <shebang>}
     span.string, span.string-esc {color: <string>}
-    span.syntax {color: <syntax>}
+    span.syntax, span.syntax-esc {color: <syntax>}
 }
 
 END
@@ -158,7 +158,7 @@ pre.lisp-preformatted {
     font-size: 1.1em;
     span.atmosphere, span.dsssl { font-style: oblique }
     span.char-body, span.def-like-esc, span.ident-esc, span.let-like-esc,
-      span.string-esc {
+      span.string-esc, span.syntax-esc {
         font-weight: bold
     }
 }
@@ -376,7 +376,7 @@ END
     (( let-like-bind let-like-esc ) 'blue-faint)
     (( number ) 'cyan)
     (( string string-esc ) 'green)
-    (( syntax ) 'magenta-cooler)
+    (( syntax syntax-esc ) 'magenta-cooler)
     (else kind)))
 
 (define (modus:element->color element)

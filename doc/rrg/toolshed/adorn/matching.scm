@@ -70,10 +70,10 @@
          (or (matches? (car achievable) actual) (loop (cdr achievable))))))
 
 (define char-escape-representations
-  (let ((zero-pad (lambda (char-list target-length)
-                    (if (> target-length (length char-list))
-                        (zero-pad (cons #\0 char-list) target-length)
-                        char-list))))
+  (letrec ((zero-pad (lambda (char-list target-length)
+                       (if (> target-length (length char-list))
+                           (zero-pad (cons #\0 char-list) target-length)
+                           char-list))))
     (lambda (char)
       (let ((int (char->integer char)))
         (let ((hex (number->string int 16)) (octal (number->string int 8)))
@@ -101,21 +101,27 @@
     (let loop ((representations representations))
       (and (not (null? representations))
            (let ((representation (car representations)))
-             (if (let loop ((rest representation) (actuals actual))
-                   (or (null? rest)
-                       (and (char=? (car rest) (car actuals))
-                            (loop (cdr rest) (cdr actuals)))))
+             (if (and representation
+                      (let loop ((rest representation) (actuals actual))
+                        (or (null? rest)
+                            (and (char=? (car rest) (car actuals))
+                                 (loop (cdr rest) (cdr actuals))))))
                  representation
                  (loop (cdr representations))))))))
 
 (define (matches-escapes? goal actual)
-  (let ((cl-goal (if (string? goal) (string->list goal) goal))
-        (cl-actual (if (string? actual) (string->list actual) actual)))
-    (or (and (null? cl-goal) (null? cl-actual))
-        (and (not (or (null? cl-goal) (null? cl-actual)))
-             (let* ((next (car goal))
-                    (partial-match (escaped-char-match next actual)))
-               (and partial-match
-                    (let* ((matched-length (length partial-match))
-                           (tail (list-tail actual matched-length)))
-                      (matches-escapes? (cdr goal) tail))))))))
+  (or (and (null? goal) (null? actual))
+      (and (not (or (null? goal) (null? actual)))
+           (let* ((next (car goal))
+                  (partial-match (escaped-char-match next actual)))
+             (and partial-match
+                  (let* ((matched-length (length partial-match))
+                         (tail (list-tail actual matched-length)))
+                    (matches-escapes? (cdr goal) tail)))))))
+
+(define (matches-one-of-escapes goals actual)
+  (and (not (null? goals))
+       (let ((goal (car goals)))
+         (if (matches-escapes? goal actual)
+             goal
+             (matches-one-of-escapes (cdr goals) actual)))))

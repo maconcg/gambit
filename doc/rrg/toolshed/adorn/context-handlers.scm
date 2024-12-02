@@ -70,7 +70,7 @@
        (could-match-one-of? runtime-syntax (list nc))))
 
 (define (try-rt-syntax-pm! ac-list nc pac pm)
-  (and (memq pm '(~rt-syntax ~~rt-syntax))
+  (and (memq pm '(~rt-syntax ~~rt-syntax rt-syntax-ident-end))
        (handle~rt-syntax! ac-list nc pac)))
 
 (define (default+no-mesg/rt-syntax? ac)

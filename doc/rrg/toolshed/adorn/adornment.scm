@@ -65,10 +65,12 @@
 
 (define (try-nc! ac-list nc)
   (cond ((char=? nc #\") (begin-symmetric ac-list nc 'string))
-        ((char=? nc #\|) (begin-symmetric ac-list nc 'ident))
         ((char=? nc #\.) (handle:dot ac-list nc))
         ((char=? nc #\#) (handle:octothorpe ac-list nc))
         ((char=? nc #\;) (handle:semicolon ac-list nc))
+        ((char=? nc #\|) (if (operator-position? ac-list)
+                             (begin-symmetric ac-list nc '~rt-syntax-ident)
+                             (begin-symmetric ac-list nc 'ident)))
         ((memc nc compound-begin-chars) (begin-compound! ac-list nc 'list))
         ((memc nc compound-end-chars) (end-compound! ac-list nc))
         ((memc nc decimal-chars) (handle:decimal-char ac-list nc))
@@ -111,7 +113,7 @@
                           lambda-bind lambda-rest case-lambda-bind
                           opt-bind opt-init rest-bind defproc-param
                           defproc-spec rest-spec ))
-        (syntax-kinds '(rt-syntax aux-syntax))
+        (syntax-kinds '(rt-syntax aux-syntax rt-syntax-ident))
         (empty-kinds (map ->empty compound-kinds)))
     (let ((def-like-binds (append def-like-syms (map ->ident def-like-syms)))
           (def-like-escapes (map ->esc (map ->ident def-like-syms)))
@@ -124,8 +126,11 @@
               (let* ((ac (car unsimplified)) (kind (get-kind ac)))
                 (cond
                  ((eq? kind 'directive) (set-kind! ac 'atmosphere))
-                 ((eq? kind 'hs-body) (set-kind! ac 'string))
+                 ((eq? kind '~rt-syntax-ident) (set-kind! ac 'ident))
+                 ((eq? kind '~rt-syntax-ident-esc) (set-kind! ac 'ident-esc))
+                 ((eq? kind 'hs-body) (set-kind! ac 'string))                 
                  ((eq? kind 'whitespace) (set-kind! ac 'default))
+                 ((eq? kind 'rt-syntax-ident-esc) (set-kind! ac 'syntax-esc))
                  ((memq kind '(false true)) (set-kind! ac 'boolean))
                  ((memq kind def-like-binds) (set-kind! ac 'def-like-bind))
                  ((memq kind def-like-escapes) (set-kind! ac 'def-like-esc))

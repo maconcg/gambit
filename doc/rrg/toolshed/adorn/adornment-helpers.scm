@@ -153,14 +153,16 @@
                    (else #f))))))
 
 (define (rt-syntax-operator ac-list)
-  ;; Returns the operator of the current list if that list begins with the kind
-  ;; 'rt-syntax (for "runtime syntax").
+  ;; Returns the operator of the current list if that list begins with a use of
+  ;; runtime syntax.
   (let seek ((rest ac-list) (buffer '()))
     (if (null? rest)
         buffer
         (let* ((ac (car rest)) (mesg (get-mesg ac)))
-          (cond ((memq (get-kind ac) '(rt-syntax))
+          (cond ((eq? mesg '~rt-syntax)
                  (seek (cdr rest) (cons (get-char ac) buffer)))
+                ((eq? mesg '~~rt-syntax) (cons (get-char ac) buffer))
+                ((eq? mesg 'rt-syntax-ident-end) (get-mesg (cadr rest)))
                 ((memq mesg list-end-mesgs) '())
                 ((memq mesg subcompound/comment-end-mesgs)
                  (seek (let skip ((rest (cdr rest)) (i (get-hop ac)))
@@ -526,9 +528,28 @@
         (set-stack! peer '()))
       (cons from-peer distance))))
 
+(define (revise-rt-syntax-ident! ac-list)
+  (unless (null? ac-list)
+    (let* ((ac (car ac-list)) (kind (get-kind ac)))
+      (cond ((eq? kind '~rt-syntax-ident)
+             (set-kind! ac 'rt-syntax-ident)
+             (revise-rt-syntax-ident! (cdr ac-list)))
+            ((eq? kind '~rt-syntax-ident-esc)
+             (set-kind! ac 'rt-syntax-ident-esc)
+             (revise-rt-syntax-ident! (cdr ac-list)))))))
+
 (define (end-symmetric! ac-list nc kind)
   (let ((p/d (^end-symmetric! ac-list nc kind)))
-    (adorn-char nc kind (->end kind) (- (cdr p/d)))))
+    (if (eq? kind '~rt-syntax-ident)
+        (let ((tested (cdr (chars-until ac-list '~rt-syntax-ident-begin)))
+              (dist (- (cdr p/d))))
+          (let ((full-match (matches-one-of-escapes runtime-syntax tested)))
+            (cond (full-match
+                   (revise-rt-syntax-ident! ac-list)
+                   (set-mesg! (car ac-list) full-match)
+                   (adorn-char nc 'rt-syntax-ident 'rt-syntax-ident-end dist))
+                  (else (adorn-char nc '~rt-syntax-ident-end dist)))))
+    (adorn-char nc kind (->end kind) (- (cdr p/d))))))
 
 (define (datumc:end-symmetric! ac-list nc kind)
   (let* ((p/d (^end-symmetric! ac-list nc kind))
