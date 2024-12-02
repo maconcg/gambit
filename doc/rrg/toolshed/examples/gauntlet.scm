@@ -68,10 +68,10 @@ end-of-this-here-string
 
 (lambda (x) (* x x))
 (lambda (|\x78;|) (* |x| |\u0078|))
-(|la\x6d;bda| (x) (let-values (((a b c) (values x x x))) (* a b)))
+(|la\x6d;bda| (x) (|let-va\u006Cues| (((a b c) (values x x x))) (* a b)))
 
-(|defin\145| |squ\x61;re| (λ (x) (* x x)))
-(|\144\145\146\151\156\145| square (|\U000003bb| (x) (* x x)))
+(|defin\145| |squ\x61;re| (λ #| |# (x) #| |# (* x x)))
+(|\144\145\146\151\156\145| square (|\U000003bB| (x) (* x x)))
 (define (square x) (* x x))
 
 (define (fact i)

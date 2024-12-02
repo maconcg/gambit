@@ -38,7 +38,7 @@
          (begin-compound! ac-list nc 'let-sv-outer))
         (else (^handle~named/sv-let! ac-list nc pac))))
 
-(define ^handle~~lambda-bind! (^handle~bind! 'lambda-rest '~lambda-bind))
+(define ^handle~~lambda-bind! (^handle~bind! 'lambda-rest '~~lambda-bind))
 (define (handle~~lambda-bind! ac-list nc pac)
   (cond ((memc nc compound-begin-chars)
          (begin-compound! ac-list nc 'lambda-bind-list))

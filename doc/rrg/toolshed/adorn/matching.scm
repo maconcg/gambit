@@ -119,9 +119,18 @@
                          (tail (list-tail actual matched-length)))
                     (matches-escapes? (cdr goal) tail)))))))
 
+(define (case-fold-hex-escape char-list)
+  (let loop ((unfolded char-list) (folded '()))
+    (cond ((null? unfolded) (reverse folded))
+          ((or (null? folded) (null? (cdr folded)))
+           (loop (cdr unfolded) (cons (car unfolded) folded)))
+          (else (loop (cdr unfolded)
+                      (cons (char-foldcase (car unfolded)) folded))))))
+
 (define (matches-one-of-escapes goals actual)
-  (and (not (null? goals))
-       (let ((goal (car goals)))
-         (if (matches-escapes? goal actual)
-             goal
-             (matches-one-of-escapes (cdr goals) actual)))))
+  (let ((folded (case-fold-hex-escape actual)))
+    (let loop ((goals goals))
+      (and (not (null? goals))
+           (let ((goal (car goals)))
+             (cond ((matches-escapes? goal folded) goal)
+                   (else (loop (cdr goals)))))))))
