@@ -81,6 +81,8 @@
 (define subcompound/comment-end-mesgs
   (append subcompound-end-mesgs comment-end-mesgs))
 
+(define non-syntax-compounds (cons 'list vector-compounds))
+
 (define sublist-unmatched-mesgs (map ->unmatched sublist-mesgs))
 
 (define list-unmatched-mesgs
