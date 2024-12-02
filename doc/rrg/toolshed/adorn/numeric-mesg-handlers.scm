@@ -1,3 +1,5 @@
+;; Copyright (c) 2024 by Macon Gambill, all rights reserved.
+
 (define (revise-numeric/maybe-invalidate! ac-list nc)
   (let loop ((rest ac-list) (previous-ac #f))
     (if (null? rest)

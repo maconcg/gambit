@@ -191,18 +191,19 @@
         (else (adorn-char nc 'datumc 'datumc-simple))))
 
 (define (handle:datumc~hvector! ~mesg prefix-strings)
-  (lambda (ac-list nc pac pm)
-    (let ((recent-chars (append (chars-until ac-list 'datumc#) (list nc))))
-      (cond ((matches-one-of? prefix-strings recent-chars)
-             (begin-datumc-compound! ac-list nc))
-            ((could-match-one-of? prefix-strings recent-chars)
-             (adorn-char nc 'datumc ~mesg))
-            (else (revise-until! ac-list 'datumc 'datumc#
-                                 (lambda (acl)
-                                   (set-mesg! (car acl) 'datumc-simple-begin)))
-                  (if (memc nc delim-chars)
-                      (maybe-end-datumc! ac-list nc pac pm)
-                      (adorn-char nc 'datumc 'datumc-simple)))))))
+  (let ((end-act (lambda (ac-list)
+                   (set-mesg! (car ac-list) 'datumc-simple-begin))))
+    (lambda (ac-list nc pac pm)
+      (let ((recent-chars (append (chars-until ac-list 'datumc#) (list nc))))
+        (cond ((matches-one-of? prefix-strings recent-chars)
+               (begin-datumc-compound! ac-list nc))
+              ((could-match-one-of? prefix-strings recent-chars)
+               (adorn-char nc 'datumc ~mesg))
+              (else (revise-until! ac-list 'datumc 'datumc# end-act)
+                    (if (memc nc delim-chars)
+                        (maybe-end-datumc! ac-list nc pac pm)
+                        (adorn-char nc 'datumc 'datumc-simple))))))))
+
 (define handle:datumc~fvector!
   (handle:datumc~hvector! '~datumc-fvector fvectors))
 (define handle:datumc~svector!
@@ -254,6 +255,7 @@
 
 (define handle:datumc-string
   (^handle:datumc-symmetric! #\" 'datumc-string-backslash 'datumc-string))
+
 (define (handle:datumc-string-backslash ac-list nc)
   (adorn-char nc 'datumc 'datumc-string))
 
@@ -262,11 +264,13 @@
          (adorn-char nc 'datumc 'datumc-compound-string-backslash))
         ((char=? nc #\") (adorn-char nc 'datumc '~datumc-compound))
         (else (adorn-char nc 'datumc 'datumc-compound-string))))
+
 (define (handle:datumc-compound-string-backslash ac-list nc)
   (adorn-char nc 'datumc 'datumc-compound-string))
 
 (define handle:datumc-ident
   (^handle:datumc-symmetric! #\" 'datumc-ident-backslash 'datumc-ident))
+
 (define (handle:datumc-ident-backslash ac-list nc)
   (adorn-char nc 'datumc 'datumc-ident))
 
@@ -275,6 +279,7 @@
          (adorn-char nc 'datumc 'datumc-compound-ident-backslash))
         ((char=? nc #\") (adorn-char nc 'datumc '~datumc-compound))
         (else (adorn-char nc 'datumc 'datumc-compound-ident))))
+
 (define (handle:datumc-compound-ident-backslash ac-list nc)
   (adorn-char nc 'datumc 'datumc-compound-ident))
 

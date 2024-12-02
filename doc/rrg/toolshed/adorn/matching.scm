@@ -1,3 +1,5 @@
+;; Copyright (c) 2024 by Macon Gambill, all rights reserved.
+
 (define (memc char char-list) (member char char-list char=?))
 (define (memc-ci char char-list) (member char char-list char-ci=?))
 
