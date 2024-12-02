@@ -88,5 +88,5 @@
                          "set!" "syntax-error" "syntax-rules"
                          "this-source-file" "unless" "when")))))
 
-(define else-is-syntax-syntax
+(define rt-aux-syntax-syntax
   (map string->list (+prims '("cond" "case" "macro-case-target"))))

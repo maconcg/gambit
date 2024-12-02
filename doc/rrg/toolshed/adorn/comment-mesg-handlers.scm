@@ -130,7 +130,12 @@
               (set-hop! top-peer total-dist)
               (if (null? rest)
                   (if preserve-context?
-                      (let ((context (cdar peer-stack)))
+                      (let ((context
+                             (let loop ((acl (cdar peer-stack)))
+                               (cond ((null? acl) '())
+                                     ((memq (get-kind (car acl)) comment-kinds)
+                                      (loop (cdr acl)))
+                                     (else acl)))))
                         (adorn-char nc 'nestc mesg-end (- total-dist) context))
                       (adorn-char nc 'nestc mesg-end (- total-dist) rest))
                   (adorn-char nc 'nestc mesg- (- total-dist) rest)))))))))

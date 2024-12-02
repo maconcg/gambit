@@ -94,6 +94,8 @@ end-of-this-here-string
         (compose f ((iterate (- n 1)) f))
         identity)))
 
+#|evaluates to 9: |# ((|\x3BB;|#;#;#s16()""#|#;;|#(||)(|\x2a;|||||))3)
+#|evaluates to a one-element-list: |# ((|λ|#;#;""""#||#||||)'||)
 (define #|resume context after comment|# (max #;#; x x x;
                                                        y)
   (if (> x y)
