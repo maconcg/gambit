@@ -17,13 +17,13 @@
                     (adorn#adorn! (call-with-input-file source
                                     (lambda (p) (read-all p read-char))))))
               (base-filename (basename source)))
-          (with-output-to-file (string-append
-                                base-filename
-                                (if (member css '("gambit.css"
-                                                  "gambit-examples.css")
-                                            string=?)
-                                    ".html"
-                                    ".alt.html"))
+          (with-output-to-file
+              (string-append base-filename
+                             (if (member css
+                                         '("gambit.css" "gambit-examples.css")
+                                         string=?)
+                                 ".html"
+                                 ".alt.html"))
             (lambda ()
               (write-pre-css base-filename)
               (display css-content)
@@ -79,15 +79,13 @@ END
 
 (define (char->html-maybe-& c)
   (if (member c html-safe char=?)
-      c
+      (list c)
       (append '(#\& #\#)
               (string->list (number->string (char->integer c)))
               '(#\;))))
 
-(define (write-char-or-char-list c)
-  (if (list? c)
-      (for-each write-char c)
-      (write-char c)))
+(define (write-char-list char-list)
+  (for-each write-char char-list))
 
 (define (write-ac-list ac-list)
   (let ((nil-spans '(default whitespace)))
@@ -103,13 +101,11 @@ END
         (if (null? rest)
             (close-span pk)
             (let ((ac (car rest)))
-              (let ((char (adorn#get-char ac))
-                    (kind (adorn#get-kind ac)))
+              (let ((char (adorn#get-char ac)) (kind (adorn#get-kind ac)))
                 (if (eq? kind pk)
-                    (begin (write-char-or-char-list (char->html-maybe-& char))
+                    (begin (write-char-list (char->html-maybe-& char))
                            (loop kind (cdr rest)))
                     (begin (close-span pk)
                            (open-span kind)
-                           (write-char-or-char-list (char->html-maybe-& char))
+                           (write-char-list (char->html-maybe-& char))
                            (loop kind (cdr rest)))))))))))
-

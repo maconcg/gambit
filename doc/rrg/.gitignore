@@ -12,6 +12,8 @@ procedures/c/
 toolshed/c/
 toolshed/colorize.sed
 toolshed/*.css
+toolshed/*.html
+toolshed/examples/*.html
 toolshed/today.txi
 *.tgz
 *.tar.*

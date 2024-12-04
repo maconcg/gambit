@@ -9,7 +9,13 @@
                   (if (null? rest)
                       (list examples-only? dark light output-file)
                       (let ((opt (car rest)))
-                        (cond ((member opt '("-d" "--dark-theme") string=?)
+                        (cond ((member opt '("-c" "--codemirror") string=?)
+                               (loop (cdr rest)
+                                     examples-only?
+                                     'codemirror
+                                     'codemirror
+                                     output-file))
+                               ((member opt '("-d" "--dark-theme") string=?)
                                (loop (cddr rest)
                                      examples-only?
                                      (string->symbol (cadr rest))
@@ -28,6 +34,12 @@
                                      examples-only?
                                      dark
                                      (string->symbol (cadr rest))
+                                     output-file))
+                              ((member opt '("-m" "--modus") string=?)
+                               (loop (cdr rest)
+                                     examples-only?
+                                     'modus-vivendi
+                                     'modus-operandi
                                      output-file))
                               ((member opt '("-o" "--output-file") string=?)
                                (loop (cddr rest)
@@ -363,8 +375,8 @@ END
 
 (define (modus:kind->color kind)
   (case kind
-    (( abbrev dot hs-begin invalid shebang ) 'fg-dim)
-    (( atmosphere compound ) 'fg-dimmer)
+    (( abbrev compound dot hs-begin invalid shebang ) 'fg-dim)
+    (( atmosphere ) 'fg-dimmer)
     (( boolean ) 'yellow-warmer)
     (( char ) 'red-faint)
     (( compound-empty default ) 'fg-main)
@@ -383,13 +395,13 @@ END
   (case element
     (( bg-deftp bg-deftypefn bg-deftypevr ) 'bg-dim)
     (( problem ) 'bg-yellow-intense)
-    (( category-def def-bracket ) 'fg-alt)
-    (( def-var ) 'magenta )
+    (( category-def def-bracket ) 'fg-dim)
+    (( def-var ) 'blue-warmer )
     (( deftp-l deftp-r ) 'bg-ochre)
     (( deftypefn-l deftypefn-r ) 'bg-blue-subtle)
     (( deftypevr-l deftypevr-r ) 'bg-clay)
     (( emphasis exception ) 'yellow-faint)
-    (( link link-visited ) 'blue-warmer)
+    (( link link-visited ) 'fg-alt)
     (( ok ) 'slate)
     (( todo ) 'bg-red-intense)
     (else #f)))

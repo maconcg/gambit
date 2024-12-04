@@ -1,5 +1,5 @@
 (define-library (adorn)
-  (export adorn! reverse+simplify-kinds!)
+  (export adorn! matches? could-match? reverse+simplify-kinds!)
   (import (scheme base)
           (scheme case-lambda)
           (scheme char)
