@@ -173,7 +173,6 @@
                  ((eq? kind '~rt-syntax-ident) (set-kind! ac 'ident))
                  ((eq? kind '~rt-syntax-ident-esc) (set-kind! ac 'ident-esc))
                  ((eq? kind 'hs-body) (set-kind! ac 'string))                 
-                 ((eq? kind 'whitespace) (set-kind! ac 'default))
                  ((eq? kind 'rt-syntax-ident-esc) (set-kind! ac 'syntax-esc))
                  ((memq kind '(false true)) (set-kind! ac 'boolean))
                  ((memq kind def-like-binds) (set-kind! ac 'def-like-bind))
