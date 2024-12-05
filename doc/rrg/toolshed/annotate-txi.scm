@@ -8,13 +8,13 @@
 
 (define (main . args)
   (let* ((txi (car args)) (char-list (file->char-list txi)))
-    (display/watch-for-lisp! char-list)))
+    (display/watch-for-lisp char-list)))
 
 (define lisp-begin (string->list "\n@lisp\n"))
 (define lisp-end (string->list "\n@end lisp\n"))
 (define lisp-end-length (length lisp-end))
 
-(define (display/watch-for-lisp! chars)
+(define (display/watch-for-lisp chars)
   (let ((initial-buffer (if (and (not (null? chars)) (char=? (car chars) #\@))
                             '(#\newline)
                             '())))
@@ -28,8 +28,8 @@
                                       '())))
                 ((adorn#matches? lisp-begin (reverse buffer))
                  (let ((lisp/rest (collect-lisp/rest rest)))
-                   ;; (pp (car lisp/rest))
-                   (display/watch-for-lisp! (cadr lisp/rest))))
+                   (write-lisp (reverse (car lisp/rest)))
+                   (display/watch-for-lisp (cadr lisp/rest))))
                 ((adorn#could-match? lisp-begin (reverse buffer))
                  (display nc)
                  (loop (cdr rest) (cons nc buffer)))
@@ -48,7 +48,7 @@
                                                        '())))
                   ((adorn#matches? lisp-end (reverse buffer))
                    (list (list-tail lisp lisp-end-length)
-                         (append (cdr lisp-end) rest)))
+                         (append lisp-end rest)))
                   ((adorn#could-match? lisp-end (reverse buffer))
                    (loop (cons nc lisp) (cdr rest) (cons nc buffer)))
                   (else (loop (cons nc lisp) (cdr rest) '()))))))))
@@ -61,6 +61,105 @@
           (if (char=? next #\/)
               (list->string new)
               (loop (cons next new) (cdr old)))))))
+
+(define (whitespace-char? c) (member c '(#\space #\newline #\tab) char=?))
+
+(define (strip-leading-whitespace char-list)
+  (cond ((null? char-list) char-list)
+        ((whitespace-char? (car char-list)) (strip-whitespace (cdr char-list)))
+        (else char-list)))
+
+(define (strip-trailing-whitespace char-list)
+  (reverse (strip-leading-whitespace (reverse char-list))))
+
+(define (strip-whitespace char-list)
+  (strip-leading-whitespace (strip-trailing-whitespace char-list)))
+
+(define expression/expectation/trailer
+  (let ((tail-matches?
+         (lambda (goal)
+           (let ((goal-length (string-length goal))
+                 (goal-exploded (string->list goal)))
+             (lambda (actual)
+               (let ((actual-length (length actual)))
+                 (and (>= actual-length goal-length)
+                      (let* ((tail-length (- actual-length goal-length))
+                             (tail (list-tail actual tail-length)))
+                        (adorn#matches? goal-exploded tail)))))))))
+    (let ((list-head (lambda (l n) (reverse (list-tail (reverse l) n))))
+          (exception-macro? (tail-matches? "@exception{"))
+          (exception-length (string-length "@exception{"))
+          (ok-macro? (tail-matches? "@ok{"))
+          (ok-length (string-length "@ok{"))
+          (problem-macro? (tail-matches? "@problem{"))
+          (problem-length (string-length "@problem{")))
+      (let ((get-expression
+             (lambda (char-list length)
+               (strip-trailing-whitespace (list-head char-list length))))
+            (get-expectation
+             (lambda (char-list)
+               (let loop ((rest char-list) (expectation '()))
+                 (cond ((null? rest) expectation)
+                       (else (let ((next (car rest)))
+                               (cond ((char=? next #\}) ; use @backslashchar{}
+                                      (reverse (cons #\} expectation)))
+                                     (else (loop (cdr rest)
+                                                 (cons next
+                                                       expectation))))))))))
+            (get-trailer
+             (lambda (char-list)
+               (let loop ((rest char-list) (trailer '()))
+                 (cond ((null? rest) trailer)
+                       (else (let ((next (car rest)))
+                               (cond ((whitespace-char? next)
+                                      (loop (cdr rest) (cons next trailer)))
+                                     (else (reverse trailer))))))))))
+        (lambda (char-list)
+          (let loop ((chars char-list) (e+e '()))
+            (cond ((null? chars) (list char-list '() '()))
+                  ((ok-macro? e+e)
+                   (let* ((expression (get-expression e+e ok-length))
+                          (expr-len (length expression))
+                          (expectation (get-expectation (list-tail char-list
+                                                                   expr-len)))
+                          (expect-len (length expectation))
+                          (trailer (get-trailer (list-tail char-list
+                                                           (+ expr-len
+                                                              expect-len)))))
+                     (list expression expectation trailer)))
+                  ((exception-macro? e+e)
+                   (let* ((expression (get-expression e+e exception-length))
+                          (expr-len (length expression))
+                          (expectation (get-expectation (list-tail char-list
+                                                                   expr-len)))
+                          (expect-len (length expectation))
+                          (trailer (get-trailer (list-tail char-list
+                                                           (+ expr-len
+                                                              expect-len)))))
+                     (list expression expectation trailer)))
+                  ((problem-macro? e+e)
+                   (let* ((expression (get-expression e+e problem-length))
+                          (expr-len (length expression))
+                          (expectation (get-expectation (list-tail char-list
+                                                                   expr-len)))
+                          (expect-len (length expectation))
+                          (trailer (get-trailer (list-tail char-list
+                                                           (+ expr-len
+                                                              expect-len)))))
+                     (list expression expectation trailer)))
+                  (else (loop (cdr chars)
+                              (append e+e (list (car chars))))))))))))
+
+(define (write-lisp char-list)
+  (unless (null? char-list)
+    (let ((e/e/t (expression/expectation/trailer char-list)))
+      (let ((expression (car e/e/t))
+            (expectation (cadr e/e/t))
+            (trailer (caddr e/e/t)))
+        (let ((total-length (length (append expression expectation trailer))))
+          (for-each write-char expression)
+          (for-each write-char (append expectation trailer))
+          (write-lisp (list-tail char-list total-length)))))))
 
 ;; (define html-safe
 ;;   (append '(#\space #\newline)
