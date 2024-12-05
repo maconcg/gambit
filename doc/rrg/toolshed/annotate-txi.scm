@@ -114,41 +114,29 @@
                                (cond ((whitespace-char? next)
                                       (loop (cdr rest) (cons next trailer)))
                                      (else (reverse trailer))))))))))
-        (lambda (char-list)
-          (let loop ((chars char-list) (e+e '()))
-            (cond ((null? chars) (list char-list '() '()))
-                  ((ok-macro? e+e)
-                   (let* ((expression (get-expression e+e ok-length))
-                          (expr-len (length expression))
-                          (expectation (get-expectation (list-tail char-list
-                                                                   expr-len)))
-                          (expect-len (length expectation))
-                          (trailer (get-trailer (list-tail char-list
-                                                           (+ expr-len
-                                                              expect-len)))))
-                     (list expression expectation trailer)))
-                  ((exception-macro? e+e)
-                   (let* ((expression (get-expression e+e exception-length))
-                          (expr-len (length expression))
-                          (expectation (get-expectation (list-tail char-list
-                                                                   expr-len)))
-                          (expect-len (length expectation))
-                          (trailer (get-trailer (list-tail char-list
-                                                           (+ expr-len
-                                                              expect-len)))))
-                     (list expression expectation trailer)))
-                  ((problem-macro? e+e)
-                   (let* ((expression (get-expression e+e problem-length))
-                          (expr-len (length expression))
-                          (expectation (get-expectation (list-tail char-list
-                                                                   expr-len)))
-                          (expect-len (length expectation))
-                          (trailer (get-trailer (list-tail char-list
-                                                           (+ expr-len
-                                                              expect-len)))))
-                     (list expression expectation trailer)))
-                  (else (loop (cdr chars)
-                              (append e+e (list (car chars))))))))))))
+        (let ((get-e/e/t
+               (lambda (char-list chars e+e macro-length)
+                 (let* ((expression (get-expression e+e macro-length))
+                        (expr-len (length expression))
+                        (expectation (get-expectation (list-tail char-list
+                                                                 expr-len)))
+                        (expect-len (length expectation))
+                        (trailer (get-trailer (list-tail char-list
+                                                         (+ expr-len
+                                                            expect-len)))))
+                   (list expression expectation trailer)))))
+          (lambda (char-list)
+            (let loop ((chars char-list) (e+e '()))
+              (cond ((null? chars)
+                     (list char-list '() '()))
+                    ((ok-macro? e+e)
+                     (get-e/e/t char-list chars e+e ok-length))
+                    ((exception-macro? e+e)
+                     (get-e/e/t char-list chars e+e exception-length))
+                    ((problem-macro? e+e)
+                     (get-e/e/t char-list chars e+e problem-length))
+                    (else (loop (cdr chars)
+                                (append e+e (list (car chars)))))))))))))
 
 (define (write-lisp char-list)
   (unless (null? char-list)
