@@ -1,6 +1,7 @@
 #!/usr/bin/env gsi-script
 
 (load "adorn/adorn")
+(load "write-macros.scm")
 
 (define (file->char-list file)
   (call-with-input-file file
@@ -28,7 +29,7 @@
                                       '())))
                 ((adorn#matches? lisp-begin (reverse buffer))
                  (let ((lisp/rest (collect-lisp/rest rest)))
-                   (write-lisp (reverse (car lisp/rest)))
+                   (write-lisp+macro-defs (reverse (car lisp/rest)))
                    (display/watch-for-lisp (cadr lisp/rest))))
                 ((adorn#could-match? lisp-begin (reverse buffer))
                  (display nc)
@@ -138,51 +139,93 @@
                     (else (loop (cdr chars)
                                 (append e+e (list (car chars)))))))))))))
 
-(define (write-lisp char-list)
+(define char->texi-char
+  (let ((texinfo-safe (append '(#\space #\newline)
+                              (char-set->list
+                               (char-set-intersection char-set:letter+digit
+                                                      char-set:ascii)))))
+    (letrec ((zero-pad (lambda (char-list)
+                         (if (> 4 (length char-list))
+                             (zero-pad (cons #\0 char-list))
+                             char-list))))
+      (let ((char->texinfo-maybe-U
+             (lambda (char)
+               (if (member char texinfo-safe char=?)
+                   (list char)
+                   (append '(#\@ #\U #\{)
+                           (zero-pad
+                            (map char-upcase
+                                 (string->list
+                                  (number->string (char->integer char)))))
+                           '(#\}))))))
+        (lambda (char)
+          (cond ((char=? char #\&) (string->list "@ampchar{}"))
+                ((char=? char #\@) (string->list "@atchar{}"))
+                ((char=? char #\\) (string->list "@backslashchar{}"))
+                ((char=? char #\,) (string->list "@comma{}"))
+                ((char=? char #\#) (string->list "@hashchar{}"))
+                ((char=? char #\{) (string->list "@lbracechar{}"))
+                ((char=? char #\}) (string->list "@rbracechar{}"))
+                (else (char->texinfo-maybe-U char))))))))
+
+(define (adorn+simplify char-list)
+  (adorn#reverse+simplify-kinds! (adorn#adorn! char-list)))
+
+(define (kind->macro-open kind)
+  (append '(#\@) (kind->macro-name kind) '(#\{)))
+
+;; (define (unique-kinds ac-list)
+;;   (let loop ((rest ac-list) (kinds '()))
+;;     (if (null? rest)
+;;         kinds
+;;         (let 
+
+;; (define (write-macro-defs ac-list)
+  ;; (write-string (string-append "<span class=\""
+  ;;                              (symbol->string kind)
+  ;;                              "\">"))))
+
+(define (write-lisp+macro-defs char-list)
   (unless (null? char-list)
     (let ((e/e/t (expression/expectation/trailer char-list)))
       (let ((expression (car e/e/t))
             (expectation (cadr e/e/t))
             (trailer (caddr e/e/t)))
-        (let ((total-length (length (append expression expectation trailer))))
-          (for-each write-char expression)
+        (let ((adorned+simplified-expression (adorn+simplify expression))
+              (total-length (length (append expression expectation trailer))))
+          ;; (write-macro-defs adorned+simplified-expression)
+          (write-ac-list adorned+simplified-expression)
           (for-each write-char (append expectation trailer))
-          (write-lisp (list-tail char-list total-length)))))))
+          (write-lisp+macro-defs (list-tail char-list total-length)))))))
 
-;; (define html-safe
-;;   (append '(#\space #\newline)
-;;           (char-set->list (char-set-intersection char-set:ascii
-;;                                                  char-set:letter+digit))))
 
-;; (define (char->html-maybe-& c)
-;;   (if (member c html-safe char=?)
-;;       (list c)
-;;       (append '(#\& #\#)
-;;               (string->list (number->string (char->integer c)))
-;;               '(#\;))))
+(define (write-chars char-list) (for-each write-char char-list))
 
-;; (define (write-char-list char-list)
-;;   (for-each write-char char-list))
-
-;; (define (write-ac-list ac-list)
-;;   (let ((nil-spans '(default whitespace)))
-;;     (let ((open-span (lambda (kind)
-;;                        (unless (memq kind nil-spans)
-;;                          (write-string (string-append "</span><span class=\"";;
-;;                                                       (symbol->string kind)
-;;                                                       "\">")))))
-;;           (close-span (lambda (kind)
-;;                         (unless (memq kind nil-spans)
-;;                           (write-string "</span>")))))
-;;       (let loop ((pk 'default) (rest ac-list))
-;;         (if (null? rest)
-;;             (close-span pk)
-;;             (let ((ac (car rest)))
-;;               (let ((char (adorn#get-char ac)) (kind (adorn#get-kind ac)))
-;;                 (if (eq? kind pk)
-;;                     (begin (write-char-list (char->html-maybe-& char))
-;;                            (loop kind (cdr rest)))
-;;                     (begin (close-span pk)
-;;                            (open-span kind)
-;;                            (write-char-list (char->html-maybe-& char))
-;;                            (loop kind (cdr rest)))))))))))
+(define write-ac-list
+  (let ((open-macro (lambda (kind) (write-chars (kind->macro-open kind))))
+        (close-macro (lambda () (write-char #\}))))
+    (lambda (ac-list)
+      (let loop ((rest ac-list) (macro #f))
+        (cond ((null? rest) (when macro (close-macro)))
+              (else (let ((ac (car rest)))
+                      (let ((c (adorn#get-char ac)) (k (adorn#get-kind ac)))
+                        (cond ((not macro)
+                               (cond ((memq k '(default whitespace))
+                                      (write-chars (char->texi-char c))
+                                      (loop (cdr rest) #f))
+                                     (else
+                                      (open-macro k)
+                                      (write-chars (char->texi-char c))
+                                      (loop (cdr rest) k))))
+                              (else (cond ((memq k (list macro 'whitespace))
+                                           (write-chars (char->texi-char c))
+                                           (loop (cdr rest) macro))
+                                          ((eq? k 'default)
+                                           (close-macro)
+                                           (write-chars (char->texi-char c))
+                                           (loop (cdr rest) #f))
+                                          (else (close-macro)
+                                                (open-macro k)
+                                                (write-chars
+                                                 (char->texi-char c))
+                                                (loop (cdr rest) k)))))))))))))
