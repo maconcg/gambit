@@ -1,6 +1,6 @@
 #!/usr/bin/env gsi-script
 
-(define simplified-kinds
+(define syntax-classes
   '(abbrev
     atmosphere
     boolean
@@ -26,8 +26,6 @@
     let-like-bind
     let-like-esc
     number
-    ok
-    problem
     repl-ref
     serial-ref
     sharp
@@ -36,6 +34,9 @@
     string-esc
     syntax
     syntax-esc))
+
+    ;; ok
+    ;; problem
 
 (define kind->macro-name
   (let ((rev-string->list (lambda (str) (reverse (string->list str)))))
@@ -77,7 +78,7 @@
                 (loop (cdr old) (append (rev-string->list "NINE") new)))
                (else (loop (cdr old) (cons next new))))))))))
 
-(define (write-lisp-macro kind)
+(define (write-lisp-syntax-macro kind)
   (write-string
    (string-append "@macro "
                   (list->string (kind->macro-name kind))
