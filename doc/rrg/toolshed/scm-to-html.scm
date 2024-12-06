@@ -1,4 +1,5 @@
 #!/usr/bin/env gsi-script
+;; Copyright (c) 2024 by Macon Gambill, all rights reserved.
 
 (load "adorn/adorn")
 
