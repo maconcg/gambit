@@ -18,7 +18,9 @@
   (write-ok-macro)
   (write-exception-macro)
   (write-problem-macro)
+  (write-visual-divider)
   (write-opt-macro)
+  (write-defdots-macro)
   (write-todo-macro)
   (write-quotedbl-macro))
 
@@ -169,6 +171,13 @@ EOF
 
 EOF
 ))
+
+(define (write-defdots-macro)
+  (write-string (string-append "@macro defdots {}\n"
+                               "@inlinefmtifelse{html,@inlineraw{html,"
+                               "<span class=\"def-dots\">&hellip;</span>}"
+                               ",@dots{}}\n"
+                               "@end macro\n")))
 
 (define (write-opt-macro)
   (write-string #<<EOF

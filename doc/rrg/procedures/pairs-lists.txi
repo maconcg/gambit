@@ -250,7 +250,7 @@ integer, an exception that satisfies @code{range-exception?} is raised.
 
 @cindex lists @subentry @code{list} procedure
 @tindex list @subentry constructors @subentry list
-@deftypefn scheme/base @/ list obj@dots{}
+@deftypefn scheme/base @/ list obj@defdots{}
 Returns a newly allocated list consisting of its arguments.
 
 @lisp
@@ -279,7 +279,7 @@ Returns the length of @var{list}.
 @end lisp
 @end deftypefn
 
-@deftypefn scheme/base @/ append list@dots{} @opt{obj}
+@deftypefn scheme/base @/ append list@defdots{} @opt{obj}
 The zero-argument form returns the empty list.  The one-argument form
 returns its argument, whatever that argument's type.  Each argument
 except the last, if present, must be a list.

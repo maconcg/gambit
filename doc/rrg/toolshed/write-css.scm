@@ -171,13 +171,16 @@ span.todo {background-color: <todo>}
 dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     border-top-color: <border>;
     dt {
-        code.def-code-arguments {color: <def-var>}
+        code.def-code-arguments {color: <let-like-bind>}
         span.category-def {color: <category-def>}
-        code.def-code-arguments span.def-bracket {color: <fg-alt>}
+        span.def-bracket {color: <def-bracket>}
+        span.def-dots {color: <def-dots>}
+    }
+    dt.deftypefn, dt.deftypefnx {
+                  strong.def-name {color: <def-like-bind>}
     }
     dd {
         background-color: <bg-main>;
-        p var.var, li var.var {color: <def-var>}
     }
 }
 
@@ -358,35 +361,47 @@ END
 
 (define (modus:kind->color kind)
   (case kind
-    (( abbrev compound dot hs-begin invalid shebang ) 'fg-dim)
-    (( atmosphere ) 'fg-dimmer)
-    (( boolean ) 'yellow-warmer)
-    (( char ) 'red-faint)
-    (( compound-empty default ) 'fg-main)
-    (( datum-label def-like-bind def-like-esc ) 'magenta)
-    (( box datum-ref repl-ref serial-ref ) 'fg-alt)
-    (( hs-key sharp ) 'yellow)
-    (( ident ident-esc ) 'fg-main)
-    (( keyword key-param key-init-param ) 'magenta-warmer)
-    (( let-like-bind let-like-esc ) 'blue-faint)
-    (( number ) 'cyan)
-    (( string string-esc ) 'green)
-    (( syntax syntax-esc ) 'magenta-cooler)
+    (( abbrev )                            'fg-dim)
+    (( box )                               'fg-alt)
+    (( compound )                          'fg-dim)
+    (( dot )                               'fg-dim)
+    (( hs-begin )                          'fg-dim)
+    (( invalid )                           'fg-dim)
+    (( shebang )                           'fg-dim)
+    (( atmosphere )                        'fg-dimmer)
+    (( boolean )                           'yellow-warmer)
+    (( char )                              'red-faint)
+    (( compound-empty )                    'fg-main)
+    (( datum-label )                       'magenta)
+    (( datum-ref repl-ref serial-ref )     'fg-alt)
+    (( def-like-bind def-like-esc )        'magenta)
+    (( default )                           'fg-main)
+    (( hs-key )                            'yellow)
+    (( ident ident-esc )                   'fg-main)
+    (( keyword key-param key-init-param )  'magenta-warmer)
+    (( let-like-bind let-like-esc )        'blue-faint)
+    (( number )                            'cyan)
+    (( sharp )                             'yellow)
+    (( string string-esc )                 'green)
+    (( syntax syntax-esc )                 'magenta-cooler)
     (else kind)))
 
 (define (modus:element->color element)
   (case element
     (( bg-deftp bg-deftypefn bg-deftypevr ) 'bg-dim)
-    (( problem ) 'bg-yellow-intense)
-    (( category-def def-bracket ) 'fg-dim)
-    (( def-var ) 'blue-warmer )
-    (( deftp-l deftp-r ) 'bg-ochre)
-    (( deftypefn-l deftypefn-r ) 'bg-blue-subtle)
-    (( deftypevr-l deftypevr-r ) 'bg-clay)
-    (( emphasis exception ) 'yellow-faint)
-    (( link link-visited ) 'fg-alt)
-    (( ok ) 'slate)
-    (( todo ) 'bg-red-intense)
+    (( problem )                            'bg-yellow-intense)
+    (( category-def )                       'fg-dim)
+    (( def-bracket )                        'fg-main)
+    (( def-dots )                           'fg-main)
+    (( deftp-l deftp-r )                    'bg-ochre)
+    (( deftypefn-l deftypefn-r )            'bg-blue-subtle)
+    (( deftypevr-l deftypevr-r )            'bg-clay)
+    (( emphasis )                           'yellow-faint)
+    (( exception )                          'yellow-faint)
+    (( link )                               'fg-alt)
+    (( link-visited )                       'fg-alt)
+    (( ok )                                 'slate)
+    (( todo )                               'bg-red-intense)
     (else #f)))
 
 (define codemirror-colors
