@@ -8,14 +8,21 @@ gsi ?= gsi
 SCM ?= examples/gauntlet.scm
 
 clean:
-	rm -f toolshed/*.css toolshed/*.html toolshed/macros.txi
+	rm -f gambit*.html toolshed/*.css toolshed/*.html toolshed/macros.txi
+
+gambit-pristine.html: gambit.txi toolshed/macros.txi
+	texi2any -o $@ --html --no-split gambit.txi
+
+gambit-css.html: gambit.txi toolshed/gambit.css toolshed/macros.txi
+	texi2any -o $@ --html --no-split --css-include=toolshed/gambit.css \
+		gambit.txi
 
 highlight: toolshed/gambit-examples.css toolshed/scm-to-html.scm
 	cd toolshed && ${gsi} -f scm-to-html.scm -e ${SCM}
 	mv toolshed/"$$(basename ${SCM})".html .
 
 toolshed/gambit.css: toolshed/write-css.scm
-	cd toolshed && ${gsi} -f write-css.scm -c > gambit.css
+	cd toolshed && ${gsi} -f write-css.scm > gambit.css
 
 toolshed/gambit-examples.css: toolshed/write-css.scm
 	cd toolshed && ${gsi} -f write-css.scm -e > gambit-examples.css

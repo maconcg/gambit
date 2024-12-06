@@ -439,7 +439,7 @@ END
                                   modus-operandi-colors)
                             sym))))
         (case theme
-          (( modus-operandi )
+          (( modus-operandi codemirror )
            (case sym
              ((bg-deftp bg-deftypefn bg-deftypevr) (string-append color "90"))
              ((deftp-l deftypefn-l deftypevr-l) (string-append color "6f"))
