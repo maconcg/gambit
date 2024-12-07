@@ -45,10 +45,11 @@ gambit-css.html: gambit-pristine.txi toolshed/gambit.css
 		gambit-pristine.txi
 
 highlight: toolshed/gambit-examples.css toolshed/scm-to-html.scm
+	readonly scm=$$(realpath "${SCM}") &&\
 	cd toolshed && if test -x scm-to-html; then\
-				./scm-to-html -e ${SCM};\
+				./scm-to-html -e "$$scm";\
 			else\
-				${gsi} -f scm-to-html.scm -e ${SCM};\
+				${gsi} -f scm-to-html.scm -e "$$scm";\
 			fi
 	mv toolshed/"$$(basename ${SCM})".html .
 

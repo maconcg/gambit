@@ -1,9 +1,26 @@
 <!-- Copyright (c) 2024 by Macon Gambill, All Rights Reserved. -->
 # (doc (doc))
 ## Making
-Once you've installed Texinfo, you should be able to run `make` from this directory.  Certain output formats (e.g., `epub`, `pdf`) require additional dependencies, as documented by Texinfo.  The default output formats are Info, single-page HTML, and plain text.
+Once you've installed Texinfo, you should be able to run `make` from this directory.  Certain output formats (e.g., PDF) require additional dependencies, as documented by Texinfo.  The default output formats are Info, single-page HTML, and plain text.
 
-Running `make clean` should remove all generated files.  Running `make clean-intermediate` removes intermediate files only.
+### Useful `make` targets
+ - `clean`: remove all generated files
+ - `compile`: compile “adorn” library to a dynamically-loadable file
+ - `compile-exe`: `compile` target, plus `scm-to-html` executable
+ - `gambit.html`, `gambit.info`, `gambit.txt`: monolithic formats
+ - `html-modules`: modular HTML
+ - `highlight`: HTML-ify the Scheme source file located at ${SCM}
+    - example: `make highlight SCM=../../lib/syntax-case.scm`
+
+## Caveats
+- With a small number of exceptions, version-controlled `.txi` files should not include @-commands within `@lisp`/`@end lisp` blocks.  Exceptions include:
+ - `@U{...}`, for Unicode insertion
+ - `@ok{..}`, for specifying a “normal” returned value
+ - `@exception{...}`, for describing an exception
+ - `@problem{...}`, for describing something that might be a bug
+
+- The right curly bracket character (`}`) should not be used literally
+within `@ok{..}`, `@exception{...}`, or `@problem{...}`.  This is to avoid having that character interpreted as a premature delimiter.  Use Texinfo's built-in `@rbracechar{}` command.
 
 ## Some goals
 ### Retain full compatibility with “stock” Texinfo.
@@ -19,15 +36,7 @@ The “pristine source” concept is borrowed from Edward C. Bailey's [Maximum R
 
 The pristine source serves as a point of reference, making it possible to understand how the customized version might differ from the upstream's expectations.  And when the upstream's newest release breaks a customization that depends on undocumented behavior, the pristine source provides an obvious starting point for troubleshooting.
 
-In our scenario, the closest thing to a pristine source is more like a “pristine artifact”.  It's the output of running `texi2any` directly on `gambit.txi`, produced by `make gambit-pristine.html`.  Significant customizations are applied as discrete steps and have standalone `make` targets:
-  - `gambit-parens.html`: parenthesized procedure signatures
-  - `gambit-css.html`: custom CSS
-  - `gambit-css-parens`: CSS + parenthesization
-  - `gambit-css-color.html`: CSS + extra colors
-  - `gambit-css-color-parens.html`: CSS + extra colors + parenthesization
-  - `gambit.html`: another name for `gambit-css-color-parens.html`
-
-The introspectible build process should make it easier to eventually replace the shell scripts that generate sed scripts that generate Texinfo files.
+In our scenario, the closest thing to a pristine source is more like a “pristine artifact”.  It's the output of running `texi2any` directly on `gambit-pristine.txi`.
 
 ### Avoid manual touch-ups.
 To meaningfully be described as a “reproducible build”, the published documentation can't be the product of esoteric fiddling that occurs before or after `make` is executed.
