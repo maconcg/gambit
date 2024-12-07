@@ -10,7 +10,7 @@ SCM ?= examples/gauntlet.scm
 clean:
 	rm -f gambit*.html gambit.{html,info,txi,txt} toolshed/*.css\
 		toolshed/*.html toolshed/macros+vars.txi
-	rm -fr procedures/a/
+	rm -fr procedures/a/ html-modules/
 
 gambit.info: gambit.txi
 	texi2any -o $@ --info --no-split gambit.txi
@@ -51,8 +51,21 @@ gauntlet.scm.html: toolshed/gambit-examples.css toolshed/scm-to-html.scm
 	cd toolshed && ${gsi} -f scm-to-html.scm -e examples/gauntlet.scm
 	mv toolshed/gauntlet.scm.html .
 
-gambit.html: gambit.txi procedures/a/pairs-lists.txi procedures/a/strings.txi\
-             toolshed/gambit.css toolshed/parenthesize-defs.sed
+html-deps := gambit.txi procedures/a/pairs-lists.txi procedures/a/strings.txi\
+ toolshed/gambit.css toolshed/parenthesize-defs.sed
+
+html-modules: ${html-deps}
+	test -d html-modules || mkdir -p html-modules
+	readonly tmp=$$(mktemp -d) &&\
+		trap "rm -r $$tmp" ERR EXIT &&\
+		texi2any -o $$tmp --html --css-include=toolshed/gambit.css\
+			gambit.txi &&\
+		for f in $$tmp/*.html; do\
+			sed -f toolshed/parenthesize-defs.sed "$$f"\
+				> html-modules/"$${f##*/}";\
+		done
+
+gambit.html: ${html-deps}
 	texi2any -o - --html --no-split --css-include=toolshed/gambit.css \
 		gambit.txi | sed -f toolshed/parenthesize-defs.sed > $@
 
