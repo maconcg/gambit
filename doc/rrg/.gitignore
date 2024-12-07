@@ -12,6 +12,7 @@ toolshed/*.css
 toolshed/*.html
 toolshed/examples/*.html
 toolshed/macros+vars.txi
+toolshed/scm-to-html
 GNUmakefile
 Makefile
 gambit*.html

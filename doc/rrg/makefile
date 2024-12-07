@@ -1,6 +1,6 @@
 default: gambit.html gambit.info gambit.txt
 
-.PHONY: all clean default gauntlet highlight
+.PHONY: all clean compile compile-exe default gauntlet highlight
 
 gsc ?= gsc
 gsi ?= gsi
@@ -8,9 +8,26 @@ gsi ?= gsi
 SCM ?= examples/gauntlet.scm
 
 clean:
-	rm -f gambit*.html gambit.{html,info,txi,txt} toolshed/*.css\
-		toolshed/*.html toolshed/macros+vars.txi
+	rm -f *.html *.info gambit.{txi,txt} toolshed/*.css toolshed/*.html\
+		toolshed/macros+vars.txi toolshed/scm-to-html \
+		toolshed/adorn/adorn.o1
 	rm -fr procedures/a/ html-modules/
+
+compile: toolshed/adorn/adorn.o1
+compile-exe: toolshed/adorn/adorn.o1 toolshed/scm-to-html
+
+toolshed/scm-to-html: toolshed/scm-to-html.scm toolshed/adorn/adorn.o1
+	${gsc} -exe toolshed/scm-to-html.scm
+
+toolshed/adorn/adorn.o1: toolshed/adorn/adorn.sld \
+ toolshed/adorn/adornment.scm toolshed/adorn/binding-mesg-handlers.scm \
+ toolshed/adorn/char-mesg-handlers.scm \
+ toolshed/adorn/comment-mesg-handlers.scm toolshed/adorn/helpers.scm \
+ toolshed/adorn/matching.scm toolshed/adorn/numeric-mesg-handlers.scm \
+ toolshed/adorn/other-mesg-handlers.scm \
+ toolshed/adorn/rt-syntax-handlers.scm \
+ toolshed/adorn/symmetric-mesg-handlers.scm
+	${gsc} -o $@ toolshed/adorn/adorn
 
 gambit.info: gambit.txi
 	texi2any -o $@ --info --no-split gambit.txi
@@ -28,7 +45,11 @@ gambit-css.html: gambit-pristine.txi toolshed/gambit.css
 		gambit-pristine.txi
 
 highlight: toolshed/gambit-examples.css toolshed/scm-to-html.scm
-	cd toolshed && ${gsi} -f scm-to-html.scm -e ${SCM}
+	cd toolshed && if test -x scm-to-html; then\
+				./scm-to-html -e ${SCM};\
+			else\
+				${gsi} -f scm-to-html.scm -e ${SCM};\
+			fi
 	mv toolshed/"$$(basename ${SCM})".html .
 
 toolshed/gambit.css: toolshed/write-css.scm
