@@ -1,5 +1,4 @@
-default:
-	@echo no default
+default: gambit.html gambit.info gambit.txt
 
 .PHONY: all clean default gauntlet highlight
 
@@ -9,9 +8,15 @@ gsi ?= gsi
 SCM ?= examples/gauntlet.scm
 
 clean:
-	rm -f gambit*.html gambit.txi toolshed/*.css toolshed/*.html\
-		toolshed/macros+vars.txi
-	rm -fr procedures/c/
+	rm -f gambit*.html gambit.{html,info,txi,txt} toolshed/*.css\
+		toolshed/*.html toolshed/macros+vars.txi
+	rm -fr procedures/a/
+
+gambit.info: gambit.txi
+	texi2any -o $@ --info --no-split gambit.txi
+
+gambit.txt: gambit.txi
+	texi2any -o $@ --plaintext gambit.txi
 
 gambit-pristine.html: gambit-pristine.txi toolshed/macros+vars.txi
 	texi2any -o $@ --html --no-split gambit.txi
@@ -46,21 +51,22 @@ gauntlet.scm.html: toolshed/gambit-examples.css toolshed/scm-to-html.scm
 	cd toolshed && ${gsi} -f scm-to-html.scm -e examples/gauntlet.scm
 	mv toolshed/gauntlet.scm.html .
 
-gambit.html: gambit.txi procedures/c/pairs-lists.txi procedures/c/strings.txi\
+gambit.html: gambit.txi procedures/a/pairs-lists.txi procedures/a/strings.txi\
              toolshed/gambit.css toolshed/parenthesize-defs.sed
 	texi2any -o - --html --no-split --css-include=toolshed/gambit.css \
 		gambit.txi | sed -f toolshed/parenthesize-defs.sed > $@
 
-gambit.txi: gambit-pristine.txi
-	sed 's/^\(@include[[:blank:]]\{1,\}procedures\/\)/\1c\//'\
+gambit.txi: gambit-pristine.txi procedures/a/pairs-lists.txi \
+            procedures/a/strings.txi
+	sed 's/^\(@include[[:blank:]]\{1,\}procedures\/\)/\1a\//'\
 		gambit-pristine.txi > $@
 
-procedures/c/pairs-lists.txi: procedures/pairs-lists.txi toolshed/annotate-txi.scm
-	test -d procedures/c/ || mkdir -p procedures/c/; cd toolshed &&\
+procedures/a/pairs-lists.txi: procedures/pairs-lists.txi toolshed/annotate-txi.scm
+	test -d procedures/a/ || mkdir -p procedures/a/; cd toolshed &&\
 		${gsi} -f annotate-txi.scm ../procedures/pairs-lists.txi\
-			> ../procedures/c/pairs-lists.txi
+			> ../procedures/a/pairs-lists.txi
 
-procedures/c/strings.txi: procedures/strings.txi toolshed/annotate-txi.scm
-	test -d procedures/c/ || mkdir -p procedures/c/; cd toolshed &&\
+procedures/a/strings.txi: procedures/strings.txi toolshed/annotate-txi.scm
+	test -d procedures/a/ || mkdir -p procedures/a/; cd toolshed &&\
 		${gsi} -f annotate-txi.scm ../procedures/strings.txi\
-			> ../procedures/c/strings.txi
+			> ../procedures/a/strings.txi

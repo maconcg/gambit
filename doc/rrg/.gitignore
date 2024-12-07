@@ -7,9 +7,9 @@ html-css-color/
 html-css-color-parens/
 html/
 tests/
-procedures/c/
+procedures/a/
 **/.stamp
-toolshed/c/
+toolshed/a/
 toolshed/colorize.sed
 toolshed/*.css
 toolshed/*.html
