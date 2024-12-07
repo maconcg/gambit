@@ -325,9 +325,11 @@ an exception that satisfies @code{range-exception?} is raised.
 (define a (string-copy "abcde"))
 (define b (string-copy a))
 (define c (string-copy b))
+
 (string-fill! a #\0)
 (string-fill! b #\0 3)
 (string-fill! c #\0 3 4)
+
 a @ok{"00000"}
 b @ok{"abc00"}
 c @ok{"abc0e"}

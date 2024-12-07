@@ -187,8 +187,8 @@ Returns @code{#t} if @var{obj} is the empty list.
 (null? '(  ))  @ok{#t}
 (null? (list)) @ok{#t}
 (null? #\null) @ok{#f}
-(null? #!eof)  @ok{#f}
 (null? #!void) @ok{#f}
+(null? (void)) @ok{#f}
 (null? #f)     @ok{#f}
 (null? 0)      @ok{#f}
 (null? "")     @ok{#f}
@@ -402,11 +402,11 @@ return a non-Boolean value.
 
 @itemize @bullet
 @item
-@code{memq} uses @code{@slanted{eq?}}
+@code{memq} uses @code{eq?}
 @item
-@code{memv} uses @code{@slanted{eqv?}}
+@code{memv} uses @code{eqv?}
 @item
-@code{member} uses @code{@slanted{equal?}} in the two-argument form.
+@code{member} uses @code{equal?} in the two-argument form.
 @item
 @code{member} uses @var{compare} in the three-argument form.
 @end itemize
