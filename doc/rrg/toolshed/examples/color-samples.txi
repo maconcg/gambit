@@ -22,7 +22,7 @@ to abide by.
 @node Examples
 @chapter Examples
 
-@deftypefn @value{sect}/@value{para} @/ proceed @pari{obj} @opt{@parii{obj} @opt{@pariii{obj}}}
+@deftypefn @U{00A7}/@U{00B6} @/ proceed @pari{obj} @opt{@parii{obj} @opt{@pariii{obj}}}
 Proceeds using its arguments.  @vari{obj} is mandatory; @varii{obj} and
 @variii{obj} are optional.  If @variii{obj} is given, @varii{obj} is
 mandatory.
@@ -49,11 +49,12 @@ mandatory.
 @lisp
 (cdr '()) @exception{type}
 (call-with-values (lambda () (values skip: next:))
-    car) @exception{wrong-number-of-arguments}
+  car) @exception{wrong-number-of-arguments}
 @end lisp
 
 @lisp
-(lambda (x) x) @ok{#<procedure #2>}
+(procedure? (lambda (x) x)      @ok{#true}
+(not (procedure? (lambda x x))) @ok{#false}
 (define f '#0=(if #!eof f f: #\f #f "f" '#&f #\" #\' #\& . #0#))
 (cadddr (#2 f)) @ok{f:} ;; N.B. f (see f)
 @end lisp
