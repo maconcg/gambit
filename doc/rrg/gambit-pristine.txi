@@ -2,7 +2,7 @@
 @c Copyright (c) 2024 by Macon Gambill, All Rights Reserved.
 @include toolshed/macros.txi
 @include toolshed/vars.txi
-@include toolshed/copying.txi
+@include copying/copying.txi
 
 @settitle Gambit manual
 @clear txicodevaristt
@@ -72,11 +72,11 @@ issues via @url{@value{GITHUBURL},the Gambit repository on GitHub}.
 @ifnotxml
 @node GNU Lesser General Public License
 @appendix GNU Lesser General Public License
-@include toolshed/licenses/lgpl-2.1.texi
+@include copying/licenses/lgpl-2.1.texi
 
 @node Apache License
 @appendix Apache License
-@include toolshed/licenses/LICENSE-2.0.txt
+@include copying/licenses/LICENSE-2.0.txt
 @end ifnotxml
 @end ifnotplaintext
 @end ifnothtml
