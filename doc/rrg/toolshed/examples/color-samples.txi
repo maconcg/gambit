@@ -1,7 +1,6 @@
 \input texinfo
 @c Copyright (c) 2024 by Macon Gambill, All Rights Reserved.
-@include toolshed/macros.txi
-@include toolshed/vars.txi
+@include toolshed/macros+vars.txi
 
 @copying
 This is the Gambit colorization sample document (built @today{}).
