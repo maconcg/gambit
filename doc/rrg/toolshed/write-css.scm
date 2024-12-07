@@ -136,7 +136,6 @@ pre.lisp-preformatted {
     span.keyword, span.key-bind, span.key-init {color: <keyword>}
     span.let-like-bind, span.let-like-esc {color: <let-like-bind>}
     span.number {color: <number>}
-    span.ok {color: <ok>}
     span.problem {background-color: <problem>}
     span.repl-ref {color: <repl-ref>}
     span.serial-ref {color: <serial-ref>}
@@ -400,7 +399,6 @@ END
     (( exception )                          'yellow-faint)
     (( link )                               'fg-alt)
     (( link-visited )                       'fg-alt)
-    (( ok )                                 'slate)
     (( todo )                               'bg-red-intense)
     (else #f)))
 
