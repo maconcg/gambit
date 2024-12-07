@@ -94,7 +94,7 @@ Mutates @var{pair} by storing @var{obj} in the car field of @var{pair}.
 
 @lisp
 (define (g) '(constant-list))
-(set-car! (g) 3) ;; @value{R7RS} says this is an error
+(set-car! (g) 3) ;; R7RS says this is an error
 (g) @ok{(3)}        ;; current Gambit behavior
 @end lisp
 @end deftypefn
@@ -111,7 +111,7 @@ Mutates @var{pair} by storing @var{obj} in the cdr field of @var{pair}.
 
 @lisp
 (define (g) '(constant-list))
-(set-cdr! (g) 3)          ;; @value{R7RS} says this is an error
+(set-cdr! (g) 3)          ;; R7RS says this is an error
 (g) @ok{(constant-list . 3)} ;; current Gambit behavior
 @end lisp
 @end deftypefn
@@ -359,7 +359,7 @@ be circular.
 @end lisp
 
 @lisp
-(list-ref (circular-list 'a 'b) 3) @ok{b} ;; @value{R7RS} says this is an error
+(list-ref (circular-list 'a 'b) 3) @ok{b} ;; R7RS says this is an error
 @end lisp
 @end deftypefn
 
@@ -376,7 +376,7 @@ ls @ok{(one two three)}
 @end lisp
 
 @lisp
-(list-set! '(0 1 2) 1 "oops") ;; @value{R7RS} says this is an error
+(list-set! '(0 1 2) 1 "oops") ;; R7RS says this is an error
 @end lisp
 @end deftypefn
 
@@ -408,7 +408,7 @@ return a non-Boolean value.
 @end itemize
 
 @lisp
-(memq   101 '(100 101 102)) @ok{(101 102)} ;; @value{R7RS}: unspecified
+(memq   101 '(100 101 102)) @ok{(101 102)} ;; R7RS: unspecified
 (memv   101 '(100 101 102)) @ok{(101 102)}
 (member 7 '(100 101 102) +) @ok{(100 101 102)}
 @end lisp
@@ -468,7 +468,7 @@ return a non-Boolean value.
 (assq (list 'a) '(((a)) ((b)) ((c))))  @ok{#f}
 (assoc (list 'a) '(((a)) ((b)) ((c)))) @ok{((a))}
 (assoc 2.0 '((1 1) (2 4) (3 9)) =)     @ok{(2 4)}
-(assq 5 '((2 3) (5 7) (11 13)))        @ok{(5 7)} ;; @value{R7RS}: unspecified
+(assq 5 '((2 3) (5 7) (11 13)))        @ok{(5 7)} ;; R7RS: unspecified
 (assv 5 '((2 3) (5 7) (11 13)))        @ok{(5 7)}
 @end lisp
 

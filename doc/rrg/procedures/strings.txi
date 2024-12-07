@@ -176,27 +176,20 @@ and case-folding algorithms to their arguments and return the result.
 In certain cases, the result differs in length from @var{string}.  Note
 that language-sensitive mappings and foldings are not used.
 
-@set Etoc @U{0388}@U{03C4}@U{03BF}@U{03C2}
-@set etoc @U{03AD}@U{03C4}@U{03BF}@U{03C2}
-@set etoo @U{03AD}@U{03C4}@U{03BF}@U{03C3}
-@set ETOS @U{0388}@U{03A4}@U{039F}@U{03A3}
-@set WeiB Wei@ss{}
-@set weiB wei@ss{}
-@set WEISS WEISS
 @lisp
-(string-downcase "@value{Etoc}") @ok{"@value{etoc}"}
-(string-foldcase "@value{Etoc}") @ok{"@value{etoo}"}
-(string-upcase   "@value{Etoc}") @ok{"@value{ETOS}"}
-(string-downcase "@value{ETOS}") @ok{"@value{etoo}"}
-(string-foldcase "@value{ETOS}") @ok{"@value{etoo}"}
+(string-downcase "@U{0388}@U{03C4}@U{03BF}@U{03C2}") @ok{"@U{03AD}@U{03C4}@U{03BF}@U{03C2}"}
+(string-foldcase "@U{0388}@U{03C4}@U{03BF}@U{03C2}") @ok{"@U{03AD}@U{03C4}@U{03BF}@U{03C3}"}
+(string-upcase   "@U{0388}@U{03C4}@U{03BF}@U{03C2}") @ok{"@U{0388}@U{03A4}@U{039F}@U{03A3}"}
+(string-downcase "@U{0388}@U{03A4}@U{039F}@U{03A3}") @ok{"@U{03AD}@U{03C4}@U{03BF}@U{03C3}"}
+(string-foldcase "@U{0388}@U{03A4}@U{039F}@U{03A3}") @ok{"@U{03AD}@U{03C4}@U{03BF}@U{03C3}"}
 @end lisp
 
 @lisp
-(string-downcase "@value{WeiB}")  @ok{"@value{weiB}"}
-(string-foldcase "@value{WeiB}")  @ok{"weiss"}
-(string-upcase   "@value{WeiB}")  @ok{"WEISS"}
-(string-downcase "@value{WEISS}") @ok{"weiss"}
-(string-foldcase "@value{WEISS}") @ok{"weiss"}
+(string-downcase "Wei@U{00DF}")  @ok{"wei@U{00DF}"}
+(string-foldcase "Wei@U{00DF}")  @ok{"weiss"}
+(string-upcase   "Wei@U{00DF}")  @ok{"WEISS"}
+(string-downcase "WEI@U{1E9E}")  @ok{"wei@U{00DF}"}
+(string-foldcase "WEI@U{1E9E}")  @ok{"weiss"}
 @end lisp
 @end deftypefn
 
@@ -364,7 +357,7 @@ satisfies @code{range-exception?} is raised.
 
 @lisp
 (define (g) "***")
-(string-set! (g) 0 #\?) ;; @value{R7RS} says this is an error
+(string-set! (g) 0 #\?) ;; R7RS says this is an error
 (g) @ok{"?**"}             ;; current Gambit behavior 
 @end lisp
 @end deftypefn
