@@ -1,4 +1,5 @@
-default:; @echo no default
+default:
+	@echo no default
 
 .PHONY: all clean default gauntlet highlight
 
@@ -8,14 +9,16 @@ gsi ?= gsi
 SCM ?= examples/gauntlet.scm
 
 clean:
-	rm -f gambit*.html toolshed/*.css toolshed/*.html toolshed/macros.txi
+	rm -f gambit*.html gambit.txi toolshed/*.css toolshed/*.html\
+		toolshed/macros.txi
+	rm -fr procedures/c/
 
-gambit-pristine.html: gambit.txi toolshed/macros.txi
+gambit-pristine.html: gambit-pristine.txi toolshed/macros.txi
 	texi2any -o $@ --html --no-split gambit.txi
 
-gambit-css.html: gambit.txi toolshed/gambit.css toolshed/macros.txi
+gambit-css.html: gambit-pristine.txi toolshed/gambit.css toolshed/macros.txi
 	texi2any -o $@ --html --no-split --css-include=toolshed/gambit.css \
-		gambit.txi
+		gambit-pristine.txi
 
 highlight: toolshed/gambit-examples.css toolshed/scm-to-html.scm
 	cd toolshed && ${gsi} -f scm-to-html.scm -e ${SCM}
@@ -40,3 +43,22 @@ gauntlet: gauntlet.scm.html
 gauntlet.scm.html: toolshed/gambit-examples.css toolshed/scm-to-html.scm
 	cd toolshed && ${gsi} -f scm-to-html.scm -e examples/gauntlet.scm
 	mv toolshed/gauntlet.scm.html .
+
+gambit.html: gambit.txi procedures/c/pairs-lists.txi procedures/c/strings.txi\
+             toolshed/gambit.css toolshed/macros.txi
+	texi2any -o $@ --html --no-split --css-include=toolshed/gambit.css \
+		gambit.txi
+
+gambit.txi: gambit-pristine.txi
+	sed 's/^\(@include[[:blank:]]\{1,\}procedures\/\)/\1c\//'\
+		gambit-pristine.txi > $@
+
+procedures/c/pairs-lists.txi: procedures/pairs-lists.txi toolshed/annotate-txi.scm
+	test -d procedures/c/ || mkdir -p procedures/c/; cd toolshed &&\
+		${gsi} -f annotate-txi.scm ../procedures/pairs-lists.txi\
+			> ../procedures/c/pairs-lists.txi
+
+procedures/c/strings.txi: procedures/strings.txi toolshed/annotate-txi.scm
+	test -d procedures/c/ || mkdir -p procedures/c/; cd toolshed &&\
+		${gsi} -f annotate-txi.scm ../procedures/strings.txi\
+			> ../procedures/c/strings.txi

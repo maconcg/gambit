@@ -23,6 +23,7 @@ Makefile
 gambit*.html
 gambit*.txt
 gambit.epub
+gambit.txi
 gambit-spans.txi
 gambit.info
 gcs*.html

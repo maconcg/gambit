@@ -64,17 +64,20 @@
                   (write-annotated-texinfo rest))))))))))
 
 (define write-lisp
-  (let ((lisp-expression/rest
-         (let ((ok-open (string->list "@ok{"))
-               (exception-open (string->list "@exception{"))
-               (problem-open (string->list "@problem{")))
-           (let ((openings (list ok-open exception-open problem-open)))
-             (lambda (char-list)
-               (let loop ((rest char-list) (expr '()))
-                 (cond ((null? rest) (list (reverse expr) rest))
-                       ((looking-forward-to-one-of? openings rest)
-                        (list (reverse expr) rest))
-                       (else (loop (cdr rest) (cons (car rest) expr)))))))))
+  (let ((lisp-expression/rest/class
+         (let ((ok-opening (string->list "@ok{"))
+               (exception-opening (string->list "@exception{"))
+               (problem-opening (string->list "@problem{")))
+           (lambda (char-list)
+             (let loop ((rest char-list) (expr '()))
+               (cond ((null? rest) (list (reverse expr) rest 'n/a))
+                     ((looking-forward-to? ok-opening rest)
+                      (list (reverse expr) rest 'ok))
+                     ((looking-forward-to? exception-opening rest)
+                      (list (reverse expr) rest 'exception))
+                     ((looking-forward-to? problem-opening rest)
+                      (list (reverse expr) rest 'problem))
+                     (else (loop (cdr rest) (cons (car rest) expr))))))))
         (pre-lisp-result/rest
          (lambda (char-list)
            (let loop ((rest char-list) (pre-result '()))
@@ -121,17 +124,26 @@
            (adorn#reverse+simplify-kinds! (adorn#adorn! char-list)))))
     (lambda (char-list)
       (unless (null? char-list)
-        (let ((expression/rest (lisp-expression/rest char-list)))
-          (write-ac-list (adorn+simplify (car expression/rest)))
-          (let ((rest (cadr expression/rest)))
+        (let ((expr/rest/class (lisp-expression/rest/class char-list)))
+          (let ((expression (car expr/rest/class))
+                (rest (cadr expr/rest/class))
+                (class (caddr expr/rest/class)))
+            (write-ac-list (adorn+simplify expression))
             (unless (null? rest)
               (let ((pre-result/rest (pre-lisp-result/rest rest)))
-                (write-chars (car pre-result/rest))
-                (let ((result/rest (lisp-result/rest (cadr pre-result/rest))))
-                  (write-ac-list (adorn+simplify (car result/rest)))
-                  (let ((post-result/rest (post-lisp-result/rest rest)))
-                    (write-chars (car post-result/rest))
-                    (write-lisp (cadr post-result/rest))))))))))))
+                (let ((pre-result (car pre-result/rest))
+                      (rest (cadr pre-result/rest)))
+                  (write-chars pre-result)
+                  (let ((result/rest (lisp-result/rest rest)))
+                    (let ((result (car result/rest)) (rest (cadr result/rest)))
+                      (if (eq? class 'ok)
+                          (write-ac-list (adorn+simplify result))
+                          (write-chars result))
+                      (let ((post-result/rest (post-lisp-result/rest rest)))
+                        (let ((post-result (car post-result/rest))
+                              (rest (cadr post-result/rest)))
+                          (write-chars post-result)
+                          (write-lisp rest))))))))))))))
 
 (define write-ac-list
   (let ((char->texi-char
@@ -152,8 +164,8 @@
                                   (zero-pad
                                    (map char-upcase
                                         (string->list
-                                         (number->string
-                                          (char->integer char)))))
+                                         (number->string (char->integer char)
+                                                         16))))
                                   '(#\}))))))
                (lambda (char)
                  (cond ((char=? char #\&) (string->list "@ampchar{}"))

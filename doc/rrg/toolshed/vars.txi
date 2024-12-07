@@ -1,6 +1,4 @@
-@c Copyright (c) 2024 by Macon Gambill, All Rights Reserved.
-@include toolshed/html-char-refs.txi
-
+@c Copyright (c) 2024 by Macon Gambill, all rights reserved.
 @set REVISION Revised
 @set VERSION 4.9.5
 
