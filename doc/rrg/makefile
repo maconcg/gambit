@@ -10,13 +10,15 @@ SCM ?= examples/gauntlet.scm
 
 clean:
 	rm -f gambit*.html gambit.txi toolshed/*.css toolshed/*.html\
-		toolshed/macros.txi
+		toolshed/macros+vars.txi
 	rm -fr procedures/c/
 
-gambit-pristine.html: gambit-pristine.txi toolshed/macros.txi
+gambit-pristine.html: gambit-pristine.txi toolshed/macros+vars.txi
 	texi2any -o $@ --html --no-split gambit.txi
 
-gambit-css.html: gambit-pristine.txi toolshed/gambit.css toolshed/macros.txi
+gambit-pristine.txi: toolshed/macros+vars.txi
+
+gambit-css.html: gambit-pristine.txi toolshed/gambit.css
 	texi2any -o $@ --html --no-split --css-include=toolshed/gambit.css \
 		gambit-pristine.txi
 
@@ -36,8 +38,8 @@ toolshed/gambit-cm.css: toolshed/write-css.scm
 toolshed/gambit-examples-cm.css: toolshed/write-css.scm
 	cd toolshed && ${gsi} -f write-css.scm -c -e > gambit-examples-cm.css
 
-toolshed/macros.txi: toolshed/write-macros.scm
-	cd toolshed && ${gsi} -f write-macros.scm > macros.txi
+toolshed/macros+vars.txi: toolshed/write-macros+vars.scm
+	cd toolshed && ${gsi} -f write-macros+vars.scm > macros+vars.txi
 
 gauntlet: gauntlet.scm.html
 gauntlet.scm.html: toolshed/gambit-examples.css toolshed/scm-to-html.scm
@@ -45,9 +47,9 @@ gauntlet.scm.html: toolshed/gambit-examples.css toolshed/scm-to-html.scm
 	mv toolshed/gauntlet.scm.html .
 
 gambit.html: gambit.txi procedures/c/pairs-lists.txi procedures/c/strings.txi\
-             toolshed/gambit.css toolshed/macros.txi
-	texi2any -o $@ --html --no-split --css-include=toolshed/gambit.css \
-		gambit.txi
+             toolshed/gambit.css toolshed/parenthesize-defs.sed
+	texi2any -o - --html --no-split --css-include=toolshed/gambit.css \
+		gambit.txi | sed -f toolshed/parenthesize-defs.sed > $@
 
 gambit.txi: gambit-pristine.txi
 	sed 's/^\(@include[[:blank:]]\{1,\}procedures\/\)/\1c\//'\

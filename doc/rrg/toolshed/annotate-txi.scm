@@ -2,7 +2,7 @@
 ;; Copyright (c) 2024 by Macon Gambill, all rights reserved.
 
 (load "adorn/adorn")
-(load "write-macros.scm")
+(load "write-macros+vars.scm")
 
 (define (main . args)
   (write-annotated-texinfo (file->char-list (car args))))

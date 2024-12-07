@@ -195,7 +195,7 @@ dl.first-deftp {
 dl.first-deftypefn {
     background-color: <bg-deftypefn>;
     background-image: linear-gradient(90deg, <deftypefn-l>, <deftypefn-r> 35%);
-    span.paren {color: <compound>}
+    span.def-paren {color: <compound>}
     dd pre span.exception {color: <exception>}
 }
 
