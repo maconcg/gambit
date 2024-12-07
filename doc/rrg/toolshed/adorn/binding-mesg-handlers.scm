@@ -1,3 +1,5 @@
+;; Copyright (c) 2024 by Macon Gambill, all rights reserved.
+
 (define (^handle~bind! sym ~sym)
   (let ((beginning-kinds (append atmosphere-kinds binding-compounds))
         (inert-compound-sym (->compound (->inert sym)))

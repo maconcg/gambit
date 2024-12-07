@@ -1,3 +1,5 @@
+;; Copyright (c) 2024 by Macon Gambill, all rights reserved.
+
 (define (^invalidate/maybe-end! delim sym predicate?)
   (lambda (ac-list nc)
     (revise-while! ac-list sym predicate?)

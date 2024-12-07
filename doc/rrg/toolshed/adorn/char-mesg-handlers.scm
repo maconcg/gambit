@@ -1,3 +1,5 @@
+;; Copyright (c) 2024 by Macon Gambill, all rights reserved.
+
 (define (char-body? ac) (eq? (get-kind ac) 'char-body))
 
 (define (handle:char-1! ac-list nc)

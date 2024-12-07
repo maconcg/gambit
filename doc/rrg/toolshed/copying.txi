@@ -1,4 +1,4 @@
-@c Copyright (c) 2024 by Macon Gambill, All Rights Reserved.
+@c Copyright (c) 2024 by Macon Gambill, all rights reserved.
 @copying
 This is the @value{REVISION} Report on Gambit (built @today{}).
 It documents Gambit v@value{VERSION}.

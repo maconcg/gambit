@@ -1,3 +1,5 @@
+;; Copyright (c) 2024 by Macon Gambill, all rights reserved.
+
 (define try-linec-pm!
   (let ((linec:p/d (lambda (ac-list)
                      (let seek ((rest ac-list) (distance 1))

@@ -1,3 +1,5 @@
+;; Copyright (c) 2024 by Macon Gambill, all rights reserved.
+
 (define (rt-syntax? ac) (memq (get-kind ac) '(rt-syntax aux-syntax)))
 
 (define try~rt-syntax-pm!

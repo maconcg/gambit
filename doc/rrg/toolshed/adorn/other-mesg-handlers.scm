@@ -1,3 +1,5 @@
+;; Copyright (c) 2024 by Macon Gambill, all rights reserved.
+
 (define (^revise-if-complete kind ~mesg strings)
   (lambda (ac-list nc)
     (let* ((tested (append (chars-until ac-list 'octothorpe) (list nc)))

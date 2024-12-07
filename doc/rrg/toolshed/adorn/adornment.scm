@@ -1,3 +1,5 @@
+;; Copyright (c) 2024 by Macon Gambill, all rights reserved.
+
 (define (try-pm! ac-list nc pac)
   (let ((pm (get-mesg pac)))
     (and pm (or (try-bind-pm!                ac-list nc pac pm)

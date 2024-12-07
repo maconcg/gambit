@@ -1,3 +1,5 @@
+;; Copyright (c) 2024 by Macon Gambill, all rights reserved.
+
 (define-library (adorn)
   (export adorn! matches? could-match? reverse+simplify-kinds!)
   (import (scheme base)
