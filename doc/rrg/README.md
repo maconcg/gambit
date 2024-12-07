@@ -11,6 +11,7 @@ Once you've installed Texinfo, you should be able to run `make` from this direct
  - `html-modules`: modular HTML
  - `highlight`: HTML-ify the Scheme source file located at ${SCM}
     - example: `make highlight SCM=../../lib/syntax-case.scm`
+    - On my computer, `make compile` causes `highlight` to run ~10x faster.
 
 ## Caveats
 - With a small number of exceptions, version-controlled `.txi` files should not include @-commands within `@lisp`/`@end lisp` blocks.  Exceptions include:
