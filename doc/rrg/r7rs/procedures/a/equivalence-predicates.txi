@@ -1,0 +1,53 @@
+@node Equivalence predicates
+@section Equivalence predicates
+@nodedescription Procedures that deal with equivalence.
+
+@deftypefn base @/ eqv? @pari{obj} @parii{obj}
+The @code{eqv?} procedure defines a useful equivalence relation on
+objects.  Briefly, it returns @code{#t} if @vari{obj} and @varii{obj}
+are normally regarded as the same object.  This relation is left
+slightly open to interpretation, but the following partial specification
+of @code{eqv?} holds for all implementations of Scheme.
+
+@lisp
+@compound{@U{0028}}eqv@U{003F}@ @abbrev{@U{0027}}a@ @abbrev{@U{0027}}a@compound{@U{0029}}                 @ok{@boolean{@hashchar{}t}}
+@compound{@U{0028}}eqv@U{003F}@ @abbrev{@U{0027}}a@ @abbrev{@U{0027}}b@compound{@U{0029}}                 @ok{@boolean{@hashchar{}f}}
+@compound{@U{0028}}eqv@U{003F}@ @number{2@ 2}@compound{@U{0029}}                   @ok{@boolean{@hashchar{}t}}
+@compound{@U{0028}}eqv@U{003F}@ @number{2@ 2@U{002E}0}@compound{@U{0029}}                 @ok{@boolean{@hashchar{}f}}
+@compound{@U{0028}}eqv@U{003F}@ @abbrev{@U{0027}}@compoundempty{@U{0028}@U{0029}@ }@abbrev{@U{0027}}@compoundempty{@U{0028}@U{0029}}@compound{@U{0029}}               @ok{@boolean{@hashchar{}t}}
+@compound{@U{0028}}eqv@U{003F}@ @number{100000000@ 100000000}@compound{@U{0029}}   @ok{@boolean{@hashchar{}t}}
+@compound{@U{0028}}eqv@U{003F}@ @number{0@U{002E}0@ @U{002B}nan@U{002E}0}@compound{@U{0029}}            @ok{@boolean{@hashchar{}f}}
+@compound{@U{0028}}eqv@U{003F}@ @compound{@U{0028}}cons@ @number{1@ 2}@compound{@U{0029}@ @U{0028}}cons@ @number{1@ 2}@compound{@U{0029}@U{0029}} @ok{@boolean{@hashchar{}f}}
+@compound{@U{0028}}eqv@U{003F}@ @compound{@U{0028}}@syntax{lambda@ }@compound{@U{0028}@U{0029}@ }@number{1}@compound{@U{0029}
+@ @ @ @ @ @ @U{0028}}@syntax{lambda@ }@compound{@U{0028}@U{0029}@ }@number{2}@compound{@U{0029}@U{0029}}         @ok{@boolean{@hashchar{}f}}
+@compound{@U{0028}}@syntax{let@ }@compound{@U{0028}@U{0028}}@letlikebind{p@ }@compound{@U{0028}}@syntax{lambda@ }@compound{@U{0028}}@letlikebind{x}@compound{@U{0029}@ }x@compound{@U{0029}@U{0029}@U{0029}
+@ @ @U{0028}}eqv@U{003F}@ p@ p@compound{@U{0029}@U{0029}}                @ok{@boolean{@hashchar{}t}}
+@compound{@U{0028}}eqv@U{003F}@ @boolean{@hashchar{}f@ }@abbrev{@U{0027}}nil@compound{@U{0029}}               @ok{@boolean{@hashchar{}f}}
+@end lisp
+
+The following examples illustrate cases in which the above rules do not
+fully specify the behavior of @code{eqv?}. All that can be said about
+such cases is that the value returned by @code{eqv?} must be a boolean.
+
+@lisp
+@compound{@U{0028}}eqv@U{003F}@ @string{@U{0022}@U{0022}@ @U{0022}@U{0022}}@compound{@U{0029}
+@U{0028}}eqv@U{003F}@ @abbrev{@U{0027}}@compoundempty{@hashchar{}@U{0028}@U{0029}@ }@abbrev{@U{0027}}@compoundempty{@hashchar{}@U{0028}@U{0029}}@compound{@U{0029}
+@U{0028}}eqv@U{003F}@ @compound{@U{0028}}@syntax{lambda@ }@compound{@U{0028}}@letlikebind{x}@compound{@U{0029}@ }x@compound{@U{0029}
+@ @ @ @ @ @ @U{0028}}@syntax{lambda@ }@compound{@U{0028}}@letlikebind{x}@compound{@U{0029}@ }x@compound{@U{0029}@U{0029}
+@U{0028}}eqv@U{003F}@ @compound{@U{0028}}@syntax{lambda@ }@compound{@U{0028}}@letlikebind{x}@compound{@U{0029}@ }x@compound{@U{0029}
+@ @ @ @ @ @ @U{0028}}@syntax{lambda@ }@compound{@U{0028}}@letlikebind{y}@compound{@U{0029}@ }y@compound{@U{0029}@U{0029}
+@U{0028}}eqv@U{003F}@ @number{1@U{002E}0e0@ 1@U{002E}0f0}@compound{@U{0029}
+@U{0028}}eqv@U{003F}@ @number{@U{002B}nan@U{002E}0@ @U{002B}nan@U{002E}0}@compound{@U{0029}}
+@end lisp
+
+Note that @code{(eqv? 0.0 -0.0)} will return @code{#f} if negative zero
+is distinguished, and @code{#t} if negative zero is not distinguished.
+
+The next set of examples shows the use of @code{eqv?} with procedures
+that have local state.  The @code{gen-counter} procedure must return a
+distinct procedure every time, since each procedure has its own internal
+counter.  The @code{gen-loser} procedure, however, returns operationally
+equivalent procedures each time, since the local state does not affect
+the value or side effects of the procedures.  However, @code{eqv?}  may
+or may not detect this equivalence.
+@end deftypefn

@@ -1,0 +1,18 @@
+This chapter describes Scheme's built-in procedures.  The procedures
+@code{force}, @code{promise?}, and @code{make-promise} are intimately
+associated with the expression types @code{delay} and
+@code{delay-force}, and are described with them in section 4.2.5.  In
+the same way, the procedure @code{make-parameter} is intimately
+associated with the expression type @code{parameterize}, and is
+described with it in section 4.2.6.
+
+A program can use a global variable definition to bind any variable.  It
+may subsequently alter any such binding by an @dfn{assignment} (see
+section 4.1.6).  These operations do not modify the behavior of any
+procedure defined in this report or imported from a library (see section
+5.6).  Altering any global binding that has not been introduced by a
+definition has an unspecified effect on the behavior of the procedures
+defined in this chapter.
+
+When a procedure is said to return a @dfn{newly allocated object}, it
+means that the locations in the object are @emph{fresh}.

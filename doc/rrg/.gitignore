@@ -19,5 +19,8 @@ gambit*.html
 gambit*.txt
 gambit.epub
 gambit.txi
-gambit-spans.txi
-gambit.info
+r7rs.info
+r7rs*.html
+r7rs*.txt
+r7rs.epub
+r7rs/r7rs.txi

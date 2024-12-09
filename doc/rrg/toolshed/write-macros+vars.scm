@@ -42,14 +42,18 @@
                            "RS @inlinefmtifelse{info,@acronym{R" n
                            "RS},@inlinefmtifelse{plaintext,@acronym{R" n
                            "RS},@acronym{R@sup{" (string-downcase n)
-                           "}RS}}}\n")))))
+                           "}RS}}}\n"))))
+        (write-r2rs
+         (lambda ()
+           (write-string "@set R2RS @acronym{RRRS}\n"))))
     (lambda ()
       (for-each write-set
                 '(("REVISION" "Revised")
                   ("VERSION" "4.9.5")
                   ("HOMEPAGEURL" "https://gambitscheme.org")
                   ("GITHUBURL" "https://github.com/gambit/gambit")))
-      (for-each write-rnrs '("7" "5" "4" "N")))))
+      (for-each write-rnrs '("7" "6" "5" "4" "3" "N"))
+      (write-r2rs))))
 
 (define write-visual-divider 
   (let ((cmnt "@comment "))

@@ -206,11 +206,11 @@ END
 (define general-noncolor-css #<<END
 strong.def-name {font-size: large}
 
-.top-level-extent, .chapter-level-extent, .appendix-level-extent {
+.top-level-extent, .chapter-level-extent, .appendix-level-extent, .unnumbered-level-extent {
     dd, .center, li, p:not(.nav-panel p) {width: 40rem}
 }
 
-.chapter-level-extent {
+.chapter-level-extent, .unnumbered-level-extent {
     dd p:not(.nav-panel p), p:not(.nav-panel p) {text-align: justify}
 }
 

@@ -24,6 +24,15 @@ test -d procedures/a/ || mkdir -p procedures/a/;\
 cd toolshed &&\
 ${GSI} -f annotate-txi.scm ../procedures/"$$txi" > ../procedures/a/"$$txi"
 
+annotate-r7rs-procedures-file = \
+test -d r7rs/procedures/a/ || mkdir -p r7rs/procedures/a/;\
+cd toolshed &&\
+${GSI} -f annotate-txi.scm ../r7rs/procedures/"$$txi" > ../r7rs/procedures/a/"$$txi"
+
+r7rs-deps = toolshed/macros+vars.txi r7rs/bibliography.txi \
+ r7rs/prose/overview.txi r7rs/r7rs-pristine.txi r7rs/copying/copying.txi \
+ r7rs/copying/fdl-1.3.texi r7rs/prose/introduction.txi r7rs/prose/summary.txi
+
 clean:
 	rm -f *.html *.info *.tgz gambit.{txi,txt} toolshed/*.css toolshed/*.html\
 		toolshed/macros+vars.txi
@@ -180,3 +189,32 @@ procedures/a/pairs-lists.txi: procedures/pairs-lists.txi toolshed/annotate-txi.s
 
 procedures/a/strings.txi: procedures/strings.txi toolshed/annotate-txi.scm
 	readonly txi=strings.txi && ${annotate-procedures-file}
+
+r7rs/procedures/a/equivalence-predicates.txi: toolshed/annotate-txi.scm \
+ r7rs/procedures/equivalence-predicates.txi
+	readonly txi=equivalence-predicates.txi && ${annotate-r7rs-procedures-file}
+
+r7rs.html: r7rs/r7rs.txi toolshed/gambit.css toolshed/parenthesize-defs.sed
+	cd r7rs &&\
+	texi2any -o - --html --no-split --css-include=../toolshed/gambit.css \
+		r7rs.txi | sed -f ../toolshed/parenthesize-defs.sed > ../$@
+
+r7rs/r7rs.txi: ${r7rs-deps} r7rs/r7rs-pristine.txi \
+ r7rs/procedures/a/equivalence-predicates.txi
+	sed 's/^\(@include[[:blank:]]\{1,\}procedures\/\)/\1a\//'\
+		r7rs/r7rs-pristine.txi > $@
+
+r7rs-pristine.html: ${r7rs-deps} toolshed/gambit.css toolshed/parenthesize-defs.sed
+	cd r7rs && {\
+	texi2any -o - --html --no-split --css-include=../toolshed/gambit.css\
+		r7rs-pristine.txi |\
+			sed -f ../toolshed/parenthesize-defs.sed > ../$@;\
+	}
+
+r7rs-pristine.info: r7rs/r7rs.txi
+	cd r7rs &&\
+	texi2any -o - --info --no-split r7rs-pristine.txi > ../$@;
+
+r7rs-pristine.txt: ${r7rs-deps}
+	cd r7rs &&\
+	texi2any -o - --plaintext --no-split r7rs-pristine.txi > ../$@;

@@ -129,6 +129,9 @@
 (define (->sub-begin     symbol) (->sub symbol "-begin"))
 (define (->sub-end       symbol) (->sub symbol "-end"))
 
+;; "inert" messages are used in cases where a binding message would normally be
+;; used, but unquote or unquote-splicing applies to the current datum.  It lets
+;; us preserve context without colorizing an identifier that will not be bound.
 (define (->inert-ident symbol)
   (string->symbol (string-append (symbol->string symbol) "-inert-ident")))
 
