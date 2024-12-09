@@ -7,9 +7,10 @@
   (let ((source/css (if (null? args)
                         (error "No arguments given")
                         (let ((first (car args)) (rest (cdr args)))
-                          (cond ((null? rest) (cons first "gambit.css"))
-                                ((string=? first "-e")
-                                 (cons (car rest) "gambit-examples.css"))
+                          (cond ((null? rest)
+                                 (cons first "gambit-examples.css"))
+                                ((string=? first "-c")
+                                 (cons (car rest) "gambit-examples.cm.css"))
                                 (else (cons (car rest) first)))))))
     (let ((source (car source/css)) (css (cdr source/css)))
       (let ((css-content (call-with-input-file css
@@ -20,11 +21,11 @@
               (base-filename (basename source)))
           (with-output-to-file
               (string-append base-filename
-                             (if (member css
-                                         '("gambit.css" "gambit-examples.css")
-                                         string=?)
-                                 ".html"
-                                 ".alt.html"))
+                             (cond ((string=? css "gambit-examples.css")
+                                    ".html")
+                                   ((string=? css "gambit-examples.cm.css")
+                                    ".cm.html")
+                                   (else ".alt.html")))
             (lambda ()
               (write-pre-css base-filename)
               (display css-content)
@@ -57,7 +58,7 @@ END
 (define (write-pre-css title)
   (write-string (string-append #<<END
 <!DOCTYPE html>
-<html>  
+<html>
 <!-- Created by scm-to-html.scm -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">

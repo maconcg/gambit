@@ -183,10 +183,6 @@ dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
     }
 }
 
-dl.first-deftp, dl.first-deftypevr {
-    p i.slanted {color: <emphasis>}
-}
-
 dl.first-deftp {
     background-color: <bg-deftp>;
     background-image: linear-gradient(90deg, <deftp-l>, <deftp-r> 35%);
@@ -394,8 +390,7 @@ END
     (( def-dots )                           'fg-main)
     (( deftp-l deftp-r )                    'bg-ochre)
     (( deftypefn-l deftypefn-r )            'bg-blue-subtle)
-    (( deftypevr-l deftypevr-r )            'bg-clay)
-    (( emphasis )                           'yellow-faint)
+    (( deftypevr-l deftypevr-r )            'bg-red-subtle)
     (( exception )                          'yellow-faint)
     (( link )                               'fg-alt)
     (( link-visited )                       'fg-alt)
@@ -455,8 +450,8 @@ END
           (( modus-operandi codemirror )
            (case sym
              ((bg-deftp bg-deftypefn bg-deftypevr) (string-append color "90"))
-             ((deftp-l deftypefn-l deftypevr-l) (string-append color "6f"))
-             ((deftp-r deftypefn-r deftypevr-r) (string-append color "3f"))
+             ((deftp-l deftypefn-l deftypevr-l) (string-append color "4f"))
+             ((deftp-r deftypefn-r deftypevr-r) (string-append color "1f"))
              (else color)))
           (( modus-vivendi )
            (case sym

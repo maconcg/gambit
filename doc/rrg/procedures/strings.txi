@@ -35,9 +35,16 @@ If @var{k} is not an exact integer, an exception that satisfies
 integer, an exception that satisfies @code{range-exception?} is raised.
 
 @lisp
-(make-string 0)                 @ok{""}
-(string-length (make-string 4)) @ok{4}
-(make-string 4 #\g)             @ok{"gggg"}
+(make-string 0)     @ok{""}
+(make-string 1 #\@{) @ok{"@lbracechar{}"}
+(make-string 2 #\@}) @ok{"@rbracechar{}@rbracechar{}"}
+(make-string 3 #\@@) @ok{"@@@@@atchar{}"}
+(make-string 4 #\ ) @ok{"    "}
+@end lisp
+
+@lisp
+(eqv?     (make-string 0) (make-string 0)) @ok{#f}
+(string=? (make-string 0) (make-string 0)) @ok{#t}
 @end lisp
 
 @lisp
@@ -273,8 +280,11 @@ not a valid index of @var{string}, an exception that satisfies
 (string-copy "dwim" 1)                        @ok{"wim"}
 (string-copy "dwim" 1 1)                      @ok{""}
 (string-copy "dwim" 0 (string-length "dwim")) @ok{"dwim"}
-(eqv?     "dwim" (string-copy "dwim"))        @ok{#f}
-(string=? "dwim" (string-copy "dwim"))        @ok{#t}
+@end lisp
+
+@lisp
+(eqv?     "dwim" (string-copy "dwim")) @ok{#f}
+(string=? "dwim" (string-copy "dwim")) @ok{#t}
 @end lisp
 
 @lisp
