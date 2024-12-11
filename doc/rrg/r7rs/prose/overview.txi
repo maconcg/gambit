@@ -327,12 +327,12 @@ The symbol @quotedbl{@t{@result{}}} in program examples is read
 (* 5 8) @ok{40}
 @end lisp
 
-means that the expression @code{(* 5 8)} evaluates to the object
-@code{40}.  Or, more precisely: the expression given by the sequence of
-characters @quotedbl{@t{(* 5 8)}} evaluates, in an environment
-containing the base library, to an object that can be represented
-externally by the sequence of characters @quotedbl{@t{40}}.  See section
-3.3 for a discussion of external representations of objects.
+means that the expression @t{(* 5 8)} evaluates to the object @t{40}.
+Or, more precisely: the expression given by the sequence of characters
+@quotedbl{@t{(* 5 8)}} evaluates, in an environment containing the base
+library, to an object that can be represented externally by the sequence
+of characters @quotedbl{@t{40}}.  See section 3.3 for a discussion of
+external representations of objects.
 
 @node Naming conventions
 @subsection Naming conventions

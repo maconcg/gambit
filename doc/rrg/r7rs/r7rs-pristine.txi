@@ -56,6 +56,7 @@
 @include prose/overview.txi
 @include prose/lexical-conventions.txi
 @include prose/basic-concepts.txi
+@include prose/expressions.txi
 
 @node Standard Procedures
 @nodedescription Built-in procedures.

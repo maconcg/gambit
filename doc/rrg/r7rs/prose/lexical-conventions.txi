@@ -30,14 +30,12 @@ verbatim in such an identifier.  In addition, characters can be
 specified using either an @angle{inline hex escape} or the same escapes
 available in strings.
 
-For example, the identifier @t{|H@backslashchar{}x65;llo|} is the same
-identifier as Hello, and in an implementation that supports the
-appropriate Unicode character the identifier @t{|@backslashchar{}x3BB;|}
-is the same as the identifier @t{@U{03BB}}.  What is more,
-@t{|@backslashchar{}t@backslashchar{}t|} and
-@t{|@backslashchar{}x9;@backslashchar{}x9;|} are the same. Note that
-@t{||} is a valid identifier that is different from any other
-identifier.
+For example, the identifier @ht{|H\x65;llo|} is the same identifier as
+@t{Hello}, and in an implementation that supports the appropriate
+Unicode character the identifier @ht{|\x3BB;|} is the same as the
+identifier @t{@U{03BB}}.  What is more, @ht{|\t\t|} and @ht{|\x9;\x9;|}
+are the same. Note that @t{||} is a valid identifier that is different
+from any other identifier.
 
 Here are some examples of identifiers:
 
@@ -197,8 +195,8 @@ These are used for labeling and referencing other literal data (section
 @node Datum labels
 @section Datum labels
 
-@deftypefn {lexical syntax} @/ {@prosedatumlabel{n}@angle{datum}}
-@deftypefnx {lexical syntax} @/ @prosedatumref{n}
+@deftypevr {lexical syntax} @/ {@prosedatumlabel{n}@angle{datum}}
+@deftypevrx {lexical syntax} @/ @prosedatumref{n}
 
 The lexical syntax @prosedatumlabel{n}@angle{datum} reads the same as
 @angle{datum}, but also results in @angle{datum} being labeled by
@@ -227,4 +225,4 @@ for @t{quasiquote} (section 4.2.8) to contain them.
 @lisp
 #1=(begin (display #\x) #1#) @lisperror{error}
 @end lisp
-@end deftypefn
+@end deftypevr

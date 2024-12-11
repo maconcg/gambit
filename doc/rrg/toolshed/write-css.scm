@@ -116,7 +116,7 @@ body {
     background-color: <bg-main>;
 }
 
-pre.lisp-preformatted, pre.example-preformatted {
+code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
     span.abbrev {color: <abbrev>}
     span.boolean {color: <boolean>}
     span.box {color: <box>}
@@ -128,7 +128,7 @@ pre.lisp-preformatted, pre.example-preformatted {
     span.datum-ref {color: <datum-ref>}
     span.def-like-bind, span.def-like-esc {color: <def-like-bind>}
     span.dot {color: <dot>}
-    span.dsssl, span.sharp {color: <sharp>}
+    span.directive, span.dsssl, span.sharp {color: <sharp>}
     span.ident, span.ident-esc {color: <ident>}
     span.hs-begin {color: <hs-begin>}
     span.hs-key {color: <hs-key>}
@@ -148,9 +148,9 @@ END
 )
 
 (define examples-noncolor-css #<<END
-pre.lisp-preformatted, pre.example-preformatted {
+code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
     font-size: 1rem;
-    span.atmosphere, span.dsssl { font-style: oblique }
+    span.atmosphere, span.directive, span.dsssl { font-style: oblique }
     span.char-body, span.def-like-esc, span.ident-esc, span.let-like-esc,
       span.string-esc, span.syntax-esc {
         font-weight: bold
@@ -168,7 +168,7 @@ span.todo {background-color: <todo>}
 .chapter-level-extent pre {border-left-color: <fg-main>}
 
 dl.first-deffn, dl.first-deftp, dl.first-deffn, dl.first-defvr,
- dl.first-deftypefn, dl.first-defblock {
+ dl.first-deftypefn, dl.first-deftypevr, dl.first-defblock {
     border-top-color: <border>;
     dt {
         var.def-var-arguments {
@@ -187,13 +187,16 @@ dl.first-deffn, dl.first-deftp, dl.first-deffn, dl.first-defvr,
     dt.deffn, dt.deffnx, dt.defline {
         strong.def-name {color: <def-like-bind>}
     }
+    dt.deftypefn {
+        strong.def-name {color: <syntax>}
+    }
     dd {
         background-color: <bg-main>;
     }
 }
 
-dl.first-deftypefn {
-    background-color: <bg-deftypefn>;
+dl.first-deftypevr {
+    background-color: <bg-defvr>;
 }
 
 dl.first-deftp {
@@ -201,9 +204,12 @@ dl.first-deftp {
     background-image: linear-gradient(90deg, <deftp-l>, <deftp-r> 35%);
 }
 
-dl.first-deffn, dl.first-defblock {
+dl.first-deffn, dl.first-deftypefn, dl.first-defblock {
     background-color: <bg-deffn>;
     background-image: linear-gradient(90deg, <deffn-l>, <deffn-r> 35%);
+    span.def-abbrev {
+        color: <abbrev>;
+    }
     span.def-paren {
         color: <compound>;
     }
@@ -230,7 +236,7 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
     dt {
         font-size: 1.06rem;
         span.category-def {
-            font-size: 0.95rem;
+            font-size: 0.96rem;
         }
         span.def-bracket, span.def-dots, var.def-var-arguments {
             font-size: 1rem;
@@ -240,7 +246,7 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
             font-size: 1.06rem;
         }
     }
-    dt.deffn, dt.deffnx, dt.defline, dt.deftypeline {
+    dt.deffn, dt.deffnx, dt.deftypevr, dt.deftypevrx, dt.defline, dt.deftypeline {
         font-family: monospace;
         span.category-def {
             font-size: 0.9rem;
@@ -250,6 +256,34 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
         }
         span.def-paren {
             font-size: 1.06rem;
+        }
+    }
+    dt.deftypeline {
+        strong.def-name {
+            font-size: 1rem;
+        }
+    }
+    dt.deftypefn {
+        span.category-def {
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        span.def-bracket, span.def-dots, code.def-code-arguments {
+            font-family: initial;
+        }
+        span.def-paren {
+            font-family: monospace;
+            font-size: 1.06rem;
+        }
+    }
+    dt.deftypefnx {
+        span.category-def {
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        strong.def-name, code.def-code-arguments {
+            font-family: initial;
+            font-size: 1rem;
         }
     }
     dd, p {
@@ -269,25 +303,18 @@ div.chapter-level-extent, div.unnumbered-level-extent {
         }
     }
     blockquote.quotation {
+        margin-left: 1rem;
         p {
+            font-size: 0.96rem;
             width: 33rem;
         }
     }
 }
 
-dl.first-defvr, dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
+dl.first-defvr, dl.first-deftp, dl.first-deftypevr {
     dt {
-        font-size: 1rem;
-        span.category-def {
-            font-size: 1rem;
-        }
-        span.def-bracket, span.def-dots, var.def-var-arguments {
-            font-size: 1rem;
-        }
         strong.def-name {
             font-family: initial;
-            font-weight: normal;
-            font-size: 1rem;
         }
     }
 }
@@ -328,13 +355,13 @@ div.chapter-level-extent, div.unnumbered-level-extent {
 }
 
 dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
- dl.first-defblock {
+ dl.first-deftypevr, dl.first-defblock {
     border-top-style: solid;
     border-top-width: thin;
     padding-top: 0.1rem;
     width: 41rem;
     dt.deffn, dt.deftp, dt.deffnx, dt.defvr, dt.defline, dt.deftypeline,
-     dt.deftypefn, dt.deftypefnx {
+     dt.deftypefn, dt.deftypefnx, dt.deftypevr, dt.deftypevrx {
         align-content: center;
         padding-left: 0.3em;        
         font-weight: normal;
@@ -477,6 +504,7 @@ END
     (( abbrev )                           'fg-dim)
     (( box )                              'fg-alt)
     (( compound )                         'fg-dim)
+    (( directive )                        'yellow)
     (( dot )                              'fg-dim)
     (( hs-begin )                         'fg-dim)
     (( invalid )                          'fg-dim)
@@ -501,20 +529,20 @@ END
 
 (define (modus:element->color element)
   (case element
-    (( bg-deftp bg-deffn bg-deftypefn bg-defvr ) 'bg-dim)
-    (( problem )                                 'bg-yellow-intense)
-    (( category-def )                            'fg-dim)
-    (( def-bracket )                             'fg-main)
-    (( def-dots )                                'fg-main)
-    (( deffn-l deffn-r )                         'bg-blue-subtle)
-    (( deftp-l deftp-r )                         'bg-ochre)
-    (( defvr-l defvr-r )                         'bg-red-subtle)
-    (( exception )                               'yellow-faint)
-    (( link )                                    'fg-alt)
-    (( link-visited )                            'fg-alt)
-    (( lisp-error )                              'fg-main)
-    (( todo )                                    'bg-red-intense)
-    (( unspecified )                             'fg-dim)
+    (( bg-deftp bg-deffn bg-defvr ) 'bg-dim)
+    (( problem )                    'bg-yellow-intense)
+    (( category-def )               'fg-dim)
+    (( def-bracket )                'fg-main)
+    (( def-dots )                   'fg-main)
+    (( deffn-l deffn-r )            'bg-blue-subtle)
+    (( deftp-l deftp-r )            'bg-ochre)
+    (( defvr-l defvr-r )            'bg-red-subtle)
+    (( exception )                  'yellow-faint)
+    (( link )                       'fg-alt)
+    (( link-visited )               'fg-alt)
+    (( lisp-error )                 'fg-main)
+    (( todo )                       'bg-red-intense)
+    (( unspecified )                'fg-dim)
     (else #f)))
 
 (define codemirror-colors
@@ -569,7 +597,7 @@ END
         (case theme
           (( modus-operandi codemirror )
            (case sym
-             (( bg-deffn bg-deftp bg-defvr bg-deftypefn )
+             (( bg-deffn bg-deftp bg-defvr )
               (string-append color "90"))
              (( deffn-l deftp-l deffn-l defvr-l )
               (string-append color "4f"))

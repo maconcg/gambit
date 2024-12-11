@@ -171,7 +171,6 @@
               simplified
               (let* ((ac (car unsimplified)) (kind (get-kind ac)))
                 (cond
-                 ((eq? kind 'directive) (set-kind! ac 'atmosphere))
                  ((eq? kind '~rt-syntax-ident) (set-kind! ac 'ident))
                  ((eq? kind '~rt-syntax-ident-esc) (set-kind! ac 'ident-esc))
                  ((eq? kind 'hs-body) (set-kind! ac 'string))                 

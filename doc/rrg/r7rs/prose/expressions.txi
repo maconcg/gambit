@@ -1,0 +1,133 @@
+@c Copyright (c) 2024 by Macon Gambill, All Rights Reserved.
+@node Expressions
+@nodedescription Descriptions of Scheme expressions.
+@chapter Expressions
+
+Expression types are categorized as @dfn{primitive} or @dfn{derived}.
+Primitive expression types include variables and procedure calls.
+Derived expression types are not semantically primitive, but can instead
+be defined as macros.  Suitable syntax definitions of some of the
+derived expressions are given in section 7.3.
+
+The procedures @code{force}, @code{promise?}, @code{make-promise}, and
+@code{make-parameter} are also described in this chapter because they
+are intimately associated with the @code{delay}, @code{delay-force}, and
+@code{parameterize} expression types.
+
+@node Primitive expression types
+@section Primitive expression types
+@node Variable references
+@subsection Variable references
+
+@defblock
+@deftypeline {syntax} @/ @r{@angle{variable}}
+An expression consisting of a variable (section 3.1) is a variable
+reference.  The value of the variable reference is the value stored in
+the location to which the variable is bound.  It is an error to
+reference an unbound variable.
+
+@lisp
+(define x 28)
+x @ok{28}
+@end lisp
+@end defblock
+
+@node Literal expressions
+@subsection Literal expressions
+@deftypefn {syntax} @/ quote @angle{datum}
+@deftypefnx {syntax} @/ @t{@defabbrev{@U{0027}}}@angle{datum}
+@deftypefnx {syntax} @/ @angle{constant}
+@t{(quote @r{@angle{datum}})} evaluates to @angle{datum}.  @angle{Datum}
+can be any external representation of a Scheme object (see section 3.3).
+This notation is used to include literal constants in Scheme code.
+
+@lisp
+(quote a)        @ok{a}
+(quote #(a b c)) @ok{#(a b c)}
+(quote (+ 1 2))  @ok{(+ 1 2)}
+@end lisp
+
+@t{(quote @r{@angle{datum}})} can be abbreviated as
+@t{'@r{@angle{datum}}}.  The two notations are equivalent in all
+respects.
+
+@lisp
+'a         @ok{a}
+'#(a b c)  @ok{#(a b c)}
+'()        @ok{()}
+'(+ 1 2)   @ok{(+ 1 2)}
+'(quote a) @ok{(quote a)}
+''a        @ok{(quote a)}
+@end lisp
+
+Numerical constants, string constants, character constants, vector
+constants, bytevector constants, and boolean constants evaluate to
+themselves; they need not be quoted.
+
+@lisp
+'145932     @ok{145932}
+145932      @ok{145932}
+'"abc"      @ok{"abc"}
+"abc"       @ok{"abc"}
+'#\a        @ok{#\a}
+#\a         @ok{#\a}
+'#(a 10)    @ok{#(a 10)}
+#(a 10)     @ok{#(a 10)}
+'#u8(64 65) @ok{#u8(64 65)}
+#u8(64 65)  @ok{#u8(64 65)}
+'#t         @ok{#t}
+#t          @ok{#t}
+@end lisp
+
+As noted in section 3.4, it is an error to attempt to alter a constant
+(i.e. the value of a literal expression) using a mutation procedure like
+@code{set-car!} or @code{string-set!}.
+@end deftypefn
+
+@node Procedure calls
+@subsection Procedure calls
+
+@defblock
+@deftypeline {syntax} @/ @t{@defparen{(}@r{@angle{operator}} @r{@angle{@pari{operand}}} @r{@defdots{}}@defparen{)}}
+A procedure call is written by enclosing in parentheses an expression
+for the procedure to be called followed by expressions for the arguments
+to be passed to it.  The operator and operand expressions are evaluated
+(in an unspecified order) and the resulting procedure is passed the
+resulting arguments.
+
+@lisp
+(+ 3 4)           @ok{7}
+((if #f + *) 3 4) @ok{12}
+@end lisp
+
+The procedures in this document are available as the values of variables
+exported by the standard libraries.  For example, the addition and
+multiplication procedures in the above examples are the values of the
+variables @t{+} and @t{*} in the base library.  New procedures are
+created by evaluating lambda expressions (see section 4.1.4).
+
+Procedure calls can return any number of values (see @code{values} in
+section 6.10).  Most of the procedures defined in this report return one
+value or, for procedures such as @code{apply}, pass on the values
+returned by a call to one of their arguments.  Exceptions are noted in
+the individual descriptions.
+
+@quotation
+@i{Note:} In contrast to other dialects of Lisp, the order of evaluation
+is unspecified, and the operator expression and the operand expressions
+are always evaluated with the same evaluation rules.
+
+@i{Note:} Although the order of evaluation is otherwise unspecified, the
+effect of any concurrent evaluation of the operator and operand
+expressions is constrained to be consistent with some sequential order
+of evaluation.  The order of evaluation may be chosen differently for
+each procedure call.
+
+@i{Note:} In many dialects of Lisp, the empty list, @code{()}, is a
+legitimate expression evaluating to itself.  In Scheme, it is an error.
+@end quotation
+@end defblock
+
+@node Procedures
+@subsection Procedures
+

@@ -78,9 +78,10 @@ consisting of the integers 8 and 13 is the sequence of characters
 @quotedbl{@t{(8 13)}}.
 
 The external representation of an object is not necessarily unique.  The
-integer 28 also has representations @quotedbl{@t{@hashchar{}e28.000}} and
-@quotedbl{@t{@hashchar{}x1c}}, and the list in the previous paragraph also
-has the representations @quotedbl{@t{( 08 13 )}} and @quotedbl{@t{(8 . (13 . ()))}} (see section 6.4).
+integer 28 also has representations @quotedbl{@t{#e28.000}} and
+@t{#x1c}, and the list in the previous paragraph also has the
+representations @quotedbl{@t{( 08 13 )}} and @quotedbl{@t{(8 . (13
+. ()))}} (see section 6.4).
 
 Many objects have standard external representations, but some, such as
 procedures, do not have standard representations (although particular
@@ -221,5 +222,84 @@ These were derived from rules in the grammar given in chapter 7 by
 replacing some occurrences of @angle{body} with @angle{tail expression},
 and some occurrences of @angle{sequence} with @angle{tail sequence}.
 Only those rules that contain tail contexts are shown here
+@example
+@compound{(}@syntax{if} @r{@angle{expression}} @r{@angle{tail expression}} @r{@angle{tail expression}}@compound{)}
+@compound{(}@syntax{if} @r{@angle{expression}} @r{@angle{tail expression}}@compound{)}
 
+@compound{(}@syntax{cond} @r{@angle{cond clause}+}@compound{)}
+@compound{(}@syntax{cond} @r{@angle{cond clause}*} @compound{(}@syntax{else} @r{@angle{tail sequence}}@compound{)}@compound{)}
+
+@compound{(}@syntax{case} @r{@angle{expression}}
+  @r{@angle{case clause}+}@compound{)}
+@compound{(}@syntax{case} @r{@angle{expression}}
+  @r{@angle{case clause}*}
+  @compound{(}@syntax{else} @r{@angle{tail sequence}}@compound{)}@compound{)}
+
+@compound{(}@syntax{and} @r{@angle{expression}*} @r{@angle{tail expression}}@compound{)}
+@compound{(}@syntax{or} @r{@angle{expression}*} @r{@angle{tail expression}}@compound{)}
+
+@compound{(}@syntax{when} @r{@angle{test}} @r{@angle{tail sequence}}@compound{)}
+@compound{(}@syntax{unless} @r{@angle{test}} @r{@angle{tail sequence}}@compound{)}
+
+@compound{(}@syntax{let} @compound{(}@r{@angle{binding spec}*}@compound{)} @r{@angle{tail body}}@compound{)}
+@compound{(}@syntax{let} @r{@angle{variable}} @compound{(}@r{@angle{binding spec}*}@compound{)} @r{@angle{tail body}}@compound{)}
+@compound{(}@syntax{let*} @compound{(}@r{@angle{binding spec}*}@compound{)} @r{@angle{tail body}}@compound{)}
+@compound{(}@syntax{letrec} @compound{(}@r{@angle{binding spec}*}@compound{)} @r{@angle{tail body}}@compound{)}
+@compound{(}@syntax{letrec*} @compound{(}@r{@angle{binding spec}*}@compound{)} @r{@angle{tail body}}@compound{)}
+@compound{(}@syntax{let-values} @compound{(}@r{@angle{mv binding spec}*}@compound{)} @r{@angle{tail body}}@compound{)}
+@compound{(}@syntax{let*-values} @compound{(}@r{@angle{mv binding spec}*}@compound{)} @r{@angle{tail body}}@compound{)}
+
+@compound{(}@syntax{let-syntax} @compound{(}@r{@angle{syntax spec}*}@compound{)} @r{@angle{tail body}}@compound{)}
+@compound{(}@syntax{letrec-syntax} @compound{(}@r{@angle{syntax spec}*}@compound{)} @r{@angle{tail body}}@compound{)}
+
+@compound{(}@syntax{begin} @r{@angle{tail sequence}}@compound{)}
+
+@compound{(}@syntax{do} @compound{(}@r{@angle{iteration spec}*}@compound{)}
+    @compound{(}@r{@angle{test}} @r{@angle{tail sequence}}@compound{)}
+  @r{@angle{expression}*}@compound{)}
+
+@r{where}
+
+@r{@angle{cond clause}} @r{@longarrow{}} @compound{(}@r{@angle{test}} @r{@angle{tail sequence}}@compound{)}
+@r{@angle{case clause}} @r{@longarrow{}} @compound{(}@compound{(}@r{@angle{datum}*}@compound{)} @r{@angle{tail sequence}}@compound{)}
+@r{@angle{tail body}} @r{@longarrow{}} @r{@angle{definition}*} @r{@angle{tail sequence}}
+@r{@angle{tail sequence}} @r{@longarrow{}} @r{@angle{expression}*} @r{@angle{tail expression}}
+@end example
+
+@item
+If a cond or case expression is in a tail context, and has a clause of
+the form @t{@compound{(}@r{@angle{expression@sub{1}}} =>
+@r{@angle{expression@sub{2}}}@compound{)}} then the (implied) call to
+the procedure that results from the evaluation of
+@angle{expression@sub{2}} is in a tail context.
+@angle{expression@sub{2}} itself is not in a tail context.
 @end itemize
+
+Certain procedures defined in this report are also required to perform
+tail calls.  The first argument passed to @code{apply} and to
+@code{call-with-current-continuation}, and the second argument passed to
+@code{call-with-values}, must be called via a tail call.  Similarly,
+@code{eval} must must evaluate its first argument as if it were in tail
+position within the @code{eval} procedure.
+
+In the following example the only tail call is the call to @t{f}.  None
+of the calls to @t{g} or @t{h} are tail calls.  The reference to @t{x}
+is in a tail context, but it is not a call and thus is not a tail call.
+
+@lisp
+(lambda ()
+  (if (g)
+      (let ((x (h)))
+        x)
+      (and (g) (f))))
+@end lisp
+
+@quotation
+@i{Note:} Implementations may recognize that some non-tail calls, such
+as the call to @t{h} above, can be evaluated as though they were tail
+calls.  In the example above, the @t{let} expression could be compiled
+as a tail call to @t{h}.  (The possibility of @t{h} returning an
+unexpected number of values can be ignored, because in that case the
+effect of the @t{let} is explicitly unspecified and
+implementation-dependent.)
+@end quotation
