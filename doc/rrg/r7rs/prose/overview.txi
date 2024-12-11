@@ -3,6 +3,7 @@
 @nodedescription Overview of the Scheme language.
 @chapter Overview of Scheme
 
+@node Semantics
 @section Semantics
 This section gives an overview of Scheme's semantics.  A detailed
 informal semantics is the subject of chapters 3 through 6.  For
@@ -52,7 +53,8 @@ is a distinction between exact arithmetic, which corresponds to the
 mathematical ideal, and inexact arithmetic on approximations.  Exact
 arithmetic is not limited to integers.
 
-@section Synatx
+@node Syntax
+@section Syntax
 
 Scheme, like most dialects of Lisp, employs a fully parenthesized prefix
 notation for programs and other data; the grammar of Scheme generates a
@@ -67,7 +69,9 @@ input as data, not as program.@c(section 7.1.2)
 
 The formal syntax of Scheme is described in section 7.1.
 
+@node Notation and terminology
 @section Notation and terminology
+@node Base and optional features
 @subsection Base and optional features
 
 Every identifier defined in this report appears in one or more of
@@ -103,6 +107,7 @@ lexical syntax does not conflict with the lexical syntax described in this
 report.
 @end itemize
 
+@node Error situations and unspecified behavior
 @subsection Error situations and unspecified behavior
 
 When speaking of an error situation, this report uses the phrase
@@ -163,3 +168,192 @@ capitalized in this report, are to be interpreted as described in
 @acronym{RFC} 2119@footnote{@value{refRFC2119}}.  They are used only with
 reference to implementer or implementation behavior, not with reference
 to programmer or program behavior.
+
+@node Entry format
+@subsection Entry format
+
+Chapters 4 and 6 are organized into entries.  Each entry describes one
+language feature or a group of related features, where a feature is
+either a syntactic construct or a procedure.  An entry begins with one
+or more header lines of the form
+
+@defblock
+@deftypeline @i{category} @/ @i{template}
+@end defblock
+
+for identifiers in the base library, or
+
+@defblock
+@deftypeline {@i{name} library @i{category}} @/ @i{template}
+@end defblock
+
+where @var{name} is the short name of a library as defined in Appendix A.
+
+If @var{category} is @quotedbl{syntax}, the the entry describes an
+expression type, and the template gives the syntax of the expression
+type.  Components of expressions are designated by syntactic variables,
+which are written using angle brackets, for example @angle{expression}
+and @angle{variable}.  Syntactic variables are intended to denote
+segments of program text; for example, @angle{expression} stands for any
+string of characters which is a syntactically valid expression.  The
+notation
+
+@quotation
+@angle{@pari{thing}}@defdots{}
+@end quotation
+
+indicates zero or more occurrences of a @angle{thing}, and
+
+@quotation
+@angle{@pari{thing}} @angle{@parii{thing}}@defdots{}
+@end quotation
+
+indicates one or more occurrences of a @angle{thing}.
+
+If @var{category} is @quotedbl{auxiliary syntax}, then the entry
+describes a syntax binding that occurs only as part of specific
+surrounding expressions.  Any use as an independent syntactic construct
+or variable is an error.
+
+If @var{category} is @quotedbl{procedure}, then the entry describes a
+procedure, and the header line gives a template for a call to the
+procedure@inlinefmtifelse{info,.,@inlinefmtifelse{plaintext,.,.  Argument
+names in the template are @i{italicized}.}}  Thus the header line
+
+@defblock
+@defline procedure vector-ref vector k
+@end defblock
+
+indicates that the procedure bound to the @code{vector-ref} variable
+takes two arguments, a vector @var{vector} and an exact non-negative
+integer @var{k} (see below).
+
+The header lines
+
+@defblock
+@defline procedure make-vector k
+@defline procedure make-vector k fill
+@end defblock
+
+indicate that the @code{make-vector} procedure must be defined to take
+either one or two arguments.
+
+It is an error for a procedure to be presented with an argument that it
+is not specified to handle.  For succinctness, we follow the convention
+that if an argument name is also the name of a type listed in section
+3.2, then it is an error if that argument is not of the named type.  For
+example, the header line for @code{vector-ref} given above dictates that
+the first argument to @code{vector-ref} is a vector.  The following
+naming conventions also imply type restrictions:
+
+@table @var
+@item alist
+association list (list of pairs)
+@item boolean
+boolean value (@code{#t} or @code{#f})
+@item byte
+exact integer 0 @leq{} @var{byte} < 256
+@item bytevector
+bytevector
+@item char
+character
+@item end
+exact non-negative integer
+@item k, @pari{k}, @defdots{} @parj{k}, @defdots{}
+exact non-negative integer
+@item letter
+alphabetic character
+@item list, @pari{list}, @defdots{} @parj{list}, @defdots{}
+list (see section 6.4)
+@item n, @pari{n}, @defdots{} @parj{n}, @defdots{}
+integer
+@item obj
+any object
+@item pair
+pair
+@item proc
+procedure
+@item q, @pari{q}, @defdots{} @parj{q}, @defdots{}
+rational number
+@item start
+exact non-negative integer
+@item string
+string
+@item symbol
+symbol
+@item thunk
+zero-argument procedure
+@item vector
+vector
+@item x, @pari{x}, @defdots{} @parj{x}, @defdots{}
+real number
+@item y, @pari{y}, @defdots{} @parj{y}, @defdots{}
+real number
+@item z, @pari{z}, @defdots{} @parj{z}, @defdots{}
+complex number
+@end table
+
+The names @var{start} and @var{end} are used as indexes into strings,
+vectors, and bytevectors.  Their use implies the following:
+@itemize @bullet
+@item
+It is an error if @var{start} is greater than @var{end}.
+
+@item
+It is an error if @var{end} is greater than the length of the string,
+vector, or bytevector.
+
+@item
+If @var{start} is omitted, it is assumed to be zero.
+
+@item
+If @var{end} is omitted, it assumed to be the length of the string,
+vector, or bytevector.
+
+@item
+The index @var{start} is always inclusive and the index @var{end} is
+always exclusive.  As an example, consider a string. If @var{start} and
+@var{end} are the same, an empty substring is referred to, and if
+@var{start} is zero and @var{end} is the length of @var{string}, then
+the entire string is referred to.
+@end itemize
+
+@node Evaluation examples
+@subsection Evaluation examples
+
+The symbol @quotedbl{@t{@result{}}} in program examples is read
+@quotedbl{evaluates to}.  For example,
+@lisp
+(* 5 8) @ok{40}
+@end lisp
+
+means that the expression @code{(* 5 8)} evaluates to the object
+@code{40}.  Or, more precisely: the expression given by the sequence of
+characters @quotedbl{@t{(* 5 8)}} evaluates, in an environment
+containing the base library, to an object that can be represented
+externally by the sequence of characters @quotedbl{@t{40}}.  See section
+3.3 for a discussion of external representations of objects.
+
+@node Naming conventions
+@subsection Naming conventions
+
+By convention, @t{?} is the final character of the names of procedures
+that always return a boolean value.  Such procedures are called
+@dfn{predicates}.  Predicates are generally understood to be side-effect
+free, except that they may raise an exception when passed the wrong type
+of argument.
+
+Similarly, @t{!} is the final character of the names of procedures that
+store values into previously allocated locations (see section 3.4).
+Such procedures are called @dfn{mutation procedures}.  The value
+returned by a mutation procedure is unspecified.
+
+By convention, @quotedbl{@t{->}} appears within the names of procedures
+that take an object of one type and return an analogous object of
+another type.  For example, @code{list->vector} takes a list and returns
+a vector whose elements are the same as those of the list.
+
+A @dfn{command} is a procedure that does not return useful values to its
+continuation.
+
+A @dfn{thunk} is a procedure that does not accept arguments.

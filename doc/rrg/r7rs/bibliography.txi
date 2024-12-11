@@ -50,7 +50,7 @@
 
 @set refTDialect Jonathan A.@tie{}Rees and Norman@tie{}I.@tie{}Adams@tie{}IV.  @i{T: A dialect of Lisp or, lambda: The ultimate software tool}.  In @i{Conference Record of the 1982 ACM Symposium on Lisp and Functional Programming}, pages 114--122.
 
-@set refTManual Jonathan A.@tie{}Rees, Norman@tie{}I.@tie{}Adams@tie{}IV, and James@tie{}R.@tie{}Meehan.  @i{The T manual, fourth edition}.  Yale University Computer Science Department, January 1984.
+@set refTManual Jonathan A.@tie{}Rees, Norman@tie{}I.@tie{}Adams@tie{}IV, and James@tie{}R.@tie{}Meehan.  @i{The T Manual, fourth edition}.  Yale University Computer Science Department, January 1984.
 
 @set refR3RS Jonathan Rees and William Clinger, editors.  @i{Revised@sup{3} Report on the Algorithmic Language Scheme}.  In @i{ACM SIGPLAN Notices} 21(12), pages 37--79, December 1986.
 

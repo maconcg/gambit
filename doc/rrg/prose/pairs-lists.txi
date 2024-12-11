@@ -66,27 +66,27 @@ With the exception of @slanted{the empty list}, every list is a
 @end deftp
 
 @cindex lists @subentry proper lists
-@deftypevr colloquialism @/ {proper list}
+@defvr colloquialism {proper list}
 @quotedbl{Proper list} is a widely-used synonym for @slanted{list} (see
 above).  Because it's a synonym, there's technically no need for the
 qualifier.  But in practice, people often refer to list-like objects
 that are not @slanted{lists} as @quotedbl{improper lists}.  The qualifier
 @quotedbl{proper} is therefore used to emphasize that an object is a
 Scheme @slanted{list} that satisfies @code{list?}.
-@end deftypevr
+@end defvr
 
 @cindex pairs @subentry improper lists
-@deftypevr colloquialism @/ {improper list}
+@defvr colloquialism {improper list}
 @quotedbl{Improper list} is sometimes used to describe a @slanted{pair}
 whose cdr is not a @slanted{list}.  This means that, despite its name,
 an @quotedbl{improper list} is not a @slanted{list} under Scheme's
 formal definition.  In contexts where the term @quotedbl{improper list}
 appears, @slanted{lists} are often referred to as @quotedbl{proper
 lists} to emphasize the distinction.
-@end deftypevr
+@end defvr
 
 @cindex pairs @subentry dotted pairs
-@deftypevr colloquialism @/ {dotted pair}
+@defvr colloquialism {dotted pair}
 @quotedbl{Dotted pair} is sometimes used as a synonym for
 @slanted{pair}.  @quotedbl{Dotted} refers to the common external
 representation of a @slanted{pair} in which the last element is preceded
@@ -94,11 +94,11 @@ by a period (@samp{.}, which resembles a dot).  This @quotedbl{dotted
 notation} may technically be used to represent any @slanted{pair}, but
 is typically used only to represent @slanted{pairs} that are not
 @slanted{lists}.
-@end deftypevr
+@end defvr
 
 @cindex lists @subentry association lists
 @vindex alist @seeentry {association list}
-@deftypevr colloquialism @/ {association list}
+@defvr colloquialism {association list}
 An @quotedbl{association list} (or @quotedbl{alist}, for short) is a
 @slanted{list} of @slanted{pairs}.
-@end deftypevr
+@end defvr

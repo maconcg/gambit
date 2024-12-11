@@ -1,0 +1,225 @@
+@c Copyright (c) 2024 by Macon Gambill, All Rights Reserved.
+@node Basic concepts
+@nodedescription Basic concepts of the Scheme language.
+@chapter Basic concepts
+
+@node Variables and syntactic keywords and regions
+@section Variables@comma{} syntactic keywords@comma{} and regions
+An identifier can name either a type of syntax or a location where a
+value can be stored.  An identifier that names a type of syntax is
+called a @dfn{syntactic keyword} and is said to be @dfn{bound} to a
+transformer for that syntax.  An identifier that names a location is
+called a @dfn{variable} and is said to be @i{bound} to that location.
+The set of all visible bindings in effect at some point in a program is
+known as the @dfn{environment} in effect at that point.  The value
+stored in the location to which a variable is bound is called the
+variable's value.  By abuse of terminology, the variable is sometimes
+said to name the value or to be bound to the value.  This is not quite
+accurate, but confusion rarely results from this practice.
+
+Certain expression types are used to create new kinds of syntax and to
+bind syntactic keywords to those new syntaxes, while other expression
+types create new locations and bind variables to those locations. These
+expression types are called @dfn{binding constructs}.  Those that bind
+syntactic keywords are listed in section 4.3.  The most fundamental of
+the variable binding constructs is the @code{lambda} expression, because
+all other variable binding constructs (except top-level bindings) can be
+explained in terms of @t{lambda} expressions.  The other variable
+binding constructs are @code{let}, @code{let*}, @code{letrec},
+@code{letrec*}, @nobr{@code{let-values}}, @nobr{@code{let*-values}}, and
+@code{do} expressions (see sections 4.1.4, 4.2.2, and 4.2.4).
+
+Scheme is a language with block structure.  To each place where an
+identifier is bound in a program there corresponds a @dfn{region} of the
+program text within which the binding is visible.  The region is
+determined by the particular binding construct that establishes the
+binding; if the binding is established by a @t{lambda} expression, for
+example, then its region is the entire @t{lambda} expression.  Every
+mention of an identifier refers to the binding of the identifier that
+established the innermost of the regions containing the use.  If there
+is no binding of the identifier whose region contains the use, then the
+use refers to the binding for the variable in the global environment, if
+any (chapters 4 and 6); if there is no binding for the identifier, it is
+said to be @dfn{unbound}.
+
+@node Disjointness of types
+@section Disjointness of types
+
+No object satisfies more than one of the following predicates:
+@lisp
+boolean?          bytevector?
+char?             eof-object?
+null?             number?
+pair?             port?
+procedure?        string?
+symbol?           vector?
+@end lisp
+and all predicates created by @t{define-record-type}.
+
+These predicates define the types @i{boolean}, @i{bytevector},
+@i{character}, the empty list object, @i{eof-object}, @i{number},
+@i{pair}, @i{port}, @i{procedure}, @i{string}, @i{symbol}, @i{vector},
+and all record types.
+
+Although there is a separate boolean type, any Scheme value can be used
+as a boolean value for the purpose of a conditional test.  As explained
+in section 6.3, all values count as true in such a test except for
+@t{#f}. This report uses the word @quotedbl{true} to refer to any Scheme
+value except @t{#f}, and the word @quotedbl{false} to refer to @t{#f}.
+
+@node External representations
+@section External representations
+
+An important concept in Scheme (and Lisp) is that of the @dfn{external
+representation} of an object as a sequence of characters.  For example,
+an external representation of the integer 28 is the sequence of
+characters @quotedbl{@t{28}}, and an external representation of a list
+consisting of the integers 8 and 13 is the sequence of characters
+@quotedbl{@t{(8 13)}}.
+
+The external representation of an object is not necessarily unique.  The
+integer 28 also has representations @quotedbl{@t{@hashchar{}e28.000}} and
+@quotedbl{@t{@hashchar{}x1c}}, and the list in the previous paragraph also
+has the representations @quotedbl{@t{( 08 13 )}} and @quotedbl{@t{(8 . (13 . ()))}} (see section 6.4).
+
+Many objects have standard external representations, but some, such as
+procedures, do not have standard representations (although particular
+implementations may define representations for them).
+
+An external representation can be written in a program to obtain the
+corresponding object (see @t{quote}, section 4.1.2).
+
+External representations can also be used for input and output.  The
+procedure @t{read} (section 6.13.2) parses external representations, and
+the procedure @t{write} (section 6.13.3) generates them.  Together, they
+provide an elegant and powerful input/output facility.
+
+Note that the sequence of characters @quotedbl{@t{(+ 2 6)}} is
+@emph{not} an external representation of the integer 8, even though it
+@emph{is} an expression evaluating to the integer 8; rather, it is an
+external representation of a three-element list, the elements of which
+are the symbol @t{+} and the integers 2 and 6.  Scheme's syntax has the
+property that any sequence of characters that is an expression is also
+the external representation of some object.  This can lead to confusion,
+since it is not always obvious out of context whether a given sequence
+of characters is intended to denote data or program, but it is also a
+source of power, since it facilitates writing programs such as
+interpreters and compilers that treat programs as data (or vice versa).
+
+The syntax of external representations of various kinds of objects
+accompanies the description of the primitives for manipulating the
+objects in the appropriate sections of chapter 6.
+
+@node Storage model
+@section Storage model
+
+Variables and objects such as pairs, strings, vectors, and bytevectors
+implicitly denote locationsor sequences of locations.  A string, for
+example, denotes as many locations as there are characters in the
+string.  A new value can be stored into one of these locations using the
+@code{string-set!} procedure, but the string continues to denote the
+same locations as before.
+
+An object fetched from a location, by a variable reference or by a
+procedure such as @code{car}, @code{vector-ref}, or @code{string-ref},
+is equivalent in the sense of @code{eqv?} (section 6.1) to the object
+last stored in the location before the fetch.
+
+Every location is marked to show whether it is in use.  No variable or
+object ever refers to a location that is not in use.
+
+Whenever this report speaks of storage being newly allocated for a
+variable or object, what is meant is that an appropriate number of
+locations are chosen from the set of locations that are not in use, and
+the chosen locations are marked to indicate that they are now in use
+before the variable or object is made to denote them.  Notwithstanding
+this, it is understood that the empty list cannot be newly allocated,
+because it is a unique object.  It is also understood that empty
+strings, empty vectors, and empty bytevectors, which contain no
+locations, may or may not be newly allocated.
+
+Every object that denotes locations is either mutable or immutable.
+Literal constants, the strings returned by @code{symbol->string}, and
+possibly the environment returned by @code{scheme-report-environment}
+are immutable objects.  All objects created by the other procedures
+listed in this report are mutable.  It is an error to attempt to store a
+new value into a location that is denoted by an immutable object.
+
+These locations are to be understood as conceptual, not physical.
+Hence, they do not necessarily correspond to memory addresses, and even
+if they do, the memory address might not be constant.
+
+@quotation
+@i{Rationale:} In many systems it is desirable for constants (i.e. the
+values of literal expressions) to reside in read-only memory.  Making it
+an error to alter constants permits this implementation strategy, while
+not requiring other systems to distinguish between mutable and immutable
+objects.
+@end quotation
+
+@node Proper tail recursion
+@section Proper tail recursion
+
+Implementations of Scheme are required to be @emph{properly
+tail-recursive}.  Procedure calls that occur in certain syntactic
+contexts defined below are @dfn{tail calls}.  A Scheme implementation is
+properly tail-recursive if it supports an unbounded number of active
+tail calls.  A call is @dfn{active} if the called procedure might still
+return.  Note that this includes calls that might be returned from
+either by the current continuation or by continuations captured earlier
+by @nobr{@code{call-with-current-continuation}} that are later invoked.
+In the absence of captured continuations, calls could return at most
+once and the active calls would be those that had not yet returned. A
+formal definition of proper tail recursion can be found in @cite{Proper
+Tail Recursion and Space
+Efficiency}@footnote{@value{refProperTailRecursion}}.
+
+@quotation
+@i{Rationale:} Intuitively, no space is needed for an active tail call
+because the continuation that is used in the tail call has the same
+semantics as the continuation passed to the procedure containing the
+call.  Although an improper implementation might use a new continuation
+in the call, a return to this new continuation would be followed
+immediately by a return to the continuation passed to the procedure. A
+properly tail-recursive implementation returns to that continuation
+directly.
+
+Proper tail recursion was one of the central ideas in Steele and
+Sussman’s original version of Scheme.  Their first Scheme interpreter
+implemented both functions and actors.  Control flow was expressed using
+actors, which differed from functions in that they passed their results
+on to another actor instead of returning to a caller.  In the
+terminology of this section, each actor finished with a tail call to
+another actor.
+
+Steele and Sussman later observed that in their interpreter the code for
+dealing with actors was identical to that for functions and thus there
+was no need to include both in the language.
+@end quotation
+
+A @dfn{tail call} is a procedure call that occurs in a @dfn{tail
+context}.  Tail contexts are defined inductively.  Note that a tail
+context is always determined with respect to a particular lambda
+expression.
+
+@itemize @bullet
+@item
+The last expression within the body of a lambda expression, shown as
+@angle{tail expression} below, occurs in a tail context.  The same is
+true of all the bodies of @code{case-lambda} expressions.
+@example
+(@syntax{lambda} @r{@angle{formals}}
+  @r{@angle{definition}* @angle{expression}* @angle{tail expression}})
+
+(@syntax{case-lambda} (@r{@angle{formals} @angle{tail body}})@r{*})
+@end example
+
+@item
+If one of the following expressions is in a tail context, then the
+subexpressions shown as @angle{tail expression} are in a tail context.
+These were derived from rules in the grammar given in chapter 7 by
+replacing some occurrences of @angle{body} with @angle{tail expression},
+and some occurrences of @angle{sequence} with @angle{tail sequence}.
+Only those rules that contain tail contexts are shown here
+
+@end itemize

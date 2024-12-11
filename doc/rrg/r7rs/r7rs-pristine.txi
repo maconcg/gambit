@@ -1,5 +1,10 @@
 \input texinfo
 @c Copyright (c) 2024 by Macon Gambill, all rights reserved.
+
+@ifnotinfo
+@footnotestyle separate
+@end ifnotinfo
+
 @include ../toolshed/macros+vars.txi
 @include bibliography.txi
 @include copying/copying.txi
@@ -8,10 +13,6 @@
 @clear txicodevaristt
 @synindex vr cp
 @syncodeindex pg cp
-
-@ifnotinfo
-@footnotestyle separate
-@end ifnotinfo
 
 @dircategory The Algorithmic Language Scheme
 @direntry
@@ -53,6 +54,8 @@
 @include prose/summary.txi
 @include prose/introduction.txi
 @include prose/overview.txi
+@include prose/lexical-conventions.txi
+@include prose/basic-concepts.txi
 
 @node Standard Procedures
 @nodedescription Built-in procedures.

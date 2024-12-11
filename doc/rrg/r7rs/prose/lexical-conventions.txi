@@ -1,0 +1,230 @@
+@c Copyright (c) 2024 by Macon Gambill, All Rights Reserved.
+@node Lexical conventions
+@nodedescription Lexical conventions used in Scheme programs.
+@chapter Lexical conventions
+
+This section gives an informal account of some of the lexical
+conventions used in writing Scheme programs.  For a formal syntax of
+Scheme, see section 7.1.
+
+@node Identifiers
+@section Identifiers
+
+An identifier is any sequence of letters, digits, and @quotedbl{extended
+identifier characters} provided that it does not have a prefix which is
+a valid number.  However, the @t{.} token (a single period) used in the
+list syntax is not an identifier.
+
+All implementations of Scheme must support the following extended identifier
+characters:
+
+@lisp
+! $ % & * + - . / : < = > ? @atchar{} ^ _ ~
+@end lisp
+
+Alternatively, an identifier can be represented by a sequence of zero or
+more characters enclosed within vertical lines (@t{|}), analogous to
+string literals.  Any character, including whitespace characters, but
+excluding the backslash and vertical line characters, can appear
+verbatim in such an identifier.  In addition, characters can be
+specified using either an @angle{inline hex escape} or the same escapes
+available in strings.
+
+For example, the identifier @t{|H@backslashchar{}x65;llo|} is the same
+identifier as Hello, and in an implementation that supports the
+appropriate Unicode character the identifier @t{|@backslashchar{}x3BB;|}
+is the same as the identifier @t{@U{03BB}}.  What is more,
+@t{|@backslashchar{}t@backslashchar{}t|} and
+@t{|@backslashchar{}x9;@backslashchar{}x9;|} are the same. Note that
+@t{||} is a valid identifier that is different from any other
+identifier.
+
+Here are some examples of identifiers:
+
+@lisp
+...                      +@*
++soup+                   <=?@*
+.>string                 a34kTMNs
+lambda                   list->vector
+q                        V17a
+|two words|              |two\x20;words|
+the-word-recursion-has-many-meanings
+@end lisp
+
+See section 7.1.1 for the formal syntax of identifiers.
+
+Identifiers have two uses within Scheme programs:
+@itemize @bullet
+@item
+Any identifier can be used as a variable or as a syntactic keyword (see
+sections 3.1 and 4.3).
+
+@item
+When an identifier appears as a literal or within a literal (see section
+4.1.2), it is being used to denote a @emph{symbol} (see section 6.5).
+@end itemize
+
+In contrast with earlier revisions of the
+report@footnote{@value{refR5RS}}, the syntax distinguishes between upper
+and lower case in identifiers and in characters specified using their
+names.  However, it does not distinguish between upper and lower case in
+numbers, nor in @angle{inline hex escapes} used in the syntax of
+identifiers, characters, or strings.  None of the identifiers defined in
+this report contain upper-case characters, even when they appear to do
+so as a result of the English-language convention of capitalizing the
+first word of a sentence.
+
+The following directives give explicit control over case folding.
+@example
+#!fold-case
+#!no-fold-case
+@end example
+These directives can appear anywhere comments are permitted (see section
+2.2) but must be followed by a delimiter.  They are treated as comments,
+except that they affect the reading of subsequent data from the same
+port.  The @t{#!fold-case} directive causes subsequent identifiers and
+character names to be case-folded as if by @code{string-foldcase} (see
+section 6.7). It has no effect on character literals.  The
+@t{#!no-fold-case} directive causes a return to the default, non-folding
+behavior.
+
+@node Whitespace and comments
+@section Whitespace and comments
+
+@dfn{Whitespace} characters include the space, tab, and newline
+characters.  (Implementations may provide additional whitespace
+characters such as page break.)  Whitespace is used for improved
+readability and as necessary to separate tokens from each other, a token
+being an indivisible lexical unit such as an identifier or number, but
+is otherwise insignificant.  Whitespace can occur between any two
+tokens, but not within a token.  Whitespace occurring inside a string or
+inside a symbol delimited by vertical lines is significant.
+
+The lexical syntax includes several comment forms.  Comments are treated
+exactly like whitespace.
+
+A semicolon (@t{;}) indicates the start of a line comment.  The comment
+continues to the end of the line on which the semicolon appears.
+Another way to indicate a comment is to prefix a @angle{datum}
+(cf. section 7.1.2) with @t{@hashchar{};} and optional
+@angle{whitespace}.  The comment consists of the comment prefix
+@t{@hashchar{};}, the space, and the @angle{datum} together.  This
+notation is useful for @quotedbl{commenting out} sections of code.
+
+Block comments are indicated with properly nested @t{@hashchar{}|} and @t{|@hashchar{}} pairs.
+
+@lisp
+#|
+   The FACT procedure computes the factorial
+   of a non-negative integer.
+|#
+(define fact
+  (lambda (n)
+    (if (= n 0)
+        #;(= n 1)
+        1        ;Base case: return 1
+        (* n (fact (- n 1))))))
+@end lisp
+
+@node Other notations
+@section Other notations
+
+For a description of the notations used for numbers, see section 6.2.
+
+@table @t
+@item . + -
+These are used in numbers, and can also occur anywhere in an identifier.
+A delimited plus or minus sign by itself is also an identifier.  A
+delimited period (not occurring within a number or identifier) is used
+in the notation for pairs (section 6.4), and to indicate a
+rest-parameter in a formal parameter list (section 4.1.4).  Note that a
+sequence of two or more periods @emph{is} an identifier.
+
+@item ( )
+Parentheses are used for grouping and to notate lists (section 6.4).
+
+@item '
+The apostrophe (single quote) character is used to indicate literal data
+(section 4.1.2).
+
+@item `
+The grave accent (backquote) character is used to indicate partly
+constant data (section 4.2.8).
+
+@item @comma{} @comma{}@atchar{}
+The character comma and the sequence comma at-sign are used in
+conjunction with quasiquotation (section 4.2.8).
+
+@item "
+The quotation mark character is used to delimit strings (section 6.7).
+
+@item @backslashchar{}
+Backslash is used in the syntax for character constants (section 6.6)
+and as an escape character within string constants (section 6.7) and
+identifiers (section 7.1.1).
+
+@item [ ] @lbracechar{} @rbracechar{}
+Left and right square and curly brackets (braces) are reserved for
+possible future extensions to the language.
+
+@item @hashchar{}
+The number sign is used for a variety of purposes depending on the
+character that immediately follows it:
+
+@item @hashchar{}t @hashchar{}f
+These are the boolean constants (section 6.3), along with the
+alternatives @t{@hashchar{}true} @t{@hashchar{}false}.
+
+@item @hashchar{}@backslashchar{}
+This introduces a character constant (section 6.6).
+
+@item @hashchar{}(
+This introduces a vector constant (section 6.8).  Vector constants are
+terminated by @t{)} .
+
+@item @hashchar{}u8(
+This introduces a bytevector constant (section 6.8).  Bytevector
+constants are terminated by @t{)} .
+
+@item @hashchar{}e @hashchar{}i @hashchar{}b @hashchar{}o @hashchar{}d @hashchar{}x
+These are used in the notation for numbers (section 6.2.5).
+
+@item @hashchar{}@angle{n}= @hashchar{}@angle{n}@hashchar{}
+These are used for labeling and referencing other literal data (section
+2.4).
+@end table
+
+@node Datum labels
+@section Datum labels
+
+@deftypefn {lexical syntax} @/ {@prosedatumlabel{n}@angle{datum}}
+@deftypefnx {lexical syntax} @/ @prosedatumref{n}
+
+The lexical syntax @prosedatumlabel{n}@angle{datum} reads the same as
+@angle{datum}, but also results in @angle{datum} being labelled by
+@angle{n}.  It is an error if @angle{n} is not a sequence of digits.
+
+The lexical syntax @prosedatumref{n} serves as a reference to some
+object labelled by @prosedatumlabel{n}; the result is the same object as
+the @prosedatumlabel{n} (see section 6.1).  Together, these syntaxes
+permit the notation of structures with shared or circular substructure.
+@lisp
+(let ((x (list 'a 'b 'c)))
+  (set-cdr! (cddr x) x)
+  x)                       @ok{#0=(a b c . #0#)}
+@end lisp
+The scope of a datum label is the portion of the outermost datum in
+which it appears that is to the right of the label.  Consequently, a
+reference @prosedatumref{n} can occur only after a label
+@prosedatumlabel{n,}; it is an error to attempt a forward reference.  In
+addition, it is an error if the reference appears as the labelled object
+itself (as in @prosedatumlabel{n}@prosedatumref{n}, because the object
+labelled by @prosedatumlabel{n} is not well defined in this case.
+
+It is an error for a @angle{program} or @angle{library} to include
+circular references except in literals.  In particular, it is an error
+for @t{quasiquote} (section 4.2.8) to contain them.
+@lisp
+#1=(begin (display #\x) #1#) @lisperror{error}
+@end lisp
+@end deftypefn

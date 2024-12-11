@@ -12,6 +12,15 @@ html-common-deps = gambit.txi procedures/a/pairs-lists.txi \
 src-lib = ../../lib
 lib-samples = _eval _io _kernel _module _nonstd _num _system _thread syntax-case sys
 
+r7rs-deps = toolshed/macros+vars.txi r7rs/bibliography.txi \
+ r7rs/r7rs-pristine.txi r7rs/copying/copying.txi r7rs/copying/fdl-1.3.texi \
+ r7rs/prose/summary.txi r7rs/prose/introduction.txi r7rs/prose/overview.txi \
+ r7rs/prose/lexical-conventions.txi r7rs/prose/basic-concepts.txi
+
+r7rs-annotated-prose = r7rs/prose/a/summary.txi r7rs/prose/a/introduction.txi \
+ r7rs/prose/a/overview.txi r7rs/prose/a/lexical-conventions.txi \
+ r7rs/prose/a/basic-concepts.txi r7rs/prose/a/standard-procedures.txi
+
 set-scm_to_html = \
 if test -x scm-to-html; then\
     readonly scm_to_html=./scm-to-html;\
@@ -29,14 +38,16 @@ test -d r7rs/procedures/a/ || mkdir -p r7rs/procedures/a/;\
 cd toolshed &&\
 ${GSI} -f annotate-txi.scm ../r7rs/procedures/"$$txi" > ../r7rs/procedures/a/"$$txi"
 
-r7rs-deps = toolshed/macros+vars.txi r7rs/bibliography.txi \
- r7rs/prose/overview.txi r7rs/r7rs-pristine.txi r7rs/copying/copying.txi \
- r7rs/copying/fdl-1.3.texi r7rs/prose/introduction.txi r7rs/prose/summary.txi
+annotate-r7rs-prose-file = \
+test -d r7rs/prose/a/ || mkdir -p r7rs/prose/a/;\
+cd toolshed &&\
+${GSI} -f annotate-txi.scm ../r7rs/prose/"$$txi" > ../r7rs/prose/a/"$$txi"
 
 clean:
 	rm -f *.html *.info *.tgz gambit.{txi,txt} toolshed/*.css toolshed/*.html\
 		toolshed/macros+vars.txi
-	rm -f -r procedures/a/ html-modules/ html-modules-cm/
+	rm -f -r procedures/a/ html-modules/ html-modules-cm/ \
+		r7rs/procedures/a/ r7rs/prose/a/
 
 extraclean: clean
 	rm -f toolshed/adorn/adorn.o1 toolshed/scm-to-html
@@ -194,27 +205,50 @@ r7rs/procedures/a/equivalence-predicates.txi: toolshed/annotate-txi.scm \
  r7rs/procedures/equivalence-predicates.txi
 	readonly txi=equivalence-predicates.txi && ${annotate-r7rs-procedures-file}
 
+r7rs/prose/a/summary.txi: toolshed/annotate-txi.scm \
+ r7rs/prose/summary.txi
+	readonly txi=summary.txi && ${annotate-r7rs-prose-file}
+
+r7rs/prose/a/introduction.txi: toolshed/annotate-txi.scm \
+ r7rs/prose/introduction.txi
+	readonly txi=introduction.txi && ${annotate-r7rs-prose-file}
+
+r7rs/prose/a/overview.txi: toolshed/annotate-txi.scm \
+ r7rs/prose/overview.txi
+	readonly txi=overview.txi && ${annotate-r7rs-prose-file}
+
+r7rs/prose/a/lexical-conventions.txi: toolshed/annotate-txi.scm \
+ r7rs/prose/lexical-conventions.txi
+	readonly txi=lexical-conventions.txi && ${annotate-r7rs-prose-file}
+
+r7rs/prose/a/basic-concepts.txi: toolshed/annotate-txi.scm \
+ r7rs/prose/basic-concepts.txi
+	readonly txi=basic-concepts.txi && ${annotate-r7rs-prose-file}
+
+r7rs/prose/a/standard-procedures.txi: toolshed/annotate-txi.scm \
+ r7rs/prose/standard-procedures.txi
+	readonly txi=standard-procedures.txi && ${annotate-r7rs-prose-file}
+
 r7rs.html: r7rs/r7rs.txi toolshed/gambit.css toolshed/parenthesize-defs.sed
 	cd r7rs &&\
 	texi2any -o - --html --no-split --css-include=../toolshed/gambit.css \
 		r7rs.txi | sed -f ../toolshed/parenthesize-defs.sed > ../$@
 
-r7rs/r7rs.txi: ${r7rs-deps} r7rs/r7rs-pristine.txi \
+r7rs/r7rs.txi: ${r7rs-deps} ${r7rs-annotated-prose} r7rs/r7rs-pristine.txi \
  r7rs/procedures/a/equivalence-predicates.txi
-	sed 's/^\(@include[[:blank:]]\{1,\}procedures\/\)/\1a\//'\
+	sed -e 's/^\(@include[[:blank:]]\{1,\}procedures\/\)/\1a\//'\
+		-e 's/^\(@include[[:blank:]]\{1,\}prose\/\)/\1a\//'\
 		r7rs/r7rs-pristine.txi > $@
 
-r7rs-pristine.html: ${r7rs-deps} toolshed/gambit.css toolshed/parenthesize-defs.sed
-	cd r7rs && {\
-	texi2any -o - --html --no-split --css-include=../toolshed/gambit.css\
-		r7rs-pristine.txi |\
-			sed -f ../toolshed/parenthesize-defs.sed > ../$@;\
-	}
+r7rs-pristine.html: ${r7rs-deps} toolshed/gambit.css \
+ toolshed/parenthesize-defs.sed
+	cd r7rs &&\
+	texi2any -o - --html --no-split r7rs-pristine.txi > ../$@
 
-r7rs-pristine.info: r7rs/r7rs.txi
+r7rs.info: r7rs/r7rs.txi
 	cd r7rs &&\
 	texi2any -o - --info --no-split r7rs-pristine.txi > ../$@;
 
-r7rs-pristine.txt: ${r7rs-deps}
+r7rs.txt: ${r7rs-deps}
 	cd r7rs &&\
 	texi2any -o - --plaintext --no-split r7rs-pristine.txi > ../$@;
