@@ -1,7 +1,6 @@
 @copying
-This is an @emph{unofficial}, @emph{self-authorized} version of the
-Revised@sup{7} Report on the Algorithmic Language Scheme (built
-@today{}).
+This is an unofficial, self-authorized version of the Revised@sup{7}
+Report on the Algorithmic Language Scheme (built @today{}).
 
 Copyright @copyright{} 2024 Macon Gambill (Texinfo formatting).
 
