@@ -38,7 +38,7 @@
 
 @set refR5RS Richard Kelsey, William Clinger, and Jonathan Rees, editors.  @i{Revised@sup{5} Report on the Algorithmic Language Scheme}.  @i{Higher-Order and Symbolic Computation}, Vol.@tie{}11, No.@tie{}1, August 1998.
 
-@set refSyntacticExtensions Eugene E.@tie{}Kohlbecker Jr.  @i{Syntactic Extensions in the Programming Language Lisp}.  Ph.D.@tie{}thesis, Indiana University, August 1986.
+@set refSyntacticExtensions Eugene E.@tie{}Kohlbecker Jr@.  @i{Syntactic Extensions in the Programming Language Lisp}.  Ph.D.@tie{}thesis, Indiana University, August 1986.
 
 @set refhygienicMacroExpansion Eugene E.@tie{}Kohlbecker Jr., Daniel P.@tie{}Friedman, Matthias Felleisen, and Bruce Duba.  @i{Hygienic macro expansion}.  In @i{Proceedings of the 1986 ACM Conference on Lisp and Functional Programming}, pages 151--161.
 
@@ -58,13 +58,13 @@
 
 @set refR1RS Guy Lewis Steele Jr.@tie{}and Gerald Jay Sussman.  @i{The Revised Report on @sc{SCHEME}: A Dialect of @sc{LISP}}.  @i{MIT Artificial Intelligence Memo 452}, January 1978.
 
-@set refRabbit Guy Lewis Steele Jr.  @i{@sc{RABBIT}: a compiler for @sc{SCHEME}}.  @i{MIT Artificial Intelligence Laboratory Technical Report 474}, May 1978.
+@set refRabbit Guy Lewis Steele Jr@.  @i{@sc{RABBIT}: a compiler for @sc{SCHEME}}.  @i{MIT Artificial Intelligence Laboratory Technical Report 474}, May 1978.
 
 @set refR6RS Michael Sperber, R.@tie{}Kent Dybvig, Mathew Flatt, and Anton van Straaten, editors. @i{Revised@sup{6} Report on the Algorithmic Language Scheme}.  Cambridge University Press, 2010.
 
-@set refCommonLispTheLanguage Guy Lewis Steele Jr.  @i{Common @sc{LISP}: The Language, second edition}.  Digital Press, Burlington MA, 1990.
+@set refCommonLispTheLanguage Guy Lewis Steele Jr@.  @i{Common @sc{LISP}: The Language, second edition}.  Digital Press, Burlington MA, 1990.
 
-@set refSchemeAnInterpreter Gerald Jay Sussman and Guy Lewis Steele Jr.  @i{@sc{SCHEME}: an interpreter for extended lambda calculus}.  @i{MIT Artificial Intelligence Memo 349}, December 1975.
+@set refSchemeAnInterpreter Gerald Jay Sussman and Guy Lewis Steele Jr@.  @i{@sc{SCHEME}: an interpreter for extended lambda calculus}.  @i{MIT Artificial Intelligence Memo 349}, December 1975.
 
 @set refScottStrachey Joseph E. Stoy.  @i{Denotational Semantics: The Scott-Strachey Approach to Programming Language Theory}.  MIT Press, Cambridge, 1977.
 

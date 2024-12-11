@@ -148,15 +148,8 @@ END
 )
 
 (define examples-noncolor-css #<<END
-pre.example-preformatted {
-    font-size: 1.1em;
-    span.r {
-        font-size: medium;
-    }
-}
-
-pre.lisp-preformatted {
-    font-size: 1.1em;
+pre.lisp-preformatted, pre.example-preformatted {
+    font-size: 1rem;
     span.atmosphere, span.dsssl { font-style: oblique }
     span.char-body, span.def-like-esc, span.ident-esc, span.let-like-esc,
       span.string-esc, span.syntax-esc {
@@ -231,25 +224,107 @@ END
 )
 
 (define general-noncolor-css #<<END
-div.top-level-extent, div.chapter-level-extent, div.appendix-level-extent, div.unnumbered-level-extent {
-    dd, .center, li, p:not(.nav-panel p) {width: 38rem}
-    ul.itemize {
-        li {
-            margin-top: 0.62em;
-            text-align: justify;
-            width: 34rem;
+dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
+ dl.first-deftypevr, dl.first-defblock {
+    line-height: 1.3;
+    dt {
+        font-size: 1.06rem;
+        span.category-def {
+            font-size: 0.95rem;
         }
+        span.def-bracket, span.def-dots, var.def-var-arguments {
+            font-size: 1rem;
+        }
+        strong.def-name {
+            font-weight: normal;
+            font-size: 1.06rem;
+        }
+    }
+    dt.deffn, dt.deffnx, dt.defline, dt.deftypeline {
+        font-family: monospace;
+        span.category-def {
+            font-size: 0.9rem;
+        }
+        span.def-bracket, span.def-dots, var.def-var-arguments {
+            font-family: initial;
+        }
+        span.def-paren {
+            font-size: 1.06rem;
+        }
+    }
+    dd, p {
+        font-size: 1rem;
     }
 }
 
 div.chapter-level-extent, div.unnumbered-level-extent {
-    dd p:not(.nav-panel p), p:not(.nav-panel p) {text-align: justify}
+    div.example {
+        margin-left: 1.6rem;
+        pre.lisp-preformatted {
+            padding-left: 0.4rem;
+            span.unspecified, span.lisp-error {
+                font-family: initial;
+                font-style: italic;
+            }
+        }
+    }
+    blockquote.quotation {
+        p {
+            width: 33rem;
+        }
+    }
 }
 
-dl.first-deffn, dl.first-defblock {
-    span.def-bracket, span.def-dots, span.def-paren {
-        font-family: monospace;
+dl.first-defvr, dl.first-deftp, dl.first-deftypefn, dl.first-deftypevr {
+    dt {
+        font-size: 1rem;
+        span.category-def {
+            font-size: 1rem;
+        }
+        span.def-bracket, span.def-dots, var.def-var-arguments {
+            font-size: 1rem;
+        }
+        strong.def-name {
+            font-family: initial;
+            font-weight: normal;
+            font-size: 1rem;
+        }
     }
+}
+
+code, dd, p {
+    font-size: 1rem;
+    span.nobr {
+        white-space: nowrap;
+    }
+}
+
+p:not(.nav-panel p) {
+    line-height: 1.3;
+    width: 39rem;
+}
+
+div.top-level-extent, div.chapter-level-extent, div.appendix-level-extent, div.unnumbered-level-extent {
+    a.footnote {text-decoration: none}
+    a.footnote:hover, a.footnote:focus, a.footnote:active {
+        text-decoration: underline;
+    }
+    .itemize {
+        li {
+            line-height: 1.3;
+            margin-top: 1rem;
+            text-align: justify;
+            width: 36rem;
+        }
+    }
+}
+
+sub, sup {
+    line-height: 0;
+}
+
+div.chapter-level-extent, div.unnumbered-level-extent {
+    dd p:not(.nav-panel p), p:not(.nav-panel p) {text-align: justify}
 }
 
 dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
@@ -257,63 +332,21 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
     border-top-style: solid;
     border-top-width: thin;
     padding-top: 0.1rem;
-    width: 42rem;
+    width: 41rem;
     dt.deffn, dt.deftp, dt.deffnx, dt.defvr, dt.defline, dt.deftypeline,
      dt.deftypefn, dt.deftypefnx {
         align-content: center;
-        padding-left: 0.3em;
-        font-size: large;
+        padding-left: 0.3em;        
         font-weight: normal;
         strong.def-name {
             font-weight: normal;
-        }
-    }
-    dt.deffn, dt.deffnx, dt.defline {
-        strong.def-name {
-            font-family: monospace;
-            font-size: large;
-        }
-    }
-    dt.deftp, dt.defvr, dt.deftypeline, {
-        span, code, strong {font-family: inherit}
-    }
-    dt.deftypeline {
-        strong.def-name {font-size: medium}
-    }
-    dt.deffn, dt.deffnx, dt.defblock, dt.defline, dt.deftypeline {
-        span.category-def {
-            font-family: monospace;
-        }
-        var.def-var-arguments {
-            font-family: initial;
-            font-size: medium;
-            font-style: italic;
-        }
-        span.def-dots {
-            font-family: initial;
-            font-style: normal;
-        }
-        span.def-bracket, span.def-paren {
-            font-family: monospace;
-            font-style: normal;
-        }
-    }
-    dt {
-        span.category-def {font-size: medium}
-    }
-    dt.deftypefn, dt.deftypefnx {
-        font-family: initial;
-        font-size: medium;
-        strong.def-name {
-            font-family: initial;
-            font-size: medium;
         }
     }
     dd {
         align-content: start;
         margin-left: 0;
         margin-top: 0.1rem;
-        padding-left: 2rem;
+        padding-left: 1rem;
         width: 100%;
         div.example {
             margin-left: 1.6rem;
@@ -323,43 +356,9 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
                 padding-left: 0.4rem;
                 span.unspecified, span.lisp-error {
                     font-family: initial;
-                    font-size: 1.0rem;
                     font-style: italic;
                 }
             }
-        }
-    }
-}
-
-div.section-level-extent {
-    dl.first-deftypefn {
-         dd {
-            padding-left: 0;
-            div.example {
-                pre.lisp-preformatted {
-                    border-left-style: none;
-                    border-left-width: none;
-                }
-            }
-        }
-    }
-    blockquote.quotation {
-        p {
-            width: 32rem;
-        }
-    }
-}
-
-p {
-    span.nobr {
-        white-space: nowrap;
-    }
-}
-
-dl.table {
-    dt {
-        code.t {
-            font-size: 1.1em;
         }
     }
 }

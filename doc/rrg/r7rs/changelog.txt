@@ -1,0 +1,12 @@
+The following logs cases in which I've chosen to change, rather than emulate,
+the official R7RS content:
+
+- Section 1.3.1: "The full list all the standard libraries and the identifiers
+  they export is given in Appendix A." -> "The full list of all the standard
+  libraries and the identifiers they export is given in Appendix A."
+
+- Section 3.5: "A formal definition of proper tail recursion can be found in
+  [6]." -> "A formal definition of proper tail recursion can be found in Proper
+Tail Recursion and Space Efficiency." (plus a footnote)
+
+- Change all uses of two-l "labelled" to "labeled" (both are used in R7RS)

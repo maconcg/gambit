@@ -114,7 +114,7 @@ objects in the appropriate sections of chapter 6.
 @section Storage model
 
 Variables and objects such as pairs, strings, vectors, and bytevectors
-implicitly denote locationsor sequences of locations.  A string, for
+implicitly denote locations or sequences of locations.  A string, for
 example, denotes as many locations as there are characters in the
 string.  A new value can be stored into one of these locations using the
 @code{string-set!} procedure, but the string continues to denote the
@@ -208,10 +208,10 @@ The last expression within the body of a lambda expression, shown as
 @angle{tail expression} below, occurs in a tail context.  The same is
 true of all the bodies of @code{case-lambda} expressions.
 @example
-(@syntax{lambda} @r{@angle{formals}}
-  @r{@angle{definition}* @angle{expression}* @angle{tail expression}})
+@compound{(}@syntax{lambda} @r{@angle{formals}}
+  @r{@angle{definition}* @angle{expression}* @angle{tail expression}}@compound{)}
 
-(@syntax{case-lambda} (@r{@angle{formals} @angle{tail body}})@r{*})
+@compound{(}@syntax{case-lambda} @compound{(}@r{@angle{formals} @angle{tail body}}@compound{)}@r{*}@compound{)}
 @end example
 
 @item

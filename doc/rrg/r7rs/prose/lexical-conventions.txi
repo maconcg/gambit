@@ -189,7 +189,7 @@ constants are terminated by @t{)} .
 @item @hashchar{}e @hashchar{}i @hashchar{}b @hashchar{}o @hashchar{}d @hashchar{}x
 These are used in the notation for numbers (section 6.2.5).
 
-@item @hashchar{}@angle{n}= @hashchar{}@angle{n}@hashchar{}
+@item @hashchar{}@angle{@r{n}}= @hashchar{}@angle{@r{n}}@hashchar{}
 These are used for labeling and referencing other literal data (section
 2.4).
 @end table
@@ -201,11 +201,11 @@ These are used for labeling and referencing other literal data (section
 @deftypefnx {lexical syntax} @/ @prosedatumref{n}
 
 The lexical syntax @prosedatumlabel{n}@angle{datum} reads the same as
-@angle{datum}, but also results in @angle{datum} being labelled by
+@angle{datum}, but also results in @angle{datum} being labeled by
 @angle{n}.  It is an error if @angle{n} is not a sequence of digits.
 
 The lexical syntax @prosedatumref{n} serves as a reference to some
-object labelled by @prosedatumlabel{n}; the result is the same object as
+object labeled by @prosedatumlabel{n}; the result is the same object as
 the @prosedatumlabel{n} (see section 6.1).  Together, these syntaxes
 permit the notation of structures with shared or circular substructure.
 @lisp
@@ -217,9 +217,9 @@ The scope of a datum label is the portion of the outermost datum in
 which it appears that is to the right of the label.  Consequently, a
 reference @prosedatumref{n} can occur only after a label
 @prosedatumlabel{n,}; it is an error to attempt a forward reference.  In
-addition, it is an error if the reference appears as the labelled object
+addition, it is an error if the reference appears as the labeled object
 itself (as in @prosedatumlabel{n}@prosedatumref{n}, because the object
-labelled by @prosedatumlabel{n} is not well defined in this case.
+labeled by @prosedatumlabel{n} is not well defined in this case.
 
 It is an error for a @angle{program} or @angle{library} to include
 circular references except in literals.  In particular, it is an error
