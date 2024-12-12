@@ -10,3 +10,6 @@ the official R7RS content:
 Tail Recursion and Space Efficiency." (plus a footnote)
 
 - Change all uses of two-l "labelled" to "labeled" (both are used in R7RS)
+
+- Move double-quote characters from the right to the left of
+  sentence-ending punctuation, like "this".

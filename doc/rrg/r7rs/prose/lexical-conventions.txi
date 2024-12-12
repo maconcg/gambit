@@ -187,7 +187,7 @@ constants are terminated by @t{)} .
 @item @hashchar{}e @hashchar{}i @hashchar{}b @hashchar{}o @hashchar{}d @hashchar{}x
 These are used in the notation for numbers (section 6.2.5).
 
-@item @hashchar{}@angle{@r{n}}= @hashchar{}@angle{@r{n}}@hashchar{}
+@item @hashchar{}@sv{n}= @hashchar{}@sv{n}@hashchar{}
 These are used for labeling and referencing other literal data (section
 2.4).
 @end table
@@ -214,7 +214,7 @@ permit the notation of structures with shared or circular substructure.
 The scope of a datum label is the portion of the outermost datum in
 which it appears that is to the right of the label.  Consequently, a
 reference @prosedatumref{n} can occur only after a label
-@prosedatumlabel{n,}; it is an error to attempt a forward reference.  In
+@prosedatumlabel{n}; it is an error to attempt a forward reference.  In
 addition, it is an error if the reference appears as the labeled object
 itself (as in @prosedatumlabel{n}@prosedatumref{n}, because the object
 labeled by @prosedatumlabel{n} is not well defined in this case.

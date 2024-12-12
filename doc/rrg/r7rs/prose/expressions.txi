@@ -20,7 +20,7 @@ are intimately associated with the @code{delay}, @code{delay-force}, and
 @subsection Variable references
 
 @defblock
-@deftypeline {syntax} @/ @r{@angle{variable}}
+@deftypeline {syntax} @/ @sv{variable}
 An expression consisting of a variable (section 3.1) is a variable
 reference.  The value of the variable reference is the value stored in
 the location to which the variable is bound.  It is an error to
@@ -34,12 +34,14 @@ x @ok{28}
 
 @node Literal expressions
 @subsection Literal expressions
-@deftypefn {syntax} @/ quote @angle{datum}
-@deftypefnx {syntax} @/ @t{@defabbrev{@U{0027}}}@angle{datum}
-@deftypefnx {syntax} @/ @angle{constant}
-@t{(quote @r{@angle{datum}})} evaluates to @angle{datum}.  @angle{Datum}
-can be any external representation of a Scheme object (see section 3.3).
-This notation is used to include literal constants in Scheme code.
+
+@defblock
+@deftypeline {syntax} @/ (quote @sv{datum})
+@deftypeline {syntax} @/ @defabbrev{@U{0027}}@sv{datum}
+@deftypeline {syntax} @/ @sv{constant}
+@t{(quote @sv{datum})} evaluates to @angle{datum}.  @angle{Datum} can be
+any external representation of a Scheme object (see section 3.3).  This
+notation is used to include literal constants in Scheme code.
 
 @lisp
 (quote a)        @ok{a}
@@ -47,9 +49,8 @@ This notation is used to include literal constants in Scheme code.
 (quote (+ 1 2))  @ok{(+ 1 2)}
 @end lisp
 
-@t{(quote @r{@angle{datum}})} can be abbreviated as
-@t{'@r{@angle{datum}}}.  The two notations are equivalent in all
-respects.
+@t{(quote @sv{datum})} can be abbreviated as @t{'@sv{datum}}.  The two
+notations are equivalent in all respects.
 
 @lisp
 'a         @ok{a}
@@ -82,13 +83,13 @@ themselves; they need not be quoted.
 As noted in section 3.4, it is an error to attempt to alter a constant
 (i.e. the value of a literal expression) using a mutation procedure like
 @code{set-car!} or @code{string-set!}.
-@end deftypefn
+@end defblock
 
 @node Procedure calls
 @subsection Procedure calls
 
 @defblock
-@deftypeline {syntax} @/ @t{@defparen{(}@r{@angle{operator}} @r{@angle{@pari{operand}}} @r{@defdots{}}@defparen{)}}
+@deftypeline {syntax} @/ @t{(@sv{operator} @sv{@pari{operand}} @defdots)}
 A procedure call is written by enclosing in parentheses an expression
 for the procedure to be called followed by expressions for the arguments
 to be passed to it.  The operator and operand expressions are evaluated
@@ -130,4 +131,3 @@ legitimate expression evaluating to itself.  In Scheme, it is an error.
 
 @node Procedures
 @subsection Procedures
-

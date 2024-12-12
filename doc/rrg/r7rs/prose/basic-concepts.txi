@@ -208,11 +208,12 @@ expression.
 The last expression within the body of a lambda expression, shown as
 @angle{tail expression} below, occurs in a tail context.  The same is
 true of all the bodies of @code{case-lambda} expressions.
-@example
-@compound{(}@syntax{lambda} @r{@angle{formals}}
-  @r{@angle{definition}* @angle{expression}* @angle{tail expression}}@compound{)}
 
-@compound{(}@syntax{case-lambda} @compound{(}@r{@angle{formals} @angle{tail body}}@compound{)}@r{*}@compound{)}
+@example grammar
+(lambda @sv{formals}
+  @sv{definition}* @sv{expression}* @sv{tail-expression})
+
+(case-lambda (@sv{formals} @sv{tail body})*)
 @end example
 
 @item
@@ -221,58 +222,58 @@ subexpressions shown as @angle{tail expression} are in a tail context.
 These were derived from rules in the grammar given in chapter 7 by
 replacing some occurrences of @angle{body} with @angle{tail expression},
 and some occurrences of @angle{sequence} with @angle{tail sequence}.
-Only those rules that contain tail contexts are shown here
-@example
-@compound{(}@syntax{if} @r{@angle{expression}} @r{@angle{tail expression}} @r{@angle{tail expression}}@compound{)}
-@compound{(}@syntax{if} @r{@angle{expression}} @r{@angle{tail expression}}@compound{)}
+Only those rules that contain tail contexts are shown here.
 
-@compound{(}@syntax{cond} @r{@angle{cond clause}+}@compound{)}
-@compound{(}@syntax{cond} @r{@angle{cond clause}*} @compound{(}@syntax{else} @r{@angle{tail sequence}}@compound{)}@compound{)}
+@example grammar
+(if @sv{expression} @sv{tail expression} @sv{tail expression})
+(if @sv{expression} @sv{tail expression})
 
-@compound{(}@syntax{case} @r{@angle{expression}}
-  @r{@angle{case clause}+}@compound{)}
-@compound{(}@syntax{case} @r{@angle{expression}}
-  @r{@angle{case clause}*}
-  @compound{(}@syntax{else} @r{@angle{tail sequence}}@compound{)}@compound{)}
+(cond @sv{cond clause}+)
+(cond @sv{cond clause}* (else @sv{tail sequence}))
 
-@compound{(}@syntax{and} @r{@angle{expression}*} @r{@angle{tail expression}}@compound{)}
-@compound{(}@syntax{or} @r{@angle{expression}*} @r{@angle{tail expression}}@compound{)}
+(case @sv{expression}
+  @sv{case clause}+)
+(case @sv{expression}
+  @sv{case clause}*
+  (else @sv{tail sequence}))
 
-@compound{(}@syntax{when} @r{@angle{test}} @r{@angle{tail sequence}}@compound{)}
-@compound{(}@syntax{unless} @r{@angle{test}} @r{@angle{tail sequence}}@compound{)}
+(and @sv{expression}* @sv{tail expression})
+(or @sv{expression}* @sv{tail expression})
 
-@compound{(}@syntax{let} @compound{(}@r{@angle{binding spec}*}@compound{)} @r{@angle{tail body}}@compound{)}
-@compound{(}@syntax{let} @r{@angle{variable}} @compound{(}@r{@angle{binding spec}*}@compound{)} @r{@angle{tail body}}@compound{)}
-@compound{(}@syntax{let*} @compound{(}@r{@angle{binding spec}*}@compound{)} @r{@angle{tail body}}@compound{)}
-@compound{(}@syntax{letrec} @compound{(}@r{@angle{binding spec}*}@compound{)} @r{@angle{tail body}}@compound{)}
-@compound{(}@syntax{letrec*} @compound{(}@r{@angle{binding spec}*}@compound{)} @r{@angle{tail body}}@compound{)}
-@compound{(}@syntax{let-values} @compound{(}@r{@angle{mv binding spec}*}@compound{)} @r{@angle{tail body}}@compound{)}
-@compound{(}@syntax{let*-values} @compound{(}@r{@angle{mv binding spec}*}@compound{)} @r{@angle{tail body}}@compound{)}
+(when @sv{test} @sv{tail sequence})
+(unless @sv{test} @sv{tail sequence})
 
-@compound{(}@syntax{let-syntax} @compound{(}@r{@angle{syntax spec}*}@compound{)} @r{@angle{tail body}}@compound{)}
-@compound{(}@syntax{letrec-syntax} @compound{(}@r{@angle{syntax spec}*}@compound{)} @r{@angle{tail body}}@compound{)}
+(let (@sv{binding spec}*) @sv{tail body})
+(let @sv{variable} (@sv{binding spec}*) @sv{tail body})
+(let* (@sv{binding spec}*) @sv{tail body})
+(letrec (@sv{binding spec}*) @sv{tail body})
+(letrec* (@sv{binding spec}*) @sv{tail body})
+(let-values (@sv{mv binding spec}*) @sv{tail body})
+(let*-values (@sv{mv binding spec}*) @sv{tail body})
 
-@compound{(}@syntax{begin} @r{@angle{tail sequence}}@compound{)}
+(let-syntax (@sv{syntax spec}*) @sv{tail body})
+(letrec-syntax (@sv{syntax spec}*) @sv{tail body})
 
-@compound{(}@syntax{do} @compound{(}@r{@angle{iteration spec}*}@compound{)}
-    @compound{(}@r{@angle{test}} @r{@angle{tail sequence}}@compound{)}
-  @r{@angle{expression}*}@compound{)}
+(begin @sv{tail sequence})
+
+(do (@sv{iteration spec}*)
+    (@sv{test} @sv{tail sequence})
+  @sv{expression}*)
 
 @r{where}
 
-@r{@angle{cond clause}} @r{@longarrow{}} @compound{(}@r{@angle{test}} @r{@angle{tail sequence}}@compound{)}
-@r{@angle{case clause}} @r{@longarrow{}} @compound{(}@compound{(}@r{@angle{datum}*}@compound{)} @r{@angle{tail sequence}}@compound{)}
-@r{@angle{tail body}} @r{@longarrow{}} @r{@angle{definition}*} @r{@angle{tail sequence}}
-@r{@angle{tail sequence}} @r{@longarrow{}} @r{@angle{expression}*} @r{@angle{tail expression}}
+@sv{cond clause} @r{@longarrow{}} (@sv{test} @sv{tail sequence})
+@sv{case clause} @r{@longarrow{}} ((@sv{datum}*) @sv{tail sequence})
+@sv{tail body} @r{@longarrow{}} @sv{definition}* @sv{tail sequence}
+@sv{tail sequence} @r{@longarrow{}} @sv{expression}* @sv{tail expression}
 @end example
 
 @item
 If a cond or case expression is in a tail context, and has a clause of
-the form @t{@compound{(}@r{@angle{expression@sub{1}}} =>
-@r{@angle{expression@sub{2}}}@compound{)}} then the (implied) call to
-the procedure that results from the evaluation of
-@angle{expression@sub{2}} is in a tail context.
-@angle{expression@sub{2}} itself is not in a tail context.
+the form @t{(@sv{@pari{expression}} => @sv{@parii{expression}})} then
+the (implied) call to the procedure that results from the evaluation of
+@angle{@parii{expression}} is in a tail context.
+@angle{@parii{expression}} itself is not in a tail context.
 @end itemize
 
 Certain procedures defined in this report are also required to perform

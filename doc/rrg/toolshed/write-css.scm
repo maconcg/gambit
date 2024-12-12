@@ -185,18 +185,20 @@ dl.first-deffn, dl.first-deftp, dl.first-deffn, dl.first-defvr,
         }
     }
     dt.deffn, dt.deffnx, dt.defline {
-        strong.def-name {color: <def-like-bind>}
+        strong.def-name {
+            color: <def-like-bind>;
+        }
     }
-    dt.deftypefn {
-        strong.def-name {color: <syntax>}
+    dt.deftypefn, dt.deftypefnx, dt.deftypeline {
+        strong.def-name {
+            span.syntax {
+                color: <syntax>;
+            }
+        }
     }
     dd {
         background-color: <bg-main>;
     }
-}
-
-dl.first-deftypevr {
-    background-color: <bg-defvr>;
 }
 
 dl.first-deftp {
@@ -204,7 +206,7 @@ dl.first-deftp {
     background-image: linear-gradient(90deg, <deftp-l>, <deftp-r> 35%);
 }
 
-dl.first-deffn, dl.first-deftypefn, dl.first-defblock {
+dl.first-deffn, dl.first-deftypefn, dl.first-deftypevr, dl.first-defblock {
     background-color: <bg-deffn>;
     background-image: linear-gradient(90deg, <deffn-l>, <deffn-r> 35%);
     span.def-abbrev {
@@ -236,7 +238,7 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
     dt {
         font-size: 1.06rem;
         span.category-def {
-            font-size: 0.96rem;
+            font-size: 0.94rem;
         }
         span.def-bracket, span.def-dots, var.def-var-arguments {
             font-size: 1rem;
@@ -246,7 +248,7 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
             font-size: 1.06rem;
         }
     }
-    dt.deffn, dt.deffnx, dt.deftypevr, dt.deftypevrx, dt.defline, dt.deftypeline {
+    dt.deffn, dt.deffnx, dt.deftypevr, dt.deftypevrx, dt.defline {
         font-family: monospace;
         span.category-def {
             font-size: 0.9rem;
@@ -259,8 +261,24 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
         }
     }
     dt.deftypeline {
+        font-family: initial;
+        span.category-def {
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        strong.def-name, code.def-code-arguments {
+            font-size: 1.06rem;
+            span.r {
+                font-size: 1.06rem;
+            }
+        }
         strong.def-name {
-            font-size: 1rem;
+            code.code, code.t {
+                font-size: 1.06rem;
+                span.r {
+                    font-size: 1.06rem;
+                }
+            }
         }
     }
     dt.deftypefn {
@@ -275,6 +293,9 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
             font-family: monospace;
             font-size: 1.06rem;
         }
+        strong.def-name {
+            font-size: 1.06rem;
+        }
     }
     dt.deftypefnx {
         span.category-def {
@@ -283,7 +304,9 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
         }
         strong.def-name, code.def-code-arguments {
             font-family: initial;
-            font-size: 1rem;
+        }
+        strong.def-name {
+            font-size: 1.06rem;
         }
     }
     dd, p {
@@ -305,8 +328,11 @@ div.chapter-level-extent, div.unnumbered-level-extent {
     blockquote.quotation {
         margin-left: 1rem;
         p {
-            font-size: 0.96rem;
+            font-size: 0.94rem;
             width: 33rem;
+            code.code, code.t {
+                font-size: 0.94rem;
+            }
         }
     }
 }

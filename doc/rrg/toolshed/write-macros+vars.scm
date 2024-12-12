@@ -32,6 +32,7 @@
   (write-angle-macro)
   (write-longarrow-macro)
   (write-nobr-macro)
+  (write-sv-macro)
   (write-prosedatumlabel-macro)
   (write-prosedatumref-macro)
   (write-visual-divider)
@@ -218,9 +219,9 @@
 
 (define (write-defdots-macro)
   (write-string (string-append "@macro defdots {}\n"
-                               "@inlinefmtifelse{html,@inlineraw{html,"
+                               "@r{@inlinefmtifelse{html,@inlineraw{html,"
                                "<span class=\"def-dots\">...</span>}"
-                               ",@dots{}}\n"
+                               ",@dots{}}}\n"
                                "@end macro\n")))
 
 (define (write-defparen-macro)
@@ -273,6 +274,11 @@ EOF
                                "@U{27F6}}}\n"
                                "@end macro\n")))
 
+(define (write-sv-macro) ; sv ==> "syntactic variable"
+  (write-string (string-append "@macro sv {v}\n"
+                               "@r{@angle{\\v\\}}\n"
+                               "@end macro\n")))
+
 (define (write-nobr-macro)
 (write-string #<<EOF
 @macro nobr {xx}
@@ -285,7 +291,7 @@ EOF
 (define (write-prosedatumlabel-macro)
 (write-string #<<EOF
 @macro prosedatumlabel {n}
-@inlinefmtifelse{html,@inlineraw{html,<span class=nobr>@t{@hashchar{}}@angle{n}@t{=}</span>},@t{@hashchar{}}@angle{n}@t{=}}
+@inlinefmtifelse{html,@inlineraw{html,<span class=nobr>@t{@hashchar{}@sv{n}=}</span>},@t{@hashchar{}@sv{n}=}}
 @end macro
 
 EOF
@@ -294,7 +300,7 @@ EOF
 (define (write-prosedatumref-macro)
 (write-string #<<EOF
 @macro prosedatumref {n}
-@inlinefmtifelse{html,@inlineraw{html,<span class=nobr>@t{@hashchar{}}@angle{n}@t{@hashchar{}}</span>},@t{@hashchar{}}@angle{n}@t{@hashchar{}}}
+@inlinefmtifelse{html,@inlineraw{html,<span class=nobr>@t{@hashchar{}@sv{n}@hashchar{}}</span>},@t{@hashchar{}@sv{n}@hashchar{}}}
 @end macro
 
 EOF

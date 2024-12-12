@@ -199,13 +199,13 @@ string of characters which is a syntactically valid expression.  The
 notation
 
 @quotation
-@angle{@pari{thing}}@defdots{}
+@angle{@pari{thing}} @defdots{}
 @end quotation
 
 indicates zero or more occurrences of a @angle{thing}, and
 
 @quotation
-@angle{@pari{thing}} @angle{@parii{thing}}@defdots{}
+@angle{@pari{thing}} @angle{@parii{thing}} @defdots{}
 @end quotation
 
 indicates one or more occurrences of a @angle{thing}.
@@ -224,9 +224,9 @@ names in the template are @i{italicized}.}}  Thus the header line
 @defline procedure vector-ref vector k
 @end defblock
 
-indicates that the procedure bound to the @code{vector-ref} variable
-takes two arguments, a vector @var{vector} and an exact non-negative
-integer @var{k} (see below).
+indicates that the procedure bound to the @nobr{@code{vector-ref}}
+variable takes two arguments, a vector @nobr{@var{vector}} and an exact
+non-negative integer @var{k} (see below).
 
 The header lines
 
@@ -235,16 +235,16 @@ The header lines
 @defline procedure make-vector k fill
 @end defblock
 
-indicate that the @code{make-vector} procedure must be defined to take
-either one or two arguments.
+indicate that the @nobr{@code{make-vector}} procedure must be defined to
+take either one or two arguments.
 
 It is an error for a procedure to be presented with an argument that it
 is not specified to handle.  For succinctness, we follow the convention
 that if an argument name is also the name of a type listed in section
 3.2, then it is an error if that argument is not of the named type.  For
-example, the header line for @code{vector-ref} given above dictates that
-the first argument to @code{vector-ref} is a vector.  The following
-naming conventions also imply type restrictions:
+example, the header line for @nobr{@code{vector-ref}} given above
+dictates that the first argument to @nobr{@code{vector-ref}} is a
+vector.  The following naming conventions also imply type restrictions:
 
 @table @var
 @item alist

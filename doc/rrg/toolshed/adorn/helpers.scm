@@ -66,7 +66,7 @@
 
 (define case-lambda-syntax (map string->list (+prims '("case-lambda"))))
 
-;There's probably some way to populate this list programatically.
+;; There's probably some way to populate this list programatically.
 (define runtime-syntax
   (append sv-define-syntax
           sv-let-syntax
@@ -83,10 +83,10 @@
                          "define-structure" "define-syntax" "define-type"
                          "define-type-of-thread" "delay" "delay-force" "do"
                          "else" "future" "guard" "if" "import" "include"
-                         "include-ci" "load" "macro-case-target" "namespace"
-                         "or" "quasiquote" "quote" "r7rs-guard" "receive"
-                         "set!" "syntax-error" "syntax-rules"
-                         "this-source-file" "unless" "when")))))
+                         "include-ci" "let-syntax" "letrec-syntax" "load"
+                         "macro-case-target" "namespace" "or" "quasiquote"
+                         "quote" "r7rs-guard" "receive" "set!" "syntax-error"
+                         "syntax-rules" "this-source-file" "unless" "when")))))
 
 (define rt-aux-syntax-syntax
   (map string->list (+prims '("cond" "case" "macro-case-target"))))
