@@ -77,6 +77,7 @@ The following directives give explicit control over case folding.
 #!fold-case
 #!no-fold-case
 @end example
+
 These directives can appear anywhere comments are permitted (see section
 2.2) but must be followed by a delimiter.  They are treated as comments,
 except that they affect the reading of subsequent data from the same
@@ -195,8 +196,9 @@ These are used for labeling and referencing other literal data (section
 @node Datum labels
 @section Datum labels
 
-@deftypevr {lexical syntax} @/ {@prosedatumlabel{n}@angle{datum}}
-@deftypevrx {lexical syntax} @/ @prosedatumref{n}
+@defblock
+@deftypeline {lexical syntax} @/ @prosedatumlabel{n}@sv{datum}
+@deftypeline {lexical syntax} @/ @prosedatumref{n}
 
 The lexical syntax @prosedatumlabel{n}@angle{datum} reads the same as
 @angle{datum}, but also results in @angle{datum} being labeled by
@@ -206,11 +208,13 @@ The lexical syntax @prosedatumref{n} serves as a reference to some
 object labeled by @prosedatumlabel{n}; the result is the same object as
 the @prosedatumlabel{n} (see section 6.1).  Together, these syntaxes
 permit the notation of structures with shared or circular substructure.
+
 @lisp
 (let ((x (list 'a 'b 'c)))
   (set-cdr! (cddr x) x)
   x)                       @ok{#0=(a b c . #0#)}
 @end lisp
+
 The scope of a datum label is the portion of the outermost datum in
 which it appears that is to the right of the label.  Consequently, a
 reference @prosedatumref{n} can occur only after a label
@@ -222,7 +226,8 @@ labeled by @prosedatumlabel{n} is not well defined in this case.
 It is an error for a @angle{program} or @angle{library} to include
 circular references except in literals.  In particular, it is an error
 for @t{quasiquote} (section 4.2.8) to contain them.
+
 @lisp
-#1=(begin (display #\x) #1#) @lisperror{error}
+#1=(begin (display #\x) #1#) @lispnote{error}
 @end lisp
-@end deftypevr
+@end defblock

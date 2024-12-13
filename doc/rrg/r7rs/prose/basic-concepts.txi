@@ -205,7 +205,7 @@ expression.
 
 @itemize @bullet
 @item
-The last expression within the body of a lambda expression, shown as
+The last expression within the body of a @t{lambda} expression, shown as
 @angle{tail expression} below, occurs in a tail context.  The same is
 true of all the bodies of @code{case-lambda} expressions.
 
@@ -269,11 +269,11 @@ Only those rules that contain tail contexts are shown here.
 @end example
 
 @item
-If a cond or case expression is in a tail context, and has a clause of
-the form @t{(@sv{@pari{expression}} => @sv{@parii{expression}})} then
-the (implied) call to the procedure that results from the evaluation of
-@angle{@parii{expression}} is in a tail context.
-@angle{@parii{expression}} itself is not in a tail context.
+If a @t{cond} or @t{case} expression is in a tail context, and has a
+clause of the form @t{(@sv{@pari{expression}} =>
+@sv{@parii{expression}})} then the (implied) call to the procedure that
+results from the evaluation of @angle{@parii{expression}} is in a tail
+context.  @angle{@parii{expression}} itself is not in a tail context.
 @end itemize
 
 Certain procedures defined in this report are also required to perform

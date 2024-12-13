@@ -8,18 +8,27 @@
   (for-each (lambda (args) (apply write-par-macro args))
             '(("pari" "1") ("parii" "2") ("pariii" "3") ("pariv" "4")
               ("parv" "5") ("parvi" "6") ("parvii" "7") ("parviii" "8")
-              ("parix" "9") ("parj" "j")))
+              ("parix" "9") ("parj" "j") ("parn" "n") ("parnplusone" "n+1")))
   (write-visual-divider)
   (for-each (lambda (args) (apply write-var-macro args))
             '(("vari" "1") ("varii" "2") ("variii" "3") ("variv" "4")
               ("varv" "5") ("varvi" "6") ("varvii" "7") ("varviii" "8")
-              ("varix" "9") ("varj" "j")))
+              ("varix" "9") ("varj" "j") ("varn" "n") ("varnplusone" "n+1")))
   (write-visual-divider)
-  (write-lisp-result-macro "ok" "@result{}" "ok")
   (write-lisp-result-macro "exception" "@arrow{}" "exception" " exception")
-  (write-lisp-result-macro "lisperror" "@result{}" "lisp-error")
+  (write-lisp-result-macro "ok" "@result{}" "ok")
+  (write-lisp-result-macro "lispnote" "@result{}" "lisp-note")
+  (write-lisp-result-macro "andprints"
+                           (string-append "@r{@i{"
+                                          "@inlinefmt{html,@inlineraw{html,"
+                                          "<span class=\"unspecified\">}}"
+                                          "and prints"
+                                          "@inlinefmt{html,@inlineraw{html,"
+                                          "</span>}}}}")
+                           "and-prints")
   (write-lisp-result-macro "problem" "@arrow{}" "problem")
   (write-lisp-result-macro "unspecified" "@result{}" "unspecified")
+  (write-lisp-result-macro "unspecifiedtext" "" "unspecified")
   (write-visual-divider)
   (write-opt-macro)
   (write-defabbrev-macro)
@@ -63,7 +72,8 @@
                 '(("REVISION" "Revised")
                   ("VERSION" "4.9.5")
                   ("HOMEPAGEURL" "https://gambitscheme.org")
-                  ("GITHUBURL" "https://github.com/gambit/gambit")))
+                  ("GITHUBURL" "https://github.com/gambit/gambit")
+                  ("shy" "@inlinefmt{html,@U{00AD}}")))
       (for-each write-rnrs '("7" "6" "5" "4" "3" "N"))
       (write-r2rs))))
 
@@ -196,7 +206,8 @@
                     macro-name
                     " {xx}\n"
                     pointer-glyph
-                    " @inlinefmtifelse{html,@inlineraw{html,<span class=\""
+                    (if (positive? (string-length pointer-glyph)) " " "")
+                    "@inlinefmtifelse{html,@inlineraw{html,<span class=\""
                     class
                     "\">\\xx\\"
                     postfix
@@ -282,7 +293,7 @@ EOF
 (define (write-nobr-macro)
 (write-string #<<EOF
 @macro nobr {xx}
-@inlinefmtifelse{html,@inlineraw{html,<span class=nobr>\xx\</span>},@w{\xx\}}
+@inlinefmtifelse{html,@inlineraw{html,<span class="nobr">\xx\</span>},@w{\xx\}}
 @end macro
 
 EOF
@@ -291,7 +302,7 @@ EOF
 (define (write-prosedatumlabel-macro)
 (write-string #<<EOF
 @macro prosedatumlabel {n}
-@inlinefmtifelse{html,@inlineraw{html,<span class=nobr>@t{@hashchar{}@sv{n}=}</span>},@t{@hashchar{}@sv{n}=}}
+@inlinefmtifelse{html,@inlineraw{html,<span class="nobr">@t{@hashchar{}@sv{n}=}</span>},@t{@hashchar{}@sv{n}=}}
 @end macro
 
 EOF
@@ -300,7 +311,7 @@ EOF
 (define (write-prosedatumref-macro)
 (write-string #<<EOF
 @macro prosedatumref {n}
-@inlinefmtifelse{html,@inlineraw{html,<span class=nobr>@t{@hashchar{}@sv{n}@hashchar{}}</span>},@t{@hashchar{}@sv{n}@hashchar{}}}
+@inlinefmtifelse{html,@inlineraw{html,<span class="nobr">@t{@hashchar{}@sv{n}@hashchar{}}</span>},@t{@hashchar{}@sv{n}@hashchar{}}}
 @end macro
 
 EOF

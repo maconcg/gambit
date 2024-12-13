@@ -16,7 +16,7 @@ r7rs-deps = toolshed/macros+vars.txi r7rs/bibliography.txi \
  r7rs/r7rs-pristine.txi r7rs/copying/copying.txi r7rs/copying/fdl-1.3.texi \
  r7rs/prose/summary.txi r7rs/prose/introduction.txi r7rs/prose/overview.txi \
  r7rs/prose/lexical-conventions.txi r7rs/prose/basic-concepts.txi \
- r7rs/prose/overview.txi r7rs/prose/standard-procedures.txi
+ r7rs/prose/expressions.txi r7rs/prose/standard-procedures.txi
 
 r7rs-annotated-prose = r7rs/prose/a/summary.txi r7rs/prose/a/introduction.txi \
  r7rs/prose/a/overview.txi r7rs/prose/a/lexical-conventions.txi \
@@ -45,6 +45,14 @@ test -d r7rs/prose/a/ || mkdir -p r7rs/prose/a/;\
 cd toolshed &&\
 ${GSI} -f annotate-txi.scm ../r7rs/prose/"$$txi" > ../r7rs/prose/a/"$$txi"
 
+adorn-lib = toolshed/adorn/adorn.sld toolshed/adorn/adornment.scm \
+ toolshed/adorn/binding-mesg-handlers.scm \
+ toolshed/adorn/char-mesg-handlers.scm \
+ toolshed/adorn/comment-mesg-handlers.scm toolshed/adorn/helpers.scm \
+ toolshed/adorn/matching.scm toolshed/adorn/numeric-mesg-handlers.scm \
+ toolshed/adorn/other-mesg-handlers.scm toolshed/adorn/rt-syntax-handlers.scm \
+ toolshed/adorn/symmetric-mesg-handlers.scm
+
 clean:
 	rm -f *.html *.info *.tgz gambit.{txi,txt} toolshed/*.css toolshed/*.html\
 		toolshed/macros+vars.txi
@@ -62,16 +70,11 @@ toolshed/scm-to-html: toolshed/scm-to-html.scm toolshed/adorn/adorn.o1
 	if test -e toolshed/scm-to-html.c; then rm toolshed/scm-to-html.c; fi &&\
 	${GSC} -exe toolshed/scm-to-html.scm
 
-toolshed/adorn/adorn.o1: toolshed/adorn/adorn.sld \
- toolshed/adorn/adornment.scm toolshed/adorn/binding-mesg-handlers.scm \
- toolshed/adorn/char-mesg-handlers.scm \
- toolshed/adorn/comment-mesg-handlers.scm toolshed/adorn/helpers.scm \
- toolshed/adorn/matching.scm toolshed/adorn/numeric-mesg-handlers.scm \
- toolshed/adorn/other-mesg-handlers.scm \
- toolshed/adorn/rt-syntax-handlers.scm \
- toolshed/adorn/symmetric-mesg-handlers.scm
+toolshed/adorn/adorn.o1: ${adorn-lib}
 	if test -e toolshed/adorn/adorn.c; then rm toolshed/adorn/adorn.c; fi &&\
 	${GSC} -o $@ toolshed/adorn/adorn
+
+toolshed/annotate-txi.scm: ${adorn-lib}
 
 gambit-samples.tgz: gambit-pristine.html gambit-css.html toolshed/scm-to-html \
                     .WAIT gambit.html gambit.cm.html gambit.info gambit.txt \
@@ -240,21 +243,21 @@ r7rs.html: r7rs/r7rs.txi toolshed/gambit.css toolshed/parenthesize-defs.sed
 	texi2any -o - --html --no-split --css-include=../toolshed/gambit.css \
 		r7rs.txi | sed -f ../toolshed/parenthesize-defs.sed > ../$@
 
-r7rs/r7rs.txi: ${r7rs-deps} ${r7rs-annotated-prose} r7rs/r7rs-pristine.txi \
- r7rs/procedures/a/equivalence-predicates.txi
+r7rs/r7rs.txi: ${r7rs-deps} ${adorn-lib} ${r7rs-annotated-prose} \
+ r7rs/r7rs-pristine.txi r7rs/procedures/a/equivalence-predicates.txi \
+ toolshed/annotate-txi.scm
 	sed -e 's/^\(@include[[:blank:]]\{1,\}procedures\/\)/\1a\//'\
 		-e 's/^\(@include[[:blank:]]\{1,\}prose\/\)/\1a\//'\
 		r7rs/r7rs-pristine.txi > $@
 
-r7rs-pristine.html: ${r7rs-deps} toolshed/gambit.css \
- toolshed/parenthesize-defs.sed
+r7rs-pristine.html: ${r7rs-deps}
 	cd r7rs &&\
 	texi2any -o - --html --no-split r7rs-pristine.txi > ../$@
 
-r7rs.info: r7rs/r7rs.txi
+r7rs.info:${r7rs-deps} r7rs/r7rs.txi
 	cd r7rs &&\
 	texi2any -o - --info --no-split r7rs-pristine.txi > ../$@;
 
-r7rs.txt: ${r7rs-deps}
+r7rs.txt: ${r7rs-deps} r7rs/r7rs.txi
 	cd r7rs &&\
 	texi2any -o - --plaintext --no-split r7rs-pristine.txi > ../$@;

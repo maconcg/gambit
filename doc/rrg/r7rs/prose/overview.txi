@@ -323,6 +323,7 @@ the entire string is referred to.
 
 The symbol @quotedbl{@t{@result{}}} in program examples is read
 @quotedbl{evaluates to}.  For example,
+
 @lisp
 (* 5 8) @ok{40}
 @end lisp

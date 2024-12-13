@@ -54,7 +54,7 @@
 
 (define sv-let-syntax
   (map string->list
-       (+prims '("let" "let*" "letrec" "letrec*" "parameterize"))))
+       (+prims '("let" "let*" "letrec" "letrec*" "parameterize" "do"))))
 
 (define lambda-syntax (map string->list (+prims '("\x3bb;" "lambda"))))
 
@@ -89,7 +89,8 @@
                          "syntax-rules" "this-source-file" "unless" "when")))))
 
 (define rt-aux-syntax-syntax
-  (map string->list (+prims '("cond" "case" "macro-case-target"))))
+  (map string->list
+       (+prims '("case" "cond" "cond-expand" "macro-case-target"))))
 ;======================= Symbol manipulation procedures =======================
 (define-record-type achar ; a literal char object, plus some metadata
   (make-adorned-char c k m h s)

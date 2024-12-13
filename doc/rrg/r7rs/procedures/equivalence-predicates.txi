@@ -3,6 +3,7 @@
 @nodedescription Procedures that deal with equivalence.
 
 @deffn procedure eqv? @pari{obj} @parii{obj}
+
 The @code{eqv?} procedure defines a useful equivalence relation on
 objects.  Briefly, it returns @code{#t} if @vari{obj} and @varii{obj}
 are normally regarded as the same object.  This relation is left

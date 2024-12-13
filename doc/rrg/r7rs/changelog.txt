@@ -13,3 +13,7 @@ Tail Recursion and Space Efficiency." (plus a footnote)
 
 - Move double-quote characters from the right to the left of
   sentence-ending punctuation, like "this".
+
+- "<Clauses>" -> "<Clause>s" in section 4.2.1 (R7RS uses both forms)
+
+- Different alignment of example results when they look odd in the R7RS pdf

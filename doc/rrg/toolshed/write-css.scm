@@ -128,7 +128,8 @@ code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
     span.datum-ref {color: <datum-ref>}
     span.def-like-bind, span.def-like-esc {color: <def-like-bind>}
     span.dot {color: <dot>}
-    span.directive, span.dsssl, span.sharp {color: <sharp>}
+    span.directive {color: <directive>}
+    span.dsssl, span.sharp {color: <sharp>}
     span.ident, span.ident-esc {color: <ident>}
     span.hs-begin {color: <hs-begin>}
     span.hs-key {color: <hs-key>}
@@ -150,7 +151,7 @@ END
 (define examples-noncolor-css #<<END
 code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
     font-size: 1rem;
-    span.atmosphere, span.directive, span.dsssl { font-style: oblique }
+    span.atmosphere, span.dsssl, span.and-prints { font-style: oblique }
     span.char-body, span.def-like-esc, span.ident-esc, span.let-like-esc,
       span.string-esc, span.syntax-esc {
         font-weight: bold
@@ -219,7 +220,8 @@ dl.first-deffn, dl.first-deftypefn, dl.first-deftypevr, dl.first-defblock {
 
 dd pre.lisp-preformatted {
     span.exception {color: <exception>}
-    span.lisp-error {color: <lisp-error>}
+    span.lisp-note {color: <lisp-note>}
+    span.and-prints {color: <and-prints>}
     span.unspecified {color: <unspecified>}
 }
 
@@ -281,7 +283,7 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
             }
         }
     }
-    dt.deftypefn {
+    dt.deftypefn, dt.deftypefnx {
         span.category-def {
             font-family: monospace;
             font-size: 0.9rem;
@@ -297,18 +299,6 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
             font-size: 1.06rem;
         }
     }
-    dt.deftypefnx {
-        span.category-def {
-            font-family: monospace;
-            font-size: 0.9rem;
-        }
-        strong.def-name, code.def-code-arguments {
-            font-family: initial;
-        }
-        strong.def-name {
-            font-size: 1.06rem;
-        }
-    }
     dd, p {
         font-size: 1rem;
     }
@@ -319,7 +309,7 @@ div.chapter-level-extent, div.unnumbered-level-extent {
         margin-left: 1.6rem;
         pre.lisp-preformatted {
             padding-left: 0.4rem;
-            span.unspecified, span.lisp-error {
+            span.unspecified, span.lisp-note {
                 font-family: initial;
                 font-style: italic;
             }
@@ -377,7 +367,10 @@ sub, sup {
 }
 
 div.chapter-level-extent, div.unnumbered-level-extent {
-    dd p:not(.nav-panel p), p:not(.nav-panel p) {text-align: justify}
+    dd p:not(.nav-panel p), p:not(.nav-panel p) {
+        hyphens: manual;
+        text-align: justify;
+    }
 }
 
 dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
@@ -407,7 +400,7 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
                 border-left-style: dotted;
                 border-left-width: thin;
                 padding-left: 0.4rem;
-                span.unspecified, span.lisp-error {
+                span.unspecified, span.lisp-note {
                     font-family: initial;
                     font-style: italic;
                 }
@@ -530,7 +523,7 @@ END
     (( abbrev )                           'fg-dim)
     (( box )                              'fg-alt)
     (( compound )                         'fg-dim)
-    (( directive )                        'yellow)
+    (( directive )                        'fg-dim)
     (( dot )                              'fg-dim)
     (( hs-begin )                         'fg-dim)
     (( invalid )                          'fg-dim)
@@ -555,8 +548,8 @@ END
 
 (define (modus:element->color element)
   (case element
+    (( and-prints )                 'fg-main)
     (( bg-deftp bg-deffn bg-defvr ) 'bg-dim)
-    (( problem )                    'bg-yellow-intense)
     (( category-def )               'fg-dim)
     (( def-bracket )                'fg-main)
     (( def-dots )                   'fg-main)
@@ -566,7 +559,8 @@ END
     (( exception )                  'yellow-faint)
     (( link )                       'fg-alt)
     (( link-visited )               'fg-alt)
-    (( lisp-error )                 'fg-main)
+    (( lisp-note )                  'fg-main)
+    (( problem )                    'bg-yellow-intense)
     (( todo )                       'bg-red-intense)
     (( unspecified )                'fg-dim)
     (else #f)))
