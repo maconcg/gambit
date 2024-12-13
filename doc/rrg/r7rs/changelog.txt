@@ -17,3 +17,5 @@ Tail Recursion and Space Efficiency." (plus a footnote)
 - "<Clauses>" -> "<Clause>s" in section 4.2.1 (R7RS uses both forms)
 
 - Different alignment of example results when they look odd in the R7RS pdf
+
+- Section 4.2.6: "This sections" -> "This section"

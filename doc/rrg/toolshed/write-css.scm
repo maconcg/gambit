@@ -252,6 +252,9 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
     }
     dt.deffn, dt.deffnx, dt.deftypevr, dt.deftypevrx, dt.defline {
         font-family: monospace;
+        span.angle-bracket {
+            font-size: 1.12rem;
+        }
         span.category-def {
             font-size: 0.9rem;
         }
@@ -264,6 +267,9 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
     }
     dt.deftypeline {
         font-family: initial;
+        span.angle-bracket {
+            font-size: 1.12rem;
+        }
         span.category-def {
             font-family: monospace;
             font-size: 0.9rem;
@@ -284,11 +290,14 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
         }
     }
     dt.deftypefn, dt.deftypefnx {
+        font-family: monospace;
+        span.angle-bracket {
+            font-size: 1.12rem;
+        }
         span.category-def {
-            font-family: monospace;
             font-size: 0.9rem;
         }
-        span.def-bracket, span.def-dots, code.def-code-arguments {
+        span.def-bracket, span.def-dots {
             font-family: initial;
         }
         span.def-paren {
@@ -358,11 +367,14 @@ div.top-level-extent, div.chapter-level-extent, div.appendix-level-extent, div.u
             margin-top: 1rem;
             text-align: justify;
             width: 36rem;
+            span.angle-bracket {
+                font-size: 1.12rem;
+            }
         }
     }
 }
 
-sub, sup {
+span.angle-bracket, sub, sup {
     line-height: 0;
 }
 
@@ -370,6 +382,9 @@ div.chapter-level-extent, div.unnumbered-level-extent {
     dd p:not(.nav-panel p), p:not(.nav-panel p) {
         hyphens: manual;
         text-align: justify;
+        span.angle-bracket {
+            font-size: 1.12rem;
+        }
     }
 }
 
@@ -382,7 +397,7 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
     dt.deffn, dt.deftp, dt.deffnx, dt.defvr, dt.defline, dt.deftypeline,
      dt.deftypefn, dt.deftypefnx, dt.deftypevr, dt.deftypevrx {
         align-content: center;
-        padding-left: 0.3em;        
+        padding-left: 0.3em;
         font-weight: normal;
         strong.def-name {
             font-weight: normal;

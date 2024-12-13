@@ -6,14 +6,22 @@
   (for-each write-lisp-syntax-macro lisp-syntax-classes)
   (write-visual-divider)
   (for-each (lambda (args) (apply write-par-macro args))
-            '(("pari" "1") ("parii" "2") ("pariii" "3") ("pariv" "4")
-              ("parv" "5") ("parvi" "6") ("parvii" "7") ("parviii" "8")
-              ("parix" "9") ("parj" "j") ("parn" "n") ("parnplusone" "n+1")))
+            '(("pari" "1" "@U{2081}" "1")   ("parii" "2" "@U{2082}" "2")
+              ("pariii" "3" "@U{2083}" "3") ("pariv" "4" "@U{2084}" "4")
+              ("parv" "5" "@U{2085}" "5")   ("parvi" "6" "@U{2086}" "6")
+              ("parvii" "7" "@U{2087}" "7") ("parviii" "8" "@U{2088}" "8")
+              ("parix" "9" "@U{2089}" "9")  ("parj" "J" "@U{2C7C}" "j")
+              ("parn" "N" "@U{2099}" "n")
+              ("parnplusone" "N+1" "@U{2099}@U{208A}@U{2081}" "n+1")))
   (write-visual-divider)
   (for-each (lambda (args) (apply write-var-macro args))
-            '(("vari" "1") ("varii" "2") ("variii" "3") ("variv" "4")
-              ("varv" "5") ("varvi" "6") ("varvii" "7") ("varviii" "8")
-              ("varix" "9") ("varj" "j") ("varn" "n") ("varnplusone" "n+1")))
+            '(("vari" "1" "@U{2081}" "1")   ("varii" "2" "@U{2082}" "2")
+              ("variii" "3" "@U{2083}" "3") ("variv" "4" "@U{2084}" "4")
+              ("varv" "5" "@U{2085}" "5")   ("varvi" "6" "@U{2086}" "6")
+              ("varvii" "7" "@U{2087}" "7") ("varviii" "8" "@U{2088}" "8")
+              ("varix" "9" "@U{2089}" "9")  ("varj" "J" "@U{2C7C}" "j")
+              ("varn" "N" "@U{2099}" "n")
+              ("varnplusone" "N+1" "@U{2099}@U{208A}@U{2081}" "n+1")))
   (write-visual-divider)
   (write-lisp-result-macro "exception" "@arrow{}" "exception" " exception")
   (write-lisp-result-macro "ok" "@result{}" "ok")
@@ -171,31 +179,31 @@
                   "\">\\xx\\</span>},\\xx\\}\n"
                   "@end macro\n")))
 
-(define (write-par-macro macro-name number-string)
+(define (write-par-macro macro-name plaintext-string info-string other-string)
   (write-string
    (string-append "@macro "
                   macro-name
                   " {param}\n"
-                  "@inlinefmtifelse{info,\\param\\"
-                  number-string
-                  ",@inlinefmtifelse{plaintext,\\param\\"
-                  number-string
+                  "@inlinefmtifelse{plaintext,\\param\\"
+                  plaintext-string
+                  ",@inlinefmtifelse{info,\\param\\"
+                  info-string
                   ",\\param\\@sub{"
-                  number-string
+                  other-string
                   "}}}\n"
                   "@end macro\n")))
 
-(define (write-var-macro macro-name number-string)
+(define (write-var-macro macro-name plaintext-string info-string other-string)
   (write-string
    (string-append "@macro "
                   macro-name
                   " {var}\n"
                   "@inlinefmtifelse{info,@var{\\var\\"
-                  number-string
-                  "},@inlinefmtifelse{plaintext,@var{\\var\\"
-                  number-string
+                  plaintext-string
+                  "},@inlinefmtifelse{plaintext,@var{\\var\\_"
+                  info-string
                   "},@var{\\var\\@sub{"
-                  number-string
+                  other-string
                   "}}}}\n"
                   "@end macro\n")))
 
@@ -269,14 +277,35 @@ EOF
 EOF
 ))
 
-(define (write-angle-macro)
-  (write-string #<<EOF
-@macro angle {text}
-@inlinefmtifelse{info,<\text\>,@inlinefmtifelse{plaintext,<\text\>,@U{3008}\text\@U{3009}}}
-@end macro
+;; (define (write-angle-macro)
+;;   (write-string #<<EOF
+;; @macro angle {text}
+;; @inlinefmtifelse{info,<\text\>,@inlinefmtifelse{plaintext,x\text\f,@U{3008}\text\@U{3009}}}
+;; @end macro
 
-EOF
-))
+;; EOF
+;; ))
+
+(define (write-angle-macro)
+  (write-string
+   (string-append "@macro angle {text}\n"
+                  "@inlinefmtifelse{plaintext,"
+                  "<" "\\text\\" ">"
+                  ","
+                  "@inlinefmtifelse{info,"
+                  "<" "\\text\\" ">"
+                  ","
+                  "@inlinefmtifelse{html,"
+                  "@inlineraw{html,<span class=\"angle-bracket\">"
+                  "@U{2329}"
+                  "</span>}"
+                  "\\text\\"
+                  "@inlineraw{html,<span class=\"angle-bracket\">"
+                  "@U{232A}"
+                  "</span>}"
+                  ","
+                  "@U{2329}" "\\text\\" "@U{232A}"
+                  "}}}\n@end macro\n")))
 
 (define (write-longarrow-macro)
   (write-string (string-append "@macro longarrow {}\n"

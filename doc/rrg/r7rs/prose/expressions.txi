@@ -38,9 +38,9 @@ x @ok{28}
 @deftypeline syntax @/ @defabbrev{@U{0027}}@sv{datum}
 @deftypeline syntax @/ @sv{constant}
 
-@t{(quote @sv{datum})} evaluates to @angle{datum}.  @angle{Datum} can be
-any external representation of a Scheme object (see section 3.3).  This
-notation is used to include literal constants in Scheme code.
+@code{(quote @sv{datum})} evaluates to @angle{datum}.  @angle{Datum} can
+be any external representation of a Scheme object (see section 3.3).
+This notation is used to include literal constants in Scheme code.
 
 @lisp
 (quote a)        @ok{a}
@@ -48,8 +48,8 @@ notation is used to include literal constants in Scheme code.
 (quote (+ 1 2))  @ok{(+ 1 2)}
 @end lisp
 
-@t{(quote @sv{datum})} can be abbreviated as @t{'@sv{datum}}.  The two
-notations are equivalent in all respects.
+@code{(quote @sv{datum})} can be abbreviated as @t{'@sv{datum}}.  The
+two notations are equivalent in all respects.
 
 @lisp
 'a         @ok{a}
@@ -102,8 +102,8 @@ resulting arguments.
 The procedures in this document are available as the values of variables
 exported by the standard libraries.  For example, the addition and
 multiplication procedures in the above examples are the values of the
-variables @t{+} and @t{*} in the base library.  New procedures are
-created by evaluating @t{lambda} expressions (see section 4.1.4).
+variables @code{+} and @code{*} in the base library.  New procedures are
+created by evaluating @code{lambda} expressions (see section 4.1.4).
 
 Procedure calls can return any number of values (see @code{values} in
 section 6.10).  Most of the procedures defined in this report return one
@@ -135,17 +135,17 @@ legitimate expression evaluating to itself.  In Scheme, it is an error.
 below, and @angle{body} is a sequence of zero or more definitions
 followed by one or more expressions.
 
-@i{Semantics:} A @t{lambda} expression evaluates to a procedure.  The
-environment in effect when the @t{lambda} expression was evaluated is
+@i{Semantics:} A @code{lambda} expression evaluates to a procedure.  The
+environment in effect when the @code{lambda} expression was evaluated is
 remembered as part of the procedure.  When the procedure is later called
-with some actual arguments, the environment in which the @t{lambda}
+with some actual arguments, the environment in which the @code{lambda}
 expression was evaluated will be extended by binding the variables in
 the formal argument list to fresh locations, and the corresponding
 actual argument values will be stored in those locations.  (A
 @dfn{fresh} location is one that is distinct from every previously
-existing location.)  Next, the expressions in the body of the @t{lambda}
-expression (which, if it contains definitions, represents a
-@code{letrec*} form --- see section 4.2.2) will be evaluated
+existing location.)  Next, the expressions in the body of the
+@code{lambda} expression (which, if it contains definitions, represents
+a @code{letrec*} form --- see section 4.2.2) will be evaluated
 sequentially in the extended environment.  The results of the last
 expression in the body will be returned as the results of the procedure
 call.
@@ -172,25 +172,26 @@ call.
 
 @itemize @bullet
 @item
-@t{(@sv{@pari{variable}} @defdots{})}: The procedure takes a fixed
+@code{(@sv{@pari{variable}} @defdots{})}: The procedure takes a fixed
 number of arguments; when the procedure is called, the arguments will be
 stored in fresh locations that are bound to the corresponding variables.
 
 @item
-@angle{variable}: The procedure takes any number of arguments; when the
-procedure is called, the sequence of actual arguments is converted into
-a newly allocated list, and the list is stored in a fresh location that
-is bound to @angle{variable}.
+@code{@sv{variable}}: The procedure takes any number of arguments; when
+the procedure is called, the sequence of actual arguments is converted
+into a newly allocated list, and the list is stored in a fresh location
+that is bound to @angle{variable}.
 
 @item
-@t{(@sv{@pari{variable}} @defdots{} @sv{@parn{variable}}
-. @sv{@parnplusone{variable}})}: If a space-delimited period precedes
-the last variable, then the procedure takes @var{n} or more arguments,
-where @var{n} is the number of formal arguments before the period (it is
-an error if there is not at least one).  The value stored in the binding
-of the last variable will be a newly allocated list of the actual
-arguments left over after all the other actual arguments have been
-matched up against the other formal arguments.
+@code{(@sv{@pari{variable}} @defdots{} @sv{@parn{variable}}
+. @sv{@parnplusone{variable}})}: If a space-delimited per@value{shy}iod
+pre@value{shy}cedes the last variable, then the procedure takes @var{n}
+or more arguments, where @var{n} is the number of formal arguments
+before the period (it is an error if there is not at least one).  The
+value stored in the binding of the last variable will be a newly
+allocated list of the actual arguments left over after all the other
+actual arguments have been matched up against the other formal
+arguments.
 @end itemize
 
 It is an error for a @angle{variable} to appear more than once in
@@ -202,7 +203,7 @@ It is an error for a @angle{variable} to appear more than once in
  3 4 5 6)              @ok{(5 6)}
 @end lisp
 
-Each procedure created as the result of evaluating a @t{lambda}
+Each procedure created as the result of evaluating a @code{lambda}
 expression is (conceptually) tagged with a storage location, in order to
 make @code{eqv?} and @code{eq?} work on procedures (see section 6.1).
 @end deftypefn
@@ -503,29 +504,29 @@ A @angle{feature requirement} takes one of the following forms:
 
 @itemize @bullet
 @item
-@angle{feature identifier}
+@code{@sv{feature identifier}}
 
 @item
-(library @sv{library name})
+@code{(library @sv{library name})}
 
 @item
-(and @sv{feature requirement} @defdots{})
+@code{(and @sv{feature requirement} @defdots{})}
 
 @item
-(or @sv{feature requirement} @defdots{})
+@code{(or @sv{feature requirement} @defdots{})}
 
 @item
-(not @sv{feature requirement})
+@code{(not @sv{feature requirement})}
 @end itemize
 
 @i{Semantics:} Each implementation maintains a list of feature
 identifiers which are present, as well as a list of libraries which can
 be imported.  The value of a @angle{feature requirement} is determined
-by replacing each @angle{feature identifier} and @t{(library @sv{library
-name})} on the implementation's lists with @code{#t}, and all other
-feature identifiers and library names with @code{#f}, then evaluating
-the resulting expression as a Scheme boolean expression under the normal
-interpretation of @code{and}, @code{or}, and @code{not}.
+by replacing each @angle{feature identifier} and @code{(library
+@sv{library name})} on the implementation's lists with @code{#t}, and
+all other feature identifiers and library names with @code{#f}, then
+evaluating the resulting expression as a Scheme boolean expression under
+the normal interpretation of @code{and}, @code{or}, and @code{not}.
 
 A @code{cond-expand} is then expanded by evaluating the @angle{feature
 requirement}s of successive @angle{ce-clause}s in order until one of
@@ -606,7 +607,7 @@ or more expressions as described in section 4.1.4.
 
 @i{Semantics:} The @code{let*} binding construct is similar to
 @code{let}, but the bindings are performed sequentially from left to
-right, and the region of a binding indicated by @t{(@sv{variable}
+right, and the region of a binding indicated by @code{(@sv{variable}
 @sv{init})} is that part of the @code{let*} expression to the right of
 the binding.  Thus the second binding is done in an environment in which
 the first binding is visible, and so on.  The @angle{variable}s need not
@@ -653,10 +654,10 @@ One restriction on @code{letrec} is very important: if it is not
 possible to evaluate each @angle{init} without assigning or referring to
 the value of any @angle{variable}, it is an error.  The restriction is
 necessary because @code{letrec} is defined in terms of a procedure call
-where a @t{lambda} expression binds the @angle{variable}s to the values
-of the @angle{init}s.  In the most common uses of @code{letrec}, all the
-@angle{init}s are @t{lambda} expressions and the restriction is
-satisfied automatically.
+where a @code{lambda} expression binds the @angle{variable}s to the
+values of the @angle{init}s.  In the most common uses of @code{letrec},
+all the @angle{init}s are @code{lambda} expressions and the restriction
+is satisfied automatically.
 @end deftypefn
 
 @deftypefn syntax @/ letrec* @sv{bindings} @sv{body}
@@ -710,7 +711,7 @@ error to invoke the continuation of an @angle{init} more than once.
             (mean / /))))
 @end lisp
 
-Evaluating @t{(means '(3 (1 4)))} returns three
+Evaluating @code{(means '(3 (1 4)))} returns three
 values:@inlinefmt{html,@*} @t{8/3}, @t{2.28942848510666}
 (approximately), and @t{36/19}.
 @end deftypefn
@@ -733,7 +734,7 @@ Semantics: The @angle{init}s are evaluated in the current environment
 and the variables occurring in the @angle{formals} are bound to fresh
 locations holding the values returned by the @angle{init}s, where the
 @angle{formals} are matched to the return values in the same way that
-the @angle{formals} in a @t{lambda} expression are matched to the
+the @angle{formals} in a @code{lambda} expression are matched to the
 arguments in a procedure call.  Then, the @angle{body} is evaluated in
 the extended environment, and the values of the last expression of
 @angle{body} are returned.  Each binding of a @angle{variable} has
@@ -850,16 +851,16 @@ the results of the @angle{step}s are stored in the bindings of the
 If @angle{test} evaluates to a true value, then the @angle{expression}s
 are evaluated from left to right and the values of the last
 @angle{expression} are returned.  If no @angle{expression}s are present,
-then the value of the do expression is unspecified.
+then the value of the @code{do} expression is unspecified.
 
 The region of the binding of a @angle{variable} consists of the entire
-do expression except for the @angle{init}s.  It is an error for a
+@code{do} expression except for the @angle{init}s.  It is an error for a
 @angle{variable} to appear more than once in the list of @code{do}
 variables.
 
 A @angle{step} can be omitted, in which case the effect is the same as
-if @t{(@angle{variable} @angle{init} @angle{variable})} had been written
-instead of @t{(@angle{variable} @angle{init})}.
+if @code{(@angle{variable} @angle{init} @angle{variable})} had been
+written instead of @code{(@angle{variable} @angle{init})}.
 
 @lisp
 (do ((vec (make-vector 5))
@@ -911,7 +912,7 @@ of @angle{body} can be repeated by invoking the procedure named by
 
 @i{Semantics:} The @code{delay} construct is used together with the
 procedure @code{force} to implement lazy evaluation or call by need.
-@t{(delay @sv{expression})} returns an object called a @dfn{promise}
+@code{(delay @sv{expression})} returns an object called a @dfn{promise}
 which at some point in the future can be asked (by the @code{force}
 procedure) to evaluate @angle{expression}, and deliver the resulting
 value.  The effect of @angle{expression} returning multiple values is
@@ -920,15 +921,15 @@ unspecified.
 
 @deftypefn {lazy library syntax} @/ delay-force @sv{expression}
 
-@i{Semantics:} The expression @t{(delay-force @r{@var{expression}})} is
-conceptually similar to @t{(delay (force @r{@var{expression}}))}, with
-the difference that forcing the result of @r{@code{delay-force}} will in
-effect result in a tail call to @t{(force @r{@var{expression}})}, while
-forcing the result of @t{(delay (force @r{@var{expression}}))} might
-not.  Thus iterative lazy algorithms that might result in a long series
-of chains of @code{delay} and @code{force} can be rewritten using
-@code{delay-force} to prevent consuming unbounded space during
-evaluation.
+@i{Semantics:} The expression @code{(delay-force @r{@var{expression}})}
+is con@value{shy}cept@value{shy}ually sim@value{shy}ilar to @code{(delay
+(force @r{@var{expression}}))}, with the difference that forcing the
+result of @r{@code{delay-force}} will in effect result in a tail call to
+@code{(force @r{@var{expression}})}, while forcing the result of
+@code{(delay (force @r{@var{expression}}))} might not.  Thus iterative
+lazy algorithms that might result in a long series of chains of
+@code{delay} and @code{force} can be rewritten using @code{delay-force}
+to prevent consuming unbounded space during evaluation.
 @end deftypefn
 
 @deffn {lazy library procedure} force promise
@@ -942,4 +943,167 @@ previously computed value is returned.  Consequently, a delayed
 expression is evaluated using the parameter values and exception handler
 of the call to @code{force} which first requested its value.  If
 @var{promise} is not a promise, it may be returned unchanged.
+
+@lisp
+(force (delay (+ 1 2))) @ok{3}
+@end lisp
+
+@lisp
+(let ((p (delay (+ 1 2))))
+  (list (force p) (force p))) @ok{(3 3)}
+@end lisp
+
+@lisp
+(define integers
+  (letrec ((next
+            (lambda (n)
+              (delay (cons n (next (+ n 1)))))))
+    (next 0)))
+(define head
+  (lambda (stream) (car (force stream))))
+(define tail
+  (lambda (stream) (cdr (force stream))))
+
+(head (tail (tail integers))) @ok{2}
+@end lisp
+
+The following example is a mechanical transformation of a lazy
+stream-filtering algorithm into Scheme.  Each call to a constructor is
+wrapped in @code{delay}, and each argument passed to a deconstructor is
+wrapped in @code{force}.  The use of @code{(delay-force @defdots{})}@:
+instead of @code{(delay (force @defdots{}))} around the body of the
+procedure ensures that an ever-growing sequence of pending promises does
+not exhaust available storage, because @code{force} will in effect force
+such sequences iteratively.
+
+@lisp
+(define (stream-filter p? s)
+  (delay-force
+   (if (null? (force s)) 
+       (delay '())
+       (let ((h (car (force s)))
+             (t (cdr (force s))))
+         (if (p? h)
+             (delay (cons h (stream-filter p? t)))
+             (stream-filter p? t))))))
+
+(head (tail (tail (stream-filter odd? integers)))) @ok{5}
+@end lisp
+
+The following examples are not intended to illustrate good programming
+style, as @code{delay}, @code{force}, and @code{delay-force} are mainly
+intended for programs written in the functional style.  However, they do
+illustrate the property that only one value is computed for a promise,
+no matter how many times it is forced.
+
+@lisp
+(define count 0)
+(define p
+  (delay (begin (set! count (+ count 1))
+                (if (> count x)
+                    count
+                    (force p)))))
+(define x 5)
+p                  @lispnote{a promise}
+(force p)          @ok{6}
+p                  @lispnote{a promise, still}
+(begin (set! x 10)
+       (force p))  @ok{6}
+@end lisp
+
+Various extensions to this semantics of delay, force and delay-force are
+supported in some implementations:
+
+@itemize @bullet
+@item
+Calling @code{force} on an object that is not a promise may simply
+return the object.
+
+@item
+It may be the case that there is no means by which a promise can be
+operationally distinguished from its forced value.  That is, expressions
+like the following may evaluate to either @code{#t} or to @code{#f},
+depending on the implementation:
+
+@lisp
+(eqv? (delay 1) 1)         @unspecified{unspecified}
+@end lisp
+
+@lisp
+(pair? (delay (cons 1 2))) @unspecified{unspecified}
+@end lisp
+
+@item
+Implementations may implement @quotedbl{implicit forcing}, where the
+value of a promise is forced by procedures that operate only on
+arguments of a certain type, like @code{cdr} and @code{*}.  However,
+procedures that operate uniformly on their arguments, like @code{list},
+must not force them.
+
+@lisp
+(+ (delay (* 3 7)) 13)       @unspecified{unspecified}
+@end lisp
+
+@lisp
+(car
+  (list (delay (* 3 7)) 13)) @lispnote{a promise}
+@end lisp
+@end itemize
 @end deffn
+
+@deffn {lazy library procedure} promise? obj
+
+The @code{promise?} procedure returns @code{#t} if its argument is a
+promise, and @code{#f} otherwise.  Note that promises are not
+necessarily disjoint from other Scheme types such as procedures.
+@end deffn
+
+@deffn {lazy library procedure} make-promise obj
+
+The @code{make-promise} procedure returns a promise which, when forced,
+will return @var{obj}.  It is similar to @code{delay}, but does not
+delay its argument: it is a procedure rather than syntax.  If @var{obj}
+is already a promise, it is returned.
+@end deffn
+
+@node Dynamic bindings
+@subsection Dynamic bindings
+The @dfn{dynamic extent} of a procedure call is the time
+be@value{shy}tween when it is init@value{shy}ia@value{shy}ted and when
+it re@value{shy}turns.  In Scheme, @code{call-with-current-continuation}
+(section 6.10) allows reentering a dynamic extent after its procedure
+call has returned.  Thus, the dynamic extent of a call might not be a
+single, continuous time period.
+
+This section introduces @dfn{parameter objects}, which can be bound to
+new values for the duration of a dynamic extent.  The set of all
+parameter bindings at a given time is called the @dfn{dynamic
+environment}.
+
+@deffn procedure make-parameter init
+@deffnx procedure make-parameter init converter
+
+Returns a newly allocated parameter object, which is a procedure that
+accepts zero arguments and returns the value associated with the
+parameter object.  Initially, this value is the value of
+@code{(@r{@var{converter}} @r{@var{init}})}, or @var{init} if the
+conversion procedure @var{converter} is not specified.  The associated
+value can be temporarily changed using @code{parameterize}, which is
+described below.
+
+The effect of passing arguments to a parameter object is
+implementation-dependent.
+@end deffn
+
+@deftypefn syntax @/ parameterize @t{((@sv{@pari{param}} @sv{@pari{value}}) @defdots{}) @sv{body}}
+
+@i{Syntax:} Both @angle{@pari{param}} and @angle{@pari{value}} are
+expressions.
+
+It is an error if the value of any @angle{param} expression is not a
+parameter object.
+
+@i{Semantics:} A @code{parameterize} expression is used to change the
+values returned by specified parameter objects during the evaluation of
+the body.
+@end deftypefn
