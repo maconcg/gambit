@@ -86,15 +86,16 @@
                          "include-ci" "let-syntax" "letrec-syntax" "load"
                          "macro-case-target" "namespace" "or" "quasiquote"
                          "quote" "r7rs-guard" "receive" "set!" "syntax-error"
-                         "syntax-rules" "this-source-file" "unless" "when")))))
+                         "syntax-rules" "this-source-file" "unless" "unquote"
+                         "when")))))
 
 (define rt-aux-cond-syntax
   (map string->list
        (+prims '("case" "cond" "cond-expand" "macro-case-target"))))
 
-(define rt-aux-guard-syntax
-  (map string->list
-       (+prims '("guard"))))
+(define rt-aux-guard-syntax (map string->list (+prims '("guard"))))
+
+(define rt-unquote-syntax (map string->list (+prims '("unquote"))))
 ;======================= Symbol manipulation procedures =======================
 (define-record-type achar ; a literal char object, plus some metadata
   (make-adorned-char c k m h s)
@@ -256,15 +257,22 @@
                    (else #f))))))
 
 (define (syntax->mesg operator)
-  (cond ((matches?        '(#\l #\e #\t)       operator) '~named/sv-let)
-        ((matches-one-of? sv-define-syntax     operator) '~sv-define)
-        ((matches-one-of? sv-let-syntax        operator) '~~~let-sv)
-        ((matches-one-of? lambda-syntax        operator) '~~lambda-bind)
-        ((matches-one-of? mv-let-syntax        operator) '~~~~let-mv)
-        ((matches-one-of? mv-define-syntax     operator) '~~mv-define)
-        ((matches-one-of? case-lambda-syntax   operator) '~~~case-lambda)
-        ((matches-one-of? define-proc-syntax   operator) '~~defproc)
-        ((matches-one-of? rt-aux-cond-syntax operator) 'rt-aux-cond)
+  (cond ((matches? '(#\l #\e #\t) operator)
+         '~named/sv-let)
+        ((matches? '(#\q #\u #\o #\t #\e) operator)
+         'quote)
+        ((matches? '(#\u #\n #\q #\u #\o #\t #\e) operator)
+         'unquote)
+        ((matches? '(#\q #\u #\a #\s #\i #\q #\u #\o #\t #\e) operator)
+         'quasiquote)
+        ((matches-one-of? sv-define-syntax    operator) '~sv-define)
+        ((matches-one-of? sv-let-syntax       operator) '~~~let-sv)
+        ((matches-one-of? lambda-syntax       operator) '~~lambda-bind)
+        ((matches-one-of? mv-let-syntax       operator) '~~~~let-mv)
+        ((matches-one-of? mv-define-syntax    operator) '~~mv-define)
+        ((matches-one-of? case-lambda-syntax  operator) '~~~case-lambda)
+        ((matches-one-of? define-proc-syntax  operator) '~~defproc)
+        ((matches-one-of? rt-aux-cond-syntax  operator) 'rt-aux-cond)
         ((matches-one-of? rt-aux-guard-syntax operator) 'rt-aux-guard)
         (else #f)))
 

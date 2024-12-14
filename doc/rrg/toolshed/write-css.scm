@@ -269,21 +269,22 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
         }
     }
     dt.deftypeline {
-        font-family: initial;
+        font-family: monospace;
         span.angle-bracket {
             font-size: 1.12rem;
         }
         span.category-def, span.cdspace {
-            font-family: monospace;
             font-size: 0.9rem;
         }
-        strong.def-name, code.def-code-arguments, span.dnspace {
+        span.def-bracket, span.def-dots {
+            font-family: initial;
+            font-size: 1rem;
+        }
+        strong.def-name, span.dnspace {
             font-size: 1.06rem;
             span.r {
                 font-size: 1.06rem;
             }
-        }
-        strong.def-name, span.dnspace {
             code.code, code.t {
                 font-size: 1.06rem;
                 span.r {

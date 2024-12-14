@@ -35,7 +35,7 @@ x @ok{28}
 @node Literal expressions
 @subsection Literal expressions
 @defblock
-@deftypeline syntax @/ (quote @sv{datum})
+@deftypeline syntax @/ @syntax{quote} @sv{datum}
 @deftypeline syntax @/ @defabbrev{@U{0027}}@sv{datum}
 @deftypeline syntax @/ @sv{constant}
 
@@ -1026,7 +1026,7 @@ such sequences iteratively.
 @lisp
 (define (stream-filter p? s)
   (delay-force
-   (if (null? (force s)) 
+   (if (null? (force s))
        (delay '())
        (let ((h (car (force s)))
              (t (cdr (force s))))
@@ -1206,7 +1206,6 @@ call chain explicitly.
 
 @node Exception handling
 @subsection Exception handling
-
 @deftypefn syntax @/ guard @t{(@sv{variable}@*@
 @value{syntaxindent}@value{cdspace}@
 @value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@
@@ -1249,3 +1248,172 @@ See section 6.11 for a more complete discussion of exceptions.
                              @ok{(b . 23)}
 @end lisp
 @end deftypefn
+
+@node Quasiquotation
+@subsection Quasiquotation
+@defblock
+@deftypeline syntax @/ @syntax{quasiquote} @sv{qq template}
+@deftypeline syntax @/ @defabbrev{@U{0060}}@sv{datum}
+@deftypeline {auxiliary syntax} @/ @syntax{unquote}
+@deftypeline {auxiliary syntax} @/ @comma{}
+@deftypeline {auxiliary syntax} @/ @syntax{unquote-splicing}
+@deftypeline {auxiliary syntax} @/ @comma{}@atchar{}
+
+@quotedbl{Quasiquote} expressions are useful for constructing a list or
+vector structure when some but not all of the desired structure is known
+in advance.  If no commas appear within the @nobr{@angle{qq template}},
+the result of evaluating @t{@U{0060}@sv{qq template}} is equivalent to
+the result of evaluating @nobr{@t{@U{0027}@sv{qq template}}}.  If a
+comma appears within the @nobr{@angle{qq template}}, however, the
+expression following the comma is evaluated (@quotedbl{unquoted}) and
+its result is inserted into the structure instead of the comma and the
+expression.  If a comma appears followed without intervening whitespace
+by a commercial @nobr{at-sign} (@t{@atchar{}}), then it is an error if
+the following expression does not evaluate to a list; the opening and
+closing parentheses of the list are then @quotedbl{stripped away} and
+the elements of the list are inserted in place of the comma
+@nobr{at-sign} expression sequence.  A comma @nobr{at-sign} normally
+appears only within a list or vector @nobr{@angle{qq template}}.
+
+@quotation
+@i{Note:} In order to unquote an identifier beginning with
+@t{@atchar{}}, it is necessary to use either an explicit @code{unquote}
+or to put whitespace after the comma, to avoid colliding with the comma
+@nobr{at-sign} sequence.
+@end quotation
+
+@lisp
+`(list ,(+ 1 2) 4) @ok{(list 3 4)}
+@end lisp
+
+@lisp
+(let ((name 'a)) `(list ,name ',name))
+             @ok{(list a (quote a))}
+@end lisp
+
+@lisp
+`(a ,(+ 1 2) ,@atchar{}(map abs '(4 -5 6)) b)
+             @ok{(a 3 4 5 6 b)}
+@end lisp
+
+@lisp
+`(( foo ,(- 10 3)) ,@atchar{}(cdr '(c)) . ,(car '(cons)))
+             @ok{((foo 7) . cons)}
+@end lisp
+
+@lisp
+`#(10 5 ,(sqrt 4) ,@atchar{}(map sqrt '(16 9)) 8)
+             @ok{#(10 5 2 4 3 8)}
+@end lisp
+
+@lisp
+(let ((foo '(foo bar)) (@atchar{}baz 'baz))
+  `(list ,@atchar{}foo , @atchar{}baz))
+             @ok{(list foo bar baz)}
+@end lisp
+
+Quasiquote expressions can be nested.  Substitutions are made only for
+unquoted components appearing at the same nesting level as the outermost
+quasiquote.  The nesting level increases by one inside each successive
+quasiquotation, and decreases by one inside each unquotation.
+
+@lisp
+`(a `(b ,(+ 1 2) ,(foo ,(+ 1 3) d) e) f)
+             @ok{(a `(b ,(+ 1 2) ,(foo 4 d) e) f)}
+@end lisp
+
+@lisp
+(let ((name1 'x)
+      (name2 'y))
+  `(a `(b ,,name1 ,',name2 d) e))
+             @ok{(a `(b ,x ,'y d) e)}
+@end lisp
+
+A quasiquote expression may return either newly allocated, mutable
+objects or literal structure for any structure that is constructed at
+run time during the evaluation of the expression.  Portions that do not
+need to be rebuilt are always literal.  Thus,
+
+@lisp
+(let ((a 3)) `((1 2) ,a ,4 ,'five 6))
+@end lisp
+
+may be treated as equivalent to either of the following expressions:
+
+@lisp
+`((1 2) 3 4 five 6)
+@end lisp
+
+@lisp
+(let ((a 3))
+  (cons '(1 2)
+        (cons a (cons 4 (cons 'five '(6))))))
+@end lisp
+
+However, it is not equivalent to this expression:
+
+@lisp
+(let ((a 3)) (list (list 1 2) a 4 'five 6))
+@end lisp
+
+The two notations @t{@U{0060}@sv{qq template}} and @t{(quasiquote @sv{qq
+template})} are identical in all respects.  @t{@U{002C}@sv{expression}}
+is identical to @t{(unquote @sv{expression})}, and
+@t{@U{002c}@atchar{}@sv{expression}} is identical to
+@t{(unquote-splicing @sv{expression})}.  The @code{write} procedure may
+output either format.
+
+@lisp
+(quasiquote (list (unquote (+ 1 2)) 4))
+             @ok{(list 3 4)}
+@end lisp
+
+@lisp
+'(quasiquote (list (unquote (+ 1 2)) 4))
+             @ok{`(list ,(+ 1 2) 4)}
+     @unspecifiedtext{i.e.,} (quasiquote (list (unquote (+ 1 2)) 4))
+@end lisp
+
+It is an error if any of the identifiers @code{quasiquote},
+@code{unquote}, or @code{unquote-splicing} appear in positions within a
+@angle{qq template} otherwise than as described above.
+@end defblock
+
+@node Case-lambda
+@subsection Case-lambda
+@deftypefn {case-lambda library syntax} @/ case-lambda @sv{clause} @defdots{}
+
+@i{Syntax:} Each @angle{clause} is of the form @t{(@angle{formals}
+@angle{body})}, where @angle{formals} and @angle{body} have the same
+syntax as in a @code{lambda} expression.
+
+@i{Semantics:} A @code{case-lambda} expression evaluates to a procedure
+that accepts a variable number of arguments and is lexically scoped in
+the same manner as a procedure resulting from a @code{lambda}
+expression.  When the procedure is called, the first @angle{clause} for
+which the arguments agree with @angle{formals} is selected, where
+agreement is specified as for the @angle{formals} of a @code{lambda}
+expression.  The variables of @angle{formals} are bound to fresh
+locations, the values of the arguments are stored in those locations,
+the @angle{body} is evaluated in the extended environment, and the
+results of @angle{body} are returned as the results of the procedure
+call.
+
+It is an error for the arguments not to agree with the @angle{formals}
+of any @angle{clause}.
+
+@lisp
+(define range
+  (case-lambda
+   ((e) (range 0 e))
+   ((b e) (do ((r '() (cons e r))
+               (e (- e 1) (- e 1)))
+              ((< e b) r)))))
+
+(range 3)                     @ok{(0 1 2)}
+(range 3 5)                   @ok{(3 4)}
+@end lisp
+@end deftypefn
+
+@node Macros
+@section Macros

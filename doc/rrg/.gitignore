@@ -18,6 +18,7 @@ Makefile
 gambit*.html
 gambit*.txt
 gambit.epub
+gambit.info
 gambit.txi
 r7rs.info
 r7rs*.html

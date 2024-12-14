@@ -39,8 +39,9 @@
                                           "@print{}}")
                            "output")
   (write-lisp-result-macro "problem" "@arrow{}" "problem")
-  (write-unspecified-macro "unspecified" "@result{}")
-  (write-unspecified-macro "unspecifiedtext" "")
+  (write-lisp-text-macro "lispnotetext" "" "lisp-note")
+  (write-lisp-text-macro "unspecified" "@result{}" "unspecified")
+  (write-lisp-text-macro "unspecifiedtext" "" "unspecified")
   (write-visual-divider)
   (write-opt-macro)
   (write-defabbrev-macro)
@@ -262,7 +263,7 @@
                   "}}}}\n"
                   "@end macro\n")))
 
-(define (write-unspecified-macro macro-name pointer-glyph)
+(define (write-lisp-text-macro macro-name pointer-glyph class)
   (write-string
    (string-append "@macro "
                   macro-name
@@ -270,7 +271,7 @@
                   pointer-glyph
                   (if (positive? (string-length pointer-glyph)) " " "")
                   "@r{@i{@inlinefmtifelse{html,@inlineraw{html,<span class=\""
-                  "unspecified"
+                  class
                   "\">\\xx\\</span>},\\xx\\}}}\n"
                   "@end macro\n")))
 
@@ -322,7 +323,7 @@
         (right-angle-bracket "@U{232A}" #;"@U{3009}"))
     (write-string
      (string-append "@macro angle {text}\n"
-                    "@nobr{@inlinefmtifelse{plaintext,"
+                    "@inlinefmtifelse{plaintext,"
                     "@U{003C}" "\\text\\" "@U{003E}"
                     ","
                     "@inlinefmtifelse{info,"
@@ -338,7 +339,7 @@
                     "@inlineraw{html,</span>}"
                     ","
                     left-angle-bracket "\\text\\" right-angle-bracket
-                    "}}}}\n@end macro\n"))))
+                    "}}}\n@end macro\n"))))
 
 (define (write-longarrow-macro)
   (write-string (string-append "@macro longarrow {}\n"
@@ -368,6 +369,14 @@
                   "@quotedbl{@t{\\text\\}}}}\n"
                   "@end macro\n")))
 
+(define (write-nobr-macro)
+  (write-string
+   (string-append "@macro nobr {xx}\n"
+                  "@inlinefmtifelse{html,"
+                  "@inlineraw{html,<span class=\"nobr\">\\xx\\</span>},"
+                  "@w{\\xx\\}}"
+                  "\n@end macro\n")))
+
 (define (write-opt-macro)
   (write-string #<<EOF
 @rmacro opt {arg}
@@ -381,15 +390,6 @@ EOF
   (write-string #<<EOF
 @macro todo {t}
 @inlinefmtifelse{html,@inlineraw{html,<span class="todo">@sc{TODO}:</span> \t\},@sc{TODO}: \t\}
-@end macro
-
-EOF
-))
-
-(define (write-nobr-macro)
-(write-string #<<EOF
-@macro nobr {xx}
-@inlinefmtifelse{html,@inlineraw{html,<span class="nobr">\xx\</span>},@w{\xx\}}
 @end macro
 
 EOF
