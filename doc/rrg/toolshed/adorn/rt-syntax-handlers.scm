@@ -20,7 +20,8 @@
                               (else (let ((mesg (get-mesg (cadr ac-list))))
                                       (if (memq mesg '(~rt-syntax
                                                        ~~rt-syntax
-                                                       rt-aux-active))
+                                                       rt-aux-cond
+                                                       rt-aux-guard))
                                           (adorn-char nc 'whitespace #f)
                                           (adorn-char nc 'whitespace mesg))))))
                        ((and (char=? nc #\#) (matches? '(#\# #\#) recents))
@@ -34,7 +35,7 @@
                         (try-nc! ac-list nc))
                        ((and (char=? nc #\e) (matches? '(#\e #\l #\s) recents))
                         (let ((syntax-mesg (rt-syntax-mesg (up-list ac-list))))
-                          (cond ((eq? syntax-mesg 'rt-aux-active)
+                          (cond ((memq syntax-mesg '(rt-aux-cond rt-aux-guard))
                                  (revise-until! ac-list 'aux-syntax 3)
                                  (adorn-char nc 'aux-syntax '~rt-syntax))
                                 (else (adorn-char nc 'default '~rt-syntax)))))

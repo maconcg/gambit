@@ -88,9 +88,13 @@
                          "quote" "r7rs-guard" "receive" "set!" "syntax-error"
                          "syntax-rules" "this-source-file" "unless" "when")))))
 
-(define rt-aux-syntax-syntax
+(define rt-aux-cond-syntax
   (map string->list
        (+prims '("case" "cond" "cond-expand" "macro-case-target"))))
+
+(define rt-aux-guard-syntax
+  (map string->list
+       (+prims '("guard"))))
 ;======================= Symbol manipulation procedures =======================
 (define-record-type achar ; a literal char object, plus some metadata
   (make-adorned-char c k m h s)
@@ -260,7 +264,8 @@
         ((matches-one-of? mv-define-syntax     operator) '~~mv-define)
         ((matches-one-of? case-lambda-syntax   operator) '~~~case-lambda)
         ((matches-one-of? define-proc-syntax   operator) '~~defproc)
-        ((matches-one-of? rt-aux-syntax-syntax operator) 'rt-aux-active)
+        ((matches-one-of? rt-aux-cond-syntax operator) 'rt-aux-cond)
+        ((matches-one-of? rt-aux-guard-syntax operator) 'rt-aux-guard)
         (else #f)))
 
 (define rt-syntax-mesg
