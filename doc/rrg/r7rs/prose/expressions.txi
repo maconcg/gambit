@@ -1218,4 +1218,34 @@ call chain explicitly.
 
 @i{Syntax:} Each @angle{cond clause} is as in the specification of
 @code{cond}.
+
+@i{Semantics:} The @angle{body} is evaluated with an exception handler
+that binds the raised object (see @code{raise} in section 6.11) to
+@angle{variable} and, within the scope of that binding, evaluates the
+clauses as if they were the clauses of a @code{cond} expression.  That
+implicit @code{cond} expression is evaluated with the continuation and
+dynamic environment of the @code{guard} expression.  If every
+@angle{cond clause}'s @angle{test} evaluates to @code{#f} and there is
+no else clause, then @code{raise-continuable} is invoked on the raised
+object within the dynamic environment of the original call to
+@code{raise} or @code{raise-continuable}, except that the current
+exception handler is that of the @code{guard} expression.
+
+See section 6.11 for a more complete discussion of exceptions.
+
+@lisp
+(guard (condition
+         ((assq 'a condition) => cdr)
+         ((assq 'b condition)))
+  (raise (list (cons 'a 42))))
+                             @ok{42}
+@end lisp
+
+@lisp
+(guard (condition
+         ((assq 'a condition) => cdr)
+         ((assq 'b condition)))
+  (raise (list (cons 'b 23))))
+                             @ok{(b . 23)}
+@end lisp
 @end deftypefn
