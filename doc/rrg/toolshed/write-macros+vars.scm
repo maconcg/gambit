@@ -61,7 +61,25 @@
   (write-vars))
 
 (define write-vars
-  (let ((write-r2rs
+  (let ((write-cdspace
+         (lambda ()
+           (write-string
+            (string-append "@set cdspace "
+                           "@inlinefmtifelse{html,"
+                           "@inlineraw{html,<span class=\"cdspace\">}"
+                           "@ "
+                           "@inlineraw{html,</span>},"
+                           "@ }\n"))))
+        (write-dnspace
+         (lambda ()
+           (write-string
+            (string-append "@set dnspace "
+                           "@inlinefmtifelse{html,"
+                           "@inlineraw{html,<span class=\"dnspace\">}"
+                           "@ "
+                           "@inlineraw{html,</span>},"
+                           "@ }\n"))))
+        (write-r2rs
          (lambda ()
            (write-string "@set R2RS @acronym{RRRS}\n")))
         (write-RevisednRS
@@ -95,15 +113,19 @@
             (string-append "@set syntaxindent "
                            "@inlinefmtifelse{plaintext,@ ,"
                            "@inlinefmtifelse{info,@ ,"
-                           "@inlinefmtifelse{html,@ @ @ @ @ @ ,"
-                           ",}}}\n")))))
+                           "@inlinefmtifelse{html,"
+                           "@inlineraw{html,<span class=\"category-def\">}"
+                           "@ @ @ @ @ @ @ "
+                           "@inlineraw{html,</span>},,}}}\n")))))
     (lambda ()
-      (write-r2rs)
+      (write-cdspace)
+      (write-dnspace)
       (write-RevisednRS "3" "@U{00B3}")
       (write-RevisednRS "4" "@U{2074}")
       (write-RevisednRS "5" "@U{2075}")
       (write-RevisednRS "6" "@U{2076}")
       (write-RevisednRS "7" "@U{2077}")
+      (write-r2rs)
       (write-RnRS "3" "@U{00B3}")
       (write-RnRS "4" "@U{2074}")
       (write-RnRS "5" "@U{2075}")

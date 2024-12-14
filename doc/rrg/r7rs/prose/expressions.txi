@@ -859,9 +859,19 @@ declaration: see section 5.6.1.
 @subsection Iteration
 @deftypefn syntax @/ do @
 @t{((@sv{@pari{variable}} @sv{@pari{init}} @sv{@pari{step}})@*@
-@value{syntaxindent}@ @ @ @ @ @ @defdots{})@*@
-@value{syntaxindent}@ @ @ @ @ (@sv{test} @sv{expression} @defdots{})@*@
-@value{syntaxindent}@ @ @ @sv{command} @defdots{}}
+@value{syntaxindent}@value{cdspace}@
+@value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@
+@defdots{})@*@
+@value{syntaxindent}@value{cdspace}@
+@value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@
+(@sv{test} @sv{expression} @defdots{})@*@
+@value{syntaxindent}@value{cdspace}@
+@value{dnspace}@value{dnspace}@
+@sv{command} @defdots{}}
+
+@c @value{syntaxindent}@ @ @ @ @ @ @defdots{})@*@
+@c @value{syntaxindent}@ @ @ @ @ (@sv{test} @sv{expression} @defdots{})@*@
+@c @value{syntaxindent}@ @ @ @sv{command} @defdots{}}
 
 @i{Syntax:} All of @angle{init}, @angle{step}, @angle{test}, and
 @angle{command} are expressions.
@@ -896,8 +906,8 @@ The region of the binding of a @angle{variable} consists of the entire
 variables.
 
 A @angle{step} can be omitted, in which case the effect is the same as
-if @t{(@angle{variable} @angle{init} @angle{variable})} had been written
-instead of @t{(@angle{variable} @angle{init})}.
+if @t{(@sv{variable} @sv{init} @sv{variable})} had been written instead
+of @t{(@sv{variable} @sv{init})}.
 
 @lisp
 (do ((vec (make-vector 5))
@@ -1135,7 +1145,7 @@ implementation-dependent.
 
 @deftypefn syntax @/ parameterize @
 @t{((@sv{@pari{param}} @sv{@pari{value}}) @defdots{})@*@
-@value{syntaxindent}@ @ @ @sv{body}}
+@value{syntaxindent}@value{cdspace}@value{dnspace}@value{dnspace}@sv{body}}
 
 @i{Syntax:} Both @angle{@pari{param}} and @angle{@pari{value}} are
 expressions.
@@ -1196,3 +1206,16 @@ call chain explicitly.
 
 @node Exception handling
 @subsection Exception handling
+
+@deftypefn syntax @/ guard @t{(@sv{variable}@*@
+@value{syntaxindent}@value{cdspace}@
+@value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@
+@ @ @ @
+@sv{@pari{cond clause}} @
+@sv{@parii{cond clause}} @defdots{})@*@
+@value{syntaxindent}@value{cdspace}@
+@value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@sv{body}}
+
+@i{Syntax:} Each @angle{cond clause} is as in the specification of
+@code{cond}.
+@end deftypefn

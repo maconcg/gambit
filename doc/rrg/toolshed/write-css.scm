@@ -242,13 +242,13 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
     line-height: 1.3;
     dt {
         font-size: 1.06rem;
-        span.category-def {
+        span.category-def, span.cdspace {
             font-size: 0.94rem;
         }
         span.def-bracket, span.def-dots, var.def-var-arguments {
             font-size: 1rem;
         }
-        strong.def-name {
+        strong.def-name, span.dnspace {
             font-weight: normal;
             font-size: 1.06rem;
         }
@@ -258,7 +258,7 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
         span.angle-bracket {
             font-size: 1.12rem;
         }
-        span.category-def {
+        span.category-def, span.cdspace {
             font-size: 0.9rem;
         }
         span.def-bracket, span.def-dots, var.def-var-arguments {
@@ -273,17 +273,17 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
         span.angle-bracket {
             font-size: 1.12rem;
         }
-        span.category-def {
+        span.category-def, span.cdspace {
             font-family: monospace;
             font-size: 0.9rem;
         }
-        strong.def-name, code.def-code-arguments {
+        strong.def-name, code.def-code-arguments, span.dnspace {
             font-size: 1.06rem;
             span.r {
                 font-size: 1.06rem;
             }
         }
-        strong.def-name {
+        strong.def-name, span.dnspace {
             code.code, code.t {
                 font-size: 1.06rem;
                 span.r {
@@ -297,7 +297,7 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
         span.angle-bracket {
             font-size: 1.12rem;
         }
-        span.category-def {
+        span.category-def, span.cdspace {
             font-size: 0.9rem;
         }
         span.def-bracket, span.def-dots {
@@ -306,7 +306,7 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
         span.def-paren {
             font-size: 1.06rem;
         }
-        strong.def-name {
+        strong.def-name, span.dnspace {
             font-size: 1.06rem;
         }
     }
@@ -340,7 +340,7 @@ div.chapter-level-extent, div.unnumbered-level-extent {
 
 dl.first-defvr, dl.first-deftp, dl.first-deftypevr {
     dt {
-        strong.def-name {
+        strong.def-name, span.dnspace {
             font-family: initial;
         }
     }
@@ -401,7 +401,7 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
         align-content: center;
         padding-left: 0.3em;
         font-weight: normal;
-        strong.def-name {
+        strong.def-name, span.dnspace {
             font-weight: normal;
         }
     }
