@@ -1048,8 +1048,8 @@ p                  @lispnote{a promise, still}
        (force p))  @ok{6}
 @end lisp
 
-Various extensions to this semantics of delay, force and delay-force are
-supported in some implementations:
+Various extensions to this semantics of @code{delay}, @code{force}, and
+@code{delay-force} are supported in some implementations:
 
 @itemize @bullet
 @item

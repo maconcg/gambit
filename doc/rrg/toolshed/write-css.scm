@@ -304,7 +304,6 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
             font-family: initial;
         }
         span.def-paren {
-            font-family: monospace;
             font-size: 1.06rem;
         }
         strong.def-name {
@@ -420,7 +419,6 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
                 padding-left: 0.4rem;
                 span.unspecified, span.lisp-note {
                     font-family: initial;
-                    font-style: italic;
                 }
             }
         }

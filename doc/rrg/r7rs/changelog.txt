@@ -1,24 +1,36 @@
-The following logs cases in which I've chosen to change, rather than emulate,
-the official R7RS content:
+The following logs noteworthy cases in which I've chosen to change,
+rather than emulate, the official R7RS content:
 
-- Section 1.3.1: "The full list all the standard libraries and the identifiers
-  they export is given in Appendix A." -> "The full list of all the standard
-  libraries and the identifiers they export is given in Appendix A."
+- In examples, use the default Texinfo @result{} output (currently:
+  RIGHTWARDS DOUBLE ARROW, #\x21D2) where the original used the wider
+  LONG RIGHTWARDS DOUBLE ARROW, #\x27F9
 
-- Section 3.5: "A formal definition of proper tail recursion can be found in
-  [6]." -> "A formal definition of proper tail recursion can be found in Proper
-Tail Recursion and Space Efficiency." (plus a footnote)
-
-- Change all uses of two-l "labelled" to "labeled" (both are used in R7RS)
+- Change all uses of two-l "labelled" to "labeled" (original uses both
+  spellings)
 
 - Move double-quote characters from the right to the left of
   sentence-ending punctuation, like "this".
 
-- "<Clauses>" -> "<Clause>s" in section 4.2.1 (R7RS uses both forms)
+- Different alignment of example results when they look odd/unclear in
+  the R7RS pdf
 
-- Different alignment of example results when they look odd in the R7RS pdf
-
-- Section 4.2.6: "This sections" -> "This section"
+- Section 1.3.1: "The full list all the standard libraries and the
+  identifiers they export is given in Appendix A." -> "The full list
+  of all the standard libraries and the identifiers they export is
+  given in Appendix A."
 
 - Section 1.3.4: Add explanation of notation used to show printed
   output (for info/plaintext formats only)
+
+- Section 3.5: "A formal definition of proper tail recursion can be
+  found in [6]." -> "A formal definition of proper tail recursion can
+  be found in Proper Tail Recursion and Space Efficiency." (plus a
+  footnote)
+
+- Section 4.2.1: "<Clauses>" -> "<Clause>s" (R7RS uses both forms)
+
+- Section 4.2.5: Add Oxford comma for consistency (original: "Various
+  extensions to this semantics of delay, force and delay-force are
+  supported in...")
+
+- Section 4.2.6: "This sections" -> "This section"

@@ -39,8 +39,8 @@
                                           "@print{}}")
                            "output")
   (write-lisp-result-macro "problem" "@arrow{}" "problem")
-  (write-lisp-result-macro "unspecified" "@result{}" "unspecified")
-  (write-lisp-result-macro "unspecifiedtext" "" "unspecified")
+  (write-unspecified-macro "unspecified" "@result{}")
+  (write-unspecified-macro "unspecifiedtext" "")
   (write-visual-divider)
   (write-opt-macro)
   (write-defabbrev-macro)
@@ -118,7 +118,7 @@
                   ("shy" "@inlinefmt{html,@U{00AD}}")))
       (write-syntaxindent))))
 
-(define write-visual-divider 
+(define write-visual-divider
   (let ((cmnt "@comment "))
     (lambda (#!optional (char #\=) (full-length 79))
       (let loop ((chars '(#\newline)) (i (- full-length (string-length cmnt))))
@@ -240,6 +240,18 @@
                   "}}}}\n"
                   "@end macro\n")))
 
+(define (write-unspecified-macro macro-name pointer-glyph)
+  (write-string
+   (string-append "@macro "
+                  macro-name
+                  "{xx}\n"
+                  pointer-glyph
+                  (if (positive? (string-length pointer-glyph)) " " "")
+                  "@r{@i{@inlinefmtifelse{html,@inlineraw{html,<span class=\""
+                  "unspecified"
+                  "\">\\xx\\</span>},\\xx\\}}}\n"
+                  "@end macro\n")))
+
 (define (write-lisp-result-macro macro-name pointer-glyph class . postfix)
   (let ((postfix (if (null? postfix) "" (car postfix))))
     (write-string
@@ -284,25 +296,27 @@
                                "@end macro\n")))
 
 (define (write-angle-macro)
-  (write-string
-   (string-append "@macro angle {text}\n"
-                  "@nobr{@inlinefmtifelse{plaintext,"
-                  "<" "\\text\\" ">"
-                  ","
-                  "@inlinefmtifelse{info,"
-                  "<" "\\text\\" ">"
-                  ","
-                  "@inlinefmtifelse{html,"
-                  "@inlineraw{html,<span class=\"angle-bracket\">"
-                  "@U{2329}"
-                  "</span>}"
-                  "\\text\\"
-                  "@inlineraw{html,<span class=\"angle-bracket\">"
-                  "@U{232A}"
-                  "</span>}"
-                  ","
-                  "@U{2329}" "\\text\\" "@U{232A}"
-                  "}}}}\n@end macro\n")))
+  (let ((left-angle-bracket "@U{2329}" #;"@U{3008}")
+        (right-angle-bracket "@U{232A}" #;"@U{3009}"))
+    (write-string
+     (string-append "@macro angle {text}\n"
+                    "@nobr{@inlinefmtifelse{plaintext,"
+                    "@U{003C}" "\\text\\" "@U{003E}"
+                    ","
+                    "@inlinefmtifelse{info,"
+                    "@U{003C}" "\\text\\" "@U{003E}"
+                    ","
+                    "@inlinefmtifelse{html,"
+                    "@inlineraw{html,<span class=\"angle-bracket\">}"
+                    left-angle-bracket
+                    "@inlineraw{html,</span>}"
+                    "\\text\\"
+                    "@inlineraw{html,<span class=\"angle-bracket\">}"
+                    right-angle-bracket
+                    "@inlineraw{html,</span>}"
+                    ","
+                    left-angle-bracket "\\text\\" right-angle-bracket
+                    "}}}}\n@end macro\n"))))
 
 (define (write-longarrow-macro)
   (write-string (string-append "@macro longarrow {}\n"

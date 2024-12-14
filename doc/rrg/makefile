@@ -246,6 +246,12 @@ r7rs/r7rs.txi: ${r7rs-deps} ${adorn-lib} ${r7rs-annotated-prose} \
 		-e 's/^\(@include[[:blank:]]\{1,\}prose\/\)/\1a\//'\
 		r7rs/r7rs-pristine.txi > $@
 
+r7rs-plain.html: r7rs-pristine.html toolshed/asciify-html-brackets.sed
+	sed -f toolshed/asciify-html-brackets.sed r7rs-pristine.html > $@
+
+r7rs-plain-parens.html: r7rs-plain.html toolshed/parenthesize-html.sed
+	sed -f toolshed/parenthesize-html.sed r7rs-plain.html > $@
+
 r7rs-pristine.html: ${r7rs-deps}
 	cd r7rs &&\
 	texi2any -o - --html --no-split r7rs-pristine.txi > ../$@
