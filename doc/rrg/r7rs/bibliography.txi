@@ -16,7 +16,7 @@
 
 @set refMacrosThatWork William Clinger and Jonathan Rees.  @i{Macros that work}.  In @i{Proceedings of the 1991 ACM Conference on Principles of Programming Languages}, pages 155--162.
 
-@set refR4RS William Clinger and Jonathan Rees, editors.  @i{Revised@sup{4} Report on the Algorithmic Language Scheme}.  In @i{ACM Lisp Pointers}  4(3), pages 1--55, 1991.
+@set refR4RS William Clinger and Jonathan Rees, editors.  @i{@value{Revised4RS}}.  In @i{ACM Lisp Pointers}  4(3), pages 1--55, 1991.
 
 @set refUnicodeAnnex44 Mark Davis.  Unicode Standard Annex @hashchar{}44, @i{Unicode Character Database}.  @t{@url{https://unicode.org/reports/tr44/}}}, 2010.
 
@@ -36,7 +36,7 @@
 
 @set refSRFI9 Richard Kelsey.  @i{@acronym{SRFI} 9: Defining Record Types}.  @t{@url{http://srfi.schemers.org/srfi-9/}}, 1999.
 
-@set refR5RS Richard Kelsey, William Clinger, and Jonathan Rees, editors.  @i{Revised@sup{5} Report on the Algorithmic Language Scheme}.  @i{Higher-Order and Symbolic Computation}, Vol.@tie{}11, No.@tie{}1, August 1998.
+@set refR5RS Richard Kelsey, William Clinger, and Jonathan Rees, editors.  @i{@value{Revised5RS}}.  @i{Higher-Order and Symbolic Computation}, Vol.@tie{}11, No.@tie{}1, August 1998.
 
 @set refSyntacticExtensions Eugene E.@tie{}Kohlbecker Jr@.  @i{Syntactic Extensions in the Programming Language Lisp}.  Ph.D.@tie{}thesis, Indiana University, August 1986.
 
@@ -52,7 +52,7 @@
 
 @set refTManual Jonathan A.@tie{}Rees, Norman@tie{}I.@tie{}Adams@tie{}IV, and James@tie{}R.@tie{}Meehan.  @i{The T Manual, fourth edition}.  Yale University Computer Science Department, January 1984.
 
-@set refR3RS Jonathan Rees and William Clinger, editors.  @i{Revised@sup{3} Report on the Algorithmic Language Scheme}.  In @i{ACM SIGPLAN Notices} 21(12), pages 37--79, December 1986.
+@set refR3RS Jonathan Rees and William Clinger, editors.  @i{@value{Revised3RS}}.  In @i{ACM SIGPLAN Notices} 21(12), pages 37--79, December 1986.
 
 @set refSRFI1 Olin Shivers.  @i{@acronym{SRFI} 1: List Library}.  @t{@url{http://srfi.schemers.org/srfi-1/}}, 1999.
 
@@ -60,7 +60,7 @@
 
 @set refRabbit Guy Lewis Steele Jr@.  @i{@sc{RABBIT}: a compiler for @sc{SCHEME}}.  @i{MIT Artificial Intelligence Laboratory Technical Report 474}, May 1978.
 
-@set refR6RS Michael Sperber, R.@tie{}Kent Dybvig, Mathew Flatt, and Anton van Straaten, editors. @i{Revised@sup{6} Report on the Algorithmic Language Scheme}.  Cambridge University Press, 2010.
+@set refR6RS Michael Sperber, R.@tie{}Kent Dybvig, Mathew Flatt, and Anton van Straaten, editors. @i{@value{Revised6RS}}.  Cambridge University Press, 2010.
 
 @set refCommonLispTheLanguage Guy Lewis Steele Jr@.  @i{Common @sc{LISP}: The Language, second edition}.  Digital Press, Burlington MA, 1990.
 

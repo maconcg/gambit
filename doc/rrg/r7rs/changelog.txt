@@ -19,3 +19,6 @@ Tail Recursion and Space Efficiency." (plus a footnote)
 - Different alignment of example results when they look odd in the R7RS pdf
 
 - Section 4.2.6: "This sections" -> "This section"
+
+- Section 1.3.4: Add explanation of notation used to show printed
+  output (for info/plaintext formats only)

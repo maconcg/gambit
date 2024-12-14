@@ -7,7 +7,7 @@ GSI ?= gsi
 SCM ?= toolshed/examples/gauntlet.scm
 
 html-common-deps = gambit.txi procedures/a/pairs-lists.txi \
- procedures/a/strings.txi toolshed/parenthesize-defs.sed
+ procedures/a/strings.txi toolshed/parenthesize-html.sed
 
 src-lib = ../../lib
 lib-samples = _eval _io _kernel _module _nonstd _num _system _thread syntax-case sys
@@ -54,8 +54,9 @@ adorn-lib = toolshed/adorn/adorn.sld toolshed/adorn/adornment.scm \
  toolshed/adorn/symmetric-mesg-handlers.scm
 
 clean:
-	rm -f *.html *.info *.tgz gambit.{txi,txt} toolshed/*.css toolshed/*.html\
-		toolshed/macros+vars.txi
+	rm -f *.html *.tgz {gambit,r7rs}.{info,txi,txt} toolshed/*.css \
+		toolshed/*.html toolshed/macros+vars.txi r7rs/r7rs.txi \
+		r7rs/r7rs-pristine.{info,txt}
 	rm -f -r procedures/a/ html-modules/ html-modules-cm/ \
 		r7rs/procedures/a/ r7rs/prose/a/
 
@@ -170,7 +171,7 @@ html-modules: ${html-common-deps} toolshed/gambit.css
 		texi2any -o $$tmp --html --css-include=toolshed/gambit.css\
 			gambit.txi &&\
 		for f in $$tmp/*.html; do\
-			sed -f toolshed/parenthesize-defs.sed "$$f"\
+			sed -f toolshed/parenthesize-html.sed "$$f"\
 				> html-modules/"$${f##*/}";\
 		done;\
 	}
@@ -182,18 +183,18 @@ html-modules-cm: ${html-common-deps} toolshed/gambit.cm.css
 		texi2any -o $$tmp --html --css-include=toolshed/gambit.cm.css\
 			gambit.txi &&\
 		for f in $$tmp/*.html; do\
-			sed -f toolshed/parenthesize-defs.sed "$$f"\
+			sed -f toolshed/parenthesize-html.sed "$$f"\
 				> html-modules-cm/"$${f##*/}";\
 		done;\
 	}
 
 gambit.html: ${html-common-deps} toolshed/gambit.css
 	texi2any -o - --html --no-split --css-include=toolshed/gambit.css \
-		gambit.txi | sed -f toolshed/parenthesize-defs.sed > $@
+		gambit.txi | sed -f toolshed/parenthesize-html.sed > $@
 
 gambit.cm.html: ${html-common-deps} toolshed/gambit.cm.css
 	texi2any -o - --html --no-split --css-include=toolshed/gambit.cm.css \
-		gambit.txi | sed -f toolshed/parenthesize-defs.sed > $@
+		gambit.txi | sed -f toolshed/parenthesize-html.sed > $@
 
 gambit.txi: gambit-pristine.txi procedures/a/pairs-lists.txi \
             procedures/a/strings.txi
@@ -238,11 +239,6 @@ r7rs/prose/a/standard-procedures.txi: toolshed/annotate-txi.scm \
  r7rs/prose/standard-procedures.txi
 	readonly txi=standard-procedures.txi && ${annotate-r7rs-prose-file}
 
-r7rs.html: r7rs/r7rs.txi toolshed/gambit.css toolshed/parenthesize-defs.sed
-	cd r7rs &&\
-	texi2any -o - --html --no-split --css-include=../toolshed/gambit.css \
-		r7rs.txi | sed -f ../toolshed/parenthesize-defs.sed > ../$@
-
 r7rs/r7rs.txi: ${r7rs-deps} ${adorn-lib} ${r7rs-annotated-prose} \
  r7rs/r7rs-pristine.txi r7rs/procedures/a/equivalence-predicates.txi \
  toolshed/annotate-txi.scm
@@ -254,10 +250,21 @@ r7rs-pristine.html: ${r7rs-deps}
 	cd r7rs &&\
 	texi2any -o - --html --no-split r7rs-pristine.txi > ../$@
 
-r7rs.info:${r7rs-deps} r7rs/r7rs.txi
+r7rs.html: r7rs/r7rs.txi toolshed/gambit.css toolshed/parenthesize-html.sed
+	cd r7rs &&\
+	texi2any -o - --html --no-split --css-include=../toolshed/gambit.css \
+		r7rs.txi | sed -f ../toolshed/parenthesize-html.sed > ../$@
+
+r7rs/r7rs-pristine.info: ${r7rs-deps}
 	cd r7rs &&\
 	texi2any -o - --info --no-split r7rs-pristine.txi > ../$@;
 
-r7rs.txt: ${r7rs-deps} r7rs/r7rs.txi
+r7rs.info: r7rs/r7rs-pristine.info toolshed/parenthesize-info.sed
+	sed -E -f toolshed/parenthesize-info.sed r7rs/r7rs-pristine.info > $@;
+
+r7rs/r7rs-pristine.txt: ${r7rs-deps}
 	cd r7rs &&\
 	texi2any -o - --plaintext --no-split r7rs-pristine.txi > ../$@;
+
+r7rs.txt: r7rs/r7rs-pristine.txt toolshed/parenthesize-info.sed
+	sed -E -f toolshed/parenthesize-info.sed r7rs/r7rs-pristine.txt > $@;

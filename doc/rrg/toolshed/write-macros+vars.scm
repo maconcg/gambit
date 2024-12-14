@@ -23,9 +23,6 @@
               ("varn" "N" "@U{2099}" "n")
               ("varnplusone" "N+1" "@U{2099}@U{208A}@U{2081}" "n+1")))
   (write-visual-divider)
-  (write-lisp-result-macro "exception" "@arrow{}" "exception" " exception")
-  (write-lisp-result-macro "ok" "@result{}" "ok")
-  (write-lisp-result-macro "lispnote" "@result{}" "lisp-note")
   (write-lisp-result-macro "andprints"
                            (string-append "@r{@i{"
                                           "@inlinefmt{html,@inlineraw{html,"
@@ -34,6 +31,13 @@
                                           "@inlinefmt{html,@inlineraw{html,"
                                           "</span>}}}}")
                            "and-prints")
+  (write-lisp-result-macro "exception" "@arrow{}" "exception" " exception")
+  (write-lisp-result-macro "lispnote" "@result{}" "lisp-note")
+  (write-lisp-result-macro "ok" "@result{}" "ok")
+  (write-lisp-result-macro "output"
+                           (string-append "@inlinefmtifelse{html,@U{22A3},"
+                                          "@print{}}")
+                           "output")
   (write-lisp-result-macro "problem" "@arrow{}" "problem")
   (write-lisp-result-macro "unspecified" "@result{}" "unspecified")
   (write-lisp-result-macro "unspecifiedtext" "" "unspecified")
@@ -46,6 +50,7 @@
   (write-ht-macro)
   (write-todo-macro)
   (write-quotedbl-macro)
+  (write-quotecode-macro)
   (write-angle-macro)
   (write-longarrow-macro)
   (write-nobr-macro)
@@ -56,7 +61,27 @@
   (write-vars))
 
 (define write-vars
-  (let ((write-set
+  (let ((write-r2rs
+         (lambda ()
+           (write-string "@set R2RS @acronym{RRRS}\n")))
+        (write-RevisednRS
+         (lambda (n superscript)
+           (write-string
+            (string-append "@set Revised" n
+                           "RS @inlinefmtifelse{plaintext,Revised^" n
+                           ",@inlinefmtifelse{info,Revised" superscript
+                           ",Revised@sup{" (string-downcase n)
+                           "}}} "
+                           "Report on the Algorithmic Language Scheme\n"))))
+        (write-RnRS
+         (lambda (n superscript)
+           (write-string
+            (string-append "@set R" n
+                           "RS @inlinefmtifelse{plaintext,@acronym{R" n
+                           "RS},@inlinefmtifelse{info,@acronym{R" superscript
+                           "RS},@acronym{R@sup{" (string-downcase n)
+                           "}RS}}}\n"))))
+        (write-set
          (lambda (flag/value)
            (write-string
             (string-append "@set "
@@ -64,26 +89,34 @@
                            " "
                            (cadr flag/value)
                            "\n"))))
-        (write-rnrs
-         (lambda (n)
-           (write-string
-            (string-append "@set R" n
-                           "RS @inlinefmtifelse{info,@acronym{R" n
-                           "RS},@inlinefmtifelse{plaintext,@acronym{R" n
-                           "RS},@acronym{R@sup{" (string-downcase n)
-                           "}RS}}}\n"))))
-        (write-r2rs
+        (write-syntaxindent
          (lambda ()
-           (write-string "@set R2RS @acronym{RRRS}\n"))))
+           (write-string
+            (string-append "@set syntaxindent "
+                           "@inlinefmtifelse{plaintext,@ ,"
+                           "@inlinefmtifelse{info,@ ,"
+                           "@inlinefmtifelse{html,@ @ @ @ @ @ ,"
+                           ",}}}\n")))))
     (lambda ()
+      (write-r2rs)
+      (write-RevisednRS "3" "@U{00B3}")
+      (write-RevisednRS "4" "@U{2074}")
+      (write-RevisednRS "5" "@U{2075}")
+      (write-RevisednRS "6" "@U{2076}")
+      (write-RevisednRS "7" "@U{2077}")
+      (write-RnRS "3" "@U{00B3}")
+      (write-RnRS "4" "@U{2074}")
+      (write-RnRS "5" "@U{2075}")
+      (write-RnRS "6" "@U{2076}")
+      (write-RnRS "7" "@U{2077}")
+      (write-RnRS "N" "@U{207f}")
       (for-each write-set
                 '(("REVISION" "Revised")
                   ("VERSION" "4.9.5")
                   ("HOMEPAGEURL" "https://gambitscheme.org")
                   ("GITHUBURL" "https://github.com/gambit/gambit")
                   ("shy" "@inlinefmt{html,@U{00AD}}")))
-      (for-each write-rnrs '("7" "6" "5" "4" "3" "N"))
-      (write-r2rs))))
+      (write-syntaxindent))))
 
 (define write-visual-divider 
   (let ((cmnt "@comment "))
@@ -250,6 +283,55 @@
                                ",\\p\\}\n"
                                "@end macro\n")))
 
+(define (write-angle-macro)
+  (write-string
+   (string-append "@macro angle {text}\n"
+                  "@nobr{@inlinefmtifelse{plaintext,"
+                  "<" "\\text\\" ">"
+                  ","
+                  "@inlinefmtifelse{info,"
+                  "<" "\\text\\" ">"
+                  ","
+                  "@inlinefmtifelse{html,"
+                  "@inlineraw{html,<span class=\"angle-bracket\">"
+                  "@U{2329}"
+                  "</span>}"
+                  "\\text\\"
+                  "@inlineraw{html,<span class=\"angle-bracket\">"
+                  "@U{232A}"
+                  "</span>}"
+                  ","
+                  "@U{2329}" "\\text\\" "@U{232A}"
+                  "}}}}\n@end macro\n")))
+
+(define (write-longarrow-macro)
+  (write-string (string-append "@macro longarrow {}\n"
+                               "@inlinefmtifelse{info,==>,"
+                               "@inlinefmtifelse{plaintext,==>,"
+                               "@U{27F6}}}\n"
+                               "@end macro\n")))
+
+(define (write-sv-macro) ; sv ==> "syntactic variable"
+  (write-string (string-append "@macro sv {v}\n"
+                               "@r{@angle{\\v\\}}\n"
+                               "@end macro\n")))
+
+(define (write-quotedbl-macro)
+  (write-string
+   (string-append "@macro quotedbl {text}\n"
+                  "@inlinefmtifelse{tex,``\\text\\'',"
+                  "@inlinefmtifelse{latex,``\\text\\'',"
+                  "@quotedblleft{}\\text\\@quotedblright{}}}\n"
+                  "@end macro\n")))
+
+(define (write-quotecode-macro)
+  (write-string
+   (string-append "@macro quotecode {text}\n"
+                  "@inlinefmtifelse{plaintext,@code{\\text\\},"
+                  "@inlinefmtifelse{info,@code{\\text\\},"
+                  "@quotedbl{@t{\\text\\}}}}\n"
+                  "@end macro\n")))
+
 (define (write-opt-macro)
   (write-string #<<EOF
 @rmacro opt {arg}
@@ -267,57 +349,6 @@ EOF
 
 EOF
 ))
-
-(define (write-quotedbl-macro)
-  (write-string #<<EOF
-@macro quotedbl {text}
-@inlinefmtifelse{tex,``\text\'',@quotedblleft{}\text\@quotedblright{}}
-@end macro
-
-EOF
-))
-
-;; (define (write-angle-macro)
-;;   (write-string #<<EOF
-;; @macro angle {text}
-;; @inlinefmtifelse{info,<\text\>,@inlinefmtifelse{plaintext,x\text\f,@U{3008}\text\@U{3009}}}
-;; @end macro
-
-;; EOF
-;; ))
-
-(define (write-angle-macro)
-  (write-string
-   (string-append "@macro angle {text}\n"
-                  "@inlinefmtifelse{plaintext,"
-                  "<" "\\text\\" ">"
-                  ","
-                  "@inlinefmtifelse{info,"
-                  "<" "\\text\\" ">"
-                  ","
-                  "@inlinefmtifelse{html,"
-                  "@inlineraw{html,<span class=\"angle-bracket\">"
-                  "@U{2329}"
-                  "</span>}"
-                  "\\text\\"
-                  "@inlineraw{html,<span class=\"angle-bracket\">"
-                  "@U{232A}"
-                  "</span>}"
-                  ","
-                  "@U{2329}" "\\text\\" "@U{232A}"
-                  "}}}\n@end macro\n")))
-
-(define (write-longarrow-macro)
-  (write-string (string-append "@macro longarrow {}\n"
-                               "@inlinefmtifelse{info,==>,"
-                               "@inlinefmtifelse{plaintext,==>,"
-                               "@U{27F6}}}\n"
-                               "@end macro\n")))
-
-(define (write-sv-macro) ; sv ==> "syntactic variable"
-  (write-string (string-append "@macro sv {v}\n"
-                               "@r{@angle{\\v\\}}\n"
-                               "@end macro\n")))
 
 (define (write-nobr-macro)
 (write-string #<<EOF

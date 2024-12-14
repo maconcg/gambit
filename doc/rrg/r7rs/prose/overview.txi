@@ -61,11 +61,11 @@ notation for programs and other data; the grammar of Scheme generates a
 sublanguage of the language used for data.  An important consequence of
 this simple, uniform representation is that Scheme programs and data can
 easily be treated uniformly by other Scheme programs.  For example, the
-@t{eval} procedure evaluates a Scheme program expressed as data.
+@code{eval} procedure evaluates a Scheme program expressed as data.
 
-The @t{read} procedure performs syntactic as well as lexical
-decomposition of the data it reads.  The @t{read} procedure parses its
-input as data, not as program.@c(section 7.1.2)
+The @code{read} procedure performs syntactic as well as lexical
+decomposition of the data it reads.  The @code{read} procedure parses
+its input as data, not as program.@c(section 7.1.2)
 
 The formal syntax of Scheme is described in section 7.1.
 
@@ -85,6 +85,7 @@ The full list of all the standard libraries and the identifiers they
 export is given in Appendix A.
 
 All implementations of Scheme:
+
 @itemize @bullet
 @item
 Must provide the base library and all the identifiers exported from it.
@@ -246,55 +247,77 @@ example, the header line for @nobr{@code{vector-ref}} given above
 dictates that the first argument to @nobr{@code{vector-ref}} is a
 vector.  The following naming conventions also imply type restrictions:
 
-@table @var
+@table @i
 @item alist
 association list (list of pairs)
+
 @item boolean
 boolean value (@code{#t} or @code{#f})
+
 @item byte
 exact integer 0 @leq{} @var{byte} < 256
+
 @item bytevector
 bytevector
+
 @item char
 character
+
 @item end
 exact non-negative integer
+
 @item k, @pari{k}, @defdots{} @parj{k}, @defdots{}
 exact non-negative integer
+
 @item letter
 alphabetic character
+
 @item list, @pari{list}, @defdots{} @parj{list}, @defdots{}
 list (see section 6.4)
+
 @item n, @pari{n}, @defdots{} @parj{n}, @defdots{}
 integer
+
 @item obj
 any object
+
 @item pair
 pair
+
 @item proc
 procedure
+
 @item q, @pari{q}, @defdots{} @parj{q}, @defdots{}
 rational number
+
 @item start
 exact non-negative integer
+
 @item string
 string
+
 @item symbol
 symbol
+
 @item thunk
 zero-argument procedure
+
 @item vector
 vector
+
 @item x, @pari{x}, @defdots{} @parj{x}, @defdots{}
 real number
+
 @item y, @pari{y}, @defdots{} @parj{y}, @defdots{}
 real number
+
 @item z, @pari{z}, @defdots{} @parj{z}, @defdots{}
 complex number
 @end table
 
-The names @var{start} and @var{end} are used as indexes into strings,
+The names @dfn{start} and @dfn{end} are used as indexes into strings,
 vectors, and bytevectors.  Their use implies the following:
+
 @itemize @bullet
 @item
 It is an error if @var{start} is greater than @var{end}.
@@ -328,28 +351,42 @@ The symbol @quotedbl{@t{@result{}}} in program examples is read
 (* 5 8) @ok{40}
 @end lisp
 
-means that the expression @t{(* 5 8)} evaluates to the object @t{40}.
-Or, more precisely: the expression given by the sequence of characters
-@quotedbl{@t{(* 5 8)}} evaluates, in an environment containing the base
-library, to an object that can be represented externally by the sequence
-of characters @quotedbl{@t{40}}.  See section 3.3 for a discussion of
-external representations of objects.
+means that the expression @code{(* 5 8)} evaluates to the object
+@code{40}.  Or, more precisely: the expression given by the sequence of
+characters @quotecode{(* 5 8)} evaluates, in an environment containing
+the base library, to an object that can be represented externally by the
+sequence of characters @quotedbl{@t{40}}.  See section 3.3 for a
+discussion of external representations of objects.
 
+@ifinfo
+The symbol @quotedbl{@t{@print{}}} in program examples is read
+@quotedbl{prints}.  For example,
+
+@lisp
+(display (* 5 8)) @output{40}
+                  @unspecified{unspecified}
+@end lisp
+
+means that the expression @code{(display (* 5 8))} prints the sequence
+of characters @quotedbl{@t{40}} to the current output port and evaluates
+to an unspecified value.
+
+@end ifinfo
 @node Naming conventions
 @subsection Naming conventions
 
-By convention, @t{?} is the final character of the names of procedures
-that always return a boolean value.  Such procedures are called
-@dfn{predicates}.  Predicates are generally understood to be side-effect
-free, except that they may raise an exception when passed the wrong type
-of argument.
+By convention, @code{?} is the final character of the names of
+procedures that always return a boolean value.  Such procedures are
+called @dfn{predicates}.  Predicates are generally understood to be
+side-effect free, except that they may raise an exception when passed
+the wrong type of argument.
 
-Similarly, @t{!} is the final character of the names of procedures that
-store values into previously allocated locations (see section 3.4).
+Similarly, @code{!} is the final character of the names of procedures
+that store values into previously allocated locations (see section 3.4).
 Such procedures are called @dfn{mutation procedures}.  The value
 returned by a mutation procedure is unspecified.
 
-By convention, @quotedbl{@t{->}} appears within the names of procedures
+By convention, @quotecode{->} appears within the names of procedures
 that take an object of one type and return an analogous object of
 another type.  For example, @code{list->vector} takes a list and returns
 a vector whose elements are the same as those of the list.

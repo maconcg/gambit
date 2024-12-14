@@ -12,8 +12,8 @@ Scheme, see section 7.1.
 
 An identifier is any sequence of letters, digits, and @quotedbl{extended
 identifier characters} provided that it does not have a prefix which is
-a valid number.  However, the @t{.} token (a single period) used in the
-list syntax is not an identifier.
+a valid number.  However, the @code{.} token (a single period) used in
+the list syntax is not an identifier.
 
 All implementations of Scheme must support the following extended identifier
 characters:
@@ -23,25 +23,25 @@ characters:
 @end lisp
 
 Alternatively, an identifier can be represented by a sequence of zero or
-more characters enclosed within vertical lines (@t{|}), analogous to
+more characters enclosed within vertical lines (@code{|}), analogous to
 string literals.  Any character, including whitespace characters, but
 excluding the backslash and vertical line characters, can appear
 verbatim in such an identifier.  In addition, characters can be
 specified using either an @angle{inline hex escape} or the same escapes
 available in strings.
 
-For example, the identifier @ht{|H\x65;llo|} is the same identifier as
-@t{Hello}, and in an implementation that supports the appropriate
-Unicode character the identifier @ht{|\x3BB;|} is the same as the
-identifier @t{@U{03BB}}.  What is more, @ht{|\t\t|} and @ht{|\x9;\x9;|}
-are the same. Note that @t{||} is a valid identifier that is different
-from any other identifier.
+For example, the identifier @hc{|H\x65;llo|} is the same identifier as
+@code{Hello}, and in an implementation that supports the appropriate
+Unicode character the identifier @hc{|\x3BB;|} is the same as the
+identifier @code{@U{03BB}}.  What is more, @hc{|\t\t|} and
+@hc{|\x9;\x9;|} are the same. Note that @code{||} is a valid identifier
+that is different from any other identifier.
 
 Here are some examples of identifiers:
 
 @lisp
-...                      +@*
-+soup+                   <=?@*
+...                      +
++soup+                   <=?
 .>string                 a34kTMNs
 lambda                   list->vector
 q                        V17a
@@ -52,6 +52,7 @@ the-word-recursion-has-many-meanings
 See section 7.1.1 for the formal syntax of identifiers.
 
 Identifiers have two uses within Scheme programs:
+
 @itemize @bullet
 @item
 Any identifier can be used as a variable or as a syntactic keyword (see
@@ -73,6 +74,7 @@ so as a result of the English-language convention of capitalizing the
 first word of a sentence.
 
 The following directives give explicit control over case folding.
+
 @example
 #!fold-case
 #!no-fold-case
@@ -81,11 +83,11 @@ The following directives give explicit control over case folding.
 These directives can appear anywhere comments are permitted (see section
 2.2) but must be followed by a delimiter.  They are treated as comments,
 except that they affect the reading of subsequent data from the same
-port.  The @t{#!fold-case} directive causes subsequent identifiers and
-character names to be case-folded as if by @code{string-foldcase} (see
-section 6.7). It has no effect on character literals.  The
-@t{#!no-fold-case} directive causes a return to the default, non-folding
-behavior.
+port.  The @code{#!fold-case} directive causes subsequent identifiers
+and character names to be case-folded as if by @code{string-foldcase}
+(see section 6.7). It has no effect on character literals.  The
+@code{#!no-fold-case} directive causes a return to the default,
+non-folding behavior.
 
 @node Whitespace and comments
 @section Whitespace and comments
@@ -102,15 +104,16 @@ inside a symbol delimited by vertical lines is significant.
 The lexical syntax includes several comment forms.  Comments are treated
 exactly like whitespace.
 
-A semicolon (@t{;}) indicates the start of a line comment.  The comment
-continues to the end of the line on which the semicolon appears.
+A semicolon (@code{;}) indicates the start of a line comment.  The
+comment continues to the end of the line on which the semicolon appears.
 Another way to indicate a comment is to prefix a @angle{datum}
-(cf. section 7.1.2) with @t{@hashchar{};} and optional
+(cf. section 7.1.2) with @code{@hashchar{};} and optional
 @angle{whitespace}.  The comment consists of the comment prefix
-@t{@hashchar{};}, the space, and the @angle{datum} together.  This
+@code{@hashchar{};}, the space, and the @angle{datum} together.  This
 notation is useful for @quotedbl{commenting out} sections of code.
 
-Block comments are indicated with properly nested @t{@hashchar{}|} and @t{|@hashchar{}} pairs.
+Block comments are indicated with properly nested
+@code{@hashchar{}@U{007C}} and @code{@U{007C}@hashchar{}} pairs.
 
 @lisp
 #|
@@ -172,18 +175,18 @@ character that immediately follows it:
 
 @item @hashchar{}t @hashchar{}f
 These are the boolean constants (section 6.3), along with the
-alternatives @t{@hashchar{}true} @t{@hashchar{}false}.
+alternatives @code{@hashchar{}true} @code{@hashchar{}false}.
 
 @item @hashchar{}@backslashchar{}
 This introduces a character constant (section 6.6).
 
 @item @hashchar{}(
 This introduces a vector constant (section 6.8).  Vector constants are
-terminated by @t{)} .
+terminated by @code{)} .
 
 @item @hashchar{}u8(
 This introduces a bytevector constant (section 6.8).  Bytevector
-constants are terminated by @t{)} .
+constants are terminated by @code{)} .
 
 @item @hashchar{}e @hashchar{}i @hashchar{}b @hashchar{}o @hashchar{}d @hashchar{}x
 These are used in the notation for numbers (section 6.2.5).
@@ -225,7 +228,7 @@ labeled by @prosedatumlabel{n} is not well defined in this case.
 
 It is an error for a @angle{program} or @angle{library} to include
 circular references except in literals.  In particular, it is an error
-for @t{quasiquote} (section 4.2.8) to contain them.
+for @code{quasiquote} (section 4.2.8) to contain them.
 
 @lisp
 #1=(begin (display #\x) #1#) @lispnote{error}

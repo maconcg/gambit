@@ -151,10 +151,12 @@ END
 (define examples-noncolor-css #<<END
 code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
     font-size: 1rem;
-    span.atmosphere, span.dsssl, span.and-prints { font-style: oblique }
+    span.and-prints, span.atmosphere, span.dsssl, span.output {
+        font-style: oblique;
+    }
     span.char-body, span.def-like-esc, span.ident-esc, span.let-like-esc,
       span.string-esc, span.syntax-esc {
-        font-weight: bold
+        font-weight: bold;
     }
 }
 
@@ -219,9 +221,10 @@ dl.first-deffn, dl.first-deftypefn, dl.first-deftypevr, dl.first-defblock {
 }
 
 dd pre.lisp-preformatted {
+    span.and-prints {color: <and-prints>}
     span.exception {color: <exception>}
     span.lisp-note {color: <lisp-note>}
-    span.and-prints {color: <and-prints>}
+    span.output {color: <output>}
     span.unspecified {color: <unspecified>}
 }
 
@@ -575,6 +578,7 @@ END
     (( link )                       'fg-alt)
     (( link-visited )               'fg-alt)
     (( lisp-note )                  'fg-main)
+    (( output )                     'fg-main)
     (( problem )                    'bg-yellow-intense)
     (( todo )                       'bg-red-intense)
     (( unspecified )                'fg-dim)

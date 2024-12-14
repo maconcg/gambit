@@ -24,5 +24,7 @@ r7rs*.html
 r7rs*.txt
 r7rs.epub
 r7rs/r7rs.txi
+r7rs/r7rs-pristine.info
+r7rs/r7rs-pristine.txt
 r7rs/procedures/a/
 r7rs/prose/a/

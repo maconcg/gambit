@@ -9,7 +9,7 @@ An identifier can name either a type of syntax or a location where a
 value can be stored.  An identifier that names a type of syntax is
 called a @dfn{syntactic keyword} and is said to be @dfn{bound} to a
 transformer for that syntax.  An identifier that names a location is
-called a @dfn{variable} and is said to be @i{bound} to that location.
+called a @dfn{variable} and is said to be @dfn{bound} to that location.
 The set of all visible bindings in effect at some point in a program is
 known as the @dfn{environment} in effect at that point.  The value
 stored in the location to which a variable is bound is called the
@@ -33,19 +33,20 @@ Scheme is a language with block structure.  To each place where an
 identifier is bound in a program there corresponds a @dfn{region} of the
 program text within which the binding is visible.  The region is
 determined by the particular binding construct that establishes the
-binding; if the binding is established by a @t{lambda} expression, for
-example, then its region is the entire @t{lambda} expression.  Every
-mention of an identifier refers to the binding of the identifier that
-established the innermost of the regions containing the use.  If there
-is no binding of the identifier whose region contains the use, then the
-use refers to the binding for the variable in the global environment, if
-any (chapters 4 and 6); if there is no binding for the identifier, it is
-said to be @dfn{unbound}.
+binding; if the binding is established by a @code{lambda} expression,
+for example, then its region is the entire @code{lambda} expression.
+Every mention of an identifier refers to the binding of the identifier
+that established the innermost of the regions containing the use.  If
+there is no binding of the identifier whose region contains the use,
+then the use refers to the binding for the variable in the global
+environment, if any (chapters 4 and 6); if there is no binding for the
+identifier, it is said to be @dfn{unbound}.
 
 @node Disjointness of types
 @section Disjointness of types
 
 No object satisfies more than one of the following predicates:
+
 @lisp
 boolean?          bytevector?
 char?             eof-object?
@@ -54,7 +55,8 @@ pair?             port?
 procedure?        string?
 symbol?           vector?
 @end lisp
-and all predicates created by @t{define-record-type}.
+
+and all predicates created by @code{define-record-type}.
 
 These predicates define the types @i{boolean}, @i{bytevector},
 @i{character}, the empty list object, @i{eof-object}, @i{number},
@@ -64,8 +66,9 @@ and all record types.
 Although there is a separate boolean type, any Scheme value can be used
 as a boolean value for the purpose of a conditional test.  As explained
 in section 6.3, all values count as true in such a test except for
-@t{#f}. This report uses the word @quotedbl{true} to refer to any Scheme
-value except @t{#f}, and the word @quotedbl{false} to refer to @t{#f}.
+@code{#f}. This report uses the word @quotedbl{true} to refer to any
+Scheme value except @code{#f}, and the word @quotedbl{false} to refer to
+@code{#f}.
 
 @node External representations
 @section External representations
@@ -78,34 +81,35 @@ consisting of the integers 8 and 13 is the sequence of characters
 @quotedbl{@t{(8 13)}}.
 
 The external representation of an object is not necessarily unique.  The
-integer 28 also has representations @quotedbl{@t{#e28.000}} and
-@t{#x1c}, and the list in the previous paragraph also has the
-representations @quotedbl{@t{( 08 13 )}} and @quotedbl{@t{(8 . (13
-. ()))}} (see section 6.4).
+integer 28 also has representations @quotecode{#e28.000} and
+@quotecode{#x1c}, and the list in the previous paragraph also has the
+representations @quotecode{( 08 13 )} and @quotecode{(8 . (13 . ()))}
+(see section 6.4).
 
 Many objects have standard external representations, but some, such as
 procedures, do not have standard representations (although particular
 implementations may define representations for them).
 
 An external representation can be written in a program to obtain the
-corresponding object (see @t{quote}, section 4.1.2).
+corresponding object (see @code{quote}, section 4.1.2).
 
 External representations can also be used for input and output.  The
-procedure @t{read} (section 6.13.2) parses external representations, and
-the procedure @t{write} (section 6.13.3) generates them.  Together, they
-provide an elegant and powerful input/output facility.
+procedure @code{read} (section 6.13.2) parses external representations,
+and the procedure @code{write} (section 6.13.3) generates them.
+Together, they provide an elegant and powerful input/output facility.
 
 Note that the sequence of characters @quotedbl{@t{(+ 2 6)}} is
 @emph{not} an external representation of the integer 8, even though it
 @emph{is} an expression evaluating to the integer 8; rather, it is an
 external representation of a three-element list, the elements of which
-are the symbol @t{+} and the integers 2 and 6.  Scheme's syntax has the
-property that any sequence of characters that is an expression is also
-the external representation of some object.  This can lead to confusion,
-since it is not always obvious out of context whether a given sequence
-of characters is intended to denote data or program, but it is also a
-source of power, since it facilitates writing programs such as
-interpreters and compilers that treat programs as data (or vice versa).
+are the symbol @code{+} and the integers @code{2} and @code{6}.
+Scheme's syntax has the property that any sequence of characters that is
+an expression is also the external representation of some object.  This
+can lead to confusion, since it is not always obvious out of context
+whether a given sequence of characters is intended to denote data or
+program, but it is also a source of power, since it facilitates writing
+programs such as interpreters and compilers that treat programs as data
+(or vice versa).
 
 The syntax of external representations of various kinds of objects
 accompanies the description of the primitives for manipulating the
@@ -205,8 +209,8 @@ expression.
 
 @itemize @bullet
 @item
-The last expression within the body of a @t{lambda} expression, shown as
-@angle{tail expression} below, occurs in a tail context.  The same is
+The last expression within the body of a @code{lambda} expression, shown
+as @angle{tail expression} below, occurs in a tail context.  The same is
 true of all the bodies of @code{case-lambda} expressions.
 
 @example grammar
@@ -269,8 +273,8 @@ Only those rules that contain tail contexts are shown here.
 @end example
 
 @item
-If a @t{cond} or @t{case} expression is in a tail context, and has a
-clause of the form @t{(@sv{@pari{expression}} =>
+If a @code{cond} or @code{case} expression is in a tail context, and has
+a clause of the form @t{(@sv{@pari{expression}} =>
 @sv{@parii{expression}})} then the (implied) call to the procedure that
 results from the evaluation of @angle{@parii{expression}} is in a tail
 context.  @angle{@parii{expression}} itself is not in a tail context.
@@ -283,9 +287,10 @@ tail calls.  The first argument passed to @code{apply} and to
 @code{eval} must must evaluate its first argument as if it were in tail
 position within the @code{eval} procedure.
 
-In the following example the only tail call is the call to @t{f}.  None
-of the calls to @t{g} or @t{h} are tail calls.  The reference to @t{x}
-is in a tail context, but it is not a call and thus is not a tail call.
+In the following example the only tail call is the call to @code{f}.
+None of the calls to @code{g} or @code{h} are tail calls.  The reference
+to @code{x} is in a tail context, but it is not a call and thus is not a
+tail call.
 
 @lisp
 (lambda ()
@@ -297,10 +302,10 @@ is in a tail context, but it is not a call and thus is not a tail call.
 
 @quotation
 @i{Note:} Implementations may recognize that some non-tail calls, such
-as the call to @t{h} above, can be evaluated as though they were tail
-calls.  In the example above, the @t{let} expression could be compiled
-as a tail call to @t{h}.  (The possibility of @t{h} returning an
-unexpected number of values can be ignored, because in that case the
-effect of the @t{let} is explicitly unspecified and
+as the call to @code{h} above, can be evaluated as though they were tail
+calls.  In the example above, the @code{let} expression could be
+compiled as a tail call to @code{h}.  (The possibility of @code{h}
+returning an unexpected number of values can be ignored, because in that
+case the effect of the @code{let} is explicitly unspecified and
 implementation-dependent.)
 @end quotation
