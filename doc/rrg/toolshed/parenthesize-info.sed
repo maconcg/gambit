@@ -1,5 +1,5 @@
 # Copyright (c) 2024 by Macon Gambill, all rights reserved.
-/^ -- ([-!#$%&*+./:<=>?@^_~[:alpha:]]+ library )?(procedure|syntax): [-!#$%&*+./:<=>?@^_~[:alpha:]]/,/^$/ {
+/^ -- ([-!#$%&*+./:<=>?@^_~[:alnum:]]+ library )?(procedure|syntax): [-!#$%&*+./:<=>?@^_~[:alnum:]]/,/^$/ {
   /^($| {5,9}[[:graph:]]| -- auxiliary syntax: )/ {
     x
     /^$/ {
@@ -16,8 +16,8 @@
     H
     d
   }
-  /^ -- ([-!#$%&*+./:<=>?@^_~[:alpha:]]+ library )?(procedure|syntax): [-!#$%&*+./:<=>?@^_~[:alpha:]]/ {
-    s/^ -- ([-!#$%&*+./:<=>?@^_~[:alpha:]]+ library )?(procedure|syntax): /&\(/
+  /^ -- ([-!#$%&*+./:<=>?@^_~[:alnum:]]+ library )?(procedure|syntax): [-!#$%&*+./:<=>?@^_~[:alnum:]]/ {
+    s/^ -- ([-!#$%&*+./:<=>?@^_~[:alnum:]]+ library )?(procedure|syntax): /&\(/
     x
     /^$/ {
       d
