@@ -1552,8 +1552,8 @@ expressions into uses of the macros introduced by the
         (let odd?)
         (if even?))
     (my-or x
-           (let temp)
-           (if y)
+           ((@noadorn{let} temp)
+           (@noadorn{if} y)
            y)))                 @ok{7}
 @end lisp
 @end deftypefn

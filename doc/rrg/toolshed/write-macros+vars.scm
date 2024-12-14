@@ -42,6 +42,7 @@
   (write-lisp-text-macro "lispnotetext" "" "lisp-note")
   (write-lisp-text-macro "unspecified" "@result{}" "unspecified")
   (write-lisp-text-macro "unspecifiedtext" "" "unspecified")
+  (write-noadorn-macro)
   (write-visual-divider)
   (write-opt-macro)
   (write-defabbrev-macro)
@@ -292,6 +293,12 @@
                     "</span>},\\xx\\"
                     postfix
                     "}\n@end macro\n"))))
+
+(define (write-noadorn-macro)
+  (write-string
+   (string-append "@macro noadorn {xx}\n"
+                  "\\xx\\\n"
+                  "@end macro\n")))
 
 (define (write-hc-macro)
   (write-string "@macro hc {xx}\n@code{\\xx\\}\n@end macro\n"))

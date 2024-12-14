@@ -579,6 +579,7 @@ END
     (( link )                       'fg-alt)
     (( link-visited )               'fg-alt)
     (( lisp-note )                  'fg-main)
+    (( no-adorn )                   'fg-main)
     (( output )                     'fg-main)
     (( problem )                    'bg-yellow-intense)
     (( todo )                       'bg-red-intense)
