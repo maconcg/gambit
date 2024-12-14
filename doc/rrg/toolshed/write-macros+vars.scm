@@ -173,6 +173,8 @@
     key-bind
     key-init
     keyword
+    syntax-let-bind
+    syntax-let-esc
     let-like-bind
     let-like-esc
     number

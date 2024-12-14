@@ -136,6 +136,7 @@ code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
     span.invalid {color: <invalid>}
     span.keyword, span.key-bind, span.key-init {color: <keyword>}
     span.let-like-bind, span.let-like-esc {color: <let-like-bind>}
+    span.syntax-let-bind, span.syntax-let-esc {color: <syntax-let-bind>}
     span.number {color: <number>}
     span.problem {background-color: <problem>}
     span.repl-ref {color: <repl-ref>}
@@ -155,7 +156,7 @@ code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
         font-style: oblique;
     }
     span.char-body, span.def-like-esc, span.ident-esc, span.let-like-esc,
-      span.string-esc, span.syntax-esc {
+      span.string-esc, span.syntax-esc span.syntax-let-esc {
         font-weight: bold;
     }
 }
@@ -561,6 +562,7 @@ END
     (( sharp )                            'yellow)
     (( string string-esc )                'green)
     (( syntax syntax-esc )                'magenta-cooler)
+    (( syntax-let-bind syntax-let-esc )   'cyan-warmer)
     (else kind)))
 
 (define (modus:element->color element)
@@ -599,7 +601,7 @@ END
     (( char compound-empty datum-label def-like-bind def-like-esc dot ok
        default invalid keyword key-param key-init-param ident ident-esc
        let-like-bind let-like-esc hs-key sharp box datum-ref repl-ref hs-begin
-       serial-ref ) 'fg-main)
+       serial-ref syntax-let-bind syntax-let-esc ) 'fg-main)
     (( compound ) 'cm-bracket)
     (( number ) 'cm-number)
     (( problem ) 'cm-error)

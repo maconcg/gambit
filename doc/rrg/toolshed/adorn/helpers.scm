@@ -56,6 +56,9 @@
   (map string->list
        (+prims '("let" "let*" "letrec" "letrec*" "parameterize" "do"))))
 
+(define syntax-let-syntax
+  (map string->list (+prims '("let-syntax" "letrec-syntax"))))
+
 (define lambda-syntax (map string->list (+prims '("\x3bb;" "lambda"))))
 
 (define mv-let-syntax
@@ -75,6 +78,7 @@
           mv-define-syntax
           case-lambda-syntax
           define-proc-syntax
+          syntax-let-syntax
           (map string->list
                (+prims '("and" "begin" "c-declare" "c-define" "c-define-type"
                          "c-initialize" "c-lambda" "case" "cond" "cond-expand"
@@ -83,11 +87,10 @@
                          "define-structure" "define-syntax" "define-type"
                          "define-type-of-thread" "delay" "delay-force" "do"
                          "else" "future" "guard" "if" "import" "include"
-                         "include-ci" "let-syntax" "letrec-syntax" "load"
-                         "macro-case-target" "namespace" "or" "quasiquote"
-                         "quote" "r7rs-guard" "receive" "set!" "syntax-error"
-                         "syntax-rules" "this-source-file" "unless" "unquote"
-                         "when")))))
+                         "include-ci" "load" "macro-case-target" "namespace"
+                         "or" "quasiquote" "quote" "r7rs-guard" "receive"
+                         "set!" "syntax-error" "syntax-rules"
+                         "this-source-file" "unless" "unquote" "when")))))
 
 (define rt-aux-cond-syntax
   (map string->list
@@ -145,7 +148,7 @@
 
 (define lambda-binds '(lambda-bind lambda-rest case-lambda-bind))
 
-(define let-binds '(named-let sv-let mv-let mv-let-rest))
+(define let-binds '(named-let sv-let mv-let mv-let-rest syntax-let))
 
 (define define-binds
   '( sv-define defun-proc defun-param mv-define mv-define-rest
@@ -159,7 +162,7 @@
 
 (define let-like-compounds
   (append '( lambda-bind-list let-sv-inner case-lambda-inner defproc-inner
-             rest-spec-list )
+             rest-spec-list let-syntax-inner )
           dsssl-compounds))
 
 (define binding-compounds (append def-like-compounds let-like-compounds))
@@ -168,7 +171,7 @@
 
 (define non-binding-list-compounds
   (append '( list let-sv-outer let-mv-outermost let-mv-outer let-mv-inner
-             define-mv-list case-lambda-outer )
+             define-mv-list case-lambda-outer let-syntax-outer )
           inert-binding-compounds))
 
 (define vector-compounds (cons 'vector hvector-kinds))
@@ -267,6 +270,7 @@
          'quasiquote)
         ((matches-one-of? sv-define-syntax    operator) '~sv-define)
         ((matches-one-of? sv-let-syntax       operator) '~~~let-sv)
+        ((matches-one-of? syntax-let-syntax   operator) '~~~let-syntax)
         ((matches-one-of? lambda-syntax       operator) '~~lambda-bind)
         ((matches-one-of? mv-let-syntax       operator) '~~~~let-mv)
         ((matches-one-of? mv-define-syntax    operator) '~~mv-define)

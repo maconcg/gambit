@@ -1383,8 +1383,8 @@ It is an error if any of the identifiers @code{quasiquote},
 @subsection Case-lambda
 @deftypefn {case-lambda library syntax} @/ case-lambda @sv{clause} @defdots{}
 
-@i{Syntax:} Each @angle{clause} is of the form @t{(@angle{formals}
-@angle{body})}, where @angle{formals} and @angle{body} have the same
+@i{Syntax:} Each @angle{clause} is of the form @t{(@sv{formals}
+@sv{body})}, where @angle{formals} and @angle{body} have the same
 syntax as in a @code{lambda} expression.
 
 @i{Semantics:} A @code{case-lambda} expression evaluates to a procedure
@@ -1417,3 +1417,146 @@ of any @angle{clause}.
 
 @node Macros
 @section Macros
+Scheme programs can define and use new derived expression types, called
+@dfn{macros}.  Program-defined expression types have the syntax
+
+@example grammar
+(@sv{keyword} @sv{datum} @defdots{})
+@end example
+
+where @angle{keyword} is an identifier that uniquely determines the
+expression type.  This identifier is called the @dfn{syntactic keyword},
+or simply @dfn{keyword}, of the macro.  The number of the
+@angle{datum}s, and their syntax, depends on the expression type.
+
+Each instance of a macro is called a @dfn{use} of the macro.  The set of
+rules that specifies how a use of a macro is transcribed into a more
+primitive expression is called the @dfn{transformer} of the macro.
+
+The macro definition facility consists of two parts:
+
+@itemize @bullet
+@item
+A set of expressions used to establish that certain identifiers are
+macro keywords, associate them with macro transformers, and control the
+scope within which a macro is defined, and
+
+@item
+a pattern language for specifying macro transformers.
+@end itemize
+
+The syntactic keyword of a macro can shadow variable bindings, and local
+variable bindings can shadow syntactic bindings.  Two mechanisms are
+provided to prevent unintended conflicts:
+
+@itemize @bullet
+@item
+If a macro transformer inserts a binding for an identifier (variable or
+keyword), the identifier will in effect be renamed throughout its scope
+to avoid conflicts with other identifiers.  Note that a global variable
+definition may or may not introduce a binding; see section 5.3.
+
+@item
+If a macro transformer inserts a free reference to an identifier, the
+reference refers to the binding that was visible where the transformer
+was specified, regardless of any local bindings that surround the use of
+the macro.
+@end itemize
+
+In consequence, all macros defined using the pattern language are
+@quotedbl{hygienic} and @quotedbl{referentially transparent} and thus
+preserve Scheme's lexical
+scoping.@footnote{@value{refSyntacticExtensions}}
+@footnote{@value{refhygienicMacroExpansion}}
+@footnote{@value{refhygienicMacroExpansion}}
+@footnote{@value{refSyntacticClosures}}
+@footnote{@value{refMacrosThatWork}}
+@footnote{@value{refSyntacticAbstraction}}
+
+Implementations may provide macro facilities of other types.
+
+@node Binding constructs for syntactic keywords
+@subsection Binding constructs for syntactic keywords
+
+The @code{let-syntax} and @code{letrec-syntax} binding constructs are
+analogous to @code{let} and @code{letrec}, but they bind syntactic
+keywords to macro transformers instead of binding variables to locations
+that contain values.  Syntactic keywords can also be bound globally or
+locally with @code{define-syntax}; see section 5.4.
+
+@deftypefn syntax @/ let-syntax @sv{bindings} @sv{body}
+
+@i{Syntax:} @angle{Bindings} has the form
+
+@example grammar
+((@sv{keyword} @sv{transformer spec}) @defdots)
+@end example
+
+Each @angle{keyword} is an identifier, each @angle{transformer spec} is
+an instance of @code{syntax-rules}, and @angle{body} is a sequence of
+zero or more definitions followed by one or more expressions.  It is an
+error for a @code{keyword} to appear more than once in the list of
+keywords being bound.
+
+@i{Semantics:} The @angle{body} is expanded in the syntactic environment
+obtained by extending the syntactic environment of the @code{let-syntax}
+expression with macros whose keywords are the @angle{keyword}s, bound to
+the specified transformers.  Each binding of a @angle{keyword} has
+@angle{body} as its region.
+
+@lisp
+(let-syntax ((given-that (syntax-rules ()
+                     ((given-that test stmt1 stmt2 ...)
+                      (if test
+                          (begin stmt1
+                                 stmt2 ...))))))
+  (let ((if #t))
+    (given-that if (set! if 'now))
+    if))                       @ok{now}
+@end lisp
+
+@lisp
+(let ((x 'outer))
+  (let-syntax ((m (syntax-rules () ((m) x))))
+    (let ((x 'inner))
+      (m))))                   @ok{outer}
+@end lisp
+@end deftypefn
+
+@deftypefn syntax @/ letrec-syntax @sv{bindings} @sv{body}
+
+@i{Syntax:} Same as for @code{let-syntax}.
+
+@i{Semantics:} The @angle{body} is expanded in the syntactic environment
+obtained by extending the syntactic environment of the
+@code{letrec-syntax} expression with macros whose keywords are the
+@angle{keyword}s, bound to the specified transformers.  Each binding of
+a @angle{keyword} has the @angle{transformer spec}s as well as the
+@angle{body} within its region, so the transformers can transcribe
+expressions into uses of the macros introduced by the
+@code{letrec-syntax} expression.
+
+@lisp
+(letrec-syntax
+    ((my-or (syntax-rules ()
+              ((my-or) #f)
+              ((my-or e) e)
+              ((my-or e1 e2 ...)
+               (let ((temp e1))
+                 (if temp
+                     temp
+                     (my-or e2 ...)))))))
+  (let ((x #f)
+        (y 7)
+        (temp 8)
+        (let odd?)
+        (if even?))
+    (my-or x
+           (let temp)
+           (if y)
+           y)))                 @ok{7}
+@end lisp
+@end deftypefn
+
+@node Pattern language
+@subsection Pattern language

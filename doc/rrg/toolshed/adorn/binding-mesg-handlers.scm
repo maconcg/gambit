@@ -74,6 +74,7 @@
 (define handle~defproc-proc! (^handle~bind! 'defproc-proc     '~defproc-proc))
 (define handle~defproc-spec! (^handle~bind! 'defproc-spec     '~defproc-spec))
 (define handle~rest-spec!    (^handle~bind! 'rest-spec        '~rest-spec))
+(define handle~syntax-let!   (^handle~bind! 'syntax-let       '~syntax-let))
 (define handle~sv-let!       (^handle~bind! 'sv-let           '~sv-let))
 (define handle~mv-let!       (^handle~bind! 'mv-let           '~mv-let))
 (define handle~mv-define!    (^handle~bind! 'mv-define        '~mv-define))
@@ -98,11 +99,13 @@
            (adorn-char nc 'abbrev mesg))
           (else (try-nc! ac-list nc)))))
 
-(define handle~~~let-sv!  (^handle~outer! 'let-sv-outer     '~~~let-sv))
-(define handle~~let-sv!   (^handle~outer! 'let-sv-inner     '~~let-sv))
-(define handle~~~~let-mv! (^handle~outer! 'let-mv-outermost '~~~~let-mv))
-(define handle~~~let-mv!  (^handle~outer! 'let-mv-outer     '~~~let-mv))
-(define handle~~defproc!  (^handle~outer! 'defproc          '~~defproc))
+(define handle~~~let-syntax! (^handle~outer! 'let-syntax-outer '~~~let-syntax))
+(define handle~~let-syntax!  (^handle~outer! 'let-syntax-inner '~~let-syntax))
+(define handle~~~let-sv!     (^handle~outer! 'let-sv-outer     '~~~let-sv))
+(define handle~~let-sv!      (^handle~outer! 'let-sv-inner     '~~let-sv))
+(define handle~~~~let-mv!    (^handle~outer! 'let-mv-outermost '~~~~let-mv))
+(define handle~~~let-mv!     (^handle~outer! 'let-mv-outer     '~~~let-mv))
+(define handle~~defproc!     (^handle~outer! 'defproc          '~~defproc))
 
 (define ^handle~~let-mv! (^handle~outer! 'let-mv-inner '~~let-mv))
 (define (handle~~let-mv! ac-list nc pac)
@@ -142,6 +145,7 @@
 (define handle:defun-proc!     (^handle:bind! 'defun-proc     '~defun-param))
 (define handle:defun-param!    (^handle:bind! 'defun-param    '~defun-param))
 (define handle:named-let!      (^handle:bind! 'named-let      '~~~let-sv))
+(define handle:syntax-let!     (^handle:bind! 'syntax-let     #f))
 (define handle:sv-let!         (^handle:bind! 'sv-let         #f))
 (define handle:lambda-bind!    (^handle:bind! 'lambda-bind    '~lambda-bind))
 (define handle:lambda-rest!    (^handle:bind! 'lambda-rest    #f))
@@ -252,6 +256,8 @@
            (append '(~defun-param) (ends 'defun-proc)
                    (ends 'defun-param)))
           (~defun-proc-mesgs '(~defun-proc subdefun-unmatched))
+          (~syntax-let-outer-mesgs '(~~~let-syntax))
+          (~syntax-let-mesgs '(~syntax-let sublet-syntax-inner-unmatched))
           (~sv-let-outer-mesgs (cons '~~~let-sv (ends 'named-let)))
           (~sv-let-mesgs '(~sv-let sublet-sv-inner-unmatched))
           (~case-lambda-outermost-mesgs
@@ -265,6 +271,9 @@
           (~lambda-bind-mesgs
            (append '(sublambda-bind-list-unmatched ~lambda-bind)
                    (ends 'lambda-bind)))
+          (~syntax-let-inner-mesgs
+           '(~~let-syntax sublet-syntax-outer-unmatched
+                          sublet-syntax-inner-end))
           (~sv-let-inner-mesgs
            '(~~let-sv sublet-sv-outer-unmatched sublet-sv-inner-end))
           (~mv-let-outer-mesgs
@@ -288,6 +297,7 @@
           (sv-define-mesgs (bind-mesgs 'sv-define))
           (lambda-bind-mesgs (bind-mesgs 'lambda-bind))
           (lambda-rest-mesgs (bind-mesgs 'lambda-rest))
+          (syntax-let-mesgs (bind-mesgs 'syntax-let))
           (sv-let-mesgs (bind-mesgs 'sv-let))
           (named-let-mesgs (bind-mesgs 'named-let))
           (defun-proc-mesgs (bind-mesgs 'defun-proc))
@@ -315,6 +325,7 @@
          ((memq pm sv-define-mesgs)     (handle:sv-define!     ac-list nc pac))
          ((memq pm lambda-bind-mesgs)   (handle:lambda-bind!   ac-list nc pac))
          ((memq pm lambda-rest-mesgs)   (handle:lambda-rest!   ac-list nc pac))
+         ((memq pm syntax-let-mesgs)    (handle:syntax-let!    ac-list nc pac))
          ((memq pm sv-let-mesgs)        (handle:sv-let!        ac-list nc pac))
          ((memq pm named-let-mesgs)     (handle:named-let!     ac-list nc pac))
          ((memq pm defun-proc-mesgs)    (handle:defun-proc!    ac-list nc pac))
@@ -375,4 +386,10 @@
           (handle~~case-lambda! ac-list nc pac))
          ((memq pm ~case-lambda-bind-mesgs)
           (handle~case-lambda! ac-list nc pac))
+         ((memq pm ~syntax-let-outer-mesgs)
+          (handle~~~let-syntax! ac-list nc pac))
+         ((memq pm ~syntax-let-inner-mesgs)
+          (handle~~let-syntax! ac-list nc pac))
+         ((memq pm ~syntax-let-mesgs)
+          (handle~syntax-let! ac-list nc pac))
          (else #f))))))
