@@ -1,5 +1,5 @@
 # Copyright (c) 2024 by Macon Gambill, all rights reserved.
-/^ -- ([[:graph:]]+ library )?(procedure|syntax): [[:lower:]]/,/^$/ {
+/^ -- ([-!$%&*+./:<=>?@^_~[:alpha:]]+ library )?(procedure|syntax): [-!$%&*+./:<=>?@^_~[:alpha:]]/,/^$/ {
   /^($| -- auxiliary syntax: )/ {
     x
     /^$/ {
@@ -16,8 +16,8 @@
     H
     d
   }
-  /^ -- ([[:graph:]]+ library )?(procedure|syntax): [[:lower:]]/ {
-    s/^ -- ([[:graph:]]+ library )?(procedure|syntax): /&\(/
+  /^ -- ([-!$%&*+./:<=>?@^_~[:alpha:]]+ library )?(procedure|syntax): [-!$%&*+./:<=>?@^_~[:alpha:]]/ {
+    s/^ -- ([-!$%&*+./:<=>?@^_~[:alpha:]]+ library )?(procedure|syntax): /&\(/
     x
     /^$/ {
       d

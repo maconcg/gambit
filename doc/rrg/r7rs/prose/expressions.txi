@@ -20,6 +20,7 @@ are intimately associated with the @code{delay}, @code{delay-force}, and
 @subsection Variable references
 @defblock
 @deftypeline syntax @/ @sv{variable}
+
 An expression consisting of a variable (section 3.1) is a variable
 reference.  The value of the variable reference is the value stored in
 the location to which the variable is bound.  It is an error to
@@ -453,7 +454,8 @@ expressions, then @code{#f} is returned.
 @end lisp
 @end deftypefn
 
-@deftypefn syntax @/ when @sv{test} @sv{@pari{expression}} @sv{@parii{expression}} @defdots{}
+@deftypefn syntax @/ when @
+@sv{test} @sv{@pari{expression}} @sv{@parii{expression}} @defdots{}
 
 @i{Syntax:} The @angle{test} is an expression.
 
@@ -479,7 +481,8 @@ value, the expressions are evaluated in order.  The result of the
 @end ifnotinfo
 @end deftypefn
 
-@deftypefn syntax @/ unless @sv{test} @sv{@pari{expression}} @sv{@parii{expression}} @defdots{}
+@deftypefn syntax @/ unless @
+@sv{test} @sv{@pari{expression}} @sv{@parii{expression}} @defdots{}
 
 @i{Syntax:} The @angle{test} is an expression.
 
@@ -504,7 +507,8 @@ expression is unspecified.
 @end ifnotinfo
 @end deftypefn
 
-@deftypefn syntax @/ cond-expand @sv{@pari{ce-clause}} @sv{@parii{ce-clause}} @defdots{}
+@deftypefn syntax @/ cond-expand @
+@sv{@pari{ce-clause}} @sv{@parii{ce-clause}} @defdots{}
 
 @i{Syntax:} The @code{cond-expand} expression type provides a way to
 statically expand different expressions depending on the implementation.
@@ -816,7 +820,8 @@ into the context in which they are expanded.
 @end quotation
 @end deftypefn
 
-@deftypefn syntax @/ begin @sv{@pari{expression}} @sv{@parii{expression}} @defdots{}
+@deftypefn syntax @/ begin @
+@sv{@pari{expression}} @sv{@parii{expression}} @defdots{}
 
 This form of @code{begin} can be used as an ordinary expression.  The
 @angle{expression}s are evaluated sequentially from left to right, and
