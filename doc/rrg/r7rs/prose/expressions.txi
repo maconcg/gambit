@@ -1250,11 +1250,11 @@ See section 6.11 for a more complete discussion of exceptions.
 @subsection Quasiquotation
 @defblock
 @deftypeline syntax @/ @syntax{quasiquote} @sv{qq template}
-@deftypeline syntax @/ @defabbrev{@U{0060}}@sv{datum}
-@deftypeline {auxiliary syntax} @/ @syntax{unquote}
-@deftypeline {auxiliary syntax} @/ @comma{}
-@deftypeline {auxiliary syntax} @/ @syntax{unquote-splicing}
-@deftypeline {auxiliary syntax} @/ @comma{}@atchar{}
+@deftypeline syntax @/ @syntax{@U{0060}}@sv{datum}
+@deftypeline {auxiliary syntax} @/ @aux{unquote}
+@deftypeline {auxiliary syntax} @/ @aux{@comma{}}
+@deftypeline {auxiliary syntax} @/ @aux{unquote-splicing}
+@deftypeline {auxiliary syntax} @/ @aux{@comma{}@atchar{}}
 
 @quotedbl{Quasiquote} expressions are useful for constructing a list or
 vector structure when some but not all of the desired structure is known
@@ -1274,9 +1274,9 @@ appears only within a list or vector @nobr{@angle{qq template}}.
 
 @quotation
 @i{Note:} In order to unquote an identifier beginning with
-@t{@atchar{}}, it is necessary to use either an explicit @code{unquote}
-or to put whitespace after the comma, to avoid colliding with the comma
-@nobr{at-sign} sequence.
+@t{@atchar{}}, it is nec@value{shy}essary to use either an
+ex@value{shy}plicit @code{unquote} or to put white@value{shy}space after
+the comma, to avoid colliding with the comma @nobr{at-sign} sequence.
 @end quotation
 
 @lisp
@@ -1310,9 +1310,10 @@ or to put whitespace after the comma, to avoid colliding with the comma
 @end lisp
 
 Quasiquote expressions can be nested.  Substitutions are made only for
-unquoted components appearing at the same nesting level as the outermost
-quasiquote.  The nesting level increases by one inside each successive
-quasiquotation, and decreases by one inside each unquotation.
+un@value{shy}quoted com@value{shy}ponents appearing at the same nesting
+level as the outer@value{shy}most quasi@value{shy}quote.  The nesting
+level increases by one inside each successive quasi@value{shy}quotation,
+and decreases by one inside each un@value{shy}quotation.
 
 @lisp
 `(a `(b ,(+ 1 2) ,(foo ,(+ 1 3) d) e) f)
@@ -1354,11 +1355,11 @@ However, it is not equivalent to this expression:
 @end lisp
 
 The two notations @t{@U{0060}@sv{qq template}} and @t{(quasiquote @sv{qq
-template})} are identical in all respects.  @t{@U{002C}@sv{expression}}
-is identical to @t{(unquote @sv{expression})}, and
-@t{@U{002c}@atchar{}@sv{expression}} is identical to
-@t{(unquote-splicing @sv{expression})}.  The @code{write} procedure may
-output either format.
+template})} are iden@value{shy}tical in all respects.
+@t{@U{002C}@sv{expression}} is identical to @t{(unquote
+@sv{expression})}, and @t{@U{002c}@atchar{}@sv{expression}} is identical
+to @t{(unquote-splicing @sv{expression})}.  The @code{write} procedure
+may output either format.
 
 @lisp
 (quasiquote (list (unquote (+ 1 2)) 4))

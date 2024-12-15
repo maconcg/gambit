@@ -207,7 +207,7 @@
          (or (try-context! ac-list nc pac) (try-nc! ac-list nc)))
         ((eq? pm 'unquote)
          (if (and (char=? nc #\@) (char=? (get-char pac) #\,))
-             (adorn-char nc 'abbrev 'unquote)
+             (adorn-char nc 'aux-syntax 'unquote)
              (or (try-context! ac-list nc pac) (try-nc! ac-list nc))))
         (else #f)))
 

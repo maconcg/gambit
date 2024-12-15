@@ -161,6 +161,7 @@
   '(abbrev
     atmosphere
     aux
+    aux-abbrev
     aux-esc
     boolean
     box
@@ -197,6 +198,7 @@
     string
     string-esc
     syntax
+    syntax-abbrev
     syntax-esc))
 
 (define kind->macro-name

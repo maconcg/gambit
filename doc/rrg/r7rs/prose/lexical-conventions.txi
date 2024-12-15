@@ -18,9 +18,9 @@ the list syntax is not an identifier.
 All implementations of Scheme must support the following extended identifier
 characters:
 
-@lisp
+@example
 ! $ % & * + - . / : < = > ? @atchar{} ^ _ ~
-@end lisp
+@end example
 
 Alternatively, an identifier can be represented by a sequence of zero or
 more characters enclosed within vertical lines (@code{|}), analogous to

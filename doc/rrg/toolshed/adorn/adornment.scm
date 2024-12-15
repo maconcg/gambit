@@ -91,9 +91,9 @@
   (cond ((char=? nc #\\) (adorn-char nc 'infix #f))
         ((char=? nc #\|) (adorn-char nc 'ident #f))
         ((char=? nc #\") (adorn-char nc 'string #f))
-        ((char=? nc #\') (adorn-char nc 'abbrev 'quote))
-        ((char=? nc #\`) (adorn-char nc 'abbrev 'quasiquote))
-        ((char=? nc #\,) (adorn-char nc 'abbrev 'unquote))
+        ((char=? nc #\') (adorn-char nc 'rt-syntax 'quote))
+        ((char=? nc #\`) (adorn-char nc 'rt-syntax 'quasiquote))
+        ((char=? nc #\,) (adorn-char nc 'aux-syntax 'unquote))
         ((memc nc whitespace-chars) (adorn-char nc 'whitespace #f))
         (else (adorn-char nc 'default #f))))
 

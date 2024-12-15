@@ -119,6 +119,7 @@ body {
 code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
     span.abbrev {color: <abbrev>}
     span.aux, span.aux-esc {color: <aux>}
+    span.aux-abbrev {color: <aux-abbrev>}
     span.boolean {color: <boolean>}
     span.box {color: <box>}
     span.char, span.char-body {color: <char>}
@@ -146,6 +147,7 @@ code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
     span.shebang {color: <shebang>}
     span.string, span.string-esc {color: <string>}
     span.syntax, span.syntax-esc {color: <syntax>}
+    span.syntax-abbrev {color: <syntax-abbrev>}
 }
 
 END
@@ -558,6 +560,7 @@ END
     (( shebang )                          'fg-dim)
     (( atmosphere )                       'fg-dimmer)
     (( aux aux-esc )                      'magenta-faint)
+    (( aux-abbrev )                       'magenta-faint)
     (( boolean )                          'yellow-warmer)
     (( char )                             'red-faint)
     (( datum-label )                      'magenta)
@@ -570,6 +573,7 @@ END
     (( sharp )                            'yellow)
     (( string string-esc )                'green)
     (( syntax syntax-esc )                'magenta-cooler)
+    (( syntax-abbrev )                    'magenta-cooler)
     (( syntax-let-bind syntax-let-esc )   'blue-faint)
     (else kind)))
 

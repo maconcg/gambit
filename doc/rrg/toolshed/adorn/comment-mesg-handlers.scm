@@ -70,7 +70,7 @@
         ((memc nc '(#\) #\] #\})) (datumc:end-compound! ac-list nc))
         ((or (memc nc whitespace-chars)
              (memc nc abbrev-chars)
-             (and (char=? nc #\@) (memc (get-char pac) abbrev-chars)))
+             (and (char=? nc #\@) (char=? (get-char pac) #\,)))
          (adorn-char nc 'datumc '~datumc))
         (else (adorn-char nc 'datumc 'datumc-simple-begin))))
 

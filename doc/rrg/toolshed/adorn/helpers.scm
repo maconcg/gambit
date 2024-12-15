@@ -75,6 +75,10 @@
 
 (define case-lambda-syntax (map string->list (+prims '("case-lambda"))))
 
+(define rt-aux-syntax
+  (map string->list
+       (+prims '("else" "unquote" "unquote-splicing"))))
+
 ;; There's probably some way to populate this list programatically.
 (define runtime-syntax
   (append define-syntax-syntax
@@ -86,6 +90,7 @@
           case-lambda-syntax
           define-proc-syntax
           guard-syntax
+          rt-aux-syntax
           syntax-let-syntax
           (map string->list
                (+prims '("and" "begin" "c-declare" "c-define" "c-define-type"
@@ -93,11 +98,11 @@
                          "declare" "define-library" "define-macro"
                          "define-runtime-macro" "define-structure"
                          "define-type" "define-type-of-thread" "delay"
-                         "delay-force" "do" "else" "future" "if" "import"
-                         "include" "include-ci" "load" "macro-case-target"
-                         "namespace" "or" "quasiquote" "quote" "receive"
-                         "set!" "syntax-error" "syntax-rules"
-                         "this-source-file" "unless" "unquote" "when")))))
+                         "delay-force" "do" "future" "if" "import" "include"
+                         "include-ci" "load" "macro-case-target" "namespace"
+                         "or" "quasiquote" "quote" "receive" "set!"
+                         "syntax-error" "syntax-rules" "this-source-file"
+                         "unless" "when")))))
 
 (define rt-cond-aux-syntax
   (map string->list
@@ -249,7 +254,7 @@
 (define (atmosphere? ac) (memq (get-kind ac) atmosphere-kinds))
 
 (define (atmosphere/abbrev? ac)
-  (memq (get-kind ac) (cons 'abbrev atmosphere-kinds)))
+  (memq (get-kind ac) (cons 'syntax-abbrev 'aux-abbrev atmosphere-kinds)))
 
 (define (operator-position? ac-list)
   ;; Would the next character be in the operator position of a list?
