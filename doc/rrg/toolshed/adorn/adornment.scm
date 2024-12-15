@@ -57,8 +57,8 @@
                     (atmosphere? (car ac-list))
                     (not (operator-position? ac-list))
                     (let ((up1 (up-list ac-list)))
-                      (or (eq? (rt-syntax-mesg up1) 'rt-aux-cond)
-                          (eq? (rt-syntax-mesg (up-list up1)) 'rt-aux-guard))))
+                      (or (eq? (rt-syntax-mesg up1) 'rt-cond-aux)
+                          (eq? (rt-syntax-mesg (up-list up1)) '~~guard))))
                (adorn-char nc 'default 'equal-sign))
               ((valid-keyword? ac-list nc pc)
                (revise-while! ac-list 'keyword default+no-mesg/rt-syntax?)
@@ -159,8 +159,9 @@
         (let-like-syms '( defun-param named-let sv-let mv-let mv-let-rest
                           lambda-bind lambda-rest case-lambda-bind
                           opt-bind opt-init rest-bind defproc-param
-                          defproc-spec rest-spec ))
-        (syntax-kinds '(rt-syntax aux-syntax rt-syntax-ident))
+                          defproc-spec rest-spec guard-bind ))
+        (syntax-kinds '(rt-syntax rt-syntax-ident))
+        (aux-syntax-kinds '(aux-syntax aux-syntax-ident))
         (empty-kinds (map ->empty non-syntax-compounds)))
     (let ((all-compounds (append compound-kinds (map ->empty compound-kinds)))
           (def-like-binds (append def-like-syms (map ->ident def-like-syms)))
@@ -182,6 +183,7 @@
                  ((eq? kind '~rt-syntax-ident-esc) (set-kind! ac 'ident-esc))
                  ((eq? kind 'hs-body) (set-kind! ac 'string))
                  ((eq? kind 'rt-syntax-ident-esc) (set-kind! ac 'syntax-esc))
+                 ((eq? kind 'aux-syntax-ident-esc) (set-kind! ac 'aux-esc))
                  ((memq kind '(false true)) (set-kind! ac 'boolean))
                  ((memq kind def-like-binds) (set-kind! ac 'def-like-bind))
                  ((memq kind def-like-escapes) (set-kind! ac 'def-like-esc))
@@ -191,6 +193,7 @@
                  ((memq kind let-like-escapes) (set-kind! ac 'let-like-esc))
                  ((memq kind comment-kinds) (set-kind! ac 'atmosphere))
                  ((memq kind syntax-kinds) (set-kind! ac 'syntax))
+                 ((memq kind aux-syntax-kinds) (set-kind! ac 'aux))
                  ((memq kind empty-kinds) (set-kind! ac 'compound-empty))
                  ((memq kind all-compounds) (set-kind! ac 'compound))
                  ((memq kind inert-syms) (set-kind! ac 'default))

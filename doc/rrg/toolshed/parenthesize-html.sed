@@ -9,11 +9,13 @@
   h
   s/\(<strong class="def-name"\)/<span class="def-paren"><code class="t">\&#x0028;<\/code><\/span>\1/
   s/\(<a class="copiable-link"\)/<span class="def-paren"><code class="t">\&#x0029;<\/code><\/span>\1/
-  /<span class="syntax">else<\/span>/x
-  /<span class="syntax">=><\/span>/ {
+  /<span class="aux">else<\/span>/x
+  /<span class="aux">=><\/span>/ {
       x
-      s/class="syntax">=>/class="syntax">\&#x003d;\&#x003e;/
+      s/class="aux">=>/class="aux">\&#x003d;\&#x003e;/
   }
+  /<span class="aux">&#x005[Ff];<\/span>/x
+  /<span class="aux">\.\.\.<\/span>/x
 }
 
 /^<dl class="first-defblock">/,/<\/dl>/ {

@@ -15,6 +15,13 @@
 
 (define (whitespace-char? c) (member c '(#\space #\newline #\tab) char=?))
 
+(define (full-match? charsA charsB)
+  (or (and (null? charsA) (null? charsB))
+      (and (not (null? charsA))
+           (not (null? charsB))
+           (char=? (car charsA) (car charsB))
+           (head-match? (cdr charsA) (cdr charsB)))))
+
 (define (head-match? goal actual)
   (or (null? goal)
       (and (not (null? actual))
@@ -28,11 +35,17 @@
              goal
              (head-match-one-of (cdr goals) actual)))))
 
+(define |else | (string->list "else "))
+
+(define (head-match-else-syntax? chars)
+  (head-match? |else | chars))
+
 (define head-match-rt-syntax
   (let ((syntax+spaces (map (lambda (l) (append l '(#\space)))
                             adorn#runtime-syntax)))
     (lambda (chars)
-      (head-match-one-of syntax+spaces chars))))
+      (cond ((head-match-else-syntax? chars) |else |)
+            (else (head-match-one-of syntax+spaces chars))))))
 
 (define (looking-forward-to? goal actual)
   (and (not (null? actual))
@@ -87,9 +100,11 @@
           (loop (cdr rest) (cons char chars))))))
 
 (define write-grammar
-  (let ((compound-opening (string->list "@compound{"))
+  (let ((aux-opening (string->list "@aux{"))
+        (compound-opening (string->list "@compound{"))
         (syntax-opening (string->list "@syntax{")))
-    (let ((rev-compound-opening (reverse compound-opening))
+    (let ((rev-aux-opening (reverse aux-opening))
+          (rev-compound-opening (reverse compound-opening))
           (rev-syntax-opening (reverse syntax-opening)))
       (let ((rev-compound-begin (append '(#\} #\() rev-compound-opening)))
         (letrec ((operator-position?
@@ -118,7 +133,10 @@
                              (cond (hm (loop (list-tail rest (length hm))
                                              (append '(#\space #\})
                                                      (cdr (reverse hm))
-                                                     rev-syntax-opening
+                                                     (if (full-match?
+                                                          hm |else |)
+                                                         rev-aux-opening
+                                                         rev-syntax-opening)
                                                      so-far)))
                                    (else (loop (cdr rest) (cons nc so-far))))))
                           ((member nc '(#\* #\+ #\|) char=?)
@@ -127,7 +145,8 @@
                           (else (loop (cdr rest) (cons nc so-far)))))))))))))
 
 (define write-pre-lisp
-  (let ((defparen-opening (string->list "@defparen{"))
+  (let ((aux-opening (string->list "@aux{"))
+        (defparen-opening (string->list "@defparen{"))
         (hc-opening (string->list "@hc{"))
         (ht-opening (string->list "@ht{"))
         (grammar-opening (string->list "\n@example grammar\n"))
@@ -200,15 +219,6 @@
                                  (loop (cdr rest) (cons nc def))
                                  (list (reverse def) rest))
                              (loop (cdr rest) (cons nc def))))))))
-              ;; (line/rest
-              ;;  (lambda (chars)
-              ;;    (let loop ((rest chars) (line '()))
-              ;;      (if (null? rest)
-              ;;          (list (reverse line) rest)
-              ;;          (let ((nc (car rest)))
-              ;;            (cond ((char=? nc #\newline)
-              ;;                   (list (reverse line) rest))
-              ;;                  (else (loop (cdr rest) (cons nc line)))))))))
               (write-deftypefn
                (let ((nil-arg '(#\@ #\/))
                      (write-rest
@@ -232,7 +242,10 @@
                                   (let ((hm (head-match-rt-syntax rest)))
                                     (cond (hm
                                            (write-chars (append
-                                                         syntax-opening
+                                                         (if (full-match?
+                                                              hm |else |)
+                                                             aux-opening
+                                                             syntax-opening)
                                                          (reverse
                                                           (cdr (reverse hm)))
                                                          '(#\} #\space)))
@@ -246,8 +259,7 @@
                                (else (write-char (car rest))
                                      (loop (cdr rest))))))))))
               (write-deftypeline
-               (let* ((syntax-opening (string->list "@syntax{"))
-                      (rev-syntax-opening (reverse syntax-opening)))
+               (let ((rev-syntax-opening (reverse syntax-opening)))
                  (lambda (chars)
                    (let loop ((rest chars) (so-far '()))
                      (if (null? rest)

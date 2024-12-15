@@ -118,6 +118,7 @@ body {
 
 code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
     span.abbrev {color: <abbrev>}
+    span.aux, span.aux-esc {color: <aux>}
     span.boolean {color: <boolean>}
     span.box {color: <box>}
     span.char, span.char-body {color: <char>}
@@ -155,8 +156,8 @@ code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
     span.and-prints, span.atmosphere, span.dsssl, span.output {
         font-style: oblique;
     }
-    span.char-body, span.def-like-esc, span.ident-esc, span.let-like-esc,
-      span.string-esc, span.syntax-esc span.syntax-let-esc {
+    span.char-body, span.aux-esc, span.def-like-esc, span.ident-esc,
+     span.let-like-esc, span.string-esc, span.syntax-esc span.syntax-let-esc {
         font-weight: bold;
     }
 }
@@ -195,6 +196,9 @@ dl.first-deffn, dl.first-deftp, dl.first-deffn, dl.first-defvr,
     }
     dt.deftypefn, dt.deftypefnx, dt.deftypeline {
         strong.def-name {
+            span.aux {
+                color: <aux>;
+            }
             span.syntax {
                 color: <syntax>;
             }
@@ -539,6 +543,7 @@ END
 (define (modus:kind->color kind)
   (case kind
     (( abbrev )                           'fg-dim)
+    (( aux aux-esc )                      'magenta-faint)
     (( box )                              'fg-alt)
     (( compound )                         'fg-dim)
     (( directive )                        'fg-dim)
@@ -562,7 +567,7 @@ END
     (( sharp )                            'yellow)
     (( string string-esc )                'green)
     (( syntax syntax-esc )                'magenta-cooler)
-    (( syntax-let-bind syntax-let-esc )   'cyan-warmer)
+    (( syntax-let-bind syntax-let-esc )   'blue-faint)
     (else kind)))
 
 (define (modus:element->color element)
@@ -649,11 +654,9 @@ END
            (case sym
              (( bg-deffn bg-deftp bg-defvr )
               (string-append color "90"))
-             (( deffn-l deftp-l ) (string-append color "bf"))
-             (( deffn-l )         (string-append color "6f"))
-             (( defvr-l )         (string-append color "af"))
-             (( deffn-r deftp-r ) (string-append color "9f"))
-             (( deffn-r )         (string-append color "3f"))
-             (( defvr-r )         (string-append color "8f"))
+             (( deffn-l deftp-l ) (string-append color "4f"))
+             (( defvr-l )         (string-append color "4f"))
+             (( deffn-r deftp-r ) (string-append color "2f"))
+             (( defvr-r )         (string-append color "2f"))
              (else color)))
           (else color))))))

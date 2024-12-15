@@ -291,8 +291,8 @@ primitive constructs described in the previous section.
 @subsection Conditionals
 
 @deftypefn syntax @/ cond @sv{@pari{clause}} @sv{@parii{clause}} @defdots{}
-@deftypefnx {auxiliary syntax} @/ @syntax{else}
-@deftypefnx {auxiliary syntax} @/ @syntax{=>}
+@deftypefnx {auxiliary syntax} @/ @aux{else}
+@deftypefnx {auxiliary syntax} @/ @aux{=>}
 
 @i{Syntax:} @angle{Clause}s take one of two forms, either
 
@@ -303,7 +303,7 @@ primitive constructs described in the previous section.
 where @angle{test} is any expression, or
 
 @example grammar
-(@sv{test} @syntax{=>} @sv{expression})
+(@sv{test} @aux{=>} @sv{expression})
 @end example
 
 The last @angle{clause} can be an @quotedbl{else clause}, which has the form
@@ -364,7 +364,7 @@ It is an error if any of the @angle{datum}s are the same anywhere in the
 expression.  Alternatively, a @angle{clause} can be of the form
 
 @example grammar
-((@sv{@pari{datum}} @defdots{}) @syntax{=>} @sv{expression})
+((@sv{@pari{datum}} @defdots{}) @aux{=>} @sv{expression})
 @end example
 
 The last @angle{clause} can be an @quotedbl{else clause}, which has one
@@ -377,7 +377,7 @@ of the forms
 or
 
 @example grammar
-(else @syntax{=>} @sv{expression})@r{.}
+(else @aux{=>} @sv{expression})@r{.}
 @end example
 
 @i{Semantics:} A @code{case} expression is evaluated as follows.
@@ -1560,3 +1560,41 @@ expressions into uses of the macros introduced by the
 
 @node Pattern language
 @subsection Pattern language
+A @angle{transformer spec} has one of the following forms:
+
+@deftypefn syntax @/ syntax-rules (@sv{pattern literal} @defdots{})@*@
+@value{syntaxindent}@value{cdspace}@value{dnspace}@value{dnspace}@
+@sv{syntax rule} @defdots
+@deftypefnx syntax @/ syntax-rules @sv{ellipsis} @
+(@sv{pattern literal} @defdots{})@*@
+@value{syntaxindent}@value{cdspace}@value{dnspace}@value{dnspace}@
+@sv{syntax rule} @defdots
+@deftypefnx {auxiliary syntax} @/ @aux{@U{005F}}
+@deftypefnx {auxiliary syntax} @/ @aux{...}
+
+@i{Syntax:} It is an error if any of the @angle{pattern literal}s, or
+the @angle{ellipsis} in the second form, is not an identifier.  It is
+also an error if @angle{syntax rule} is not of the form
+
+@example grammar
+(@sv{pattern} @sv{template})
+@end example
+
+The @angle{pattern} in a @angle{syntax rule} is a list @angle{pattern}
+whose first element is an identifier.
+
+A @angle{pattern} is either an identifier, a constant, or one of the
+following
+
+@example grammar
+(@sv{pattern} @defdots)
+(@sv{pattern} @sv{pattern} @defdots{} @dot{.} @sv{pattern})
+(@sv{pattern} @defdots{} @sv{pattern} @sv{ellipsis} @sv{pattern} @defdots{})
+(@sv{pattern} @defdots{} @sv{pattern} @sv{ellipsis} @sv{pattern} @defdots{} @dot{.} @sv{pattern})
+@compound{@hashchar{}}(@sv{pattern} @defdots{})
+@compound{@hashchar{}}(@sv{pattern} @defdots{} @sv{pattern} @sv{ellipsis} @sv{pattern} @defdots{})
+@end example
+
+and a @angle{template} is either an identifier, a constant, or one of
+the following
+@end deftypefn

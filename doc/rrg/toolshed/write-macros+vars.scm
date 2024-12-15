@@ -153,6 +153,8 @@
 (define lisp-syntax-classes
   '(abbrev
     atmosphere
+    aux
+    aux-esc
     boolean
     box
     char

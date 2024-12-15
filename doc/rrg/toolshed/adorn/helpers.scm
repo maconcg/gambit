@@ -52,9 +52,12 @@
   (map string->list
        (+prims '("define-primitive" "define-procedure" "define-prim&proc"))))
 
+(define guard-syntax (map string->list (+prims '("guard" "r7rs-guard"))))
+
 (define sv-let-syntax
   (map string->list
-       (+prims '("let" "let*" "letrec" "letrec*" "parameterize" "do"))))
+       (+prims
+        '("let" "let*" "letrec" "letrec*" "parameterize" "do"))))
 
 (define syntax-let-syntax
   (map string->list (+prims '("let-syntax" "letrec-syntax"))))
@@ -78,6 +81,7 @@
           mv-define-syntax
           case-lambda-syntax
           define-proc-syntax
+          guard-syntax
           syntax-let-syntax
           (map string->list
                (+prims '("and" "begin" "c-declare" "c-define" "c-define-type"
@@ -86,17 +90,15 @@
                          "define-runtime-macro" "define-runtime-syntax"
                          "define-structure" "define-syntax" "define-type"
                          "define-type-of-thread" "delay" "delay-force" "do"
-                         "else" "future" "guard" "if" "import" "include"
-                         "include-ci" "load" "macro-case-target" "namespace"
-                         "or" "quasiquote" "quote" "r7rs-guard" "receive"
-                         "set!" "syntax-error" "syntax-rules"
-                         "this-source-file" "unless" "unquote" "when")))))
+                         "else" "future" "if" "import" "include" "include-ci"
+                         "load" "macro-case-target" "namespace" "or"
+                         "quasiquote" "quote" "receive" "set!" "syntax-error"
+                         "syntax-rules" "this-source-file" "unless" "unquote"
+                         "when")))))
 
-(define rt-aux-cond-syntax
+(define rt-cond-aux-syntax
   (map string->list
        (+prims '("case" "cond" "cond-expand" "macro-case-target"))))
-
-(define rt-aux-guard-syntax (map string->list (+prims '("guard"))))
 
 (define rt-unquote-syntax (map string->list (+prims '("unquote"))))
 ;======================= Symbol manipulation procedures =======================
@@ -154,7 +156,8 @@
   '( sv-define defun-proc defun-param mv-define mv-define-rest
      defproc-proc defproc-param defproc-spec rest-spec ))
 
-(define binds (append define-binds let-binds lambda-binds dsssl-binds))
+(define binds
+  (append define-binds let-binds lambda-binds dsssl-binds '(guard-bind)))
 
 (define dsssl-compounds '(compound-key compound-opt))
 
@@ -162,7 +165,7 @@
 
 (define let-like-compounds
   (append '( lambda-bind-list let-sv-inner case-lambda-inner defproc-inner
-             rest-spec-list let-syntax-inner )
+             rest-spec-list let-syntax-inner guard-list )
           dsssl-compounds))
 
 (define binding-compounds (append def-like-compounds let-like-compounds))
@@ -276,8 +279,8 @@
         ((matches-one-of? mv-define-syntax    operator) '~~mv-define)
         ((matches-one-of? case-lambda-syntax  operator) '~~~case-lambda)
         ((matches-one-of? define-proc-syntax  operator) '~~defproc)
-        ((matches-one-of? rt-aux-cond-syntax  operator) 'rt-aux-cond)
-        ((matches-one-of? rt-aux-guard-syntax operator) 'rt-aux-guard)
+        ((matches-one-of? guard-syntax        operator) '~~guard)
+        ((matches-one-of? rt-cond-aux-syntax  operator) 'rt-cond-aux)
         (else #f)))
 
 (define rt-syntax-mesg
@@ -637,17 +640,59 @@
              (set-kind! ac 'rt-syntax-ident-esc)
              (revise-rt-syntax-ident! (cdr ac-list)))))))
 
+(define (revise-ident! ac-list begin-mesg old-base old-esc new-base new-esc)
+  (let revise ((rest ac-list))
+    (unless (null? rest)
+      (let* ((ac (car rest)) (kind (get-kind ac)))
+        (cond ((eq? (get-mesg ac) begin-mesg) (set-kind! ac new-base))
+              ((eq? kind old-base)
+               (set-kind! ac new-base)
+               (revise (cdr rest)))
+              ((eq? kind old-esc)
+               (set-kind! ac new-esc)
+               (revise (cdr rest))))))))
+
 (define (end-symmetric! ac-list nc kind)
   (let ((p/d (^end-symmetric! ac-list nc kind)))
     (if (eq? kind '~rt-syntax-ident)
         (let ((tested (cdr (chars-until ac-list '~rt-syntax-ident-begin)))
               (dist (- (cdr p/d))))
-          (let ((full-match (matches-one-of-escapes runtime-syntax tested)))
-            (cond (full-match
-                   (revise-rt-syntax-ident! ac-list)
-                   (set-mesg! (car ac-list) (syntax->mesg full-match))
-                   (adorn-char nc 'rt-syntax-ident 'rt-syntax-ident-end dist))
-                  (else (adorn-char nc '~rt-syntax-ident-end dist)))))
+          (let ((aux-match? (matches-escapes? '(#\e #\l #\s #\e) tested)))
+            (if aux-match?
+                (let* ((up1 (up-list ac-list))
+                       (up1-syntax-mesg (rt-syntax-mesg up1)))
+                  (if (or (eq? up1-syntax-mesg 'rt-cond-aux)
+                          (eq? (rt-syntax-mesg (up-list up1)) '~~guard))
+                      (begin (revise-ident! ac-list
+                                            '~rt-syntax-ident-begin
+                                            '~rt-syntax-ident
+                                            '~rt-syntax-ident-esc
+                                            'aux-syntax-ident
+                                            'aux-syntax-ident-esc)
+                             (adorn-char nc 'aux-syntax-ident
+                                         '~rt-syntax-ident-end dist))
+                      (begin (revise-ident! ac-list
+                                            '~rt-syntax-ident-begin
+                                            '~rt-syntax-ident
+                                            '~rt-syntax-ident-esc
+                                            'ident
+                                            'ident-esc)
+                             (adorn-char nc 'ident 'ident-end dist))))
+                (let ((full-match
+                       (matches-one-of-escapes runtime-syntax tested)))
+                  (if full-match
+                      (begin (revise-rt-syntax-ident! ac-list)
+                             (set-mesg! (car ac-list)
+                                        (syntax->mesg full-match))
+                             (adorn-char
+                              nc 'rt-syntax-ident 'rt-syntax-ident-end dist))
+                      (begin (revise-ident! ac-list
+                                            '~rt-syntax-ident-begin
+                                            '~rt-syntax-ident
+                                            '~rt-syntax-ident-esc
+                                            'ident
+                                            'ident-esc)
+                             (adorn-char nc 'ident 'ident-end dist)))))))
         (adorn-char nc kind (->end kind) (- (cdr p/d))))))
 
 (define (datumc:end-symmetric! ac-list nc sym)
