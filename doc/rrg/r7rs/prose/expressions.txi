@@ -1656,13 +1656,13 @@ the @angle{pattern} match as literals.  Multiple under@value{shy}scores
 can appear in a @angle{pattern}.
 
 Identifiers that appear in @t{(@sv{pattern literal} @defdots{})} are
-interpreted as literal ident@value{shy}ifiers to be matched against
-corres@value{shy}ponding elements of the input.  An element in the input
-matches a literal ident@value{shy}ifier if and only if it is an
-iden@value{shy}tifier and either both its occur@value{shy}rence in the
-macro expres@value{shy}sion and its occur@value{shy}rence in the macro
-defini@value{shy}tion have the same lexical binding, or the two
-iden@value{shy}tifiers are the same and both have no lexical binding.
+interpreted as literal identifiers to be matched against corresponding
+elements of the input.  An ele@value{shy}ment in the input matches a
+literal identifier if and only if it is an identifier and either both
+its oc@value{shy}cur@value{shy}rence in the macro expres@value{shy}sion
+and its oc@value{shy}cur@value{shy}rence in the macro definition have
+the same lexical binding, or the two identifiers are the same and both
+have no lexical binding.
 
 A subpattern followed by @angle{ellipsis} can match zero or more
 elements of the input, unless @angle{ellipsis} appears in the
