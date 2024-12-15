@@ -128,6 +128,7 @@ code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
     span.datum-label {color: <datum-label>}
     span.datum-ref {color: <datum-ref>}
     span.def-like-bind, span.def-like-esc {color: <def-like-bind>}
+    span.defsyntax, span.defsyntax-esc {color: <defsyntax>}
     span.dot {color: <dot>}
     span.directive {color: <directive>}
     span.dsssl, span.sharp {color: <sharp>}
@@ -156,8 +157,9 @@ code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
     span.and-prints, span.atmosphere, span.dsssl, span.output {
         font-style: oblique;
     }
-    span.char-body, span.aux-esc, span.def-like-esc, span.ident-esc,
-     span.let-like-esc, span.string-esc, span.syntax-esc span.syntax-let-esc {
+    span.char-body, span.aux-esc, span.def-like-esc, span.defsyntax-esc,
+    span.ident-esc, span.let-like-esc, span.string-esc, span.syntax-esc,
+     span.syntax-let-esc {
         font-weight: bold;
     }
 }
@@ -542,9 +544,12 @@ END
 
 (define (modus:kind->color kind)
   (case kind
-    (( abbrev )                           'fg-dim)
-    (( aux aux-esc )                      'magenta-faint)
+    (( default )                          'fg-main)
+    (( compound-empty )                   'fg-main)
+    (( ident ident-esc )                  'fg-main)
     (( box )                              'fg-alt)
+    (( datum-ref repl-ref serial-ref )    'fg-alt)
+    (( abbrev )                           'fg-dim)
     (( compound )                         'fg-dim)
     (( directive )                        'fg-dim)
     (( dot )                              'fg-dim)
@@ -552,15 +557,13 @@ END
     (( invalid )                          'fg-dim)
     (( shebang )                          'fg-dim)
     (( atmosphere )                       'fg-dimmer)
+    (( aux aux-esc )                      'magenta-faint)
     (( boolean )                          'yellow-warmer)
     (( char )                             'red-faint)
-    (( compound-empty )                   'fg-main)
     (( datum-label )                      'magenta)
-    (( datum-ref repl-ref serial-ref )    'fg-alt)
     (( def-like-bind def-like-esc )       'magenta)
-    (( default )                          'fg-main)
+    (( defsyntax )                        'magenta)
     (( hs-key )                           'yellow)
-    (( ident ident-esc )                  'fg-main)
     (( keyword key-param key-init-param ) 'magenta-warmer)
     (( let-like-bind let-like-esc )       'blue-faint)
     (( number )                           'cyan)

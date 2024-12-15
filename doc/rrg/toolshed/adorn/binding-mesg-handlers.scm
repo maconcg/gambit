@@ -43,6 +43,11 @@
   (cond ((memc nc compound-begin-chars) (begin-compound! ac-list nc 'defun))
         (else (^handle~sv-define! ac-list nc pac))))
 
+(define ^handle~defsyntax! (^handle~bind! 'defsyntax '~defsyntax))
+(define (handle~defsyntax! ac-list nc pac)
+  (cond ((memc nc compound-begin-chars) (begin-compound! ac-list nc 'list))
+        (else (^handle~defsyntax! ac-list nc pac))))
+
 (define ^handle~named/sv-let! (^handle~bind! 'named-let '~named/sv-let))
 (define (handle~named/sv-let! ac-list nc pac)
   (cond ((memc nc compound-begin-chars)
@@ -144,6 +149,7 @@
                 (else (adorn-char nc sym sym))))))))
 
 (define handle:sv-define!      (^handle:bind! 'sv-define      #f))
+(define handle:defsyntax!      (^handle:bind! 'defsyntax      #f))
 (define handle:defun-proc!     (^handle:bind! 'defun-proc     '~defun-param))
 (define handle:defun-param!    (^handle:bind! 'defun-param    '~defun-param))
 (define handle:named-let!      (^handle:bind! 'named-let      '~~~let-sv))
@@ -299,6 +305,7 @@
           (~guard-mesgs '(~guard subguard-list-unmatched))
           (~rest-spec-mesgs '(subrest-spec-list-unmatched ~rest-spec))
           (sv-define-mesgs (bind-mesgs 'sv-define))
+          (defsyntax-mesgs (bind-mesgs 'defsyntax))
           (lambda-bind-mesgs (bind-mesgs 'lambda-bind))
           (lambda-rest-mesgs (bind-mesgs 'lambda-rest))
           (syntax-let-mesgs (bind-mesgs 'syntax-let))
@@ -328,6 +335,7 @@
       (lambda (ac-list nc pac pm)
         (cond
          ((memq pm sv-define-mesgs)     (handle:sv-define!     ac-list nc pac))
+         ((memq pm defsyntax-mesgs)     (handle:defsyntax!     ac-list nc pac))
          ((memq pm lambda-bind-mesgs)   (handle:lambda-bind!   ac-list nc pac))
          ((memq pm lambda-rest-mesgs)   (handle:lambda-rest!   ac-list nc pac))
          ((memq pm syntax-let-mesgs)    (handle:syntax-let!    ac-list nc pac))
@@ -364,6 +372,7 @@
          ((eq? pm '~rest-bind)          (handle~rest-bind!     ac-list nc pac))
          ((eq? pm '~~lambda-bind)       (handle~~lambda-bind!  ac-list nc pac))
          ((eq? pm '~sv-define)          (handle~sv-define!     ac-list nc pac))
+         ((eq? pm '~defsyntax)          (handle~defsyntax!     ac-list nc pac))
          ((eq? pm '~named/sv-let)       (handle~named/sv-let!  ac-list nc pac))
          ((eq? pm '~~~~let-mv)          (handle~~~~let-mv!     ac-list nc pac))
          ((eq? pm '~~defproc)           (handle~~defproc!      ac-list nc pac))

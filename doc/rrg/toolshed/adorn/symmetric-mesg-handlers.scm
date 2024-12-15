@@ -195,6 +195,7 @@
 
 (define (^try-bind-ident-pm! transform)
   (let ((try-sv-define!        (^try-symm-pm! (transform 'sv-define)))
+        (try-defsyntax!        (^try-symm-pm! (transform 'defsyntax)))
         (try-defun-param!      (^try-symm-pm! (transform 'defun-param)))
         (try-defun-proc!       (^try-symm-pm! (transform 'defun-proc)))
         (try-guard-bind!       (^try-symm-pm! (transform 'guard-bind)))
@@ -220,6 +221,7 @@
         (try~rt-syntax!        (^try-symm-pm! (transform '~rt-syntax))))
     (lambda (ac-list nc pac pm)
       (or (try-sv-define!        ac-list nc pac pm)
+          (try-defsyntax!        ac-list nc pac pm)
           (try-defun-param!      ac-list nc pac pm)
           (try-defun-proc!       ac-list nc pac pm)
           (try-guard-bind!       ac-list nc pac pm)

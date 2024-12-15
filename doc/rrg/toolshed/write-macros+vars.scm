@@ -6,22 +6,28 @@
   (for-each write-lisp-syntax-macro lisp-syntax-classes)
   (write-visual-divider)
   (for-each (lambda (args) (apply write-par-macro args))
-            '(("pari" "1" "@U{2081}" "1")   ("parii" "2" "@U{2082}" "2")
-              ("pariii" "3" "@U{2083}" "3") ("pariv" "4" "@U{2084}" "4")
-              ("parv" "5" "@U{2085}" "5")   ("parvi" "6" "@U{2086}" "6")
+            '(("pari"   "1" "@U{2081}" "1") ("parii"   "2" "@U{2082}" "2")
+              ("pariii" "3" "@U{2083}" "3") ("pariv"   "4" "@U{2084}" "4")
+              ("parv"   "5" "@U{2085}" "5") ("parvi"   "6" "@U{2086}" "6")
               ("parvii" "7" "@U{2087}" "7") ("parviii" "8" "@U{2088}" "8")
-              ("parix" "9" "@U{2089}" "9")  ("parj" "J" "@U{2C7C}" "j")
-              ("parn" "N" "@U{2099}" "n")
-              ("parnplusone" "N+1" "@U{2099}@U{208A}@U{2081}" "n+1")))
+              ("parix"  "9" "@U{2089}" "9") ("pare"    "E" "@U{2091}" "e")
+              ("parj"   "J" "@U{2C7C}" "j") ("park"    "K" "@U{2096}" "k")
+              ("parn"   "N" "@U{2099}" "n") ("parx"    "X" "@U{2093}" "x")
+              ("parmplusone" "M+1" "@U{2098}@U{208A}@U{2081}" "m+1")
+              ("parnplusone" "N+1" "@U{2099}@U{208A}@U{2081}" "n+1")
+              ("parxplusone" "X+1" "@U{2093}@U{208A}@U{2081}" "x+1")))
   (write-visual-divider)
   (for-each (lambda (args) (apply write-var-macro args))
-            '(("vari" "1" "@U{2081}" "1")   ("varii" "2" "@U{2082}" "2")
-              ("variii" "3" "@U{2083}" "3") ("variv" "4" "@U{2084}" "4")
-              ("varv" "5" "@U{2085}" "5")   ("varvi" "6" "@U{2086}" "6")
+            '(("vari"   "1" "@U{2081}" "1") ("varii"   "2" "@U{2082}" "2")
+              ("variii" "3" "@U{2083}" "3") ("variv"   "4" "@U{2084}" "4")
+              ("varv"   "5" "@U{2085}" "5") ("varvi"   "6" "@U{2086}" "6")
               ("varvii" "7" "@U{2087}" "7") ("varviii" "8" "@U{2088}" "8")
-              ("varix" "9" "@U{2089}" "9")  ("varj" "J" "@U{2C7C}" "j")
-              ("varn" "N" "@U{2099}" "n")
-              ("varnplusone" "N+1" "@U{2099}@U{208A}@U{2081}" "n+1")))
+              ("varix"  "9" "@U{2089}" "9") ("vare"    "E" "@U{2091}" "e")
+              ("varj"   "J" "@U{2C7C}" "j") ("vark"    "K" "@U{2096}" "k")
+              ("varn"   "N" "@U{2099}" "n") ("varx"    "X" "@U{2093}" "x")
+              ("varmplusone" "M+1" "@U{2098}@U{208A}@U{2081}" "m+1")
+              ("varnplusone" "N+1" "@U{2099}@U{208A}@U{2081}" "n+1")
+              ("varxplusone" "X+1" "@U{2093}@U{208A}@U{2081}" "x+1")))
   (write-visual-divider)
   (write-lisp-result-macro "andprints"
                            (string-append "@r{@i{"
@@ -50,6 +56,7 @@
   (write-defparen-macro)
   (write-hc-macro)
   (write-ht-macro)
+  (write-iifinfo-macro)
   (write-todo-macro)
   (write-quotedbl-macro)
   (write-quotecode-macro)
@@ -165,6 +172,8 @@
     datum-ref
     def-like-bind
     def-like-esc
+    defsyntax
+    defsyntax-esc
     directive
     dot
     dsssl
@@ -240,33 +249,40 @@
                   "\">\\xx\\</span>},\\xx\\}\n"
                   "@end macro\n")))
 
+(define (write-iifinfo-macro)
+  (write-string (string-append "@macro iifinfo {xx}\n"
+                               "@inlinefmtifelse{plaintext,@var{\\xx\\},"
+                               "@inlinefmtifelse{info,@i{\\xx\\},"
+                               "@i{\\xx\\}"
+                               "}}\n@end macro\n")))
+
 (define (write-par-macro macro-name plaintext-string info-string other-string)
-  (write-string
-   (string-append "@macro "
-                  macro-name
-                  " {param}\n"
-                  "@inlinefmtifelse{plaintext,\\param\\"
-                  plaintext-string
-                  ",@inlinefmtifelse{info,\\param\\"
-                  info-string
-                  ",\\param\\@sub{"
-                  other-string
-                  "}}}\n"
-                  "@end macro\n")))
+  (write-string (string-append "@macro "
+                               macro-name
+                               " {parameter}\n"
+                               "@inlinefmtifelse{plaintext,\\parameter\\_"
+                               plaintext-string
+                               ","
+                               "@inlinefmtifelse{info,\\parameter\\"
+                               info-string
+                               ","
+                               "\\parameter\\@sub{"
+                               other-string
+                               "}}}\n@end macro\n")))
 
 (define (write-var-macro macro-name plaintext-string info-string other-string)
-  (write-string
-   (string-append "@macro "
-                  macro-name
-                  " {var}\n"
-                  "@inlinefmtifelse{info,@var{\\var\\"
-                  plaintext-string
-                  "},@inlinefmtifelse{plaintext,@var{\\var\\_"
-                  info-string
-                  "},@var{\\var\\@sub{"
-                  other-string
-                  "}}}}\n"
-                  "@end macro\n")))
+  (write-string (string-append "@macro "
+                               macro-name
+                               " {variable}\n"
+                               "@inlinefmtifelse{plaintext,@var{\\variable\\_"
+                               plaintext-string
+                               "},"
+                               "@inlinefmtifelse{info,@var{\\variable\\"
+                               info-string
+                               "},"
+                               "@var{\\variable\\@sub{"
+                               other-string
+                               "}}}}\n@end macro\n")))
 
 (define (write-lisp-text-macro macro-name pointer-glyph class)
   (write-string
@@ -277,8 +293,9 @@
                   (if (positive? (string-length pointer-glyph)) " " "")
                   "@r{@i{@inlinefmtifelse{html,@inlineraw{html,<span class=\""
                   class
-                  "\">\\xx\\</span>},\\xx\\}}}\n"
-                  "@end macro\n")))
+                  "\">\\xx\\</span>},"
+                  "\\xx\\"
+                  "}}}\n@end macro\n")))
 
 (define (write-lisp-result-macro macro-name pointer-glyph class . postfix)
   (let ((postfix (if (null? postfix) "" (car postfix))))
@@ -299,8 +316,8 @@
 (define (write-noadorn-macro)
   (write-string
    (string-append "@macro noadorn {xx}\n"
-                  "\\xx\\\n"
-                  "@end macro\n")))
+                  "\\xx\\"
+                  "\n@end macro\n")))
 
 (define (write-hc-macro)
   (write-string "@macro hc {xx}\n@code{\\xx\\}\n@end macro\n"))

@@ -45,6 +45,9 @@
 (define (+prims strings)
   (append strings (map (lambda (s) (string-append "##" s)) strings)))
 
+(define define-syntax-syntax
+  (map string->list (+prims '("define-syntax" "define-runtime-syntax"))))
+
 (define sv-define-syntax
   (map string->list (+prims '("define" "define-prim" "define-record-type"))))
 
@@ -74,7 +77,8 @@
 
 ;; There's probably some way to populate this list programatically.
 (define runtime-syntax
-  (append sv-define-syntax
+  (append define-syntax-syntax
+          sv-define-syntax
           sv-let-syntax
           lambda-syntax
           mv-let-syntax
@@ -87,14 +91,13 @@
                (+prims '("and" "begin" "c-declare" "c-define" "c-define-type"
                          "c-initialize" "c-lambda" "case" "cond" "cond-expand"
                          "declare" "define-library" "define-macro"
-                         "define-runtime-macro" "define-runtime-syntax"
-                         "define-structure" "define-syntax" "define-type"
-                         "define-type-of-thread" "delay" "delay-force" "do"
-                         "else" "future" "if" "import" "include" "include-ci"
-                         "load" "macro-case-target" "namespace" "or"
-                         "quasiquote" "quote" "receive" "set!" "syntax-error"
-                         "syntax-rules" "this-source-file" "unless" "unquote"
-                         "when")))))
+                         "define-runtime-macro" "define-structure"
+                         "define-type" "define-type-of-thread" "delay"
+                         "delay-force" "do" "else" "future" "if" "import"
+                         "include" "include-ci" "load" "macro-case-target"
+                         "namespace" "or" "quasiquote" "quote" "receive"
+                         "set!" "syntax-error" "syntax-rules"
+                         "this-source-file" "unless" "unquote" "when")))))
 
 (define rt-cond-aux-syntax
   (map string->list
@@ -154,7 +157,7 @@
 
 (define define-binds
   '( sv-define defun-proc defun-param mv-define mv-define-rest
-     defproc-proc defproc-param defproc-spec rest-spec ))
+     defproc-proc defproc-param defproc-spec rest-spec defsyntax))
 
 (define binds
   (append define-binds let-binds lambda-binds dsssl-binds '(guard-bind)))
@@ -271,16 +274,17 @@
          'unquote)
         ((matches? '(#\q #\u #\a #\s #\i #\q #\u #\o #\t #\e) operator)
          'quasiquote)
-        ((matches-one-of? sv-define-syntax    operator) '~sv-define)
-        ((matches-one-of? sv-let-syntax       operator) '~~~let-sv)
-        ((matches-one-of? syntax-let-syntax   operator) '~~~let-syntax)
-        ((matches-one-of? lambda-syntax       operator) '~~lambda-bind)
-        ((matches-one-of? mv-let-syntax       operator) '~~~~let-mv)
-        ((matches-one-of? mv-define-syntax    operator) '~~mv-define)
-        ((matches-one-of? case-lambda-syntax  operator) '~~~case-lambda)
-        ((matches-one-of? define-proc-syntax  operator) '~~defproc)
-        ((matches-one-of? guard-syntax        operator) '~~guard)
-        ((matches-one-of? rt-cond-aux-syntax  operator) 'rt-cond-aux)
+        ((matches-one-of? define-syntax-syntax operator) '~defsyntax)
+        ((matches-one-of? sv-define-syntax     operator) '~sv-define)
+        ((matches-one-of? sv-let-syntax        operator) '~~~let-sv)
+        ((matches-one-of? syntax-let-syntax    operator) '~~~let-syntax)
+        ((matches-one-of? lambda-syntax        operator) '~~lambda-bind)
+        ((matches-one-of? mv-let-syntax        operator) '~~~~let-mv)
+        ((matches-one-of? mv-define-syntax     operator) '~~mv-define)
+        ((matches-one-of? case-lambda-syntax   operator) '~~~case-lambda)
+        ((matches-one-of? define-proc-syntax   operator) '~~defproc)
+        ((matches-one-of? guard-syntax         operator) '~~guard)
+        ((matches-one-of? rt-cond-aux-syntax   operator) 'rt-cond-aux)
         (else #f)))
 
 (define rt-syntax-mesg

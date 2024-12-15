@@ -61,9 +61,10 @@ notations are equivalent in all respects.
 ''a        @ok{(quote a)}
 @end lisp
 
-Numerical constants, string constants, character constants,
-vec@value{shy}tor con@value{shy}stants, bytevector constants, and
-boolean constants evaluate to themselves; they need not be quoted.
+Numerical constants, string constants, character con@value{shy}stants,
+vector con@value{shy}stants, bytevector con@value{shy}stants, and
+boolean con@value{shy}stants evaluate to them@value{shy}selves; they
+need not be quoted.
 
 @lisp
 '145932     @ok{145932}
@@ -81,8 +82,8 @@ boolean constants evaluate to themselves; they need not be quoted.
 @end lisp
 
 As noted in section 3.4, it is an error to attempt to alter a constant
-(i.e. the value of a literal expression) using a mutation procedure like
-@code{set-car!} or @code{string-set!}.
+(i.e.@: the value of a literal expression) using a mutation procedure
+like @code{set-car!} or @code{string-set!}.
 @end defblock
 
 @node Procedure calls
@@ -268,7 +269,7 @@ implementation-specific algorithm to find corresponding files, read the
 contents of the files in the specified order as if by repeated
 applications of @code{read}, and effectively replace the @code{include}
 or @code{include-ci} expression with a @code{begin} expression
-containing what was read from the files. The difference between the two
+containing what was read from the files.  The difference between the two
 is that @code{include-ci} reads each file as if it began with the
 @code{#!fold-case} directive, while @code{include} does not.
 
@@ -868,10 +869,6 @@ declaration: see section 5.6.1.
 @value{syntaxindent}@value{cdspace}@
 @value{dnspace}@value{dnspace}@
 @sv{command} @defdots{}}
-
-@c @value{syntaxindent}@ @ @ @ @ @ @defdots{})@*@
-@c @value{syntaxindent}@ @ @ @ @ (@sv{test} @sv{expression} @defdots{})@*@
-@c @value{syntaxindent}@ @ @ @sv{command} @defdots{}}
 
 @i{Syntax:} All of @angle{init}, @angle{step}, @angle{test}, and
 @angle{command} are expressions.
@@ -1489,7 +1486,7 @@ locally with @code{define-syntax}; see section 5.4.
 @i{Syntax:} @angle{Bindings} has the form
 
 @example grammar
-((@sv{keyword} @sv{transformer spec}) @defdots)
+((@sv{keyword} @sv{transformer spec}) @defdots{})
 @end example
 
 Each @angle{keyword} is an identifier, each @angle{transformer spec} is
@@ -1564,11 +1561,11 @@ A @angle{transformer spec} has one of the following forms:
 
 @deftypefn syntax @/ syntax-rules (@sv{pattern literal} @defdots{})@*@
 @value{syntaxindent}@value{cdspace}@value{dnspace}@value{dnspace}@
-@sv{syntax rule} @defdots
+@sv{syntax rule} @defdots{}
 @deftypefnx syntax @/ syntax-rules @sv{ellipsis} @
 (@sv{pattern literal} @defdots{})@*@
 @value{syntaxindent}@value{cdspace}@value{dnspace}@value{dnspace}@
-@sv{syntax rule} @defdots
+@sv{syntax rule} @defdots{}
 @deftypefnx {auxiliary syntax} @/ @aux{@U{005F}}
 @deftypefnx {auxiliary syntax} @/ @aux{...}
 
@@ -1587,7 +1584,7 @@ A @angle{pattern} is either an identifier, a constant, or one of the
 following
 
 @example grammar
-(@sv{pattern} @defdots)
+(@sv{pattern} @defdots{})
 (@sv{pattern} @sv{pattern} @defdots{} @dot{.} @sv{pattern})
 (@sv{pattern} @defdots{} @sv{pattern} @sv{ellipsis} @sv{pattern} @defdots{})
 (@sv{pattern} @defdots{} @sv{pattern} @sv{ellipsis} @sv{pattern} @defdots{} @dot{.} @sv{pattern})
@@ -1597,4 +1594,223 @@ following
 
 and a @angle{template} is either an identifier, a constant, or one of
 the following
+
+@example grammar
+(@sv{element} @defdots{})
+(@sv{element} @sv{element} @defdots{} @dot{.} @sv{template})
+(@sv{ellipsis} @sv{template})
+@compound{@hashchar{}}(@sv{element} @defdots{})
+@end example
+
+where an @angle{element} is a @angle{template} optionally followed by an
+@angle{ellipsis}.  An @angle{ellipsis} is the identifier specified in
+the second form of @code{syntax-rules}, or the default identifier
+@code{...}@: (three consecutive periods) otherwise.
+
+Semantics: An instance of @code{syntax-rules} produces a new macro
+transformer by specifying a sequence of hygienic rewrite rules.  A use
+of a macro whose keyword is associated with a transformer specified by
+@code{syntax-rules} is matched against the patterns contained in the
+@angle{syntax rule}s, beginning with the leftmost @angle{syntax rule}.
+When a match is found, the macro use is transcribed hygienically
+according to the template.
+
+An identifier appearing within a @angle{pattern} can be an underscore
+(@code{_}), a literal identifier listed in the list of @angle{pattern
+literal}s, or the @angle{ellipsis}.  All other identifiers appearing
+within a @angle{pattern} are @dfn{pattern variables}.
+
+The keyword at the beginning of the pattern in a @angle{syntax rule} is
+not involved in the matching and is considered neither a pattern
+variable nor a literal identifier.
+
+Pattern variables match arbitrary input elements and are used to refer
+to elements of the input in the template.  It is an error for the same
+pattern variable to appear more than once in a @angle{pattern}.
+
+Underscores also match arbitrary input elements but are not pattern
+variables and so cannot be used to refer to those elements.  If an
+underscore appears in the @angle{pattern literal}s list, then that takes
+precedence and underscores in the @angle{pattern} match as literals.
+Multiple underscores can appear in a @angle{pattern}.
+
+Identifiers that appear in @t{(@sv{pattern literal} @defdots{})} are
+interpreted as literal identifiers to be matched against corresponding
+elements of the input.  An element in the input matches a literal
+identifier if and only if it is an identifier and either both its
+occurrence in the macro expression and its occurrence in the macro
+definition have the same lexical binding, or the two identifiers are the
+same and both have no lexical binding.
+
+A subpattern followed by @angle{ellipsis} can match zero or more
+elements of the input, unless @angle{ellipsis} appears in the
+@angle{pattern literal}s, in which case it is matched as a literal.
+
+More formally, an input expression @var{E} matches a pattern @var{P} if
+and only if:
+
+@itemize @bullet
+@item
+@var{P} is an underscore (@code{_}).
+
+@item
+@var{P} is a non-literal identifier; or
+
+@item
+@var{P} is a literal identifier and @var{E} is an identifier with the
+same binding; or
+
+@item
+@var{P} is a list @t{(@r{@vari{P}} @defdots{} @r{@varn{P}})} and @var{E}
+is a list of @iifinfo{n} elements that match @vari{P} through @varn{P},
+respectively; or
+
+@item
+@var{P} is an improper list @t{(@r{@vari{P}} @r{@varii{P}} @defdots{}
+@r{@varn{P}} @dot{.} @r{@varnplusone{P}})} and @var{E} is a list or
+im@value{shy}proper list of @var{n} or more elements that match @vari{P}
+through @varn{P}, re@value{shy}spect@value{shy}ively, and whose
+@iifinfo{n}th tail matches @varnplusone{P}; or
+
+@item
+@var{P} is of the form @t{(@r{@vari{P}} @defdots{} @r{@vark{P}}
+@r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}} @defdots{} @r{@varn{P}})}
+where @var{E} is a pro@value{shy}per list of @iifinfo{n} elements, the
+first @iifinfo{k} of which match @vari{P} through @vark{P},
+re@value{shy}spect@value{shy}ively, whose next @iifinfo{m} @minus{}
+@iifinfo{k} elements each match @vare{P}, whose
+re@value{shy}main@value{shy}ing @iifinfo{n} @minus{} @iifinfo{m}
+ele@value{shy}ments match @varmplusone{P} through @varn{P}; or
+
+@item
+@var{P} is of the form @t{(@r{@vari{P}} @defdots{} @r{@vark{P}}
+@r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}} @defdots{} @r{@varn{P}}
+@dot{.} @r{@varx{P}})} where @var{E} is a list or im@value{shy}proper
+list of @iifinfo{n} ele@value{shy}ments, the first @iifinfo{k} of which
+match @vari{P} through @vark{P}, whose next @iifinfo{m} @minus{}
+@iifinfo{k} ele@value{shy}ments each match @vare{P}, whose
+re@value{shy}main@value{shy}ing @iifinfo{n} @minus{} @iifinfo{m}
+ele@value{shy}ments match @varmplusone{P} through @varn{P}, and whose
+@iifinfo{n}th and final @t{cdr} matches @varx{P}; or
+
+@item
+@var{P} is a vector of the form @t{@hashchar{}(@r{@vari{P}} @defdots{}
+@r{@varn{P}})} and @var{E} is a vector of @iifinfo{n}
+ele@value{shy}ments that match @vari{P} through @varn{P}; or
+
+@item
+@var{P} is of the form @t{@hashchar{}(@r{@vari{P}} @defdots{}
+@r{@vark{P}} @r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}} @defdots{}
+@r{@varn{P}})} where @var{E} is a vector of @iifinfo{n}
+ele@value{shy}ments the first @iifinfo{k} of which match @vari{P}
+through @vark{P}, whose next @iifinfo{m} @minus{} @iifinfo{k}
+ele@value{shy}ments each match @vare{P}, and whose
+re@value{shy}main@value{shy}ing @iifinfo{n} @minus{} @iifinfo{m}
+ele@value{shy}ments match @varmplusone{P} through @varn{P}; or
+
+@item
+@var{P} is a constant and @var{E} is equal to @var{P} in the sense of
+the @code{equal?} pro@value{shy}cedure.
+@end itemize
+
+It is an error to use a macro keyword, within the scope of its binding,
+in an expression that does not match any of the patterns.
+
+When a macro use is transcribed according to the template of the
+matching @angle{syntax rule}, pattern variables that occur in the
+template are replaced by the elements they match in the input.  Pattern
+variables that occur in subpatterns followed by one or more instances of
+the identifier @angle{ellipsis} are allowed only in subtemplates that
+are followed by as many instances of @angle{ellipsis}.  They are
+replaced in the output by all of the elements they match in the input,
+distributed as indicated.  It is an error if the output cannot be built
+up as specified.
+
+Identifiers that appear in the template but are not pattern variables or
+the identifier @angle{ellipsis} are inserted into the output as literal
+identifiers.  If a literal identifier is inserted as a free identifier
+then it refers to the binding of that identifier within whose scope the
+instance of @code{syntax-rules} appears.  If a literal identifier is
+inserted as a bound identifier then it is in effect renamed to prevent
+inadvertent captures of free identifiers.
+
+A template of the form @t{(@sv{ellipsis} @sv{template})} is identical to
+@angle{template}, except that ellipses within the template have no
+special meaning.  That is, any ellipses contained within
+@angle{template} are treated as ordinary identifiers.  In particular,
+the template @t{(@sv{ellipsis} @sv{ellipsis})} produces a single
+@angle{ellipsis}.  This allows syntactic abstractions to expand into
+code containing ellipses.
+
+@lisp
+(define-syntax be-like-begin
+  (syntax-rules ()
+    ((be-like-begin name)
+     (define-syntax name
+       (syntax-rules ()
+         ((name expr (... ...))
+          (begin expr (... ...))))))))
+
+(be-like-begin sequence)
+(sequence 1 2 3 4)              @ok{4}
+@end lisp
+
+As an example, if @code{let} and @code{cond} are defined as in section
+7.3 then they are hygienic (as required) and the following is not an
+error.
+
+@lisp
+(let ((=> #f))
+  (cond (#t @noadorn{=>} 'ok))            @ok{ok}
+@end lisp
+
+The macro transformer for @code{cond} recognizes @code{=>} as a local
+variable, and hence an expression, and not as the base identifier
+@code{=>}, which the macro trans@value{shy}former treats as a syntactic
+keyword.  Thus the example expands into
+
+@lisp
+(let ((=> #f))
+  (if #t (begin => 'ok)))
+@end lisp
+
+instead of
+
+@lisp
+(let ((=> #f))
+  (let ((temp #t))
+    (if temp ('ok temp))))
+@end lisp
+
+which would result in an invalid procedure call.
+@end deftypefn
+
+@node Signaling errors in macro transformers
+@subsection Signaling errors in macro transformers
+
+@deftypefn syntax @/ syntax-error @sv{message} @sv{args} @defdots{}
+
+@code{syntax-error} behaves similarly to @code{error} (6.11)@: except
+that implemen@value{shy}ta@value{shy}tions with an expansion pass
+separate from evaluation should signal an er@value{shy}ror as soon as
+@nobr{@code{syntax-error}} is expanded.  This can be used as a
+@nobr{@code{syntax-rules}} @angle{template} for a @angle{pattern} that
+is an invalid use of the macro, which can provide more descriptive error
+messages.  @angle{message} is a string literal, and @angle{args}
+arbitrary expressions providing additional information.  Applications
+cannot count on being able to catch syntax errors with exception
+handlers or guards.
+
+@lisp
+(define-syntax simple-let
+  (syntax-rules ()
+    ((_ (head ... ((x . y) val) . tail)
+        body1 body2 ...)
+     (syntax-error
+      "expected an identifier but got"
+      (x . y)))
+    ((_ ((name val) ...) body1 body2 ...)
+     ((lambda (name ...) body1 body2 ...)
+       val ...))))
+@end lisp
 @end deftypefn
