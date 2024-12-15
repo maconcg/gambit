@@ -75,9 +75,9 @@ Scheme value except @code{#f}, and the word @quotedbl{false} to refer to
 
 An important concept in Scheme (and Lisp) is that of the @dfn{external
 representation} of an object as a sequence of characters.  For example,
-an external representation of the integer 28 is the sequence of
-characters @quotedbl{@t{28}}, and an external representation of a list
-consisting of the integers 8 and 13 is the sequence of characters
+an ex@value{shy}ternal representation of the integer 28 is the sequence
+of characters @quotedbl{@t{28}}, and an external representation of a
+list consisting of the integers 8 and 13 is the sequence of characters
 @quotedbl{@t{(8 13)}}.
 
 The external representation of an object is not necessarily unique.  The
@@ -171,12 +171,13 @@ contexts defined below are @dfn{tail calls}.  A Scheme implementation is
 properly tail-recursive if it supports an unbounded number of active
 tail calls.  A call is @dfn{active} if the called procedure might still
 return.  Note that this includes calls that might be returned from
-either by the current continuation or by continuations captured earlier
-by @nobr{@code{call-with-current-continuation}} that are later invoked.
-In the absence of captured continuations, calls could return at most
-once and the active calls would be those that had not yet returned. A
-formal definition of proper tail recursion can be found in @cite{Proper
-Tail Recursion and Space
+either by the current continuation or by continuations
+cap@value{shy}tured earlier by
+@nobr{@code{call-with-current-continuation}} that are later invoked.  In
+the absence of captured continuations, calls could return at most once
+and the active calls would be those that had not yet returned. A formal
+definition of proper tail recursion can be found in @cite{Proper Tail
+Recursion and Space
 Efficiency}@footnote{@value{refProperTailRecursion}}.
 
 @quotation
@@ -224,9 +225,9 @@ true of all the bodies of @code{case-lambda} expressions.
 If one of the following expressions is in a tail context, then the
 subexpressions shown as @angle{tail expression} are in a tail context.
 These were derived from rules in the grammar given in chapter 7 by
-replacing some occurrences of @angle{body} with @angle{tail expression},
-and some occurrences of @angle{sequence} with @angle{tail sequence}.
-Only those rules that contain tail contexts are shown here.
+re@value{shy}placing some occurrences of @angle{body} with @angle{tail
+expression}, and some occurrences of @angle{sequence} with @angle{tail
+sequence}.  Only those rules that contain tail contexts are shown here.
 
 @example grammar
 (if @sv{expression} @sv{tail expression} @sv{tail expression})

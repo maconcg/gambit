@@ -20,16 +20,16 @@ single lexical environment for all variables, and to evaluate the
 operator position of a procedure call in the same way as an operand
 position.  By relying entirely on procedure calls to express iteration,
 Scheme emphasized the fact that tail-recursive procedure calls are
-essentially @sc{GOTO}s that pass arguments, thus allowing a programming
-style that is both coherent and efficient.  Scheme was the first widely
-used programming language to embrace first-class escape procedures, from
-which all previously known sequential control structures can be
-synthesized.  A subsequent version of Scheme introduced the concept of
-exact and inexact numbers, an extension of Common Lisp's generic
-arithmetic.  More recently, Scheme became the first programming language
-to support hygienic macros, which permit the syntax of a
-block-structured language to be extended in a consistent and reliable
-manner.
+essentially @sc{GOTO}s that pass arguments, thus allowing a
+pro@value{shy}gramming style that is both coherent and efficient.
+Scheme was the first widely used programming language to embrace
+first-class escape pro@value{shy}cedures, from which all previously
+known sequential control structures can be synthesized.  A subsequent
+version of Scheme introduced the concept of exact and inexact numbers,
+an extension of Common Lisp's generic arithmetic.  More recently, Scheme
+became the first programming language to support hygienic macros, which
+permit the syntax of a block-structured language to be extended in a
+consistent and reliable manner.
 
 @node Background
 @nodedescription Background and history.
@@ -52,16 +52,16 @@ students and researchers occasionally found it difficult to understand
 code written at other sites.  Fifteen representatives of the major
 implementations of Scheme therefore met in October 1984 to work toward a
 better and more widely accepted standard for Scheme.  Their report, the
-@value{R2RS}@footnote{@value{refR2RS}}, was published at MIT and
-Indiana University in the summer of 1985.  Further revision took place
-in the spring of 1986, resulting in the
+@value{R2RS}@footnote{@value{refR2RS}}, was pub@value{shy}lished at MIT
+and Indiana University in the summer of 1985.  Further revision took
+place in the spring of 1986, resulting in the
 @value{R3RS}@footnote{@value{refR3RS}}.  Work in the spring of 1988
 resulted in @value{R4RS}@footnote{@value{refR4RS}}, which became the
 basis for the @acronym{IEEE} Standard for the Scheme Programming
-Language in 1991@footnote{@value{refIEEE1178}}.  In 1998, several
-additions to the @acronym{IEEE} standard, including high-level hygienic
-macros, multiple return values, and @t{eval}, were finalized as the
-@value{R5RS}@footnote{@value{refR5RS}}).
+Language in 1991@footnote{@value{refIEEE1178}}.  In 1998,
+sev@value{shy}eral additions to the @acronym{IEEE} standard, including
+high-level hygienic macros, multiple return values, and @t{eval}, were
+finalized as the @value{R5RS}@footnote{@value{refR5RS}}).
 
 In the fall of 2006, work began on a more ambitious standard, including
 many new improvements and stricter requirements made in the interest of
@@ -69,19 +69,19 @@ improved portability.  The resulting standard, the @value{R6RS}, was
 completed in August 2007@footnote{@value{refR6RS}}, and was organized as
 a core language and set of mandatory standard libraries.  Several new
 implementations of Scheme conforming to it were created.  However, most
-existing @value{R5RS} implementations (even excluding those which are
-essentially unmaintained) did not adopt @value{R6RS}, or adopted only
-selected parts of it.
+existing @value{R5RS} implementations (even ex@value{shy}cluding those
+which are essentially unmaintained) did not adopt @value{R6RS}, or
+adopted only selected parts of it.
 
 In consequence, the Scheme Steering Committee decided in August 2009 to
 divide the standard into two separate but compatible languages --- a
 @quotedbl{small} language, suitable for educators, researchers, and
-users of embedded languages, focused on @value{R5RS} compatibility, and
-a @quotedbl{large} language focused on the practical needs of mainstream
-software development, intended to become a replacement for @value{R6RS}.
-The present report describes the @quotedbl{small} language of that
-effort: therefore it cannot be considered in isolation as the successor
-to @value{R6RS}.
+users of embedded lan@value{shy}guages, focused on @value{R5RS}
+compatibility, and a @quotedbl{large} language focused on the practical
+needs of mainstream software development, intended to become a
+replacement for @value{R6RS}.  The present report describes the
+@quotedbl{small} language of that effort: therefore it cannot be
+considered in isolation as the successor to @value{R6RS}.
 
 We intend this report to belong to the entire Scheme community, and so
 we grant permission to copy it in whole or in part without fee.  In
