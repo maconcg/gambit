@@ -65,6 +65,9 @@
 (define syntax-let-syntax
   (map string->list (+prims '("let-syntax" "letrec-syntax"))))
 
+(define syntax-rules-syntax
+  (map string->list (+prims '("syntax-rules"))))
+
 (define lambda-syntax (map string->list (+prims '("\x3bb;" "lambda"))))
 
 (define mv-let-syntax
@@ -92,6 +95,7 @@
           guard-syntax
           rt-aux-syntax
           syntax-let-syntax
+          syntax-rules-syntax
           (map string->list
                (+prims '("and" "begin" "c-declare" "c-define" "c-define-type"
                          "c-initialize" "c-lambda" "case" "cond" "cond-expand"
@@ -101,8 +105,7 @@
                          "delay-force" "do" "future" "if" "import" "include"
                          "include-ci" "load" "macro-case-target" "namespace"
                          "or" "quasiquote" "quote" "receive" "set!"
-                         "syntax-error" "syntax-rules" "this-source-file"
-                         "unless" "when")))))
+                         "syntax-error" "this-source-file" "unless" "when")))))
 
 (define rt-cond-aux-syntax
   (map string->list
@@ -161,8 +164,8 @@
 (define let-binds '(named-let sv-let mv-let mv-let-rest syntax-let))
 
 (define define-binds
-  '( sv-define defun-proc defun-param mv-define mv-define-rest
-     defproc-proc defproc-param defproc-spec rest-spec defsyntax))
+  '( sv-define defun-proc defun-param mv-define mv-define-rest defproc-proc
+     defproc-param defproc-spec rest-spec defsyntax sr-literal ))
 
 (define binds
   (append define-binds let-binds lambda-binds dsssl-binds '(guard-bind)))
@@ -173,7 +176,7 @@
 
 (define let-like-compounds
   (append '( lambda-bind-list let-sv-inner case-lambda-inner defproc-inner
-             rest-spec-list let-syntax-inner guard-list )
+             rest-spec-list let-syntax-inner guard-list sr-literals )
           dsssl-compounds))
 
 (define binding-compounds (append def-like-compounds let-like-compounds))
@@ -290,6 +293,7 @@
         ((matches-one-of? define-proc-syntax   operator) '~~defproc)
         ((matches-one-of? guard-syntax         operator) '~~guard)
         ((matches-one-of? rt-cond-aux-syntax   operator) 'rt-cond-aux)
+        ((matches-one-of? syntax-rules-syntax  operator) '~sr-ellips/lit)
         (else #f)))
 
 (define rt-syntax-mesg

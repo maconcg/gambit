@@ -195,6 +195,10 @@
     serial-ref
     sharp
     shebang
+    sr-ellipsis
+    sr-ellipsis-esc
+    sr-literal
+    sr-literal-esc
     string
     string-esc
     syntax

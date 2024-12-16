@@ -1130,12 +1130,12 @@ be@value{shy}tween when it is init@value{shy}ia@value{shy}ted and when
 it re@value{shy}turns.  In Scheme,
 @nobr{@code{call-with-current-continuation}} (section 6.10) allows
 reentering a dynamic extent after its procedure call has returned.
-Thus, the dynamic extent of a call might not be a single, continuous
-time period.
+Thus, the dynamic extent of a call might not be a single,
+con@value{shy}tinuous time period.
 
 This section introduces @dfn{parameter objects}, which can be bound to
 new values for the duration of a dynamic extent.  The set of all
-parameter bindings at a given time is called the @dfn{dynamic
+parameter bind@value{shy}ings at a given time is called the @dfn{dynamic
 environment}.
 
 @deffn procedure make-parameter init
@@ -1238,7 +1238,7 @@ dynamic environment of the @code{guard} expression.  If every
 no else clause, then @code{raise-continuable} is invoked on the raised
 object within the dynamic environment of the original call to
 @code{raise} or @code{raise-continuable}, except that the current
-exception handler is that of the @code{guard} expression.
+exception han@value{shy}dler is that of the @code{guard} expression.
 
 See section 6.11 for a more complete discussion of exceptions.
 
