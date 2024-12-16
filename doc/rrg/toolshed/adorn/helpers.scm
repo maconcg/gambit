@@ -163,7 +163,7 @@
 
 (define let-binds '(named-let sv-let mv-let mv-let-rest syntax-let))
 
-(define syntax-rules-binds '(sr-literal sr-ellipsis sr-patvar))
+(define syntax-rules-binds '(sr-literal sr-ellipsis sr-patvar sr-patvar-op))
 
 (define define-binds
   '( sv-define defun-proc defun-param mv-define mv-define-rest defproc-proc
@@ -177,11 +177,13 @@
 
 (define def-like-compounds '(defun defproc))
 
+(define syntax-rules-compounds '(sr-literals sr-pattern sr-subpattern))
+
 (define let-like-compounds
   (append '( lambda-bind-list let-sv-inner case-lambda-inner defproc-inner
-             rest-spec-list let-syntax-inner guard-list sr-literals
-             sr-pattern )
-          dsssl-compounds))
+             rest-spec-list let-syntax-inner guard-list )
+          dsssl-compounds
+          syntax-rules-compounds))
 
 (define binding-compounds (append def-like-compounds let-like-compounds))
 

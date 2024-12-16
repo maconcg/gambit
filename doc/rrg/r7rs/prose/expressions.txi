@@ -1752,12 +1752,12 @@ the identifier @angle{ellipsis} are inserted into the output as literal
 identifiers.  If a literal identifier is inserted as a free identifier
 then it refers to the binding of that identifier within whose scope the
 instance of @code{syntax-rules} appears.  If a literal identifier is
-inserted as a bound identifier then it is in effect renamed to prevent
-inadvertent captures of free identifiers.
+inserted as a bound identifier then it is in effect re@value{shy}named
+to prevent inadvertent captures of free identifiers.
 
 A template of the form @t{(@sv{ellipsis} @sv{template})} is identical to
-@angle{template}, except that ellipses within the template have no
-special meaning.  That is, any ellipses contained within
+@angle{template}, ex@value{shy}cept that ellipses within the template
+have no special meaning.  That is, any ellipses contained within
 @angle{template} are treated as ordinary identifiers.  In particular,
 the template @t{(@sv{ellipsis} @sv{ellipsis})} produces a single
 @angle{ellipsis}.  This allows syntactic abstractions to expand into

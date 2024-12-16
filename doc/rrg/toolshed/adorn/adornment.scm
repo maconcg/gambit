@@ -173,6 +173,10 @@
           (sr-ellipsis-binds (list 'sr-ellipsis 'sr-ellipsis-ident))
           (sr-literal-binds (list 'sr-literal 'sr-literal-ident))
           (sr-literal-escapes (list 'sr-literal-esc))
+          (sr-patvar-binds (list 'sr-patvar 'sr-patvar-ident
+                                 'sr-patvar-op 'sr-patvar-op-ident))
+          (sr-patvar-escapes (list 'sr-patvar-ident-esc
+                                   'sr-patvar-op-ident-esc))
           (let-like-binds (append let-like-syms (map ->ident let-like-syms)))
           (let-like-escapes (map ->esc (map ->ident let-like-syms)))
           (inert-syms (map ->inert (append def-like-syms let-like-syms))))
@@ -198,6 +202,8 @@
                  ((memq kind syntax-let-escapes)(set-kind! ac 'syntax-let-esc))
                  ((memq kind sr-literal-binds) (set-kind! ac 'sr-literal))
                  ((memq kind sr-literal-escapes)(set-kind! ac 'sr-literal-esc))
+                 ((memq kind sr-patvar-binds) (set-kind! ac 'sr-patvar))
+                 ((memq kind sr-patvar-escapes) (set-kind! ac 'sr-patvar-esc))
                  ((memq kind let-like-binds) (set-kind! ac 'let-like-bind))
                  ((memq kind let-like-escapes) (set-kind! ac 'let-like-esc))
                  ((memq kind comment-kinds) (set-kind! ac 'atmosphere))
