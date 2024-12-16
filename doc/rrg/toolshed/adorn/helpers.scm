@@ -163,12 +163,15 @@
 
 (define let-binds '(named-let sv-let mv-let mv-let-rest syntax-let))
 
+(define syntax-rules-binds '(sr-literal sr-ellipsis sr-patvar))
+
 (define define-binds
   '( sv-define defun-proc defun-param mv-define mv-define-rest defproc-proc
-     defproc-param defproc-spec rest-spec defsyntax sr-literal ))
+     defproc-param defproc-spec rest-spec defsyntax ))
 
 (define binds
-  (append define-binds let-binds lambda-binds dsssl-binds '(guard-bind)))
+  (append define-binds let-binds lambda-binds dsssl-binds
+          syntax-rules-binds '(guard-bind)))
 
 (define dsssl-compounds '(compound-key compound-opt))
 
@@ -176,7 +179,8 @@
 
 (define let-like-compounds
   (append '( lambda-bind-list let-sv-inner case-lambda-inner defproc-inner
-             rest-spec-list let-syntax-inner guard-list sr-literals )
+             rest-spec-list let-syntax-inner guard-list sr-literals
+             sr-pattern )
           dsssl-compounds))
 
 (define binding-compounds (append def-like-compounds let-like-compounds))
@@ -185,7 +189,8 @@
 
 (define non-binding-list-compounds
   (append '( list let-sv-outer let-mv-outermost let-mv-outer let-mv-inner
-             define-mv-list case-lambda-outer let-syntax-outer )
+             define-mv-list case-lambda-outer let-syntax-outer sr-rule
+             sr-template )
           inert-binding-compounds))
 
 (define vector-compounds (cons 'vector hvector-kinds))

@@ -1549,7 +1549,7 @@ obtained by extending the syntactic environment of the
 @angle{keyword}s, bound to the specified trans@value{shy}formers.  Each
 binding of a @angle{keyword} has the @angle{transformer spec}s as well
 as the @angle{body} within its region, so the trans@value{shy}formers
-can trans@value{shy}cribe expressions into uses of the macros introduced
+can tran@value{shy}scribe expressions into uses of the macros introduced
 by the @code{letrec-syntax} expression.
 
 @lisp
@@ -1626,13 +1626,13 @@ where an @angle{element} is a @angle{template} optionally followed by an
 the second form of @code{syntax-rules}, or the default identifier
 @code{...}@: (three consecutive periods) otherwise.
 
-Semantics: An instance of @code{syntax-rules} produces a new macro
+@i{Semantics:} An instance of @code{syntax-rules} produces a new macro
 trans@value{shy}former by specifying a sequence of hygienic rewrite
 rules.  A use of a macro whose keyword is associated with a
 trans@value{shy}former specified by @code{syntax-rules} is matched
 against the patterns contained in the @angle{syntax rule}s, beginning
 with the leftmost @angle{syntax rule}.  When a match is found, the macro
-use is trans@value{shy}cribed hygienically according to the template.
+use is tran@value{shy}scribed hygienically according to the template.
 
 An identifier appearing within a @angle{pattern} can be an underscore
 (@code{_}), a literal identifier listed in the list of @angle{pattern
@@ -1689,7 +1689,7 @@ respectively; or
 
 @item
 @var{P} is an improper list @t{(@r{@vari{P}} @r{@varii{P}} @defdots{}
-@r{@varn{P}} @dot{.} @r{@varnplusone{P}})} and @var{E} is a list or
+@r{@varn{P}} . @r{@varnplusone{P}})} and @var{E} is a list or
 im@value{shy}proper list of @var{n} or more elements that match @vari{P}
 through @varn{P}, re@value{shy}spect@value{shy}ively, and whose
 @iifinfo{n}th tail matches @varnplusone{P}; or
@@ -1697,20 +1697,19 @@ through @varn{P}, re@value{shy}spect@value{shy}ively, and whose
 @item
 @var{P} is of the form @t{(@r{@vari{P}} @defdots{} @r{@vark{P}}
 @r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}} @defdots{} @r{@varn{P}})}
-where @var{E} is a pro@value{shy}per list of @iifinfo{n} elements, the
-first @iifinfo{k} of which match @vari{P} through @vark{P},
-re@value{shy}spect@value{shy}ively, whose next @iifinfo{m} @minus{}
-@iifinfo{k} elements each match @vare{P}, whose
-re@value{shy}main@value{shy}ing @iifinfo{n} @minus{} @iifinfo{m}
-ele@value{shy}ments match @varmplusone{P} through @varn{P}; or
+where @var{E} is a proper list of @iifinfo{n} elements, the first
+@iifinfo{k} of which match @vari{P} through @vark{P}, respectively,
+whose next @iifinfo{m} @minus{} @iifinfo{k} elements each match
+@vare{P}, whose re@value{shy}main@value{shy}ing @iifinfo{n} @minus{}
+@iifinfo{m} elements match @varmplusone{P} through @varn{P}; or
 
 @item
 @var{P} is of the form @t{(@r{@vari{P}} @defdots{} @r{@vark{P}}
 @r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}} @defdots{} @r{@varn{P}}
-@dot{.} @r{@varx{P}})} where @var{E} is a list or im@value{shy}proper
-list of @iifinfo{n} ele@value{shy}ments, the first @iifinfo{k} of which
-match @vari{P} through @vark{P}, whose next @iifinfo{m} @minus{}
-@iifinfo{k} ele@value{shy}ments each match @vare{P}, whose
+. @r{@varx{P}})} where @var{E} is a list or im@value{shy}proper list of
+@iifinfo{n} ele@value{shy}ments, the first @iifinfo{k} of which match
+@vari{P} through @vark{P}, whose next @iifinfo{m} @minus{} @iifinfo{k}
+ele@value{shy}ments each match @vare{P}, whose
 re@value{shy}main@value{shy}ing @iifinfo{n} @minus{} @iifinfo{m}
 ele@value{shy}ments match @varmplusone{P} through @varn{P}, and whose
 @iifinfo{n}th and final @t{cdr} matches @varx{P}; or

@@ -197,8 +197,12 @@
     shebang
     sr-ellipsis
     sr-ellipsis-esc
+    sr-keyword
+    sr-keyword-esc
     sr-literal
     sr-literal-esc
+    sr-patvar
+    sr-patvar-esc
     string
     string-esc
     syntax

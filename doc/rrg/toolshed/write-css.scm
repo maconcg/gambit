@@ -146,7 +146,9 @@ code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
     span.serial-ref {color: <serial-ref>}
     span.shebang {color: <shebang>}
     span.sr-ellipsis, span.sr-ellipsis-esc {color: <sr-ellipsis>}
+    span.sr-keyword, span.sr-keyword-esc {color: <sr-keyword>}
     span.sr-literal, span.sr-literal-esc {color: <sr-literal>}
+    span.sr-patvar, span.sr-patvar-esc {color: <sr-patvar>}
     span.string, span.string-esc {color: <string>}
     span.syntax, span.syntax-esc {color: <syntax>}
     span.syntax-abbrev {color: <syntax-abbrev>}
@@ -162,8 +164,9 @@ code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
         font-style: oblique;
     }
     span.char-body, span.aux-esc, span.def-like-esc, span.defsyntax-esc,
-    span.ident-esc, span.let-like-esc, span.string-esc, span.sr-ellipsis-esc,
-     span.sr-literal-esc, span.syntax-esc, span.syntax-let-esc {
+     span.ident-esc, span.let-like-esc, span.string-esc, span.sr-ellipsis-esc,
+     span.sr-keyword-esc, span.sr-literal-esc, span.sr-patvar-esc,
+     span.syntax-esc, span.syntax-let-esc {
         font-weight: bold;
     }
 }
@@ -560,6 +563,7 @@ END
     (( hs-begin )                         'fg-dim)
     (( invalid )                          'fg-dim)
     (( shebang )                          'fg-dim)
+    (( sr-keyword sr-keyword-esc )        'fg-dim)
     (( atmosphere )                       'fg-dimmer)
     (( aux aux-esc )                      'magenta-faint)
     (( aux-abbrev )                       'magenta-faint)
@@ -573,6 +577,7 @@ END
     (( let-like-bind let-like-esc )       'blue-faint)
     (( sr-ellipsis sr-ellipsis-esc )      'blue-faint)
     (( sr-literal sr-literal-esc )        'blue-faint)
+    (( sr-patvar sr-patvar-esc )          'blue-faint)
     (( syntax-let-bind syntax-let-esc )   'blue-faint)
     (( number )                           'cyan)
     (( sharp )                            'yellow)
