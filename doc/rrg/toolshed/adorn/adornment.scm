@@ -69,6 +69,9 @@
                (if (matches-one-of? runtime-syntax (list nc))
                    (adorn-char nc 'rt-syntax '~~rt-syntax)
                    (adorn-char nc 'default '~~rt-syntax)))
+              ((aux-ellipsis? ac-list nc)
+               (revise-until! ac-list 'aux-ellipsis 2)
+               (adorn-char nc 'aux-ellipsis 'sr-ellipsis))
               (else #f))))))
 
 (define (^handle:potential-decimal kind ~mesg)
@@ -193,6 +196,7 @@
                  ((eq? kind 'hs-body) (set-kind! ac 'string))
                  ((eq? kind 'rt-syntax-ident-esc) (set-kind! ac 'syntax-esc))
                  ((eq? kind 'aux-syntax-ident-esc) (set-kind! ac 'aux-esc))
+                 ((eq? kind 'aux-ellipsis) (set-kind! ac 'default))
                  ((memq kind '(false true)) (set-kind! ac 'boolean))
                  ((memq kind def-like-binds) (set-kind! ac 'def-like-bind))
                  ((memq kind def-like-escapes) (set-kind! ac 'def-like-esc))

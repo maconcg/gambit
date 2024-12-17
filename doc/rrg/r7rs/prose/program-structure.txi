@@ -1,0 +1,416 @@
+@node Program structure
+@chapter Program structure
+
+@node Programs
+@section Programs
+
+A Scheme program consists of one or more import declarations followed by
+a sequence of expressions and definitions.  Import declarations specify
+the libraries on which a program or library depends; a subset of the
+identifiers exported by the libraries are made available to the program.
+Expressions are described in chapter 4.  Definitions are either variable
+definitions, syntax definitions, or record-type definitions, all of
+which are explained in this chapter.  They are valid in some, but not
+all, contexts where expressions are allowed, specifically at the
+outermost level of a @angle{program} and at the begin@value{shy}ning of
+a @angle{body}.
+
+At the outermost level of a program, @t{(begin @sv{expression or
+@pari{definition}} @defdots{})} is equivalent to the sequence of
+expressions and definitions in the @code{begin}.  Similarly, in a
+@angle{body}, @t{(begin @sv{@pari{definition}} @defdots{})} is
+equivalent to the sequence @sv{@pari{definition}} @defdots{}@.  Macros
+can expand into such @code{begin} forms.  For the formal definition, see
+4.2.3.
+
+Import declarations and definitions cause bindings to be created in the
+global environment or modify the value of existing global bindings.  The
+initial environment of a program is empty, so at least one import
+declaration is needed to introduce initial bindings.
+
+Expressions occurring at the outermost level of a program do not create
+any bindings.  They are executed in order when the program is invoked or
+loaded, and typically perform some kind of initialization.
+
+Programs and libraries are typically stored in files, although in some
+im@value{shy}ple@value{shy}mentations they can be entered interactively
+into a running Scheme system.  Other paradigms are possible.
+Implementations which store libraries in files should document the
+mapping from the name of a library to its location in the file system.
+
+@node Import declarations
+@section Import declarations
+
+An import declaration takes the following form:
+
+@example grammar
+(import @sv{import-set} @defdots)
+@end example
+
+An import declaration provides a way to import identifiers exported by a
+library.  Each @angle{import set} names a set of bindings from a library
+and possibly specifies local names for the imported bindings.  It takes
+one of the following forms:
+
+@itemize @bullet
+@item
+@angle{library name}
+
+@item
+@t{(only @sv{import set} @sv{identifier} @defdots{})}
+
+@item
+@t{(except @sv{import set} @sv{identifier} @defdots{})}
+
+@item
+@t{(prefix @sv{import set} @sv{identifier} @defdots{})}
+
+@item
+@t{(rename @sv{import set} (@sv{@pari{identifier}}
+@sv{@parii{identifier}}) @defdots{})}
+@end itemize
+
+In the first form, all of the identifiers in the named library's export
+clauses are imported with the same names (or the exported names if
+exported with @code{rename}).  The additional @angle{import set} forms
+modify this set as follows:
+
+@itemize @bullet
+@item
+@code{only} produces a subset of the given @angle{import set} including
+only the listed identifiers (after any renaming).  It is an error if any
+of the listed identifiers are not found in the original set.
+
+@item
+@code{except} produces a subset of the given @angle{import set},
+excluding the listed identifiers (after any renaming).  It is an error
+if any of the listed identifiers are not found in the original set.
+
+@item
+@code{rename} modifies the given @angle{import set}, replacing each
+instance of @angle{@pari{identifier}} with @angle{@parii{identifier}}.
+It is an error if any of the listed @angle{@pari{identifier}}s are not
+found in the original set.
+
+@item
+@code{prefix} automatically renames all identifiers in the given
+@angle{import set}, prefixing each with the specified
+@angle{identifier}.
+@end itemize
+
+In a program or library declaration, it is an error to import the same
+identifier more than once with different bindings, or to redefine or
+mutate an imported binding with a definition or with @code{set!}, or to
+refer to an iden@value{shy}tifier before it is imported.  However, a
+@acronym{REPL} should permit these actions.
+
+@node Variable definitions
+@section Variable definitions
+
+A variable definition binds one or more identifiers and specifies an
+initial value for each of them.  The simplest kind of variable definition
+takes one of the following forms:
+
+@itemize @bullet
+@item
+@t{(define @sv{variable} @sv{expression})}
+
+@item
+@t{(define (@sv{variable} @sv{formals}) @sv{body})}@*
+
+@angle{Formals} are either a sequence of zero or more variables, or a
+sequence of one or more variables followed by a space-delimited period
+and another variable (as in a @code{lambda} expression).  This form is
+equivalent to
+@example grammar
+(define @sv{variable}
+  (lambda (@sv{formals}) @sv{body}))@r{.}
+@end example
+
+@item
+@t{(define (@sv{variable} @dot{.} @sv{formal}) @sv{body})}
+
+@angle{Formal} is a single variable.  This form is equivalent to
+@example grammar
+(define @sv{variable}
+  (lambda @sv{formal} @sv{body}))@r{.}
+@end example
+@end itemize
+
+@node Top level definitions
+@subsection Top level definitions
+
+At the outermost level of a program, a definition
+@example grammar
+(define @sv{variable} @sv{expression})
+@end example
+
+has essentially the same effect as the assignment expression
+
+@example grammar
+(set! @sv{variable} @sv{expression})
+@end example
+
+if @angle{variable} is bound to a non-syntax value.  However, if
+@angle{variable} is not bound, or is a syntactic keyword, then the
+definition will bind @angle{variable} to a new location before
+performing the assignment, whereas it would be an error to perform a
+@code{set!} on an unbound variable.
+
+@lisp
+(define add3
+  (lambda (x) (+ x 3)))
+(add3 3)                        @ok{6}
+(define first car)
+(first '(1 2))                  @ok{1}
+@end lisp
+
+@node Internal definitions
+@subsection Internal definitions
+Definitions can occur at the beginning of a @sv{body} (that is, the body
+of a @code{lambda}, @code{let}, @code{let*}, @code{letrec},
+@code{letrec*}, @code{let-values}, @code{let*-values},
+@code{let-syntax}, @code{letrec-syntax}, @code{parameterize},
+@code{guard}, or @code{case-lambda}).  Note that such a body might not
+be apparent until after expansion of other syntax.  Such definitions are
+known as @dfn{internal definitions} as opposed to the global definitions
+described above.  The variables defined by internal definitions are
+local to the @angle{body}.  That is, @angle{variable} is bound rather
+than assigned, and the region of the binding is the entire @angle{body}.
+For example,
+
+@lisp
+(let ((x 5))
+  (define foo (lambda (y) (bar x y)))
+  (define bar (lambda (a b) (+ (* a b) a)))
+  (foo (+ x 3)))               @ok{45}
+@end lisp
+
+An expanded @angle{body} containing internal definitions can always be
+converted into a completely equivalent @code{letrec*} expression.  For
+example, the @code{let} expression in the above example is equivalent to
+
+@lisp
+(let ((x 5))
+  (letrec* ((foo (lambda (y) (bar x y)))
+            (bar (lambda (a b) (+ (* a b) a))))
+    (foo (+ x 3))))
+@end lisp
+
+Just as for the equivalent @code{letrec*} expression, it is an error if
+it is not possible to evaluate each @angle{expression} of every internal
+definition in a @angle{body} without assigning or referring to the value
+of the corresponding @angle{variable} or the @angle{variable} of any of
+the definitions that follow it in @angle{body}.
+
+It is an error to define the same identifier more than once in the same
+@angle{body}.
+
+Wherever an internal definition can occur, @t{(begin
+@sv{@pari{definition}} @defdots{})} is equivalent to the sequence of
+definitions that form the body of the @code{begin}.
+
+@node Multiple-value definitions
+@subsection Multiple-value definitions
+Another kind of definition is provided by @code{define-values}, which
+creates multiple definitions from a single expression returning multiple
+values.  It is allowed wherever @code{define} is allowed.
+
+@deftypefn syntax @/ define-values @sv{formals} @sv{expression}
+
+It is an error if a variable appears more than once in the set of
+@angle{formals}.
+
+@i{Semantics:} @angle{Expression} is evaluated, and the @angle{formals}
+are bound to the return values in the same way that the @angle{formals}
+in a @code{lambda} expression are matched to the arguments in a
+procedure call.
+
+@lisp
+(define-values (x y) (exact-integer-sqrt 17))
+(list x y)                     @ok{(4 1)}
+@end lisp
+
+@lisp
+(let ()
+  (define-values (x y) (values 1 2))
+(+ x y))                       @ok{3}
+@end lisp
+@end deftypefn
+
+@node Syntax definitions
+@section Syntax definitions
+Syntax definitions have this form:
+
+@example grammar
+(define-syntax @sv{keyword} @sv{transformer spec})
+@end example
+
+@angle{Keyword} is an identifier, and the @angle{transformer spec} is an
+instance of @code{syntax-rules}.  Like variable definitions, syntax
+definitions can appear at the outermost level or nested within a body.
+
+If the @code{define-syntax} occurs at the outermost level, then the
+global syntactic environment is extended by binding the @angle{keyword}
+to the specified transformer, but previous expansions of any global
+binding for @angle{keyword} remain unchanged.  Otherwise, it is an
+internal syntax definition, and is local to the @angle{body} in which it
+is defined.  Any use of a syntax keyword before its corresponding
+definition is an error.  In particular, a use that precedes an inner
+definition will not apply an outer definition.
+
+@lisp
+(let ((x 1) (y 2))
+  (define-syntax swap!
+    (syntax-rules ()
+      ((swap! a b)
+       (let ((tmp a))
+         (set! a b)
+         (set! b tmp)))))
+  (swap! x y)
+  (list x y))                  @ok{(2 1)}
+@end lisp
+
+Macros can expand into definitions in any context that permits them.
+However, it is an error for a definition to define an identifier whose
+binding has to be known in order to determine the meaning of the
+definition itself, or of any preceding definition that belongs to the
+same group of internal definitions.  Similarly, it is an error for an
+internal definition to define an identifier whose binding has to be
+known in order to determine the boundary between the internal
+definitions and the expressions of the body it belongs to.  For example,
+the following are errors:
+
+@lisp
+(define define 3)
+@end lisp
+
+@lisp
+(begin (define begin list))
+@end lisp
+
+@lisp
+(let-syntax
+    ((foo (syntax-rules ()
+            ((foo (proc args ...) body ...)
+             (define proc
+               (lambda (args ...)
+                 body ...))))))
+  (let ((x 3))
+    (foo (plus x y) (+ x y))
+    (define foo x)
+    (plus foo x)))
+@end lisp
+
+@node Record-type definitions
+@section Record-type definitions
+@dfn{Record-type definitions} are used to introduce new data types,
+called @dfn{record types}.  Like other definitions, they can appear
+either at the outermost level or in a body.  The values of a record type
+are called @dfn{records} and are aggregations of zero or more
+@dfn{fields}, each of which holds a single location.  A predicate, a
+constructor, and field accessors and mutators are defined for each
+record type.
+
+@deftypefn syntax @/ define-record-type @sv{name}@*@
+@value{syntaxindent}@value{cdspace}@
+@value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@
+@value{dnspace}@value{dnspace}@value{dnspace}@
+@sv{constructor} @sv{pred} @sv{field} @defdots{}
+
+@i{Syntax:} @angle{name} and @angle{pred} are identifiers.  The
+@angle{constructor} is of the form
+
+@example grammar
+(@sv{constructor name} @sv{field name} @defdots)
+@end example
+
+and each @angle{field} is either of the form
+
+@example grammar
+(@sv{field name} @sv{accessor name})
+@end example
+
+or of the form
+
+@example grammar
+(@sv{field name} @sv{accessor name} @sv{modifier name})
+@end example
+
+It is an error for the same identifier to occur more than once as a
+field name.  It is also an error for the same identifier to occur more
+than once as an accessor or mutator name.
+
+The @code{define-record-type} construct is generative: each use creates
+a new record type that is distinct from all existing types, including
+Scheme's pre@value{shy}defined types and other record types --- even
+record types of the same name or structure.
+
+An instance of @code{define-record-type} is equivalent to the following
+defini@value{shy}tions:
+
+@itemize @bullet
+@item
+@angle{name} is bound to a representation of the record type itself.
+This may be a run-time object or a purely syntactic
+repre@value{shy}sen@value{shy}tation.  The
+repre@value{shy}sen@value{shy}tation is not utilized in this report, but
+it serves as a means to identify the record type for use by further
+language extensions.
+
+@item
+@sv{constructor name} is bound to a procedure that takes as many
+arguments as there are @sv{field name}s in the @t{(@sv{constructor name}
+@defdots{})} subexpression and returns a new record of type
+@angle{named}.  Fields whose names are listed with @angle{constructor
+name} have the cor@value{shy}responding argument as their initial value.
+The initial values of all other fields are unspecified.  It is an error
+for a field name to appear in @angle{constructor} but not as a
+@angle{field name}.
+
+@item
+@angle{pred} is bound to a predicate that returns @code{#t} when given a
+value returned by the procedure bound to @angle{constructor name} and
+@code{#f} for everything else.
+
+@item
+Each @angle{accessor name} is bound to a procedure that takes a record
+of type @angle{name} and returns the current value of the
+cor@value{shy}responding field.  It is an error to pass an accessor a
+value which is not a record of the appropriate type.
+
+@item
+Each @angle{modifier name} is bound to a procedure that takes a record
+of type @angle{name} and a value which becomes the new value of the
+cor@value{shy}responding field; an unspecified value is returned.  It is
+an error to pass a modifier a first argument which is not a record of
+the appro@value{shy}priate type.
+@end itemize
+
+For instance, the following record-type definition
+
+@lisp
+(define-record-type <pare>
+  (kons x y)
+  pare?
+  (x kar set-kar!)
+  (y kdr))
+@end lisp
+
+defines @code{kons} to be a constructor, @code{kar} and @code{kdr} to be
+accessors, @code{set-kar!} to be a modifier, and @code{pare?} to be a
+predicate for instances of @code{<pare>}.
+
+@lisp
+(pare? (kons 1 2))             @ok{#t}
+(pare? (cons 1 2))             @ok{#f}
+(kar (kons 1 2))               @ok{1}
+(kdr (kons 1 2))               @ok{2}
+(let ((k (kons 1 2)))
+  (set-kar! k 3)
+  (kar k))                     @ok{3}
+@end lisp
+@end deftypefn
+
+@node Libraries
+@section Libraries

@@ -18,12 +18,13 @@ r7rs-deps = toolshed/macros+vars.txi r7rs/bibliography.txi \
  r7rs/r7rs-pristine.txi r7rs/copying/copying.txi r7rs/copying/fdl-1.3.texi \
  r7rs/prose/summary.txi r7rs/prose/introduction.txi r7rs/prose/overview.txi \
  r7rs/prose/lexical-conventions.txi r7rs/prose/basic-concepts.txi \
- r7rs/prose/expressions.txi r7rs/prose/standard-procedures.txi
+ r7rs/prose/expressions.txi r7rs/prose/program-structure.txi \
+ r7rs/prose/standard-procedures.txi
 
 r7rs-annotated-prose = r7rs/prose/a/summary.txi r7rs/prose/a/introduction.txi \
  r7rs/prose/a/overview.txi r7rs/prose/a/lexical-conventions.txi \
  r7rs/prose/a/basic-concepts.txi r7rs/prose/a/expressions.txi \
- r7rs/prose/a/standard-procedures.txi
+ r7rs/prose/a/program-structure.txi r7rs/prose/a/standard-procedures.txi
 
 set-scm_to_html = \
 if test -x scm-to-html; then\
@@ -261,6 +262,9 @@ r7rs/prose/a/basic-concepts.txi: r7rs/prose/basic-concepts.txi
 
 r7rs/prose/a/expressions.txi: r7rs/prose/expressions.txi
 	readonly txi=expressions.txi && ${annotate-r7rs-prose-file}
+
+r7rs/prose/a/program-structure.txi: r7rs/prose/program-structure.txi
+	readonly txi=program-structure.txi && ${annotate-r7rs-prose-file}
 
 r7rs/prose/a/standard-procedures.txi: r7rs/prose/standard-procedures.txi
 	readonly txi=standard-procedures.txi && ${annotate-r7rs-prose-file}

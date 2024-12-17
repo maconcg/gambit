@@ -1586,7 +1586,7 @@ A @angle{transformer spec} has one of the following forms:
 @value{syntaxindent}@value{cdspace}@value{dnspace}@value{dnspace}@
 @sv{syntax rule} @defdots{}
 @deftypefnx {auxiliary syntax} @/ @aux{@U{005F}}
-@deftypefnx {auxiliary syntax} @/ @aux{...}
+@deftypefnx {auxiliary syntax} @/ ...
 
 @i{Syntax:} It is an error if any of the @angle{pattern literal}s, or
 the @angle{ellipsis} in the second form, is not an identifier.  It is
@@ -1636,7 +1636,7 @@ use is tran@value{shy}scribed hygienically according to the template.
 
 An identifier appearing within a @angle{pattern} can be an underscore
 (@code{_}), a literal identifier listed in the list of @angle{pattern
-literal}s, or the @angle{ellipsis}.  All other ident@value{shy}ifiers
+literal}s, or the @angle{ellipsis}.  All other iden@value{shy}tifiers
 ap@value{shy}pearing with@value{shy}in a @angle{pattern} are
 @dfn{pattern variables}.
 

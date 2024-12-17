@@ -15,7 +15,7 @@
       s/class="aux">=>/class="aux">\&#x003d;\&#x003e;/
   }
   /<span class="aux">&#x005[Ff];<\/span>/x
-  /<span class="aux">\.\.\.<\/span>/x
+  /<strong class="def-name">\.\.\.<\/strong>/x
 }
 
 /^<dl class="first-defblock">/,/<\/dl>/ {
