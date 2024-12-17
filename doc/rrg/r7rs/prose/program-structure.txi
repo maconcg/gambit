@@ -116,21 +116,21 @@ takes one of the following forms:
 @t{(define @sv{variable} @sv{expression})}
 
 @item
-@t{(define (@sv{variable} @sv{formals}) @sv{body})}@*
-
+@t{(define (@sv{variable} @sv{formals}) @sv{body})}@*@*
 @angle{Formals} are either a sequence of zero or more variables, or a
 sequence of one or more variables followed by a space-delimited period
 and another variable (as in a @code{lambda} expression).  This form is
 equivalent to
+
 @example grammar
 (define @sv{variable}
   (lambda (@sv{formals}) @sv{body}))@r{.}
 @end example
 
 @item
-@t{(define (@sv{variable} @dot{.} @sv{formal}) @sv{body})}
-
+@t{(define (@sv{variable} @dot{.} @sv{formal}) @sv{body})}@*@*
 @angle{Formal} is a single variable.  This form is equivalent to
+
 @example grammar
 (define @sv{variable}
   (lambda @sv{formal} @sv{body}))@r{.}
@@ -272,14 +272,14 @@ that precedes an inner definition will not apply an outer definition.
 @end lisp
 
 Macros can expand into definitions in any context that permits them.
-However, it is an error for a definition to define an identifier whose
-binding has to be known in order to determine the meaning of the
-definition itself, or of any preceding definition that belongs to the
-same group of internal definitions.  Similarly, it is an error for an
-internal definition to define an identifier whose binding has to be
-known in order to determine the boundary between the internal
-definitions and the expressions of the body it belongs to.  For example,
-the following are errors:
+How@value{shy}ever, it is an error for a definition to define an
+identifier whose binding has to be known in order to determine the
+meaning of the definition itself, or of any preceding definition that
+belongs to the same group of internal def@value{shy}ini@value{shy}tions.
+Similarly, it is an error for an internal definition to define an
+identifier whose binding has to be known in order to determine the
+boundary between the internal definitions and the expressions of the
+body it belongs to.  For example, the following are errors:
 
 @lisp
 (define define 3)
@@ -432,11 +432,17 @@ non-negative integers.  It is used to identify the library uniquely when
 importing from other programs or libraries.  Libraries whose first
 identifier is @code{scheme} are reserved for use by this report and
 future versions of this report.  Libraries whose first identifier is
-@code{srfi} are reserved for libraries implementing Scheme Requests for
+@code{srfi} are reserved for libraries
+im@value{shy}plementing Scheme Requests for
 Implementation.  It is inadvisable, but not an error, for identifiers in
-library names to contain any of the characters @code{|} @code{\}
-@code{?} @code{*} @code{<} @code{"} @code{:} @code{>} @code{+} @code{[}
-@code{]} @code{/} or control characters after escapes are expanded.
+library names to contain any of the characters @nobr{@code{@U{007C}}
+@code{@backslashchar{}} @code{@U{003F}} @code{@U{002A}} @code{@U{003C}}
+@code{@U{0022}} @code{@U{003A}} @code{@U{003E}} @code{@U{002B}}
+@code{@U{005B}} @code{@U{005D}} @code{@U{002F}}} or control characters
+after escapes are expanded.
+
+@c @nobr{@code{|} @code{\} @code{?} @code{*} @code{<} @code{"} @code{:} @code{>} @code{+} @code{[} @code{]} @code{/}}
+
 
 A @angle{library declaration} is any of:
 
@@ -515,8 +521,8 @@ are expanded in that envi@value{shy}ronment in the order in which they
 occur in the library.  Alternatively, @nobr{@code{cond-expand}} and
 @code{import} declarations may be processed in left to right order
 interspersed with the processing of other declarations, with the
-envi@value{shy}ron@value{shy}ment growing as imported bindings are added
-to it by each @code{import} declaration.
+en@value{shy}vironment growing as imported bindings are added to it by
+each @code{import} declaration.
 
 When a library is loaded, its expressions are executed in textual order.
 If a library's definitions are referenced in the expanded form of a

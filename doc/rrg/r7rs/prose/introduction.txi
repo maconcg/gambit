@@ -26,10 +26,10 @@ Scheme was the first widely used programming language to embrace
 first-class escape pro@value{shy}cedures, from which all previously
 known sequential control structures can be synthesized.  A subsequent
 version of Scheme introduced the concept of exact and inexact numbers,
-an extension of Common Lisp's generic arithmetic.  More recently, Scheme
-became the first programming language to support hygienic macros, which
-permit the syntax of a block-structured language to be extended in a
-consistent and reliable manner.
+an extension of Common Lisp's generic arith@value{shy}metic.  More
+recently, Scheme became the first programming language to support
+hygienic macros, which permit the syntax of a block-structured
+lan@value{shy}guage to be extended in a consistent and reliable manner.
 
 @node Background
 @nodedescription Background and history.
