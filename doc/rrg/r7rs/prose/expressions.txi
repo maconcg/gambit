@@ -1482,7 +1482,7 @@ the macro.
 
 In consequence, all macros defined using the pattern language are
 @quotedbl{hygienic} and @quotedbl{referentially transparent} and thus
-preserve Scheme's lexical
+preserve Scheme's lexi@value{shy}cal
 scoping.@footnote{@value{refSyntacticExtensions}}
 @footnote{@value{refhygienicMacroExpansion}}
 @footnote{@value{refhygienicMacroExpansion}}

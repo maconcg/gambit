@@ -196,6 +196,10 @@
     hs-key
     ident
     ident-esc
+    import-lib
+    import-lib-ident
+    import-lib-ident-esc
+    import-lib-esc
     invalid
     key-bind
     key-init

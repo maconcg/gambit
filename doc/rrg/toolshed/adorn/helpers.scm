@@ -54,6 +54,22 @@
 (define sv-define-syntax
   (map string->list (+prims '("define" "define-prim"))))
 
+(define define-library-syntax
+  (map string->list (+prims '("define-library"))))
+
+(define define-library-only-aux-syntax
+  (map string->list '("export" "include-library-declarations")))
+
+(define define-library-aux-syntax
+  (append define-library-only-aux-syntax
+          (map string->list
+               '("import" "begin" "include" "include-ci" "cond-expand"))))
+
+(define import-syntax (map string->list (+prims '("import"))))
+
+(define import-aux-syntax
+  (map string->list '("only" "except" "prefix" "rename")))
+
 (define define-proc-syntax
   (map string->list
        (+prims '("define-primitive" "define-procedure" "define-prim&proc"))))
@@ -81,7 +97,7 @@
 
 (define case-lambda-syntax (map string->list (+prims '("case-lambda"))))
 
-(define rt-aux-syntax
+(define misc-rt-aux-syntax
   (map string->list
        (+prims '("else" "unquote" "unquote-splicing"))))
 
@@ -97,19 +113,22 @@
           define-proc-syntax
           define-record-type-syntax
           guard-syntax
-          rt-aux-syntax
+          misc-rt-aux-syntax
           syntax-let-syntax
           syntax-rules-syntax
+          define-library-syntax
+          define-library-aux-syntax
+          import-aux-syntax
           (map string->list
                (+prims '("and" "begin" "c-declare" "c-define" "c-define-type"
                          "c-initialize" "c-lambda" "case" "cond" "cond-expand"
-                         "declare" "define-library" "define-macro"
-                         "define-runtime-macro" "define-structure"
-                         "define-type" "define-type-of-thread" "delay"
-                         "delay-force" "do" "future" "if" "import" "include"
-                         "include-ci" "load" "macro-case-target" "namespace"
-                         "or" "quasiquote" "quote" "receive" "set!"
-                         "syntax-error" "this-source-file" "unless" "when")))))
+                         "declare" "define-macro" "define-runtime-macro"
+                         "define-structure" "define-type"
+                         "define-type-of-thread" "delay" "delay-force" "do"
+                         "future" "if" "import" "include" "include-ci" "load"
+                         "macro-case-target" "namespace" "or" "quasiquote"
+                         "quote" "receive" "set!" "syntax-error"
+                         "this-source-file" "unless" "when")))))
 
 (define rt-cond-aux-syntax
   (map string->list
@@ -171,7 +190,7 @@
 
 (define define-binds
   '( sv-define defun-proc defun-param mv-define mv-define-rest defproc-proc
-     defproc-param defproc-spec rest-spec defsyntax ))
+     defproc-param defproc-spec rest-spec defsyntax named-deflib deflib-r7rs ))
 
 (define defrec-binds '( defrec-name defrec-cons defrec-param defrec-pred
                         defrec-field defrec-acc defrec-mut ))
@@ -183,7 +202,7 @@
 (define dsssl-compounds '(compound-key compound-opt))
 
 (define def-like-compounds
-  '(defun defproc defrec-cons-list defrec-field-list))
+  '(defun defproc defrec-cons-list defrec-field-list deflib-r7rs-list))
 
 (define syntax-rules-compounds '(sr-literals sr-pattern sr-subpattern))
 
@@ -200,7 +219,7 @@
 (define non-binding-list-compounds
   (append '( list let-sv-outer let-mv-outermost let-mv-outer let-mv-inner
              define-mv-list case-lambda-outer let-syntax-outer sr-rule
-             sr-template )
+             sr-template import-set )
           inert-binding-compounds))
 
 (define vector-compounds (cons 'vector hvector-kinds))
@@ -310,6 +329,8 @@
         ((matches-one-of? guard-syntax              operator) '~~guard)
         ((matches-one-of? rt-cond-aux-syntax        operator) 'rt-cond-aux)
         ((matches-one-of? syntax-rules-syntax       operator) '~sr-ellips/lit)
+        ((matches-one-of? import-syntax             operator) '~~import-set)
+        ((matches-one-of? define-library-syntax     operator) '~deflib)
         (else #f)))
 
 (define rt-syntax-mesg
@@ -324,22 +345,22 @@
                        (syntax->mesg (cons (get-char ac) buffer))
                        (loop (cdr rest) (cons (get-char ac) buffer)))))))))
     (lambda (ac-list)
-      (if (null? ac-list)
-          #f
-          (let* ((ac (car ac-list)) (kind (get-kind ac)))
-            (cond ((eq? kind 'rt-syntax) (get-operator ac-list '~~rt-syntax))
-                  ((eq? kind 'rt-syntax-ident)
-                   (get-operator ac-list 'rt-syntax-ident-begin))
-                  (else (let ((hop (get-hop ac)))
-                          (if (and hop (negative? hop))
-                              (rt-syntax-mesg
-                               (let skip ((rest (cdr ac-list)) (i hop))
-                                 (if (negative? i)
-                                     (skip (cdr rest) (+ i 1))
-                                     rest)))
-                              (let ((mesg (get-mesg ac)))
-                                (and (not (memq mesg list-delimiter-mesgs))
-                                     (rt-syntax-mesg (cdr ac-list)))))))))))))
+      (and (not (null? ac-list))
+           (let* ((ac (car ac-list)) (kind (get-kind ac)))
+             (cond ((memq kind '(rt-syntax aux-syntax))
+                    (get-operator ac-list '~~rt-syntax))
+                   ((memq kind '(rt-syntax-ident aux-syntax-ident))
+                    (get-operator ac-list (->begin kind)))
+                   (else (let ((hop (get-hop ac)))
+                           (if (and hop (negative? hop))
+                               (rt-syntax-mesg
+                                (let skip ((rest (cdr ac-list)) (i hop))
+                                  (if (negative? i)
+                                      (skip (cdr rest) (+ i 1))
+                                      rest)))
+                               (let ((mesg (get-mesg ac)))
+                                 (and (not (memq mesg list-delimiter-mesgs))
+                                      (rt-syntax-mesg (cdr ac-list)))))))))))))
 
 (define (start-of-list ac-list)
   ;; Return a truncated version of ac-list from the start of the current list.
@@ -714,8 +735,8 @@
     (if (eq? kind '~rt-syntax-ident)
         (let ((tested (cdr (chars-until ac-list '~rt-syntax-ident-begin)))
               (dist (- (cdr p/d))))
-          (let ((aux-match? (matches-escapes? '(#\e #\l #\s #\e) tested)))
-            (if aux-match?
+          (let ((else-match? (matches-escapes? '(#\e #\l #\s #\e) tested)))
+            (if else-match?
                 (let* ((up1 (up-list ac-list))
                        (up1-syntax-mesg (rt-syntax-mesg up1)))
                   (if (or (eq? up1-syntax-mesg 'rt-cond-aux)

@@ -363,10 +363,10 @@ language extensions.
 arguments as there are @angle{field name}s in the @t{(@sv{constructor
 name} @defdots{})} subexpression and returns a new record of type
 @angle{named}.  Fields whose names are listed with @angle{constructor
-name} have the cor@value{shy}responding argument as their initial value.
-The initial values of all other fields are unspecified.  It is an error
-for a field name to appear in @angle{constructor} but not as a
-@angle{field name}.
+name} have the cor@value{shy}responding ar@value{shy}gu@value{shy}ment
+as their initial value.  The initial values of all other fields are
+unspecified.  It is an error for a field name to appear in
+@angle{constructor} but not as a @angle{field name}.
 
 @item
 @angle{pred} is bound to a predicate that returns @code{#t} when given a
@@ -432,17 +432,13 @@ non-negative integers.  It is used to identify the library uniquely when
 importing from other programs or libraries.  Libraries whose first
 identifier is @code{scheme} are reserved for use by this report and
 future versions of this report.  Libraries whose first identifier is
-@code{srfi} are reserved for libraries
-im@value{shy}plementing Scheme Requests for
+@code{srfi} are reserved for libraries implementing Scheme Requests for
 Implementation.  It is inadvisable, but not an error, for identifiers in
 library names to contain any of the characters @nobr{@code{@U{007C}}
 @code{@backslashchar{}} @code{@U{003F}} @code{@U{002A}} @code{@U{003C}}
 @code{@U{0022}} @code{@U{003A}} @code{@U{003E}} @code{@U{002B}}
 @code{@U{005B}} @code{@U{005D}} @code{@U{002F}}} or control characters
 after escapes are expanded.
-
-@c @nobr{@code{|} @code{\} @code{?} @code{*} @code{<} @code{"} @code{:} @code{>} @code{+} @code{[} @code{]} @code{/}}
-
 
 A @angle{library declaration} is any of:
 
@@ -535,7 +531,8 @@ times.
 Similarly, during the expansion of a library @code{(foo)}, if any syntax
 keywords imported from another library @code{(bar)} are needed to expand
 the library, then the library @code{(bar)} must be expanded and its
-syntax definitions evaluated before the expansion of @code{(foo)}.
+syntax definitions evaluated be@value{shy}fore the expansion of
+@code{(foo)}.
 
 Regardless of the number of times that a library is loaded, each program
 or library that imports bindings from a library must do so from a single

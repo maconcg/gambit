@@ -161,7 +161,7 @@
 (define reverse+simplify-kinds!
   (let ((def-like-syms '( defun-proc sv-define mv-define mv-define-rest
                           defproc-proc defrec-cons defrec-pred defrec-acc
-                          defrec-mut ))
+                          defrec-mut deflib-r7rs named-deflib ))
         (let-like-syms '( defun-param named-let sv-let mv-let mv-let-rest
                           lambda-bind lambda-rest case-lambda-bind
                           opt-bind opt-init rest-bind defproc-param

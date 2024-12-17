@@ -167,9 +167,9 @@ code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
     }
     span.char-body, span.aux-esc, span.def-like-esc, span.defrec-name-esc,
      span.defrec-field-esc, span.defsyntax-esc, span.ident-esc,
-     span.let-like-esc, span.string-esc, span.sr-ellipsis-esc,
-     span.sr-keyword-esc, span.sr-literal-esc, span.sr-patvar-esc,
-     span.syntax-esc, span.syntax-let-esc {
+     span.import-lib-ident-esc, span.let-like-esc, span.string-esc,
+     span.sr-ellipsis-esc, span.sr-keyword-esc, span.sr-literal-esc,
+     span.sr-patvar-esc, span.syntax-esc, span.syntax-let-esc {
         font-weight: bold;
     }
 }
