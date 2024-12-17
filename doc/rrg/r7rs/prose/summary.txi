@@ -9,9 +9,9 @@ dialect of the Lisp programming
 language@footnote{@value{refRecursiveFunctions}} invented by Guy Lewis
 Steele Jr.@: and Gerald Jay Sussman.  It was designed to have
 exceptionally clear and simple semantics and few different ways to form
-expressions.  A wide variety of programming paradigms, including
-imperative, functional, and object-oriented styles, find convenient
-expression in Scheme.
+expressions.  A wide variety of pro@value{shy}gramming paradigms,
+including imperative, functional, and object-oriented styles, find
+convenient expression in Scheme.
 
 The introduction offers a brief history of the language and of the
 report.
@@ -21,20 +21,20 @@ and describe the notational conventions used for describing the language
 and for writing programs in the language.
 
 Chapters 4 and 5 describe the syntax and semantics of expressions,
-definitions, programs, and libraries.
+def@value{shy}ini@value{shy}tions, programs, and libraries.
 
 Chapter 6 describes Scheme's built-in procedures, which include all of
 the language's data manipulation and input/output primitives.
 
-Chapter 7 provides a formal syntax for Scheme written in extended BNF,
-along with a formal denotational semantics.  An example of the use of
-the language follows the formal syntax and semantics.
+Chapter 7 provides a formal syntax for Scheme written in extended
+@acronym{BNF}, along with a formal denotational semantics.  An example
+of the use of the language follows the formal syntax and semantics.
 
 Appendix A provides a list of the standard libraries and the identifiers
 that they export.
 
 Appendix B provides a list of optional but standardized implementation
-feature names.
+fea@value{shy}ture names.
 
 The report concludes with a list of references and an alphabetic index.
 

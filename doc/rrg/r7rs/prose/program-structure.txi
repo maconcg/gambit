@@ -24,9 +24,9 @@ equivalent to the sequence @sv{@pari{definition}}
 into such @code{begin} forms.  For the formal definition, see 4.2.3.
 
 Import declarations and definitions cause bindings to be created in the
-global environment or modify the value of existing global bindings.  The
-initial environment of a program is empty, so at least one import
-declaration is needed to introduce initial bindings.
+glo@value{shy}bal environment or modify the value of existing global
+bindings.  The initial environment of a program is empty, so at least
+one import declaration is needed to introduce initial bindings.
 
 Expressions occurring at the outermost level of a program do not create
 any bindings.  They are executed in order when the program is invoked or
@@ -99,10 +99,11 @@ found in the original set.
 @end itemize
 
 In a program or library declaration, it is an error to import the same
-identifier more than once with different bindings, or to redefine or
-mutate an imported binding with a definition or with @code{set!}, or to
-refer to an iden@value{shy}tifier before it is imported.  However, a
-@acronym{REPL} should permit these actions.
+iden@value{shy}ti@value{shy}fier more than once with different bindings,
+or to redefine or mutate an im@value{shy}ported binding with a
+definition or with @code{set!}, or to refer to an iden@value{shy}tifier
+before it is im@value{shy}ported.  However, a @acronym{REPL} should
+permit these actions.
 
 @node Variable definitions
 @section Variable definitions
@@ -116,11 +117,11 @@ takes one of the following forms:
 @t{(define @sv{variable} @sv{expression})}
 
 @item
-@t{(define (@sv{variable} @sv{formals}) @sv{body})}@*@*
-@angle{Formals} are either a sequence of zero or more variables, or a
-sequence of one or more variables followed by a space-delimited period
-and another variable (as in a @code{lambda} expression).  This form is
-equivalent to
+@t{(define (@sv{variable} @sv{formals}) @sv{body})}@*@* @angle{Formals}
+are either a sequence of zero or more variables, or a
+se@value{shy}quence of one or more variables followed by a
+space-delimited period and another variable (as in a @code{lambda}
+expression).  This form is equiv@value{shy}alent to
 
 @example grammar
 (define @sv{variable}
@@ -173,11 +174,11 @@ body of a @code{lambda}, @code{let}, @code{let*}, @code{letrec},
 @code{let-syntax}, @code{letrec-syntax}, @code{parameterize},
 @code{guard}, or @code{case-lambda}).  Note that such a body might not
 be apparent until after expansion of other syntax.  Such definitions are
-known as @dfn{internal definitions} as opposed to the global definitions
-described above.  The variables defined by internal definitions are
-local to the @angle{body}.  That is, @angle{variable} is bound rather
-than assigned, and the region of the binding is the entire @angle{body}.
-For example,
+known as @define{internal definitions} as opposed to the global
+definitions described above.  The variables defined by internal
+definitions are local to the @angle{body}.  That is, @angle{variable} is
+bound rather than assigned, and the region of the binding is the entire
+@angle{body}.  For example,
 
 @lisp
 (let ((x 5))
@@ -188,7 +189,8 @@ For example,
 
 An expanded @angle{body} containing internal definitions can always be
 converted into a completely equivalent @code{letrec*} expression.  For
-example, the @code{let} expression in the above example is equivalent to
+example, the @code{let} ex@value{shy}pres@value{shy}sion in the above
+example is equivalent to
 
 @lisp
 (let ((x 5))
@@ -197,11 +199,13 @@ example, the @code{let} expression in the above example is equivalent to
     (foo (+ x 3))))
 @end lisp
 
-Just as for the equivalent @code{letrec*} expression, it is an error if
-it is not possible to evaluate each @angle{expression} of every internal
-definition in a @angle{body} without assigning or referring to the value
-of the cor@value{shy}responding @angle{variable} or the @angle{variable}
-of any of the definitions that follow it in @angle{body}.
+Just as for the equivalent @code{letrec*}
+ex@value{shy}pres@value{shy}sion, it is an error if it is not
+pos@value{shy}sible to evaluate each @angle{expression} of every
+internal definition in a @angle{body} without assigning or referring to
+the value of the cor@value{shy}responding @angle{variable} or the
+@angle{variable} of any of the definitions that follow it in
+@angle{body}.
 
 It is an error to define the same identifier more than once in the same
 @angle{body}.
@@ -213,8 +217,9 @@ sequence of definitions that form the body of the @code{begin}.
 @node Multiple-value definitions
 @subsection Multiple-value definitions
 Another kind of definition is provided by @code{define-values}, which
-creates multiple definitions from a single expression returning multiple
-values.  It is allowed wherever @code{define} is allowed.
+creates mul@value{shy}tiple definitions from a single expression
+returning multiple values.  It is al@value{shy}lowed wherever
+@code{define} is allowed.
 
 @deftypefn syntax @/ define-values @sv{formals} @sv{expression}
 
@@ -222,9 +227,9 @@ It is an error if a variable appears more than once in the set of
 @angle{formals}.
 
 @i{Semantics:} @angle{Expression} is evaluated, and the @angle{formals}
-are bound to the return values in the same way that the @angle{formals}
-in a @code{lambda} expression are matched to the arguments in a
-procedure call.
+are bound to the re@value{shy}turn values in the same way that the
+@angle{formals} in a @code{lambda} expres@value{shy}sion are matched to
+the arguments in a procedure call.
 
 @lisp
 (define-values (x y) (exact-integer-sqrt 17))
@@ -275,11 +280,11 @@ Macros can expand into definitions in any context that permits them.
 How@value{shy}ever, it is an error for a definition to define an
 identifier whose binding has to be known in order to determine the
 meaning of the definition itself, or of any preceding definition that
-belongs to the same group of internal def@value{shy}ini@value{shy}tions.
+belongs to the same group of internal defi@value{shy}ni@value{shy}tions.
 Similarly, it is an error for an internal definition to define an
 identifier whose binding has to be known in order to determine the
 boundary between the internal definitions and the expressions of the
-body it belongs to.  For example, the following are errors:
+body it belongs to.  For ex@value{shy}ample, the following are errors:
 
 @lisp
 (define define 3)
@@ -304,13 +309,13 @@ body it belongs to.  For example, the following are errors:
 
 @node Record-type definitions
 @section Record-type definitions
-@dfn{Record-type definitions} are used to introduce new data types,
-called @dfn{record types}.  Like other definitions, they can appear
+@define{Record-type definitions} are used to introduce new data types,
+called @define{record types}.  Like other definitions, they can appear
 either at the outermost level or in a body.  The values of a record type
-are called @dfn{records} and are aggre@value{shy}gations of zero or more
-@dfn{fields}, each of which holds a single location.  A predicate, a
-constructor, and field accessors and mutators are defined for each
-record type.
+are called @define{records} and are ag@value{shy}gre@value{shy}gations
+of zero or more @define{fields}, each of which holds a single location.
+A predi@value{shy}cate, a constructor, and field accessors and mutators
+are defined for each record type.
 
 @deftypefn syntax @/ define-record-type @sv{name}@*@
 @value{syntaxindent}@value{cdspace}@
@@ -352,39 +357,38 @@ defini@value{shy}tions:
 @itemize @bullet
 @item
 @angle{name} is bound to a representation of the record type itself.
-This may be a run-time object or a purely syntactic
-repre@value{shy}sen@value{shy}tation.  The
-repre@value{shy}sen@value{shy}tation is not utilized in this report, but
-it serves as a means to identify the record type for use by further
-language extensions.
+This may be a run-time object or a purely syntactic representation.  The
+rep@value{shy}re@value{shy}sen@value{shy}tation is not utilized in this
+report, but it serves as a means to identify the record type for use by
+further language extensions.
 
 @item
 @angle{constructor name} is bound to a procedure that takes as many
-arguments as there are @angle{field name}s in the @t{(@sv{constructor
-name} @defdots{})} subexpression and returns a new record of type
-@angle{named}.  Fields whose names are listed with @angle{constructor
-name} have the cor@value{shy}responding ar@value{shy}gu@value{shy}ment
-as their initial value.  The initial values of all other fields are
-unspecified.  It is an error for a field name to appear in
-@angle{constructor} but not as a @angle{field name}.
+argu@value{shy}ments as there are @angle{field name}s in the
+@t{(@sv{constructor name} @defdots{})} sub@value{shy}expression and
+returns a new record of type @angle{named}.  Fields whose names are
+listed with @angle{constructor name} have the cor@value{shy}responding
+ar@value{shy}gu@value{shy}ment as their initial value.  The initial
+values of all other fields are unspecified.  It is an error for a field
+name to appear in @angle{constructor} but not as a @angle{field name}.
 
 @item
 @angle{pred} is bound to a predicate that returns @code{#t} when given a
 value returned by the procedure bound to @angle{constructor name} and
-@code{#f} for everything else.
+@code{#f} for every@value{shy}thing else.
 
 @item
 Each @angle{accessor name} is bound to a procedure that takes a record
-of type @angle{name} and returns the current value of the
-cor@value{shy}responding field.  It is an error to pass an accessor a
-value which is not a record of the appropriate type.
+of type @angle{name} and returns the current value of the corresponding
+field.  It is an error to pass an accessor a value which is not a record
+of the appropriate type.
 
 @item
 Each @angle{modifier name} is bound to a procedure that takes a record
 of type @angle{name} and a value which becomes the new value of the
-cor@value{shy}responding field; an unspecified value is returned.  It is
-an error to pass a modifier a first argument which is not a record of
-the appro@value{shy}priate type.
+cor@value{shy}res@value{shy}ponding field; an un@value{shy}specified
+value is returned.  It is an error to pass a modifier a first argument
+which is not a record of the appro@value{shy}priate type.
 @end itemize
 
 For instance, the following record-type definition
@@ -432,13 +436,14 @@ non-negative integers.  It is used to identify the library uniquely when
 importing from other programs or libraries.  Libraries whose first
 identifier is @code{scheme} are reserved for use by this report and
 future versions of this report.  Libraries whose first identifier is
-@code{srfi} are reserved for libraries implementing Scheme Requests for
-Implementation.  It is inadvisable, but not an error, for identifiers in
-library names to contain any of the characters @nobr{@code{@U{007C}}
-@code{@backslashchar{}} @code{@U{003F}} @code{@U{002A}} @code{@U{003C}}
-@code{@U{0022}} @code{@U{003A}} @code{@U{003E}} @code{@U{002B}}
-@code{@U{005B}} @code{@U{005D}} @code{@U{002F}}} or control characters
-after escapes are expanded.
+@code{srfi} are reserved for libraries
+im@value{shy}ple@value{shy}menting Scheme Requests for Implementation.
+It is inadvis@value{shy}able, but not an error, for
+iden@value{shy}tifiers in library names to contain any of the characters
+@nobr{@code{@U{007C}} @code{@backslashchar{}} @code{@U{003F}}
+@code{@U{002A}} @code{@U{003C}} @code{@U{0022}} @code{@U{003A}}
+@code{@U{003E}} @code{@U{002B}} @code{@U{005B}} @code{@U{005D}}
+@code{@U{002F}}} or control characters after escapes are expanded.
 
 A @angle{library declaration} is any of:
 
@@ -467,8 +472,9 @@ A @angle{library declaration} is any of:
 @end itemize
 
 An @code{export} declaration specifies a list of identifiers which can
-be made visible to other libraries or programs.  An @angle{export spec}
-takes one of the fol@value{shy}lowing forms:
+be made vis@value{shy}ible to other libraries or programs.  An
+@angle{export spec} takes one of the fol@value{shy}low@value{shy}ing
+forms:
 
 @itemize @bullet
 @item
@@ -493,9 +499,9 @@ the @acronym{REPL} (see section 5.2).
 
 The @code{begin}, @code{include}, and @code{include-ci} declarations are
 used to specify the body of the library.  They have the same syntax and
-semantics as the cor@value{shy}responding expression types.  This form
-of @code{begin} is analogous to, but not the same as, the two types of
-@code{begin} defined in section 4.2.3.
+semantics as the cor@value{shy}res@value{shy}ponding expression types.
+This form of @code{begin} is analogous to, but not the same as, the two
+types of @code{begin} defined in section 4.2.3.
 
 The @code{include-library-declarations} declaration is similar to
 include ex@value{shy}cept that the contents of the file are spliced
@@ -505,34 +511,34 @@ libraries as a simple form of library interface.
 
 The @code{cond-expand} declaration has the same syntax and semantics as
 the @nobr{@code{cond-expand}} expression type, except that it expands to
-spliced-in library decla@value{shy}rations rather than expressions
-enclosed in @code{begin}.
+spliced-in library dec@value{shy}la@value{shy}rations rather than
+expressions enclosed in @code{begin}.
 
 One possible implementation of libraries is as follows: After all
 @nobr{@code{cond-expand}} library declarations are expanded, a new
 envi@value{shy}ron@value{shy}ment is constructed for the library
 consisting of all imported bindings.  The expressions from all
 @code{begin}, @code{include} and @code{include-ci} library declarations
-are expanded in that envi@value{shy}ronment in the order in which they
+are expanded in that en@value{shy}vironment in the order in which they
 occur in the library.  Alternatively, @nobr{@code{cond-expand}} and
 @code{import} declarations may be processed in left to right order
 interspersed with the processing of other declarations, with the
-en@value{shy}vironment growing as imported bindings are added to it by
-each @code{import} declaration.
+en@value{shy}vi@value{shy}ron@value{shy}ment growing as imported
+bindings are added to it by each @code{import} dec@value{shy}laration.
 
 When a library is loaded, its expressions are executed in textual order.
 If a library's definitions are referenced in the expanded form of a
 program or library body, then that library must be loaded before the
 expanded program or library body is evaluated.  This rule applies
-transitively.  If a library is imported by more than one program or
-library, it may possibly be loaded ad@value{shy}di@value{shy}tional
-times.
+transitively.  If a library is im@value{shy}ported by more than one
+program or library, it may possibly be loaded
+ad@value{shy}di@value{shy}tional times.
 
 Similarly, during the expansion of a library @code{(foo)}, if any syntax
-keywords imported from another library @code{(bar)} are needed to expand
-the library, then the library @code{(bar)} must be expanded and its
-syntax definitions evaluated be@value{shy}fore the expansion of
-@code{(foo)}.
+keywords im@value{shy}ported from another library @code{(bar)} are
+needed to expand the library, then the library @code{(bar)} must be
+expanded and its syntax definitions evaluated be@value{shy}fore the
+expansion of @code{(foo)}.
 
 Regardless of the number of times that a library is loaded, each program
 or library that imports bindings from a library must do so from a single

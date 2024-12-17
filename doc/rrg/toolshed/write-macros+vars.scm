@@ -48,6 +48,7 @@
   (write-lisp-text-macro "lispnotetext" "" "lisp-note")
   (write-lisp-text-macro "unspecified" "@result{}" "unspecified")
   (write-lisp-text-macro "unspecifiedtext" "" "unspecified")
+  (write-define-macro)
   (write-noadorn-macro)
   (write-visual-divider)
   (write-opt-macro)
@@ -266,6 +267,12 @@
                ((char=? next #\9)
                 (loop (cdr old) (append (rev-string->list "IX") new)))
                (else (loop (cdr old) (cons next new))))))))))
+
+(define (write-define-macro)
+  (write-string (string-append "@macro define {text}\n"
+                               "@inlinefmtifelse{html,@inlineraw{html,"
+                               "<dfn>\\text\\</dfn>},@dfn{text}}\n"
+                               "@end macro\n")))
 
 (define (write-lisp-syntax-macro kind)
   (write-string

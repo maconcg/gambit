@@ -5,11 +5,11 @@
 
 Programming languages should be designed not by piling feature on top of
 feature, but by removing the weaknesses and restrictions that make
-additional features appear necessary.  Scheme demonstrates that a very
-small number of rules for forming expressions, with no restrictions on
-how they are composed, suffice to form a practical and efficient
-programming language that is flexible enough to support most of the
-major programming paradigms in use today.
+ad@value{shy}ditional features appear necessary.  Scheme demonstrates
+that a very small number of rules for forming expressions, with no
+restrictions on how they are composed, suffice to form a practical and
+efficient programming lan@value{shy}guage that is flexible enough to
+support most of the major programming paradigms in use today.
 
 Scheme was one of the first programming languages to incorporate
 first-class procedures as in the lambda calculus, thereby proving the
@@ -21,15 +21,16 @@ operator position of a procedure call in the same way as an operand
 position.  By relying entirely on procedure calls to express iteration,
 Scheme emphasized the fact that tail-recursive procedure calls are
 essentially @sc{GOTO}s that pass arguments, thus allowing a
-pro@value{shy}gramming style that is both coherent and efficient.
+program@value{shy}ming style that is both coherent and efficient.
 Scheme was the first widely used programming language to embrace
-first-class escape pro@value{shy}cedures, from which all previously
-known sequential control structures can be synthesized.  A subsequent
-version of Scheme introduced the concept of exact and inexact numbers,
-an extension of Common Lisp's generic arith@value{shy}metic.  More
-recently, Scheme became the first programming language to support
-hygienic macros, which permit the syntax of a block-structured
-lan@value{shy}guage to be extended in a consistent and reliable manner.
+first-class escape procedures, from which all previously known
+sequential control structures can be synth@value{shy}esized.  A
+subsequent version of Scheme introduced the concept of exact and inexact
+numbers, an extension of Common Lisp's generic arith@value{shy}metic.
+More recently, Scheme became the first programming language to support
+hy@value{shy}gienic macros, which permit the syntax of a
+block-structured lan@value{shy}guage to be extended in a consistent and
+reliable manner.
 
 @node Background
 @nodedescription Background and history.
@@ -40,8 +41,8 @@ The first description of Scheme was written in
 report@footnote{@value{refR1RS}} appeared in 1978, which described the
 evolution of the language as its MIT implementation was upgraded to
 support an innovative compiler@footnote{@value{refRabbit}}.  Three
-distinct projects began in 1981 and 1982 to use variants of Scheme for
-courses at MIT, Yale, and Indiana
+dis@value{shy}tinct projects began in 1981 and 1982 to use variants of
+Scheme for courses at MIT, Yale, and Indiana
 University@footnote{@value{refTDialect}}
 @footnote{@value{refMITSchemeManual}}
 @footnote{@value{refScheme311Ref}}.  An introductory computer science

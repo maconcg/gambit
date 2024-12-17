@@ -7,8 +7,9 @@
 The @code{eqv?} procedure defines a useful equivalence relation on
 objects.  Briefly, it returns @code{#t} if @vari{obj} and @varii{obj}
 are normally regarded as the same object.  This relation is left
-slightly open to interpretation, but the following partial specification
-of @code{eqv?} holds for all implementations of Scheme.
+slightly open to interpretation, but the following partial
+spec@value{shy}ification of @code{eqv?} holds for all implementations of
+Scheme.
 
 @lisp
 (eqv? 'a 'a)                 @ok{#t}

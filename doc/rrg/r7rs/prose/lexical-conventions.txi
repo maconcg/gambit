@@ -5,7 +5,7 @@
 
 This section gives an informal account of some of the lexical
 conventions used in writing Scheme programs.  For a formal syntax of
-Scheme, see section 7.1.
+Scheme, see sec@value{shy}tion 7.1.
 
 @node Identifiers
 @section Identifiers
@@ -24,11 +24,12 @@ characters:
 
 Alternatively, an identifier can be represented by a sequence of zero or
 more characters enclosed within vertical lines (@code{|}), analogous to
-string literals.  Any character, including whitespace characters, but
-excluding the backslash and vertical line characters, can appear
-verbatim in such an identifier.  In addition, characters can be
-specified using either an @angle{inline hex escape} or the same escapes
-available in strings.
+string lit@value{shy}er@value{shy}als.  Any character, including
+whitespace characters, but excluding the back@value{shy}slash and
+vertical line characters, can appear verbatim in such an
+iden@value{shy}tifier.  In addition, characters can be specified using
+either an @angle{inline hex escape} or the same escapes available in
+strings.
 
 For example, the identifier @hc{|H\x65;llo|} is the same identifier as
 @code{Hello}, and in an implementation that supports the appropriate
@@ -68,10 +69,10 @@ report@footnote{@value{refR5RS}}, the syntax distinguishes between upper
 and lower case in identifiers and in characters specified using their
 names.  However, it does not distinguish between upper and lower case in
 numbers, nor in @angle{inline hex escapes} used in the syntax of
-identifiers, characters, or strings.  None of the identifiers defined in
-this report contain upper-case characters, even when they appear to do
-so as a result of the English-language convention of capitalizing the
-first word of a sentence.
+iden@value{shy}tifiers, characters, or strings.  None of the identifiers
+defined in this report contain upper-case characters, even when they
+appear to do so as a result of the English-language convention of
+capitalizing the first word of a sentence.
 
 The following directives give explicit control over case folding.
 
@@ -86,28 +87,29 @@ except that they affect the reading of subsequent data from the same
 port.  The @code{#!fold-case} directive causes subsequent identifiers
 and character names to be case-folded as if by @code{string-foldcase}
 (see section 6.7). It has no effect on character literals.  The
-@code{#!no-fold-case} directive causes a return to the default,
-non-folding behavior.
+@code{#!no-fold-case} directive causes a re@value{shy}turn to the
+default, non-folding behavior.
 
 @node Whitespace and comments
 @section Whitespace and comments
 
-@dfn{Whitespace} characters include the space, tab, and newline
-characters.  (Implementations may provide additional whitespace
-characters such as page break.)  Whitespace is used for improved
-readability and as necessary to separate tokens from each other, a token
-being an indivisible lexical unit such as an identifier or number, but
-is otherwise insignificant.  Whitespace can occur between any two
-tokens, but not within a token.  Whitespace occurring inside a string or
-inside a symbol delimited by vertical lines is significant.
+@define{Whitespace} characters include the space, tab, and newline
+characters.  (Im@value{shy}plemen@value{shy}tations may provide
+additional whitespace characters such as page break.)  Whitespace is
+used for improved readability and as necessary to separate tokens from
+each other, a token being an indivisible lexical unit such as an
+identifier or number, but is otherwise insignificant.  Whitespace can
+occur between any two tokens, but not within a token.  Whitespace
+occurring inside a string or inside a symbol delimited by vertical lines
+is significant.
 
 The lexical syntax includes several comment forms.  Comments are treated
 exactly like whitespace.
 
 A semicolon (@code{;}) indicates the start of a line comment.  The
-comment continues to the end of the line on which the semicolon appears.
-Another way to indicate a comment is to prefix a @angle{datum}
-(cf. section 7.1.2) with @code{@hashchar{};} and optional
+comment con@value{shy}tinues to the end of the line on which the
+semicolon appears.  Another way to indicate a comment is to prefix a
+@angle{datum} (cf. section 7.1.2) with @code{@hashchar{};} and optional
 @angle{whitespace}.  The comment consists of the comment prefix
 @code{@hashchar{};}, the space, and the @angle{datum} together.  This
 notation is useful for @quotedbl{commenting out} sections of code.
@@ -210,7 +212,8 @@ The lexical syntax @prosedatumlabel{n}@angle{datum} reads the same as
 The lexical syntax @prosedatumref{n} serves as a reference to some
 object labeled by @prosedatumlabel{n}; the result is the same object as
 the @prosedatumlabel{n} (see section 6.1).  Together, these syntaxes
-permit the notation of structures with shared or circular substructure.
+permit the notation of structures with shared or circular
+sub@value{shy}structure.
 
 @lisp
 (let ((x (list 'a 'b 'c)))
@@ -227,8 +230,8 @@ itself (as in @prosedatumlabel{n}@prosedatumref{n}, because the object
 labeled by @prosedatumlabel{n} is not well defined in this case.
 
 It is an error for a @angle{program} or @angle{library} to include
-circular references except in literals.  In particular, it is an error
-for @code{quasiquote} (section 4.2.8) to contain them.
+circular references ex@value{shy}cept in literals.  In particular, it is
+an error for @code{quasiquote} (section 4.2.8) to contain them.
 
 @lisp
 #1=(begin (display #\x) #1#) @lispnote{error}
