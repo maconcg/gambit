@@ -1126,8 +1126,8 @@ is already a promise, it is returned.
 @node Dynamic bindings
 @subsection Dynamic bindings
 The @dfn{dynamic extent} of a procedure call is the time
-be@value{shy}tween when it is init@value{shy}ia@value{shy}ted and when
-it re@value{shy}turns.  In Scheme,
+be@value{shy}tween when it is initi@value{shy}ated and when it
+re@value{shy}turns.  In Scheme,
 @nobr{@code{call-with-current-continuation}} (section 6.10) allows
 reentering a dynamic extent after its procedure call has returned.
 Thus, the dynamic extent of a call might not be a single,
@@ -1143,7 +1143,7 @@ environment}.
 
 Returns a newly allocated parameter object, which is a procedure that
 accepts zero arguments and returns the value associated with the
-parameter object.  Initially, this value is the value of
+param@value{shy}eter object.  Initially, this value is the value of
 @t{(@r{@var{converter}} @r{@var{init}})}, or @var{init} if the
 conversion procedure @var{converter} is not specified.  The associated
 value can be temporarily changed using @code{parameterize}, which is
@@ -1178,8 +1178,9 @@ returned as the results of the entire @code{parameterize} expression.
 
 @quotation
 @i{Note:} If the conversion procedure is not idempotent, the results of
-@code{(parameterize ((x (x))) ...)}, which appears to bind the parameter
-@code{x} to its current value, might not be what the user expects.
+@code{(parameterize ((x (x))) ...)}, which appears to bind the
+param@value{shy}eter @code{x} to its current value, might not be what
+the user expects.
 @end quotation
 
 If an implementation supports multiple threads of execution, then
@@ -1188,8 +1189,8 @@ parameters in any thread other than the current thread and threads
 created inside @angle{body}.
 
 Parameter objects can be used to specify configurable settings for a
-computation without the need to pass the value to every procedure in the
-call chain explicitly.
+com@value{shy}putation without the need to pass the value to every
+procedure in the call chain explicitly.
 
 @lisp
 (define radix
@@ -1411,9 +1412,9 @@ which the arguments agree with @angle{formals} is selected, where
 agreement is specified as for the @angle{formals} of a @code{lambda}
 expression.  The variables of @angle{formals} are bound to fresh
 locations, the values of the arguments are stored in those locations,
-the @angle{body} is evaluated in the extended environment, and the
-results of @angle{body} are returned as the results of the procedure
-call.
+the @angle{body} is eval@value{shy}uated in the extended environment,
+and the results of @angle{body} are returned as the results of the
+procedure call.
 
 It is an error for the arguments not to agree with the @angle{formals}
 of any @angle{clause}.
