@@ -19,9 +19,9 @@ At the outermost level of a program, @t{(begin @sv{expression or
 @pari{definition}} @defdots{})} is equivalent to the sequence of
 expressions and definitions in the @code{begin}.  Similarly, in a
 @angle{body}, @t{(begin @sv{@pari{definition}} @defdots{})} is
-equivalent to the sequence @sv{@pari{definition}} @defdots{}@.  Macros
-can expand into such @code{begin} forms.  For the formal definition, see
-4.2.3.
+equivalent to the sequence @sv{@pari{definition}}
+@defdots{}@inlinefmtifelse{html,@U{2009},@tie{}}@.  Macros can expand
+into such @code{begin} forms.  For the formal definition, see 4.2.3.
 
 Import declarations and definitions cause bindings to be created in the
 global environment or modify the value of existing global bindings.  The
@@ -207,8 +207,8 @@ It is an error to define the same identifier more than once in the same
 @angle{body}.
 
 Wherever an internal definition can occur, @t{(begin
-@sv{@pari{definition}} @defdots{})} is equivalent to the sequence of
-definitions that form the body of the @code{begin}.
+@sv{@pari{definition}} @defdots{})} is equiv@value{shy}alent to the
+sequence of definitions that form the body of the @code{begin}.
 
 @node Multiple-value definitions
 @subsection Multiple-value definitions

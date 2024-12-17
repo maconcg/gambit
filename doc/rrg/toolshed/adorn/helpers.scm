@@ -48,8 +48,11 @@
 (define define-syntax-syntax
   (map string->list (+prims '("define-syntax" "define-runtime-syntax"))))
 
+(define define-record-type-syntax
+  (map string->list (+prims '("define-record-type"))))
+
 (define sv-define-syntax
-  (map string->list (+prims '("define" "define-prim" "define-record-type"))))
+  (map string->list (+prims '("define" "define-prim"))))
 
 (define define-proc-syntax
   (map string->list
@@ -92,6 +95,7 @@
           mv-define-syntax
           case-lambda-syntax
           define-proc-syntax
+          define-record-type-syntax
           guard-syntax
           rt-aux-syntax
           syntax-let-syntax
@@ -169,13 +173,17 @@
   '( sv-define defun-proc defun-param mv-define mv-define-rest defproc-proc
      defproc-param defproc-spec rest-spec defsyntax ))
 
+(define defrec-binds '( defrec-name defrec-cons defrec-param defrec-pred
+                        defrec-field defrec-acc defrec-mut ))
+
 (define binds
   (append define-binds let-binds lambda-binds dsssl-binds
-          syntax-rules-binds '(guard-bind)))
+          syntax-rules-binds defrec-binds '(guard-bind)))
 
 (define dsssl-compounds '(compound-key compound-opt))
 
-(define def-like-compounds '(defun defproc))
+(define def-like-compounds
+  '(defun defproc defrec-cons-list defrec-field-list))
 
 (define syntax-rules-compounds '(sr-literals sr-pattern sr-subpattern))
 
@@ -289,18 +297,19 @@
          'unquote)
         ((matches? '(#\q #\u #\a #\s #\i #\q #\u #\o #\t #\e) operator)
          'quasiquote)
-        ((matches-one-of? define-syntax-syntax operator) '~defsyntax)
-        ((matches-one-of? sv-define-syntax     operator) '~sv-define)
-        ((matches-one-of? sv-let-syntax        operator) '~~~let-sv)
-        ((matches-one-of? syntax-let-syntax    operator) '~~~let-syntax)
-        ((matches-one-of? lambda-syntax        operator) '~~lambda-bind)
-        ((matches-one-of? mv-let-syntax        operator) '~~~~let-mv)
-        ((matches-one-of? mv-define-syntax     operator) '~~mv-define)
-        ((matches-one-of? case-lambda-syntax   operator) '~~~case-lambda)
-        ((matches-one-of? define-proc-syntax   operator) '~~defproc)
-        ((matches-one-of? guard-syntax         operator) '~~guard)
-        ((matches-one-of? rt-cond-aux-syntax   operator) 'rt-cond-aux)
-        ((matches-one-of? syntax-rules-syntax  operator) '~sr-ellips/lit)
+        ((matches-one-of? define-syntax-syntax      operator) '~defsyntax)
+        ((matches-one-of? sv-define-syntax          operator) '~sv-define)
+        ((matches-one-of? sv-let-syntax             operator) '~~~let-sv)
+        ((matches-one-of? syntax-let-syntax         operator) '~~~let-syntax)
+        ((matches-one-of? lambda-syntax             operator) '~~lambda-bind)
+        ((matches-one-of? mv-let-syntax             operator) '~~~~let-mv)
+        ((matches-one-of? mv-define-syntax          operator) '~~mv-define)
+        ((matches-one-of? case-lambda-syntax        operator) '~~~case-lambda)
+        ((matches-one-of? define-proc-syntax        operator) '~~defproc)
+        ((matches-one-of? define-record-type-syntax operator) '~defrec-name)
+        ((matches-one-of? guard-syntax              operator) '~~guard)
+        ((matches-one-of? rt-cond-aux-syntax        operator) 'rt-cond-aux)
+        ((matches-one-of? syntax-rules-syntax       operator) '~sr-ellips/lit)
         (else #f)))
 
 (define rt-syntax-mesg

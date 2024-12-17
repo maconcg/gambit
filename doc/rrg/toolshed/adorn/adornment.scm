@@ -54,11 +54,13 @@
                      (set-kind! pac 'dot))))
                (try-nc! ac-list nc))
               ((and (char=? nc #\=)
-                    (atmosphere? (car ac-list))
-                    (not (operator-position? ac-list))
-                    (let ((up1 (up-list ac-list)))
-                      (or (eq? (rt-syntax-mesg up1) 'rt-cond-aux)
-                          (eq? (rt-syntax-mesg (up-list up1)) '~~guard))))
+                    (let ((ac (car ac-list)))
+                      (and (or (atmosphere? ac)
+                               (memc (get-char ac) delim-chars))
+                           (not (operator-position? ac-list))
+                           (let ((up1 (up-list ac-list)))
+                             (or (eq? (rt-syntax-mesg (up-list up1)) '~~guard)
+                                 (eq? (rt-syntax-mesg up1) 'rt-cond-aux))))))
                (adorn-char nc 'default 'equal-sign))
               ((valid-keyword? ac-list nc pc)
                (revise-while! ac-list 'keyword default+no-mesg/rt-syntax?)
@@ -158,11 +160,12 @@
 
 (define reverse+simplify-kinds!
   (let ((def-like-syms '( defun-proc sv-define mv-define mv-define-rest
-                          defproc-proc ))
+                          defproc-proc defrec-cons defrec-pred defrec-acc
+                          defrec-mut ))
         (let-like-syms '( defun-param named-let sv-let mv-let mv-let-rest
                           lambda-bind lambda-rest case-lambda-bind
                           opt-bind opt-init rest-bind defproc-param
-                          defproc-spec rest-spec guard-bind ))
+                          defproc-spec rest-spec guard-bind defrec-param ))
         (syntax-kinds '(rt-syntax rt-syntax-ident))
         (aux-syntax-kinds '(aux-syntax aux-syntax-ident))
         (empty-kinds (map ->empty non-syntax-compounds)))

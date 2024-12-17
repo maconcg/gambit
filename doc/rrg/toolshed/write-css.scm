@@ -129,6 +129,8 @@ code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
     span.datum-label {color: <datum-label>}
     span.datum-ref {color: <datum-ref>}
     span.def-like-bind, span.def-like-esc {color: <def-like-bind>}
+    span.defrec-field, span.defrec-field-esc {color: <defrec-field>}
+    span.defrec-name, span.defrec-name-esc {color: <defrec-name>}
     span.defsyntax, span.defsyntax-esc {color: <defsyntax>}
     span.dot {color: <dot>}
     span.directive {color: <directive>}
@@ -160,11 +162,12 @@ END
 (define examples-noncolor-css #<<END
 code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
     font-size: 1rem;
-    span.and-prints, span.atmosphere, span.dsssl, span.output {
+    span.and-prints, span.atmosphere, span.directive, span.dsssl, span.output {
         font-style: oblique;
     }
-    span.char-body, span.aux-esc, span.def-like-esc, span.defsyntax-esc,
-     span.ident-esc, span.let-like-esc, span.string-esc, span.sr-ellipsis-esc,
+    span.char-body, span.aux-esc, span.def-like-esc, span.defrec-name-esc,
+     span.defrec-field-esc, span.defsyntax-esc, span.ident-esc,
+     span.let-like-esc, span.string-esc, span.sr-ellipsis-esc,
      span.sr-keyword-esc, span.sr-literal-esc, span.sr-patvar-esc,
      span.syntax-esc, span.syntax-let-esc {
         font-weight: bold;
@@ -494,7 +497,8 @@ END
     (rust                . "#8a290f") (slate               . "#2f3f83")
     (yellow              . "#6f5500") (yellow-cooler       . "#7a4f2f")
     (yellow-faint        . "#624416") (yellow-intense      . "#808000")
-    (yellow-warmer       . "#884900") (fg-dimmer           . "#777777")))
+    (yellow-warmer       . "#884900") (fg-dimmer           . "#777777")
+    (fg-less-dim         . "#444444")))
 
 (define modus-vivendi-colors ;; based on Protesilaos Stavrou's modus-themes
   '((bg-active           . "#535353") (bg-added            . "#00381f")
@@ -547,7 +551,8 @@ END
     (rust                . "#db7b5f") (slate               . "#76afbf")
     (yellow              . "#d0bc00") (yellow-cooler       . "#dfaf7a")
     (yellow-faint        . "#d2b580") (yellow-intense      . "#efef00")
-    (yellow-warmer       . "#fec43f") (fg-dimmer           . "#888888")))
+    (yellow-warmer       . "#fec43f") (fg-dimmer           . "#888888")
+    (fg-less-dim         . "#aaaaaa")))
 
 (define (modus:kind->color kind)
   (case kind
@@ -556,15 +561,17 @@ END
     (( ident ident-esc )                  'fg-main)
     (( box )                              'fg-alt)
     (( datum-ref repl-ref serial-ref )    'fg-alt)
+    (( defrec-field defrec-field-esc )    'fg-main)
     (( abbrev )                           'fg-dim)
     (( compound )                         'fg-dim)
-    (( directive )                        'fg-dim)
     (( dot )                              'fg-dim)
     (( hs-begin )                         'fg-dim)
     (( invalid )                          'fg-dim)
     (( shebang )                          'fg-dim)
-    (( sr-keyword sr-keyword-esc )        'fg-dim)
+    (( defrec-name defrec-name-esc )      'fg-less-dim)
+    (( sr-keyword sr-keyword-esc )        'fg-less-dim)
     (( atmosphere )                       'fg-dimmer)
+    (( directive )                        'fg-dimmer)
     (( aux aux-esc )                      'magenta-faint)
     (( aux-abbrev )                       'magenta-faint)
     (( boolean )                          'yellow-warmer)

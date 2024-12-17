@@ -175,6 +175,20 @@
     def-like-esc
     defsyntax
     defsyntax-esc
+    defrec-name
+    defrec-name-esc
+    defrec-cons
+    defrec-cons-esc
+    defrec-param
+    defrec-param-esc
+    defrec-pred
+    defrec-pred-esc
+    defrec-field
+    defrec-field-esc
+    defrec-acc
+    defrec-acc-esc
+    defrec-mut
+    defrec-mut-esc
     directive
     dot
     dsssl

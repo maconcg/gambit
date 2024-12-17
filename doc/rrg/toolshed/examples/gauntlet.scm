@@ -57,6 +57,56 @@ end-of-this-here-string
       (else auxiliary-syntax))
 #|evaluates to a one-element list: |# (list #;((λ (x) (/ x (+ x (* x 6)))) 8)4)
 ;==============================================================================
+;; Special forms:
+(define range
+  (case-lambda
+   ((e) (range 0 e))
+   ((b e) (do ((r '() (cons e r))
+               (e (- e 1) (- e 1)))
+              ((< e b) r)))))
+
+(define-record-type <pare> (kons x y) pare? (x kar set-kar!) (y kdr))
+
+(define-syntax be-like-begin
+  (syntax-rules ()
+    ((be-like-begin name)
+     (define-syntax name
+       (syntax-rules ()
+         ((name expr (... ...))
+          (begin expr (... ...))))))))
+
+(define-syntax simple-let
+  (syntax-rules ()
+    ((_ (head ... ((x . y) val) . tail)
+        body1 body2 ...)
+     (syntax-error
+      "expected an identifier but got"
+      (x . y)))
+    ((_ ((name val) ...) body1 body2 ...)
+     ((lambda (name ...) body1 body2 ...)
+       val ...))))
+
+(guard (condition((assq 'a condition)=> cdr)((assq 'b condition)))
+  (raise (list (cons 'b 23))))
+
+(let-syntax ((given-that (syntax-rules ()
+                     ((given-that test stmt1 stmt2 ...)
+                      (if test
+                          (begin stmt1
+                                 stmt2 ...))))))
+  (let ((if #t))
+    (given-that if (set! if 'now))
+    if))
+
+(quasiquote (list (unquote (+ 1 2)) 4))
+
+(let ((foo '(foo bar)) (@baz 'baz))
+  `(list ,@foo , @baz))
+
+(let ((name1 'x)
+      (name2 'y))
+  `(a `(b ,,name1 ,',name2 d) e))
+;==============================================================================
 ;; Bindings: 
 ;;
 ;; The scope of a “define-like” binding extends beyond its list; the
