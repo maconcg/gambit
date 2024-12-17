@@ -1,0 +1,6 @@
+Credit is due to Yuval Langer Wolfgang Corcoran-Mathe, who worked on
+the R7RS-small Texinfo version posted to scheme-reports-wg, which is
+available at: https://codeberg.org/Zipheir/r7rs-small-texinfo.git
+
+The Texinfo source files for Chapters 6 and 7 are (very lightly)
+adapted from their work.

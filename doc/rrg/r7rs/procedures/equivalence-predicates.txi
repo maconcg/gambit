@@ -52,4 +52,146 @@ internal counter.  The @nobr{@code{gen-loser}} procedure, however,
 returns operationally equivalent procedures each time, since the local
 state does not affect the value or side effects of the procedures.
 However, @code{eqv?}  may or may not detect this equivalence.
+
+@lisp
+(define gen-counter
+  (lambda ()
+    (let ((n 0))
+      (lambda () (set! n (+ n 1)) n))))
+
+(let ((g (gen-counter)))
+  (eqv? g g))           @ok{#t}
+
+(eqv? (gen-counter) (gen-counter))
+                        @ok{#f}
+(define gen-loser
+  (lambda ()
+    (let ((n 0))
+      (lambda () (set! n (+ n 1)) 27))))
+
+(let ((g (gen-loser)))
+  (eqv? g g))           @ok{#t}
+
+(eqv? (gen-loser) (gen-loser))
+                        @unspecified{unspecified}
+
+(letrec ((f (lambda () (if (eqv? f g) 'both 'f)))
+         (g (lambda () (if (eqv? f g) 'both 'g))))
+  (eqv? f g))
+                        @unspecified{unspecified}
+
+(letrec ((f (lambda () (if (eqv? f g) 'f 'both)))
+         (g (lambda () (if (eqv? f g) 'g 'both))))
+  (eqv? f g))
+                        @ok{#f}
+@end lisp
+
+Since it is an error to modify constant objects (those returned by
+literal ex@value{shy}pres@value{shy}sions), implementations may share
+structure between constants where appropriate.  Thus the value of
+@code{eqv?} on constants is sometimes
+implemen@value{shy}tation-dependent.
+
+@lisp
+(eqv? '(a) '(a))         @unspecified{unspecified}
+(eqv? "a" "a")           @unspecified{unspecified}
+(eqv? '(b) (cdr '(a b))) @unspecified{unspecified}
+(let ((x '(a)))
+  (eqv? x x))            @ok{#t}
+@end lisp
+
+The above definition of @code{eqv?} allows implementations latitude in
+their treat@value{shy}ment of procedures and literals: implementations
+may either detect or fail to detect that two procedures or two literals
+are equivalent to each other, and can decide whether or not to merge
+representations of equivalent objects by using the same pointer or bit
+pattern to represent both.
+
+@quotation
+@i{Note:} If inexact numbers are represented as @acronym{IEEE} binary
+floating-point numbers, then an implementation of @code{eqv?} that
+simply com@value{shy}pares equal-sized inexact numbers for bitwise
+equality is correct by the above definition.
+@end quotation
+@end deffn
+
+@deffn procedure eq? @pari{obj} @parii{obj}
+
+The @code{eq?} procedure is similar to @code{eqv?} except that in some
+cases it is capable of discerning distinctions finer than those
+detectable by @code{eqv?}.  It must al@value{shy}ways return @code{#f}
+when @code{eqv?} also would, but may return @code{#f} in some cases
+where @code{eqv?} would return @code{#t}.
+
+On symbols, booleans, the empty list, pairs, and records, and also on
+non-empty strings, vectors, and bytevectors, @code{eq?} and @code{eqv?}
+are guaranteed to have the same behavior.  On procedures, @code{eq?}
+must return true if the ar@value{shy}gu@value{shy}ments' location tags
+are equal.  On numbers and characters, @code{eq?}'s behavior is
+implementation-dependent, but it will always return either true or
+false.  On empty strings, empty vectors, and empty bytevectors,
+@code{eq?} may also be@value{shy}have differently from @code{eqv?}.
+
+@lisp
+(eq? 'a 'a)               @ok{#t}
+(eq? '(a) '(a))           @unspecified{unspecified}
+(eq? (list 'a) (list 'a)) @ok{#f}
+(eq? "a" "a")             @unspecified{unspecified}
+(eq? "" "")               @unspecified{unspecified}
+(eq? '() '())             @ok{#t}
+(eq? 2 2)                 @unspecified{unspecified}
+(eq? #\A #\A)             @unspecified{unspecified}
+(eq? car car)             @ok{#t}
+(let ((n (+ 2 3)))
+  (eq? n n))              @unspecified{unspecified}
+(let ((x '(a)))
+  (eq? x x))              @ok{#t}
+(let ((x '#()))
+  (eq? x x))              @ok{#t}
+(let ((p (lambda (x) x)))
+  (eq? p p))              @ok{#t}
+@end lisp
+
+@quotation
+It will usually be possible to implement @code{eq?} much more
+efficiently than @code{eqv?}, for example, as a simple pointer
+comparison instead of as some more complicated operation.  One reason is
+that it is not al@value{shy}ways possible to compute @code{eqv?} of two
+numbers in constant time, whereas @code{eq?} implemented as pointer
+comparison will always finish in constant time.
+@end quotation
+@end deffn
+
+@deffn procedure equal? @pari{obj} @parii{obj}
+
+The @code{equal?} procedure, when applied to pairs, vectors, strings and
+byte@value{shy}vectors, recursively compares them, returning @code{#t}
+when the unfoldings of its arguments into (possibly infinite) trees are
+equal (in the sense of @code{equal?}) as ordered trees, and @code{#f}
+otherwise.  It returns the same as @code{eqv?} when applied to booleans,
+symbols, numbers, characters, ports, procedures, and the
+emp@value{shy}ty list.  If two objects are @code{eqv?}, they must be
+@code{equal?} as well.  In all other cases, @code{equal?} may return
+either @code{#t} or @code{#f}.  Even if its arguments are circular data
+structures, @code{equal?} must always terminate.
+
+@lisp
+(equal? 'a 'a)               @ok{#t}
+(equal? '(a) '(a))           @ok{#t}
+(equal? '(a (b) c)
+        '(a (b) c))          @ok{#t}
+(equal? "abc" "abc")         @ok{#t}
+(equal? 2 2)                 @ok{#t}
+(equal? (make-vector 5 'a)
+        (make-vector 5 'a))  @ok{#t}
+(equal? '#1=(a b . #1#)
+        '#2=(a b a b . #2#)) @ok{#t}
+(equal? (lambda (x) x)
+        (lambda (y) y))      @unspecified{unspecified}
+@end lisp
+
+@quotation
+@i{Note:} A rule of thumb is that objects are generally @code{equal?} if
+they print the same.
+@end quotation
 @end deffn
