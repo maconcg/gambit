@@ -31,10 +31,11 @@ and a complex number.  The same is true of the Scheme numbers that model
 @code{integer?}.
 
 There is no simple relationship between a number's type and its
-rep@value{shy}resentation inside a computer.  Although most
-implementations of Scheme will offer at least two different
-rep@value{shy}resen@value{shy}tations of 3, these different
-rep@value{shy}resen@value{shy}tations denote the same integer.
+rep@value{shy}re@value{shy}sen@value{shy}tation inside a computer.
+Although most implementations of Scheme will offer at least two
+different rep@value{shy}re@value{shy}sen@value{shy}tations of 3, these
+different rep@value{shy}re@value{shy}sen@value{shy}tations denote the
+same integer.
 
 Scheme's numerical operations treat numbers as abstract data, as
 in@value{shy}depen@value{shy}dent of their representation as possible.
@@ -48,29 +49,31 @@ It is useful to distinguish between numbers that are represented exactly
 and those that might not be.  For example, indexes into data structures
 must be known exactly, as must some polynomial coefficients in a
 symbolic algebra system.  On the other hand, the results of measurements
-are inherently in@value{shy}exact, and irrational numbers may be
-approximated by rational and there@value{shy}fore in@value{shy}exact
-approximations.  In order to catch uses of in@value{shy}exact numbers
-where exact numbers are required, Scheme explicitly distinguishes exact
-from inexact numbers.  This distinction is orthogonal to the dimension
-of type.
+are inherently in@value{shy}ex@value{shy}act, and irrational numbers may
+be approximated by rational and there@value{shy}fore
+in@value{shy}ex@value{shy}act approximations.  In order to catch uses of
+in@value{shy}exact numbers where exact numbers are required, Scheme
+explicitly distinguishes exact from inexact numbers.  This distinction
+is orthogonal to the dimension of type.
 
 A Scheme number is @define{exact} if it was written as an exact constant
-or was derived from exact numbers using only exact operations.  A number
-is @define{inexact} if it was written as an inexact constant, if it was
-derived using @define{inexact} ingredients, or if it was derived using
-@define{inexact} operations.  Thus inexactness is a contagious property
-of a number.  In particular, an @define{exact complex number} has an
-exact real part and an exact imaginary part; all other complex numbers
-are @define{inexact complex numbers}.
+or was de@value{shy}rived from exact numbers using only exact
+operations.  A number is @define{inexact} if it was written as an
+inexact constant, if it was de@value{shy}rived using @define{inexact}
+in@value{shy}gre@value{shy}dients, or if it was derived using
+@define{inexact} operations.  Thus inexactness is a
+con@value{shy}ta@value{shy}gious property of a number.  In
+par@value{shy}ticular, an @define{exact complex number} has an exact
+real part and an exact imaginary part; all other complex
+num@value{shy}bers are @define{inexact complex numbers}.
 
 If two implementations produce exact results for a computation that did
 not involve inexact intermediate results, the two ultimate results will
-be math@value{shy}ematically equal.  This is generally not true of
-computations involving inexact numbers since approximate methods such as
-floating-point arith@value{shy}metic may be used, but it is the duty of
-each implementation to make the result as close as practical to the
-mathematically ideal result.
+be math@value{shy}ema@value{shy}tically equal.  This is generally not
+true of computations involving in@value{shy}ex@value{shy}act numbers
+since approximate methods such as floating-point arith@value{shy}metic
+may be used, but it is the duty of each implementation to make the
+result as close as practical to the mathematically ideal result.
 
 Rational operations such as @code{+} should always produce exact results
 when given exact arguments.  If the operation is unable to produce an
@@ -78,7 +81,7 @@ exact result, then it may either report the violation of an
 implementation restriction or it may silently coerce its result to an
 inexact value.  However, @code{(/ 3 4)} must not return the
 mathematically incorrect value @code{0}.  @xref{Implementation
-restrictions}.
+restrictions,,section 6.2.3}.
 
 Except for @code{exact}, the operations described in this section must
 generally return inexact results when given any inexact arguments.  An
@@ -100,21 +103,22 @@ Implementations of Scheme are not required to implement the whole tower
 of subtypes given in @ref{Numerical types}, but they must implement a
 coherent subset consistent with both the purposes of the implementation
 and the spirit of the Scheme language.  For example, implementations in
-which all numbers are real, or in which non-real numbers are always
-inexact, or in which exact numbers are always integer, are still quite
-useful.
+which all num@value{shy}bers are real, or in which non-real
+num@value{shy}bers are always inexact, or in which exact
+num@value{shy}bers are always integer, are still quite useful.
 
 Implementations may also support only a limited range of numbers of any
 type, subject to the requirements of this section.  The supported range
 for exact numbers of any type may be different from the supported range
 for inexact numbers of that type.  For example, an implementation that
 uses @acronym{IEEE} binary double-precision floating-point numbers to
-represent all its inexact real numbers may also support a practically
-unbounded range of exact integers and rationals while limiting the range
-of inexact reals (and therefore the range of inexact integers and
-rationals) to the dynamic range of the @acronym{IEEE} binary double
-format.  Furthermore, the gaps between the rep@value{shy}resentable
-inexact integers and rationals are likely to be very large in such an
+represent all its in@value{shy}ex@value{shy}act real numbers may also
+support a practically unbounded range of exact integers and rationals
+while limiting the range of inexact reals (and there@value{shy}fore the
+range of inexact integers and rationals) to the dynamic range of the
+@acronym{IEEE} binary double format.  Furthermore, the gaps between the
+rep@value{shy}re@value{shy}sen@value{shy}table inexact integers and
+rationals are likely to be very large in such an
 implemen@value{shy}tation as the limits of this range are approached.
 
 An implementation of Scheme must support exact integers throughout the
@@ -128,8 +132,8 @@ if expressed by an exact integer syntax, must be read as an exact
 integer, regardless of any implementation restrictions that apply
 out@value{shy}side this range.  Finally, the procedures listed below
 will always return exact integer results provided all their arguments
-are exact integers and the mathematically expected results are
-representable as exact integers within the implementation:
+are exact integers and the math@value{shy}ema@value{shy}tically expected
+results are representable as exact integers within the implementation:
 
 @example
 -                     *
@@ -153,12 +157,13 @@ integers and exact rationals of practically unlimited size and
 precision, and to implement the above procedures and the @code{/}
 procedure in such a way that they always return exact results when given
 exact arguments.  If one of these procedures is unable to deliver an
-exact result when given exact arguments, then it may either report a
-violation of an implementation re@value{shy}stric@value{shy}tion or it
-may silently coerce its result to an inexact number; such a coercion can
-cause an error later.  Nevertheless, implementations that do not provide
-exact rational numbers should return inexact rational numbers rather
-than reporting an implementation restriction.
+exact result when given exact ar@value{shy}gu@value{shy}ments, then it
+may either report a violation of an implementation
+re@value{shy}stric@value{shy}tion or it may silently coerce its result
+to an inexact number; such a coercion can cause an error later.
+Nevertheless, implementations that do not provide exact rational numbers
+should return inexact rational numbers rather than reporting an
+implementation restriction.
 
 An implementation may use floating-point and other approximate
 rep@value{shy}resen@value{shy}tation strategies for inexact
@@ -166,8 +171,8 @@ numbers. This report recommends, but does not require, that
 implementations that use floating-point
 rep@value{shy}resen@value{shy}tations follow the @acronym{IEEE} 754
 standard, and that implementations using other
-rep@value{shy}resen@value{shy}tations should match or exceed the
-precision achievable using these floating-point
+rep@value{shy}resen@value{shy}ta@value{shy}tions should match or exceed
+the precision achievable using these floating-point
 standards@footnote{@value{refIEEE754}}.  In particular, the description
 of tran@value{shy}scen@value{shy}dental functions in @acronym{IEEE}
 754-2008 should be followed by such implementations, particularly with
@@ -223,33 +228,35 @@ of negative zero.  The behavior of the transcendental functions is
 sensitive to infinity in accordance with @acronym{IEEE} 754.
 
 A NaN is regarded as an inexact real (but not rational) number so
-in@value{shy}determinate that it might represent any real value,
-including positive or negative infinity, and might even be greater than
-positive infinity or less than negative infinity.  An implementation
-that does not support non-real numbers may use NaN to represent non-real
-values like @code{(sqrt -1.0)} and @code{(asin 2.0)}.
+in@value{shy}de@value{shy}term@value{shy}inate that it might represent
+any real value, including positive or negative infinity, and might even
+be greater than positive infinity or less than nega@value{shy}tive
+infinity.  An implementation that does not support non-real numbers may
+use NaN to represent non-real values like @nobr{@code{(sqrt -1.0)}} and
+@nobr{@code{(asin 2.0)}}.
 
 A NaN always compares false to any number, including a NaN.  An
-arithmetic operation where one operand is NaN returns NaN, unless the
-implementation can prove that the result would be the same if the NaN
-were replaced by any rational number.  Dividing zero by zero results in
-NaN unless both zeros are exact.
+arith@value{shy}metic operation where one operand is NaN returns NaN,
+unless the im@value{shy}ple@value{shy}men@value{shy}tation can prove
+that the result would be the same if the NaN were re@value{shy}placed by
+any rational number.  Dividing zero by zero results in NaN
+un@value{shy}less both zeros are exact.
 
 Negative zero is an inexact real value written @code{-0.0} and is
 distinct (in the sense of @code{eqv?}) from @code{0.0}.  A Scheme
 implementation is not required to distinguish negative zero.  If it
-does, however, the behavior of the transcendental functions is sensitive
-to the distinction in accordance with @acronym{IEEE} 754.  Specifically,
-in a Scheme implementing both complex numbers and negative zero, the
-branch cut of the complex logarithm function is such that
-@code{(imag-part (log -1.0-0.0i))} is @minus{}@U{03C0} rather than
-@U{03C0}.
+does, however, the behavior of the tran@value{shy}scendental functions
+is sensitive to the distinction in accordance with @acronym{IEEE} 754.
+Specifically, in a Scheme implementing both complex numbers and negative
+zero, the branch cut of the complex logarithm function is such that
+@nobr{@code{(imag-part (log -1.0-0.0i))}} is @minus{}@U{03C0} rather
+than @U{03C0}.
 
 Furthermore, the negation of negative zero is ordinary zero and vice
 versa.  This implies that the sum of two or more negative zeros is
 negative, and the result of subtracting (positive) zero from a negative
-zero is like@value{shy}wise neg@value{shy}ative.  However, numerical
-comparisons treat negative zero as equal to zero.
+zero is like@value{shy}wise neg@value{shy}a@value{shy}tive.  However,
+numerical comparisons treat negative zero as equal to zero.
 
 Note that both the real and the imaginary parts of a complex number can
 be infinities, NaNs, or negative zero.
@@ -263,16 +270,18 @@ numerical con@value{shy}stants.@c @ref{Formal syntax}.
 
 A number can be written in binary, octal, decimal, or hexadecimal by the
 use of a radix prefix.  The radix prefixes are @nobr{@code{#b}
-(binary)}, @nobr{@code{#o} (octal)}, @nobr{@code{#d} (decimal)}, and
-@nobr{@code{#x} (hexadecimal)}.  With no radix prefix, a number is
-as@value{shy}sumed to be expressed in decimal.
+@U{0028}}binary@U{0029}, @nobr{@code{#o} @U{0028}}octal@U{0029},
+@nobr{@code{#d} @U{0028}}deci@value{shy}mal@U{0029}, and @nobr{@code{#x}
+@U{0028}}hexa@value{shy}deci@value{shy}mal@U{0029}.  With no radix
+prefix, a number is as@value{shy}sumed to be expressed in decimal.
 
 A numerical constant can be specified to be either exact or inexact by a
-prefix.  The prefixes are @code{#e} for exact, and @code{#i} for
-inexact.  An exactness prefix can appear before or after any radix
-prefix that is used.  If the written representation of a number has no
-exactness prefix, the constant is inexact if it contains a decimal point
-or an exponent.  Otherwise, it is exact.
+pre@value{shy}fix.  The prefixes are @code{#e} for exact, and @code{#i}
+for inexact.  An exactness prefix can appear before or after any radix
+pre@value{shy}fix that is used.  If the written
+rep@value{shy}resen@value{shy}tation of a number has no exactness
+prefix, the constant is inexact if it con@value{shy}tains a decimal
+point or an exponent.  Otherwise, it is exact.
 
 In systems with inexact numbers of varying precisions it can be useful
 to specify the precision of a constant.  For this purpose,
@@ -285,44 +294,47 @@ The default precision has at least as much precision as double, but
 implementations may allow this default to be set by the user.
 
 @example
-3.14159265358979F0
+@number{3.14159265358979F0}
         @r{Round to single ---} 3.141593
-0.6L0
+@number{0.6L0}
         @r{Extend to long ---} .600000000000000
 @end example
 
 The numbers positive infinity, negative infinity, and NaN are written
-@code{+inf.0}, @code{-inf.0} and @code{+nan.0} respectively.  NaN may
-also be written @code{-nan.0}.  The use of signs in the written
-representation does not necessarily reflect the underlying sign of the
-NaN value, if any.  Implementations are not required to support these
-numbers, but if they do, they must do so in general
-con@value{shy}formance with @acronym{IEEE} 754.  However,
-implementations are not required to support signaling NaNs, nor to
-provide a way to distinguish between dif@value{shy}ferent NaNs.
+@nobr{@code{+inf.0}}, @nobr{@code{-inf.0}} and @nobr{@code{+nan.0}}
+respectively.  NaN may also be written @code{-nan.0}.  The use of signs
+in the written representation does not necessarily reflect the
+under@value{shy}lying sign of the NaN value, if any.  Implementations
+are not required to sup@value{shy}port these numbers, but if they do,
+they must do so in general con@value{shy}for@value{shy}mance with
+@acronym{IEEE} 754.  However, implementations are not required to
+sup@value{shy}port sig@value{shy}naling NaNs, nor to provide a way to
+distinguish between dif@value{shy}ferent NaNs.
 
 There are two notations provided for non-real complex numbers: the
-@define{rectangular notation} @i{a}@t{+}@i{b}@t{i}, where @i{a} is the
-real part and @i{b} is the imaginary part; and the @define{polar
-notation} @i{r}@t{@atchar{}}@i{@U{03B8}}, where @i{r} is the magnitude
-and @i{@U{03B8}} is the phase (angle) in radians.  These are related by
-the equation @i{a} @math{+} @i{b}i @math{=}
+@define{rec@value{shy}tan@value{shy}gular notation}
+@i{a}@t{+}@i{b}@t{i}, where @i{a} is the real part and @i{b} is the
+imaginary part; and the @define{polar notation}
+@i{r}@t{@atchar{}}@i{@U{03B8}}, where @i{r} is the magnitude and
+@i{@U{03B8}} is the phase (an@value{shy}gle) in radians.  These are
+related by the equation @nobr{@i{a} @math{+} @i{b}i @math{=}
 @i{r}@U{2009}cos@U{2009}@i{@U{03B8}} @math{+}
-(@i{r}@U{2009}sin@U{2009}@i{@U{03B8}})i.  All of @i{a}, @i{b}, @i{r},
+(@i{r}@U{2009}sin@U{2009}@i{@U{03B8}})i}.  All of @i{a}, @i{b}, @i{r},
 and @i{@U{03B8}} are real numbers.
 
 @node Numerical operations
 @subsection Numerical operations
 The reader is referred to @ref{Error situations and unspecified
-behavior} for a summary of the naming conventions used to specify
-restrictions on the types of arguments to numerical routines.  The
-examples used in this section assume that any numerical constant written
-using an exact notation is indeed represented as an exact number.  Some
-examples also assume that certain numerical constants written using an
-inexact notation can be rep@value{shy}resen@value{shy}ted without loss
-of accuracy; the inexact constants were chosen so that this is likely to
-be true in implementations that use @acronym{IEEE} binary doubles to
-represent inexact numbers.
+behavior} for a sum@value{shy}mary of the naming conventions used to
+specify restrictions on the types of arguments to numerical routines.
+The examples used in this section assume that any numerical constant
+written using an exact notation is in@value{shy}deed represented as an
+exact number.  Some examples also assume that certain numerical
+constants written using an inexact notation can be
+rep@value{shy}resen@value{shy}ted without loss of accuracy; the inexact
+constants were chosen so that this is likely to be true in
+implementations that use @acronym{IEEE} binary doubles to represent
+inexact numbers.
 
 @deffn  procedure number? obj
 @deffnx procedure complex? obj
@@ -331,20 +343,20 @@ represent inexact numbers.
 @deffnx procedure integer? obj
 
 These numerical type predicates can be applied to any kind of argument,
-including non-numbers.  They return @code{#t} if the object is of the
-named type, and otherwise they return @code{#f}.  In general, if a type
-predicate is true of a number then all higher type predicates are also
-true of that number.  Con@value{shy}sequently, if a type predicate is
-false of a number, then all lower type predicates are also false of that
-number.
+in@value{shy}cluding non-numbers.  They return @code{#t} if the object
+is of the named type, and other@value{shy}wise they return @code{#f}.
+In general, if a type predicate is true of a num@value{shy}ber then all
+higher type predicates are also true of that num@value{shy}ber.
+Con@value{shy}sequently, if a type predicate is false of a number, then
+all lower type pred@value{shy}icates are also false of that number.
 
 If @var{z} is a complex number, then @code{(real? @rv{z})} is true if
-and only if @code{(zero? (imag-part @rv{z}))} is true.  If @var{x} is an
-inexact real number, then @code{(integer? @rv{x})} is true if and only
-if @code{(= @rv{x} (round @rv{x}))}.
+and only if @code{(zero? @nobr{(imag-part @rv{z})})} is true.  If
+@var{x} is an inexact real number, then @code{(integer? @rv{x})} is true
+if and only if @code{(= @rv{x} (round @rv{x}))}.
 
-The numbers @code{+inf.0}, @code{-inf.0}, and @code{+nan.0} are real but
-not rational.
+The numbers @nobr{@code{+inf.0}}, @nobr{@code{-inf.0}}, and
+@nobr{@code{+nan.0}} are real but not rational.
 
 @lisp
 (complex? 3+4i)    @ok{#t}
@@ -406,23 +418,9 @@ returns @code{#f}.
 @deffn {inexact library procedure} finite? z
 
 The @code{finite?} procedure returns @code{#t} on all real numbers
-except @code{+inf.0}, @code{-inf.0}, and @code{+nan.0}, and on complex
-numbers if their real and imaginary parts are both finite.  Otherwise it
-returns @code{#f}.
-
-@lisp
-(finite? 3)          @ok{#t}
-(finite? +inf.0)     @ok{#f}
-(finite? 3.0+inf.0i) @ok{#f}
-@end lisp
-@end deffn
-
-@deffn {inexact library procedure} finite? z
-
-The @code{finite?} procedure returns @code{#t} on all real numbers
-except @code{+inf.0}, @code{-inf.0}, and @code{+nan.0}, and on complex
-numbers if their real and imaginary parts are both finite.  Otherwise it
-returns @code{#f}.
+except @nobr{@code{+inf.0}}, @nobr{@code{-inf.0}}, and
+@nobr{@code{+nan.0}}, and on complex numbers if their real and imaginary
+parts are both finite.  Otherwise it returns @code{#f}.
 
 @lisp
 (finite? 3)          @ok{#t}
@@ -434,8 +432,9 @@ returns @code{#f}.
 @deffn {inexact library procedure} infinite? z
 
 The @code{infinite?} procedure returns @code{#t} on the real numbers
-@code{+inf.0} and @code{-inf.0}, and on complex numbers if their real or
-imaginary parts or both are infinite.  Otherwise it returns @code{#f}.
+@nobr{@code{+inf.0}} and @nobr{@code{-inf.0}}, and on complex numbers if
+their real or imaginary parts or both are infinite.  Otherwise it
+returns @code{#f}.
 
 @lisp
 (infinite? 3)          @ok{#f}
@@ -447,9 +446,9 @@ imaginary parts or both are infinite.  Otherwise it returns @code{#f}.
 
 @deffn {inexact library procedure} nan? z
 
-The @code{nan?} procedure returns @code{#t} on @code{+nan.0}, and on
-complex numbers if their real or imaginary parts or both are
-@code{+nan.0}.  Otherwise it returns @code{#f}.
+The @code{nan?} procedure returns @code{#t} on @nobr{@code{+nan.0}}, and
+on complex numbers if their real or imaginary parts or both are
+@nobr{@code{+nan.0}}.  Otherwise it returns @code{#f}.
 
 @lisp
 (nan? +nan.0)      @ok{#t}
@@ -466,9 +465,11 @@ complex numbers if their real or imaginary parts or both are
 @deffnx procedure >= @pari{x} @parii{x} @pariii{x} @defdots{}
 
 These procedures return @code{#t} if their arguments are (respectively):
-equal, monotonically increasing, monotonically decreasing, monotonically
-non-decreasing, or monotonically non-increasing, and @code{#f}
-otherwise.  If any of the arguments are @code{+nan.0}, all the
+equal, mono@value{shy}ton@value{shy}ically increasing,
+mono@value{shy}ton@value{shy}ically decreasing,
+mono@value{shy}ton@value{shy}ically non-decreasing, or
+mono@value{shy}ton@value{shy}ically non-increasing, and @code{#f}
+otherwise.  If any of the arguments are @nobr{@code{+nan.0}}, all the
 predicates return @code{#f}.  They do not distinguish between inexact
 zero and inexact negative zero.
 
@@ -523,8 +524,9 @@ inexact (unless the procedure can prove that the inaccuracy is not large
 enough to affect the result, which is possible only in unusual
 implementations).  If @code{min} or @code{max} is used to compare
 numbers of mixed exactness, and the numerical value of the result cannot
-be represented as an inexact number without loss of accuracy, then the
-procedure may report a violation of an implementation restriction.
+be represented as an inexact number without loss of ac@value{shy}curacy,
+then the procedure may report a violation of an implementation
+re@value{shy}stric@value{shy}tion.
 @end deffn
 
 @deffn  procedure + @pari{z} @defdots{}
