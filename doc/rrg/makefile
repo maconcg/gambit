@@ -19,12 +19,16 @@ r7rs-deps = toolshed/macros+vars.txi r7rs/bibliography.txi \
  r7rs/prose/summary.txi r7rs/prose/introduction.txi r7rs/prose/overview.txi \
  r7rs/prose/lexical-conventions.txi r7rs/prose/basic-concepts.txi \
  r7rs/prose/expressions.txi r7rs/prose/program-structure.txi \
- r7rs/prose/standard-procedures.txi
+ r7rs/prose/standard-procedures.txi \
+ r7rs/procedures/equivalence-predicates.txi \
+ r7rs/procedures/numbers.txi
 
 r7rs-annotated-prose = r7rs/prose/a/summary.txi r7rs/prose/a/introduction.txi \
  r7rs/prose/a/overview.txi r7rs/prose/a/lexical-conventions.txi \
  r7rs/prose/a/basic-concepts.txi r7rs/prose/a/expressions.txi \
- r7rs/prose/a/program-structure.txi r7rs/prose/a/standard-procedures.txi
+ r7rs/prose/a/program-structure.txi r7rs/prose/a/standard-procedures.txi \
+ r7rs/procedures/a/equivalence-predicates.txi \
+ r7rs/procedures/a/numbers.txi
 
 set-scm_to_html = \
 if test -x scm-to-html; then\
@@ -243,6 +247,11 @@ r7rs-samples.tgz: r7rs-pristine.html r7rs-plain.html r7rs-plain-parens.html \
 r7rs/procedures/a/equivalence-predicates.txi: \
  r7rs/procedures/equivalence-predicates.txi
 	readonly txi=equivalence-predicates.txi &&\
+	${annotate-r7rs-procedures-file}
+
+r7rs/procedures/a/numbers.txi: \
+ r7rs/procedures/numbers.txi
+	readonly txi=numbers.txi &&\
 	${annotate-r7rs-procedures-file}
 
 r7rs/prose/a/summary.txi: r7rs/prose/summary.txi

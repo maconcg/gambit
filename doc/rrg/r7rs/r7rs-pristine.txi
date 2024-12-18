@@ -64,6 +64,7 @@
 @chapter Standard Procedures
 @include prose/standard-procedures.txi
 @include procedures/equivalence-predicates.txi
+@include procedures/numbers.txi
 
 @c @node Pairs and lists
 @c @nodedescription The @sc{LIS} in @sc{LISP}.
