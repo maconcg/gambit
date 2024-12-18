@@ -11,12 +11,12 @@ Scheme, see sec@value{shy}tion 7.1.
 @section Identifiers
 
 An identifier is any sequence of letters, digits, and @quotedbl{extended
-identifier characters} provided that it does not have a prefix which is
-a valid number.  However, the @code{.} token (a single period) used in
-the list syntax is not an identifier.
+identifier char@value{shy}ac@value{shy}ters} provided that it does not
+have a prefix which is a valid number.  How@value{shy}ever, the @code{.}
+token (a single period) used in the list syntax is not an identifier.
 
-All implementations of Scheme must support the following extended identifier
-characters:
+All implementations of Scheme must support the following extended
+iden@value{shy}tifier characters:
 
 @example
 ! $ % & * + - . / : < = > ? @atchar{} ^ _ ~
