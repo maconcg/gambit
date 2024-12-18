@@ -168,7 +168,8 @@ toolshed/gambit-examples.cm.css: toolshed/write-css.scm
 toolshed/macros+vars.txi: toolshed/write-macros+vars.scm
 	cd toolshed && ${GSI} -f write-macros+vars.scm > macros+vars.txi
 
-gauntlet.scm.html: toolshed/gambit-examples.css toolshed/scm-to-html.scm
+gauntlet.scm.html: toolshed/gambit-examples.css toolshed/scm-to-html.scm \
+ toolshed/adorn/adorn.o1
 	cd toolshed &&\
 	${set-scm_to_html} &&\
 	$${scm_to_html} examples/gauntlet.scm &&\
