@@ -85,12 +85,12 @@
                       (adorn-char nc kind ~mesg)
                       (adorn-without-context nc)))))))
 
-(define handle:decimal-char (^handle:potential-decimal 'number 'dec.num))
+(define handle:decimal-char (^handle:potential-decimal 'number 'dec.real))
 
-(define handle:dot (^handle:potential-decimal 'default '~dec-num))
+(define handle:dot (^handle:potential-decimal 'default '~dec-real))
 
 (define handle:plus/minus
-  (^handle:potential-decimal 'default '~inf/nan/dec.num))
+  (^handle:potential-decimal 'default '~inf/nan/dec.real))
 
 (define (adorn-without-context nc)
   (cond ((char=? nc #\\) (adorn-char nc 'infix #f))
