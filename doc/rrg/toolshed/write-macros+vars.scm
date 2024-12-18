@@ -64,6 +64,7 @@
   (write-angle-macro)
   (write-longarrow-macro)
   (write-nobr-macro)
+  (write-rv-macro)
   (write-sv-macro)
   (write-prosedatumlabel-macro)
   (write-prosedatumref-macro)
@@ -409,6 +410,11 @@
                                "@inlinefmtifelse{info,==>,"
                                "@inlinefmtifelse{plaintext,==>,"
                                "@U{27F6}}}\n"
+                               "@end macro\n")))
+
+(define (write-rv-macro) ; rv ==> "roman variable"
+  (write-string (string-append "@macro rv {v}\n"
+                               "@r{@var{\\v\\}}\n"
                                "@end macro\n")))
 
 (define (write-sv-macro) ; sv ==> "syntactic variable"
