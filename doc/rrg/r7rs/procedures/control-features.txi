@@ -1,0 +1,440 @@
+@node Control features
+@section Control features
+
+This section describes various primitive procedures which control the
+flow of program execution in special ways.  Procedures in this section
+that invoke procedure arguments always do so in the same dynamic
+environment as the call of the original procedure.  The
+@code{procedure?} predicate is also described here.
+
+@deffn procedure procedure? obj
+
+Returns @code{#t} if @var{obj} is a procedure, otherwise returns
+@code{#f}.
+
+@lisp
+(procedure? car)               @ok{#t}
+(procedure? 'car)              @ok{#f}
+(procedure? (lambda (x) (* x x)))
+                               @ok{#t}
+(procedure? '(lambda (x) (* x x)))
+                               @ok{#f}
+(call-with-current-continuation procedure?)
+                               @ok{#t}
+@end lisp
+@end deffn
+
+@deffn procedure apply proc @pari{arg} @value{defdots} args
+
+The @code{apply} procedure calls @var{proc} with the elements of the
+list @code{(append (list @r{@vari{arg}} @value{defdots}) @rv{args})} as
+the actual arguments.
+
+@lisp
+(apply + (list 3 4))           @ok{7}
+
+(define compose
+  (lambda (f g)
+    (lambda args
+      (f (apply g args)))))
+
+((compose sqrt *) 12 75)       @ok{30}
+@end lisp
+@end deffn
+
+@deffn procedure map proc @pari{list} @parii{list} @value{defdots}
+
+It is an error if @var{proc} does not accept as many arguments as there
+are @var{list}s and return a single value.
+
+The @code{map} procedure applies @var{proc} element-wise to the elements
+of the @var{list}s and returns a list of the results, in order.  If more
+than one @var{list} is given and not all lists have the same length,
+@code{map} terminates when the shortest list runs out.  The @var{list}s
+can be circular, but it is an error if all of them are circular.  It is
+an error for @var{proc} to mutate any of the lists.  The dynamic order
+in which @var{proc} is ap@value{shy}plied to the elements of the
+@var{list}s is unspecified.  If multiple returns oc@value{shy}cur from
+@code{map}, the values returned by earlier returns are not mutated.
+
+@lisp
+(map cadr '((a b) (d e) (g h)))
+             @ok{(b e h)}
+
+(map (lambda (n) (expt n n))
+     '(1 2 3 4 5))
+             @ok{(1 4 27 256 3125)}
+
+(map + '(1 2 3) '(4 5 6 7))    @ok{(5 7 9)}
+
+(let ((count 0))
+  (map (lambda (ignored)
+         (set! count (+ count 1))
+         count)
+       '(a b)))
+                               @ok{(1 2)} @unspecifiedtext{or} (2 1)
+@end lisp
+@end deffn
+
+@deffn procedure string-map proc @pari{string} @parii{string} @value{defdots}
+
+It is an error if @var{proc} does not accept as many arguments as there
+are @var{string}s and return a single character.
+
+The @code{string-map} procedure applies @var{proc} element-wise to the
+elements of the @var{string}s and returns a string of the results, in
+order.  If more than one @var{string} is given and not all strings have
+the same length, @code{string-map} terminates when the shortest string
+runs out.  The dynamic order in which @var{proc} is ap@value{shy}plied
+to the elements of the @var{string}s is unspecified.  If multiple
+returns occur from @code{string-map}, the values returned by earlier
+returns are not mutated.
+
+@lisp
+(string-map char-foldcase "AbdEgH")
+             @ok{"abdegh"}
+
+(string-map
+ (lambda (c)
+   (integer->char (+ 1 (char->integer c))))
+ "HAL")
+             @ok{"IBM"}
+
+(string-map
+ (lambda (c k)
+   ((if (eqv? k #\u) char-upcase char-downcase)
+    c))
+ "studlycaps xxx"
+ "ululululul")
+             @ok{"StUdLyCaPs"}
+@end lisp
+@end deffn
+
+@deffn procedure vector-map proc @pari{vector} @parii{vector} @value{defdots}
+
+It is an error if @var{proc} does not accept as many arguments as there
+are @var{vector}s and return a single value.
+
+The @code{vector-map} procedure applies @var{proc} element-wise to the
+elements of the @var{vector}s and returns a vector of the results, in
+order.  If more than one @var{vector} is given and not all vectors have
+the same length, @code{vector-map} terminates when the shortest vector
+runs out.  The dynamic order in which @var{proc} is ap@value{shy}plied
+to the elements of the @var{vector}s is unspecified.  If multiple
+returns occur from @code{vector-map}, the values returned by earlier
+returns are not mutated.
+
+@lisp
+(vector-map cadr '#((a b) (d e) (g h)))
+             @ok{#(b e h)}
+
+(vector-map (lambda (n) (expt n n))
+            '#(1 2 3 4 5))
+             @ok{#(1 4 27 256 3125)}
+
+(vector-map + '#(1 2 3) '#(4 5 6 7))
+             @ok{#(5 7 9)}
+
+(let ((count 0))
+  (vector-map
+   (lambda (ignored)
+     (set! count (+ count 1))
+     count)
+   '#(a b)))
+                               @ok{#(1 2)} @unspecifiedtext{or} #(2 1)
+@end lisp
+@end deffn
+
+@deffn procedure for-each proc @pari{list} @parii{list} @value{defdots}
+
+It is an error if @var{proc} does not accept as many arguments as there
+are @var{list}s.
+
+The arguments to @code{for-each} are like the arguments to @code{map},
+but @code{for-each} calls @var{proc} for its side effects rather than
+for its values.  Unlike @code{map}, @code{for-each} is guaranteed to
+call @var{proc} on the ele@value{shy}ments of the @var{list}s in order
+from the first element(s) to the last, and the value returned by
+@code{for-each} is unspecified.  If more than one @var{list} is given
+and not all lists have the same length, @code{for-each} terminates when
+the shortest list runs out.  The @var{list}s can be circular, but it is
+an error if all of them are circular.
+
+It is an error for @var{proc} to mutate any of the lists.
+
+@lisp
+(let ((v (make-vector 5)))
+  (for-each (lambda (i)
+              (vector-set! v i (* i i)))
+            '(0 1 2 3 4))
+  v)
+                               @ok{#(0 1 4 9 16)}
+@end lisp
+@end deffn
+
+@deffn procedure string-for-each @
+proc @pari{string} @parii{string} @value{defdots}
+
+It is an error if @var{proc} does not accept as many arguments as there
+are @var{string}s.
+
+The arguments to @code{string-for-each} are like the arguments to
+@code{string-map}, but @code{string-for-each} calls @var{proc} for its
+side effects rather than for its values.  Unlike @code{string-map},
+@code{string-for-each} is guaranteed to call @var{proc} on the
+ele@value{shy}ments of the @var{string}s in order from the first
+element(s) to the last, and the value returned by @code{string-for-each}
+is unspecified.  If more than one @var{string} is given and not all
+strings have the same length, @code{string-for-each}
+ter@value{shy}mi@value{shy}nates when the shortest string runs out.  It
+is an error for @var{proc} to mutate any of the strings.
+
+@lisp
+(let ((v '()))
+  (string-for-each
+   (lambda (c) (set! v (cons (char->integer c) v)))
+   "abcde")
+  v)
+                               @ok{(101 100 99 98 97)}
+@end lisp
+@end deffn
+
+@deffn procedure vector-for-each @
+proc @pari{vector} @parii{vector} @value{defdots}
+
+It is an error if @var{proc} does not accept as many arguments as there
+are @var{vector}s.
+
+The arguments to @code{vector-for-each} are like the arguments to
+@code{vector-map}, but @code{vector-for-each} calls @var{proc} for its
+side effects rather than for its values.  Unlike @code{vector-map},
+@code{vector-for-each} is guaranteed to call @var{proc} on the
+ele@value{shy}ments of the @var{vector}s in order from the first
+element(s) to the last, and the value returned by @code{vector-for-each}
+is unspecified.  If more than one @var{vector} is given and not all
+vectors have the same length, @code{vector-for-each}
+ter@value{shy}mi@value{shy}nates when the shortest vector runs out.  It
+is an error for @var{proc} to mutate any of the vectors.
+
+@lisp
+(let ((v (make-list 5)))
+  (vector-for-each
+   (lambda (i) (list-set! v i (* i i)))
+   '#(0 1 2 3 4))
+  v)
+                            @ok{(0 1 4 9 16)}
+@end lisp
+@end deffn
+
+@deffn  procedure call-with-current-continuation proc
+@deffnx procedure call/cc proc
+
+It is an error if @var{proc} does not accept one
+argument.
+
+@cindex escape procedure
+
+The procedure @code{call-with-current-continuation} (or its equivalent
+ab@value{shy}brev@value{shy}iation @code{call/cc}) packages the current
+continuation (see the rationale below) as an @quotedbl{escape procedure}
+and passes it as an argument to @var{proc}.  The escape procedure is a
+Scheme procedure that, if it is later called, will aban@value{shy}don
+what@value{shy}ever continuation is in effect at that later time and
+will instead use the continuation that was in effect when the escape
+procedure was created.  Calling the escape procedure will cause the
+invocation of @var{before} and @var{after} thunks installed using
+@code{dynamic-wind}.
+
+The escape procedure accepts the same number of arguments as the
+continuation to the original call to
+@nobr{@code{call-with-current-continuation}}.  Most continuations take
+only one value.  Continuations created by the
+@nobr{@code{call-with-values}} procedure (including the initialization
+expressions of @code{define-values}, @code{let-values}, and
+@code{let*-values} expressions), take the number of values that the
+consumer expects.  The continuations of all non-final expressions within
+a sequence of expressions, such as in @code{lambda},
+@nobr{@code{case-lambda}}, @code{begin}, @code{let}, @code{let*},
+@code{letrec}, @code{letrec*}, @nobr{@code{let-values}},
+@nobr{@code{let*-values}}, @nobr{@code{let-syntax}},
+@nobr{@code{letrec-syntax}}, @code{parameterize}, @code{guard},
+@code{case}, @code{cond}, @code{when}, and @code{unless} expressions,
+take an arbitrary number of values because they discard the values
+passed to them in any event.  The effect of passing no values or more
+than one value to continuations that were not created in one of these
+ways is unspecified.
+
+The escape procedure that is passed to @var{proc} has unlimited extent
+just like any other procedure in Scheme.  It can be stored in variables
+or data structures and can be called as many times as desired.  However,
+like the @code{raise} and @code{error} procedures, it never returns to
+its caller.
+
+The following examples show only the simplest ways in which
+@nobr{@code{call-with-current-continuation}} is used.  If all real uses
+were as simple as these ex@value{shy}amples, there would be no need for
+a procedure with the power of
+@nobr{@code{call-with-current-continuation}}.
+
+@lisp
+(call-with-current-continuation
+  (lambda (exit)
+    (for-each (lambda (x)
+                (if (negative? x)
+                    (exit x)))
+              '(54 0 37 -3 245 19))
+    #t))
+                               @ok{-3}
+
+(define list-length
+  (lambda (obj)
+    (call-with-current-continuation
+      (lambda (return)
+        (letrec ((r
+                  (lambda (obj)
+                    (cond ((null? obj) 0)
+                          ((pair? obj)
+                           (+ (r (cdr obj)) 1))
+                          (else (return #f))))))
+          (r obj))))))
+
+(list-length '(1 2 3 4))       @ok{4}
+
+(list-length '(a b . c))       @ok{#f}
+@end lisp
+
+@quotation
+@i{Rationale:} A common use of @code{call-with-current-continuation} is
+for structured, non-local exits from loops or procedure bodies, but in
+fact @code{call-with-current-continuation} is useful for implementing a
+wide variety of advanced control structures.  In fact, @code{raise} and
+@code{guard} provide a more structured mechanism for non-local exits.
+
+Whenever a Scheme expression is evaluated there is a
+@define{continuation} wanting the result of the expression.  The
+continuation represents an entire (default) future for the computation.
+If the expression is evaluated at the @acronym{REPL}, for example, then
+the continuation might take the result, print it on the screen, prompt
+for the next input, evaluate it, and so on forever.  Most of the time
+the continuation includes actions specified by user code, as in a
+continuation that will take the result, multiply it by the value stored
+in a local variable, add seven, and give the answer to the
+@acronym{REPL}'s continuation to be printed.  Normally these ubiquitous
+continuations are hidden behind the scenes and programmers do not think
+much about them.  On rare occasions, however, a programmer needs to deal
+with continuations explicitly.  The
+@code{call-with-current-continuation} procedure allows Scheme
+programmers to do that by creating a procedure that acts just like the
+current continuation.
+@end quotation
+@end deffn
+
+@deffn procedure values obj @value{defdots}
+
+Delivers all of its arguments to its continuation.  The @code{values}
+procedure might be defined as follows:
+
+@lisp
+(define (values . things)
+  (call-with-current-continuation
+    (lambda (cont) (apply cont things))))
+@end lisp
+@end deffn
+
+@deffn procedure call-with-values producer consumer
+
+Calls its @var{producer} argument with no arguments and a continuation
+that, when passed some values, calls the @var{consumer} procedure with
+those values as arguments.  The continuation for the call to
+@var{consumer} is the continuation of the call to
+@code{call-with-values}.
+
+@lisp
+(call-with-values (lambda () (values 4 5))
+                  (lambda (a b) b))
+                               @ok{5}
+
+(call-with-values * -)         @ok{-1}
+@end lisp
+@end deffn
+
+@deffn procedure dynamic-wind before thunk after
+
+Calls @var{thunk} without arguments, returning the result(s) of this
+call.  @var{Before} and @var{after} are called, also without arguments,
+as required by the following rules.  Note that, in the absence of calls
+to continuations captured using
+@nobr{@code{call-with-current-continuation}}, the three arguments are
+called once each, in order.  @var{Before} is called whenever execution
+enters the dynamic extent of the call to @var{thunk} and @var{after} is
+called whenever it exits that dynamic extent.  The dynamic extent of a
+procedure call is the period between when the call is initiated and when
+it returns.  The @var{before} and @var{after} thunks are called in the
+same dynamic environment as the call to @code{dynamic-wind}.  In Scheme,
+because of @nobr{@code{call-with-current-continuation}}, the dynamic
+extent of a call is not always a single, connected time period.  It is
+defined as follows:
+
+@itemize @bullet
+
+@item
+The dynamic extent is entered when execution of the body of the
+called procedure begins.
+
+@item
+The dynamic extent is also entered when execution is not within the
+dynamic extent and a continuation is invoked that was captured (using
+@nobr{@code{call-with-current-continuation}}) during the dynamic extent.
+
+@item
+It is exited when the called procedure returns.
+
+@item
+It is also exited when execution is within the dynamic extent and a
+continuation is invoked that was captured while not within the dynamic
+extent.
+@end itemize
+
+If a second call to @nobr{@code{dynamic-wind}} occurs within the dynamic
+extent of the call to @var{thunk} and then a continuation is invoked in
+such a way that the @var{after}s from these two invocations of
+@nobr{@code{dynamic-wind}} are both to be called, then the @var{after}
+associated with the second (inner) call to @nobr{@code{dynamic-wind}} is
+called first.
+
+If a second call to @code{dynamic-wind} occurs within the dynamic extent
+of the call to @var{thunk} and then a continuation is invoked in such a
+way that the @var{before}s from these two invocations of
+@nobr{@code{dynamic-wind}} are both to be called, then the @var{before}
+associated with the first (outer) call to @nobr{@code{dynamic-wind}} is
+called first.
+
+If invoking a continuation requires calling the @var{before} from one
+call to @nobr{@code{dynamic-wind}} and the @var{after} from another,
+then the @var{after} is called first.
+
+The effect of using a captured continuation to enter or exit the dynamic
+ex@value{shy}tent of a call to @var{before} or @var{after} is
+unspecified.
+
+@lisp
+(let ((path '())
+      (c #f))
+  (let ((add (lambda (s)
+               (set! path (cons s path)))))
+    (dynamic-wind
+      (lambda () (add 'connect))
+      (lambda ()
+        (add (call-with-current-continuation
+               (lambda (c0)
+                 (set! c c0)
+                 'talk1))))
+      (lambda () (add 'disconnect)))
+    (if (< (length path) 4)
+        (c 'talk2)
+        (reverse path))))
+
+            @ok{(connect talk1 disconnect
+               connect talk2 disconnect)}
+@end lisp
+@end deffn

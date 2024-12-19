@@ -2,17 +2,19 @@
 @section Bytevectors
 
 @define{Bytevectors} represent blocks of binary data.  They are
-fixed-length sequences of bytes, where a @define{byte} is an exact
-integer in the range from 0 to 255 inclusive.  A bytevector is typically
-more space-efficient than a vector containing the same values.
+fixed-length se@value{shy}quen@value{shy}ces of bytes, where a
+@define{byte} is an exact integer in the range from 0 to 255
+in@value{shy}clu@value{shy}sive.  A bytevector is typically more
+space-efficient than a vector con@value{shy}tain@value{shy}ing the same
+values.
 
 @cindex valid indexes
 
 The @define{length} of a bytevector is the number of elements that it
 contains.  This number is a non-negative integer that is fixed when the
 bytevector is created.  The @define{valid indexes} of a bytevector are
-the exact non-negative integers less than the length of the bytevector,
-starting at index zero as with vectors.
+the exact non-negative in@value{shy}tegers less than the length of the
+bytevector, starting at index zero as with vectors.
 
 Bytevectors are written using the notation @code{@hashchar{}u8(@rv{byte}
 @value{defdots})}.  For example, a bytevector of length 3 containing the
@@ -41,7 +43,7 @@ of the bytevector are initialized to @var{byte}, otherwise the contents
 of each element are unspecified.
 
 @lisp
-(make-bytevector 2 12) @ok{#u8(12 12)}
+(make-bytevector 2 12)        @ok{#u8(12 12)}
 @end lisp
 @end deffn
 
@@ -50,8 +52,8 @@ of each element are unspecified.
 Returns a newly allocated bytevector containing its arguments.
 
 @lisp
-(bytevector 1 3 5 1 3 5) @ok{#u8(1 3 5 1 3 5)}
-(bytevector)             @ok{#u8()}
+(bytevector 1 3 5 1 3 5)      @ok{#u8(1 3 5 1 3 5)}
+(bytevector)                  @ok{#u8()}
 @end lisp
 @end deffn
 
@@ -67,7 +69,9 @@ It is an error if @var{k} is not a valid index of @var{bytevector}.
 Returns the @var{k}th byte of @var{bytevector}.
 
 @lisp
-(bytevector-u8-ref '#u8(1 1 2 3 5 8 13 21) 5) @ok{8}
+(bytevector-u8-ref '#u8(1 1 2 3 5 8 13 21)
+            5)
+             @ok{8}
 @end lisp
 @end deffn
 
@@ -81,24 +85,24 @@ Stores @var{byte} as the @var{k}th byte of @var{bytevector}.
 (let ((bv (bytevector 1 2 3 4)))
   (bytevector-u8-set! bv 1 3)
   bv)
-    @ok{#u8(1 3 3 4)}
+            @ok{#u8(1 3 3 4)}
 @end lisp
 @end deffn
 
-@deffn  procedure bytevector-copy bytevector
+@deffn procedure bytevector-copy bytevector
 @deffnx procedure bytevector-copy bytevector start
 @deffnx procedure bytevector-copy bytevector start end
 
 Returns a newly allocated bytevector containing the bytes in
-@var{bytevector} between @var{start} and @var{end}.
+@var{bytevector} be@value{shy}tween @var{start} and @var{end}.
 
 @lisp
 (define a #u8(1 2 3 4 5))
-(bytevector-copy a 2 4)) @ok{#u8(3 4)}
+(bytevector-copy a 2 4))      @ok{#u8(3 4)}
 @end lisp
 @end deffn
 
-@deffn  procedure bytevector-copy! to at from
+@deffn procedure bytevector-copy! to at from
 @deffnx procedure bytevector-copy! to at from start
 @deffnx procedure bytevector-copy! to at from start end
 
@@ -110,15 +114,16 @@ Copies the bytes of bytevector @var{from} between @var{start} and
 @var{end} to bytevector @var{to}, starting at @var{at}.  The order in
 which bytes are copied is unspecified, except that if the source and
 destination overlap, copying takes place as if the source is first
-copied into a temporary bytevector and then into the destination.  This
-can be achieved without allocating storage by making sure to copy in the
-correct direction in such circumstances.
+copied into a temporary bytevector and then into the
+des@value{shy}ti@value{shy}na@value{shy}tion.  This can be achieved
+without allocating storage by making sure to copy in the correct
+direction in such circumstances.
 
 @lisp
 (define a (bytevector 1 2 3 4 5))
 (define b (bytevector 10 20 30 40 50))
 (bytevector-copy! b 1 a 0 2)
-b @ok{#u8(10 1 2 40 50)}
+b                             @ok{#u8(10 1 2 40 50)}
 @end lisp
 
 @quotation
@@ -134,7 +139,7 @@ concatenation of the elements in the given bytevectors.
 
 @lisp
 (bytevector-append #u8(0 1 2) #u8(3 4 5))
-    @ok{#u8(0 1 2 3 4 5)}
+            @ok{#u8(0 1 2 3 4 5)}
 @end lisp
 @end deffn
 
@@ -145,18 +150,19 @@ concatenation of the elements in the given bytevectors.
 @deffnx procedure string->utf8 string start
 @deffnx procedure string->utf8 string start end
 
-It is an error for @var{bytevector} to contain invalid UTF-8 byte
-sequences.
+It is an error for @var{bytevector} to contain invalid @acronym{UTF-8}
+byte sequences.
 
 These procedures translate between strings and bytevectors that encode
-those strings using the UTF-8 encoding.  The @code{utf8->string}
-procedure decodes the bytes of a bytevector between @var{start} and
-@var{end} and returns the corresponding string; the @code{string->utf8}
-procedure encodes the characters of a string between @var{start} and
-@var{end} and returns the corresponding bytevector.
+those strings using the @acronym{UTF-8} encoding.  The
+@code{utf8->string} procedure de@value{shy}codes the bytes of a
+bytevector between @var{start} and @var{end} and returns the
+cor@value{shy}responding string; the @code{string->utf8} procedure
+encodes the characters of a string between @var{start} and @var{end} and
+returns the corresponding bytevector.
 
 @lisp
-(utf8->string #u8(#x41))        @ok{"A"}
-(string->utf8 "@U{03BB}") @ok{#u8(#xCE #xBB)}
+(utf8->string #u8(#x41))      @ok{"A"}
+(string->utf8 "@U{03BB}")            @ok{#u8(#xCE #xBB)}
 @end lisp
 @end deffn

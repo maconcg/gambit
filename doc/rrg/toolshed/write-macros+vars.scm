@@ -48,6 +48,15 @@
                            (string-append "@inlinefmtifelse{html,@U{22A3},"
                                           "@print{}}")
                            "output")
+  (write-lisp-result-macro "prints"
+                           (string-append "@inlinefmtifelse{html,"
+                                          "@inlinefmt{html,@inlineraw{html,"
+                                          "<span class=\"unspecified\">}}"
+                                          "@r{@i{prints}}"
+                                          "@inlinefmt{html,@inlineraw{html,"
+                                          "</span>}},"
+                                          "@print{}}")
+                           "and-prints")
   (write-lisp-result-macro "problem" "@arrow{}" "problem")
   (write-lisp-text-macro "lispnotetext" "" "lisp-note")
   (write-lisp-text-macro "unspecified" "@result{}" "unspecified")

@@ -72,6 +72,8 @@
 @include procedures/strings.txi
 @include procedures/vectors.txi
 @include procedures/bytevectors.txi
+@include procedures/control-features.txi
+@include procedures/exceptions.txi
 
 @c @node Pairs and lists
 @c @nodedescription The @sc{LIS} in @sc{LISP}.
