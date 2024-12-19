@@ -57,17 +57,17 @@ one of the following forms:
 @angle{library name}
 
 @item
-@t{(only @sv{import set} @sv{identifier} @defdots{})}
+@t{@compound{@U{0028}}@aux{only} @sv{import set} @sv{identifier} @defdots{}@compound{@U{0029}}}
 
 @item
-@t{(except @sv{import set} @sv{identifier} @defdots{})}
+@t{@compound{@U{0028}}@aux{except} @sv{import set} @sv{identifier} @defdots{}@compound{@U{0029}}}
 
 @item
-@t{(prefix @sv{import set} @sv{identifier} @defdots{})}
+@t{@compound{@U{0028}}@aux{prefix} @sv{import set} @sv{identifier} @defdots{}@compound{@U{0029}}}
 
 @item
-@t{(rename @sv{import set} (@sv{@pari{identifier}}
-@sv{@parii{identifier}}) @defdots{})}
+@t{@compound{@U{0028}}@aux{rename} @sv{import set} @compound{@U{0028}}@sv{@pari{identifier}}
+@sv{@parii{identifier}}@compound{@U{0029}} @defdots{}@compound{@U{0029}}}
 @end itemize
 
 In the first form, all of the identifiers in the named library's export
@@ -114,10 +114,10 @@ takes one of the following forms:
 
 @itemize @bullet
 @item
-@t{(define @sv{variable} @sv{expression})}
+@t{@compound{@U{0028}}@syntax{define} @sv{variable} @sv{expression}@compound{@U{0029}}}
 
 @item
-@t{(define (@sv{variable} @sv{formals}) @sv{body})}@*@* @angle{Formals}
+@t{@compound{@U{0028}}@syntax{define} @compound{@U{0028}}@sv{variable} @sv{formals}@compound{@U{0029}} @sv{body}@compound{@U{0029}}}@*@* @angle{Formals}
 are either a sequence of zero or more variables, or a
 se@value{shy}quence of one or more variables followed by a
 space-delimited period and another variable (as in a @code{lambda}
@@ -129,7 +129,7 @@ expression).  This form is equiv@value{shy}alent to
 @end example
 
 @item
-@t{(define (@sv{variable} @dot{.} @sv{formal}) @sv{body})}@*@*
+@t{@compound{@U{0028}}@syntax{define} @compound{@U{0028}}@sv{variable} @dot{.} @sv{formal}@compound{@U{0029}} @sv{body}@compound{@U{0029}}}@*@*
 @angle{Formal} is a single variable.  This form is equivalent to
 
 @example grammar

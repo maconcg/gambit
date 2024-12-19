@@ -543,16 +543,16 @@ A @angle{feature requirement} takes one of the following forms:
 @t{@sv{feature identifier}}
 
 @item
-@t{(library @sv{library name})}
+@t{@compound{@U{0028}}@aux{library} @sv{library name}@compound{@U{0029}}}
 
 @item
-@t{(and @sv{feature requirement} @defdots{})}
+@t{@compound{@U{0028}}@aux{and} @sv{feature requirement} @defdots{}@compound{@U{0029}}}
 
 @item
-@t{(or @sv{feature requirement} @defdots{})}
+@t{@compound{@U{0028}}@aux{or} @sv{feature requirement} @defdots{}@compound{@U{0029}}}
 
 @item
-@t{(not @sv{feature requirement})}
+@t{@compound{@U{0028}}@aux{not} @sv{feature requirement}@compound{@U{0029}}}
 @end itemize
 
 @i{Semantics:} Each implementation maintains a list of feature
