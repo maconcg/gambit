@@ -269,15 +269,15 @@ formally in Formal Constants.  Note that case is not significant in
 numerical con@value{shy}stants.@c @ref{Formal syntax}.
 
 A number can be written in binary, octal, decimal, or hexadecimal by the
-use of a radix prefix.  The radix prefixes are @nobr{@code{#b}
-@U{0028}}binary@U{0029}, @nobr{@code{#o} @U{0028}}octal@U{0029},
-@nobr{@code{#d} @U{0028}}deci@value{shy}mal@U{0029}, and @nobr{@code{#x}
+use of a radix prefix.  The radix prefixes are @nobr{@hc{#b}
+@U{0028}}binary@U{0029}, @nobr{@hc{#o} @U{0028}}octal@U{0029},
+@nobr{@hc{#d} @U{0028}}deci@value{shy}mal@U{0029}, and @nobr{@hc{#x}
 @U{0028}}hexa@value{shy}deci@value{shy}mal@U{0029}.  With no radix
 prefix, a number is as@value{shy}sumed to be expressed in decimal.
 
 A numerical constant can be specified to be either exact or inexact by a
-pre@value{shy}fix.  The prefixes are @code{#e} for exact, and @code{#i}
-for inexact.  An exactness prefix can appear before or after any radix
+pre@value{shy}fix.  The prefixes are @hc{#e} for exact, and @hc{#i} for
+inexact.  An exactness prefix can appear before or after any radix
 pre@value{shy}fix that is used.  If the written
 rep@value{shy}resen@value{shy}tation of a number has no exactness
 prefix, the constant is inexact if it con@value{shy}tains a decimal
@@ -287,23 +287,24 @@ In systems with inexact numbers of varying precisions it can be useful
 to specify the precision of a constant.  For this purpose,
 implementations may accept numerical constants written with an exponent
 marker that indicates the desired precision of the inexact
-representation.  If so, the letter @code{s}, @code{f}, @code{d}, or
-@code{l}, meaning @define{short}, @define{single}, @define{double}, or
-@define{long} precision, respectively, can be used in place of @code{e}.
-The default precision has at least as much precision as double, but
-implementations may allow this default to be set by the user.
+representation.  If so, the letter @code{@number{s}}, @code{@number{f}},
+@code{@number{d}}, or @code{@number{l}}, meaning @define{short},
+@define{single}, @define{double}, or @define{long} precision,
+respectively, can be used in place of @code{e}.  The default precision
+has at least as much precision as double, but implementations may allow
+this default to be set by the user.
 
 @example
 @number{3.14159265358979F0}
-        @r{Round to single ---} 3.141593
+        @r{Round to single ---} @number{3.141593}
 @number{0.6L0}
-        @r{Extend to long ---} .600000000000000
+        @r{Extend to long ---} @number{.600000000000000}
 @end example
 
 The numbers positive infinity, negative infinity, and NaN are written
-@nobr{@code{+inf.0}}, @nobr{@code{-inf.0}} and @nobr{@code{+nan.0}}
-respectively.  NaN may also be written @code{-nan.0}.  The use of signs
-in the written representation does not necessarily reflect the
+@nobr{@hc{+inf.0}}, @nobr{@hc{-inf.0}} and @nobr{@hc{+nan.0}}
+respectively.  NaN may also be written @hc{-nan.0}.  The use of signs in
+the written representation does not necessarily reflect the
 under@value{shy}lying sign of the NaN value, if any.  Implementations
 are not required to sup@value{shy}port these numbers, but if they do,
 they must do so in general con@value{shy}for@value{shy}mance with
@@ -458,11 +459,11 @@ on complex numbers if their real or imaginary parts or both are
 @end lisp
 @end deffn
 
-@deffn  procedure = @pari{z} @parii{z} @pariii{z} @defdots{}
-@deffnx procedure < @pari{x} @parii{x} @pariii{x} @defdots{}
-@deffnx procedure > @pari{x} @parii{x} @pariii{x} @defdots{}
-@deffnx procedure <= @pari{x} @parii{x} @pariii{x} @defdots{}
-@deffnx procedure >= @pari{x} @parii{x} @pariii{x} @defdots{}
+@deffn  procedure = @pari{z} @parii{z} @pariii{z} @value{defdots}
+@deffnx procedure < @pari{x} @parii{x} @pariii{x} @value{defdots}
+@deffnx procedure > @pari{x} @parii{x} @pariii{x} @value{defdots}
+@deffnx procedure <= @pari{x} @parii{x} @pariii{x} @value{defdots}
+@deffnx procedure >= @pari{x} @parii{x} @pariii{x} @value{defdots}
 
 These procedures return @code{#t} if their arguments are (respectively):
 equal, mono@value{shy}ton@value{shy}ically increasing,
@@ -509,8 +510,8 @@ These numerical predicates test a number for a particular property,
 re@value{shy}turning @code{#t} or @code{#f}.  See note above.
 @end deffn
 
-@deffn  procedure max @pari{x} @parii{x} @defdots{}
-@deffnx procedure min @pari{x} @parii{x} @defdots{}
+@deffn  procedure max @pari{x} @parii{x} @value{defdots}
+@deffnx procedure min @pari{x} @parii{x} @value{defdots}
 
 These procedures return the maximum or minimum of their arguments.
 
@@ -529,8 +530,8 @@ then the procedure may report a violation of an implementation
 re@value{shy}stric@value{shy}tion.
 @end deffn
 
-@deffn  procedure + @pari{z} @defdots{}
-@deffnx procedure * @pari{z} @defdots{}
+@deffn  procedure + @pari{z} @value{defdots}
+@deffnx procedure * @pari{z} @value{defdots}
 
 These procedures return the sum or product of their arguments.
 
@@ -544,9 +545,9 @@ These procedures return the sum or product of their arguments.
 @end deffn
 
 @deffn  procedure - z
-@deffnx procedure - @pari{z} @parii{z} @defdots{}
+@deffnx procedure - @pari{z} @parii{z} @value{defdots}
 @deffnx procedure / z
-@deffnx procedure / @pari{z} @parii{z} @defdots{}
+@deffnx procedure / @pari{z} @parii{z} @value{defdots}
 
 With two or more arguments, these procedures return the difference or
 quo@value{shy}tient of their arguments, associating to the left.  With
@@ -646,8 +647,8 @@ earlier versions of this report.
 @end quotation
 @end deffn
 
-@deffn  procedure gcd @pari{n} @defdots{}
-@deffnx procedure lcm @pari{n} @defdots{}
+@deffn  procedure gcd @pari{n} @value{defdots}
+@deffnx procedure lcm @pari{n} @value{defdots}
 
 These procedures return the greatest common divisor or least common
 mul@value{shy}tiple of their arguments.  The result is always
@@ -786,8 +787,8 @@ values of @inverse{sin}@var{z}, @inverse{cos}@var{z}, and
 @end display
 
 However, @code{(log 0.0)} returns @code{-inf.0} (and @code{(log -0.0)}
-returns @code{-inf.0+@r{@U{03C0}}i}) if the implementation supports
-infinities (and @code{-0.0}).
+returns @code{@number{-inf.0+}@r{@U{03C0}}@number{i}}) if the
+implementation supports infinities (and @code{-0.0}).
 
 The range of @code{(a @rv{y} @rv{x})} is as in the following table. The
 asterisk (*) indicates that the entry applies to implementations that

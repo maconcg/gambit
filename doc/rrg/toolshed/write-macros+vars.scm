@@ -57,7 +57,6 @@
   (write-visual-divider)
   (write-opt-macro)
   (write-defabbrev-macro)
-  (write-defdots-macro)
   (write-defparen-macro)
   (write-hc-macro)
   (write-ht-macro)
@@ -85,6 +84,16 @@
                            "@ "
                            "@inlineraw{html,</span>},"
                            "@ }\n"))))
+        (write-defdots
+         (lambda ()
+           (write-string
+            (string-append "@set defdots "
+                           "@inlinefmtifelse{html,@inlineraw{html,"
+                           "<span class=\"def-dots\">}"
+                           "@r{@dots{}}"
+                           "@inlineraw{html,"
+                           "</span>},"
+                           ",@dots{}}\n"))))
         (write-dnspace
          (lambda ()
            (write-string
@@ -94,6 +103,27 @@
                            "@ "
                            "@inlineraw{html,</span>},"
                            "@ }\n"))))
+        (write-greekcapitalsigma
+         (lambda ()
+           (write-string
+            (string-append "@set capitalsigma "
+                           "@inlinefmtifelse{tex,"
+                           "@math{\\\\Sigma},"
+                           "@U{03A3}}\n"))))
+        (write-greeksmallsigma
+         (lambda ()
+           (write-string
+            (string-append "@set smallsigma "
+                           "@inlinefmtifelse{tex,"
+                           "@math{\\\\sigma},"
+                           "@U{03C3}}\n"))))
+        (write-greekfinalsigma
+         (lambda ()
+           (write-string
+            (string-append "@set finalsigma "
+                           "@inlinefmtifelse{tex,"
+                           "@math{\\\\varsigma},"
+                           "@U{03C2}}\n"))))
         (write-r2rs
          (lambda ()
            (write-string "@set R2RS @acronym{RRRS}\n")))
@@ -134,7 +164,11 @@
                            "@inlineraw{html,</span>},,}}}\n")))))
     (lambda ()
       (write-cdspace)
+      (write-defdots)
       (write-dnspace)
+      (write-greekcapitalsigma)
+      (write-greeksmallsigma)
+      (write-greekfinalsigma)
       (write-RevisednRS "3" "@U{00B3}")
       (write-RevisednRS "4" "@U{2074}")
       (write-RevisednRS "5" "@U{2075}")
@@ -381,13 +415,6 @@
                                "@inlinefmtifelse{html,@inlineraw{html,"
                                "<span class=\"def-abbrev\">\\a\\</span>}"
                                ",\\a\\}\n"
-                               "@end macro\n")))
-
-(define (write-defdots-macro)
-  (write-string (string-append "@macro defdots {}\n"
-                               "@r{@inlinefmtifelse{html,@inlineraw{html,"
-                               "<span class=\"def-dots\">...</span>}"
-                               ",@dots{}}}\n"
                                "@end macro\n")))
 
 (define (write-defparen-macro)

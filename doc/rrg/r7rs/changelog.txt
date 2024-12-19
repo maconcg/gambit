@@ -43,3 +43,6 @@ rather than emulate, the official R7RS content:
 
 - expt procedure description: as a visual aid, add parentheses around
   log argument
+
+- string<?, string>?, etc. description: change order of procedure list
+  for better visual alignment

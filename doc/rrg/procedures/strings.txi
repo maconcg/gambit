@@ -54,7 +54,7 @@ integer, an exception that satisfies @code{range-exception?} is raised.
 @end lisp
 @end deffn
 
-@deffn scheme/base string char @defdots{}
+@deffn scheme/base string char @value{defdots}
 Returns a newly allocated string whose elements are @var{char}@enddots{}
 The order of the arguments is preserved.  Analogous to @code{list}
 (@pxref{Pair and list procedures}).
@@ -92,7 +92,7 @@ not a valid index of @var{string}, an exception that satisfies
 @end lisp
 @end deffn
 
-@deffn scheme/base string=? string @defdots{}
+@deffn scheme/base string=? string @value{defdots}
 Returns @code{#t} if all @var{string} arguments are the same length and
 contain exactly the same characters in the same positions.
 
@@ -109,10 +109,10 @@ any number of arguments.
 @end lisp
 @end deffn
 
-@deffn  scheme/base string<? string @defdots{}
-@deffnx scheme/base string>? string @defdots{}
-@deffnx scheme/base string<=? string @defdots{}
-@deffnx scheme/base string>=? string @defdots{}
+@deffn  scheme/base string<? string @value{defdots}
+@deffnx scheme/base string>? string @value{defdots}
+@deffnx scheme/base string<=? string @value{defdots}
+@deffnx scheme/base string>=? string @value{defdots}
 These predicates return @code{#t} if their @var{string} arguments are
 (respectively): monotonically increasing, monotonically decreasing,
 monotonically non-decreasing, or monotonically non-increasing.  They are
@@ -140,11 +140,11 @@ accept any number of arguments.
 @end lisp
 @end deffn
 
-@deffn  scheme/char string-ci=? string @defdots{}
-@deffnx scheme/char string-ci<? string @defdots{}
-@deffnx scheme/char string-ci>? string @defdots{}
-@deffnx scheme/char string-ci<=? string @defdots{}
-@deffnx scheme/char string-ci>=? string @defdots{}
+@deffn  scheme/char string-ci=? string @value{defdots}
+@deffnx scheme/char string-ci<? string @value{defdots}
+@deffnx scheme/char string-ci>? string @value{defdots}
+@deffnx scheme/char string-ci<=? string @value{defdots}
+@deffnx scheme/char string-ci>=? string @value{defdots}
 Each of these predicates behaves as if @code{string-foldcase} were
 applied to each @var{string} and then that predicate's non-@samp{-ci}
 counterpart were applied to those case-folded arguments.
@@ -200,7 +200,7 @@ that language-sensitive mappings and foldings are not used.
 @end lisp
 @end deffn
 
-@deffn scheme/base string-append string @defdots{}
+@deffn scheme/base string-append string @value{defdots}
 
 Returns a newly allocated string whose characters are the concatenation
 of the characters in the given @var{strings}.

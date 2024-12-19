@@ -16,11 +16,11 @@ outermost level of a @angle{program} and at the begin@value{shy}ning of
 a @angle{body}.
 
 At the outermost level of a program, @t{(begin @sv{expression or
-@pari{definition}} @defdots{})} is equivalent to the sequence of
+@pari{definition}} @value{defdots})} is equivalent to the sequence of
 expressions and definitions in the @code{begin}.  Similarly, in a
-@angle{body}, @t{(begin @sv{@pari{definition}} @defdots{})} is
+@angle{body}, @t{(begin @sv{@pari{definition}} @value{defdots})} is
 equivalent to the sequence @sv{@pari{definition}}
-@defdots{}@inlinefmtifelse{html,@U{2009},@tie{}}@.  Macros can expand
+@value{defdots}@inlinefmtifelse{html,@U{2009},@tie{}}@.  Macros can expand
 into such @code{begin} forms.  For the formal definition, see 4.2.3.
 
 Import declarations and definitions cause bindings to be created in the
@@ -44,7 +44,7 @@ mapping from the name of a library to its location in the file system.
 An import declaration takes the following form:
 
 @example grammar
-(import @sv{import-set} @defdots)
+(import @sv{import-set} @value{defdots})
 @end example
 
 An import declaration provides a way to import identifiers exported by a
@@ -57,17 +57,17 @@ one of the following forms:
 @angle{library name}
 
 @item
-@t{@compound{@U{0028}}@aux{only} @sv{import set} @sv{identifier} @defdots{}@compound{@U{0029}}}
+@t{@compound{@U{0028}}@aux{only} @sv{import set} @sv{identifier} @value{defdots}@compound{@U{0029}}}
 
 @item
-@t{@compound{@U{0028}}@aux{except} @sv{import set} @sv{identifier} @defdots{}@compound{@U{0029}}}
+@t{@compound{@U{0028}}@aux{except} @sv{import set} @sv{identifier} @value{defdots}@compound{@U{0029}}}
 
 @item
-@t{@compound{@U{0028}}@aux{prefix} @sv{import set} @sv{identifier} @defdots{}@compound{@U{0029}}}
+@t{@compound{@U{0028}}@aux{prefix} @sv{import set} @sv{identifier} @value{defdots}@compound{@U{0029}}}
 
 @item
 @t{@compound{@U{0028}}@aux{rename} @sv{import set} @compound{@U{0028}}@sv{@pari{identifier}}
-@sv{@parii{identifier}}@compound{@U{0029}} @defdots{}@compound{@U{0029}}}
+@sv{@parii{identifier}}@compound{@U{0029}} @value{defdots}@compound{@U{0029}}}
 @end itemize
 
 In the first form, all of the identifiers in the named library's export
@@ -211,7 +211,7 @@ It is an error to define the same identifier more than once in the same
 @angle{body}.
 
 Wherever an internal definition can occur, @t{(begin
-@sv{@pari{definition}} @defdots{})} is equiv@value{shy}alent to the
+@sv{@pari{definition}} @value{defdots})} is equiv@value{shy}alent to the
 sequence of definitions that form the body of the @code{begin}.
 
 @node Multiple-value definitions
@@ -321,13 +321,13 @@ are defined for each record type.
 @value{syntaxindent}@value{cdspace}@
 @value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@
 @value{dnspace}@value{dnspace}@value{dnspace}@
-@sv{constructor} @sv{pred} @sv{field} @defdots{}
+@sv{constructor} @sv{pred} @sv{field} @value{defdots}
 
 @i{Syntax:} @angle{name} and @angle{pred} are identifiers.  The
 @angle{constructor} is of the form
 
 @example grammar
-(@sv{constructor name} @sv{field name} @defdots)
+(@sv{constructor name} @sv{field name} @value{defdots})
 @end example
 
 and each @angle{field} is either of the form
@@ -365,7 +365,7 @@ further language extensions.
 @item
 @angle{constructor name} is bound to a procedure that takes as many
 argu@value{shy}ments as there are @angle{field name}s in the
-@t{(@sv{constructor name} @defdots{})} sub@value{shy}expression and
+@t{(@sv{constructor name} @value{defdots})} sub@value{shy}expression and
 returns a new record of type @angle{named}.  Fields whose names are
 listed with @angle{constructor name} have the cor@value{shy}responding
 ar@value{shy}gu@value{shy}ment as their initial value.  The initial
@@ -428,7 +428,7 @@ A library definition takes the following form:
 
 @example grammar
 (define-library @sv{library name}
-  @sv{library declaration} @defdots{})
+  @sv{library declaration} @value{defdots})
 @end example
 
 @angle{library name} is a list whose members are identifiers and exact
@@ -449,26 +449,26 @@ A @angle{library declaration} is any of:
 
 @itemize @bullet
 @item
-@t{(export @sv{export spec} @defdots{})}
+@t{@compound{@U{0028}}@aux{export} @sv{export spec} @value{defdots}@compound{@U{0029}}}
 
 @item
-@t{(import @sv{import spec} @defdots{})}
+@t{@compound{@U{0028}}@aux{import} @sv{import spec} @value{defdots}@compound{@U{0029}}}
 
 @item
-@t{(begin @sv{command or definition} @defdots{})}
+@t{@compound{@U{0028}}@aux{begin} @sv{command or definition} @value{defdots}@compound{@U{0029}}}
 
 @item
-@t{(include @sv{@pari{filename}} @sv{@parii{filename}} @defdots{})}
+@t{@compound{@U{0028}}@aux{include} @sv{@pari{filename}} @sv{@parii{filename}} @value{defdots}@compound{@U{0029}}}
 
 @item
-@t{(include-ci @sv{@pari{filename}} @sv{@parii{filename}} @defdots{})}
+@t{@compound{@U{0028}}@aux{include-ci} @sv{@pari{filename}} @sv{@parii{filename}} @value{defdots}@compound{@U{0029}}}
 
 @item
-@t{(include-library-declarations @sv{@pari{filename}}
-@sv{@parii{filename}} @defdots{})}
+@t{@compound{@U{0028}}@aux{include-library-declarations} @sv{@pari{filename}}
+@sv{@parii{filename}} @value{defdots}@compound{@U{0029}}}
 
 @item
-@t{(cond-expand @sv{@pari{ce-clause}} @sv{@parii{ce-clause}} @defdots{})}
+@t{@compound{@U{0028}}@aux{cond-expand} @sv{@pari{ce-clause}} @sv{@parii{ce-clause}} @value{defdots}@compound{@U{0029}}}
 @end itemize
 
 An @code{export} declaration specifies a list of identifiers which can
@@ -481,7 +481,7 @@ forms:
 @angle{identifier}
 
 @item
-@t{(rename @sv{@pari{identifier}} @sv{@parii{identifier}} @defdots{})}
+@t{@compound{@U{0028}}@aux{rename} @sv{@pari{identifier}} @sv{@parii{identifier}} @value{defdots}@compound{@U{0029}}}
 @end itemize
 
 In an @angle{export spec}, an @angle{identifier} names a single binding

@@ -289,7 +289,7 @@ Otherwise the initial contents of each element is unspecified.
 @end lisp
 @end deffn
 
-@deffn procedure list obj @defdots{}
+@deffn procedure list obj @value{defdots}
 
 Returns a newly allocated list of its arguments.
 
@@ -310,7 +310,7 @@ Returns the length of @var{list}.
 @end lisp
 @end deffn
 
-@deffn procedure append list @defdots{}
+@deffn procedure append list @value{defdots}
 
 The last argument, if there is one, can be of any type.
 

@@ -24,7 +24,8 @@ r7rs-deps = toolshed/macros+vars.txi r7rs/bibliography.txi \
  r7rs/procedures/equivalence-predicates.txi \
  r7rs/procedures/numbers.txi r7rs/procedures/booleans.txi \
  r7rs/procedures/pairs-and-lists.txi r7rs/procedures/symbols.txi \
- r7rs/procedures/characters.txi
+ r7rs/procedures/characters.txi r7rs/procedures/strings.txi \
+ r7rs/procedures/vectors.txi r7rs/procedures/bytevectors.txi
 
 r7rs-annotated-prose = r7rs/prose/a/summary.txi r7rs/prose/a/introduction.txi \
  r7rs/prose/a/overview.txi r7rs/prose/a/lexical-conventions.txi \
@@ -33,7 +34,8 @@ r7rs-annotated-prose = r7rs/prose/a/summary.txi r7rs/prose/a/introduction.txi \
  r7rs/procedures/a/equivalence-predicates.txi \
  r7rs/procedures/a/numbers.txi r7rs/procedures/a/booleans.txi \
  r7rs/procedures/a/pairs-and-lists.txi r7rs/procedures/a/symbols.txi \
- r7rs/procedures/a/characters.txi
+ r7rs/procedures/a/characters.txi r7rs/procedures/a/strings.txi \
+ r7rs/procedures/a/vectors.txi r7rs/procedures/a/bytevectors.txi
 
 set-scm_to_html = \
 if test -x scm-to-html; then\
@@ -280,6 +282,21 @@ r7rs/procedures/a/symbols.txi: \
 r7rs/procedures/a/characters.txi: \
  r7rs/procedures/characters.txi
 	readonly txi=characters.txi &&\
+	${annotate-r7rs-procedures-file}
+
+r7rs/procedures/a/strings.txi: \
+ r7rs/procedures/strings.txi
+	readonly txi=strings.txi &&\
+	${annotate-r7rs-procedures-file}
+
+r7rs/procedures/a/vectors.txi: \
+ r7rs/procedures/vectors.txi
+	readonly txi=vectors.txi &&\
+	${annotate-r7rs-procedures-file}
+
+r7rs/procedures/a/bytevectors.txi: \
+ r7rs/procedures/bytevectors.txi
+	readonly txi=bytevectors.txi &&\
 	${annotate-r7rs-procedures-file}
 
 r7rs/prose/a/summary.txi: r7rs/prose/summary.txi

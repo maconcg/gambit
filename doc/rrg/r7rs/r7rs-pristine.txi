@@ -69,6 +69,9 @@
 @include procedures/pairs-and-lists.txi
 @include procedures/symbols.txi
 @include procedures/characters.txi
+@include procedures/strings.txi
+@include procedures/vectors.txi
+@include procedures/bytevectors.txi
 
 @c @node Pairs and lists
 @c @nodedescription The @sc{LIS} in @sc{LISP}.

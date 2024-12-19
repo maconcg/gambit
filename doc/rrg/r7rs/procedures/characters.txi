@@ -98,11 +98,11 @@ names.
 Returns @code{#t} if @var{obj} is a character, otherwise returns @code{#f}.
 @end deffn
 
-@deffn  procedure char=? @pari{char} @parii{char} @pariii{char} @defdots{}
-@deffnx procedure char<? @pari{char} @parii{char} @pariii{char} @defdots{}
-@deffnx procedure char>? @pari{char} @parii{char} @pariii{char} @defdots{}
-@deffnx procedure char<=? @pari{char} @parii{char} @pariii{char} @defdots{}
-@deffnx procedure char>=? @pari{char} @parii{char} @pariii{char} @defdots{}
+@deffn  procedure char=? @pari{char} @parii{char} @pariii{char} @value{defdots}
+@deffnx procedure char<? @pari{char} @parii{char} @pariii{char} @value{defdots}
+@deffnx procedure char>? @pari{char} @parii{char} @pariii{char} @value{defdots}
+@deffnx procedure char<=? @pari{char} @parii{char} @pariii{char} @value{defdots}
+@deffnx procedure char>=? @pari{char} @parii{char} @pariii{char} @value{defdots}
 
 These procedures return @code{#t} if the results of passing their
 arguments to @code{char->integer} are respectively equal,
@@ -115,15 +115,15 @@ These predicates are required to be transitive.
 @end deffn
 
 @deffn  {char library procedure} char-ci=? @
-@pari{char} @parii{char} @pariii{char} @defdots{}
+@pari{char} @parii{char} @pariii{char} @value{defdots}
 @deffnx {char library procedure} char-ci< @
-@pari{char} @parii{char} @pariii{char} @defdots{}
+@pari{char} @parii{char} @pariii{char} @value{defdots}
 @deffnx {char library procedure} char-ci>? @
-@pari{char} @parii{char} @pariii{char} @defdots{}
+@pari{char} @parii{char} @pariii{char} @value{defdots}
 @deffnx {char library procedure} char-ci<=? @
-@pari{char} @parii{char} @pariii{char} @defdots{}
+@pari{char} @parii{char} @pariii{char} @value{defdots}
 @deffnx {char library procedure} char-ci>=? @
-@pari{char} @parii{char} @pariii{char} @defdots{}
+@pari{char} @parii{char} @pariii{char} @value{defdots}
 
 These procedures are similar to @code{char=?} et cetera, but they treat
 upper case and lower case letters as the same.  For example,
@@ -155,7 +155,7 @@ alphabetic but neither upper nor lower case.
 
 This procedure returns the numeric value (0 to 9) of its argument if it
 is a numeric digit (that is, if @code{char-numeric?} returns @code{#t}),
-or @code{#f} on any other char@value{shy}acter.
+or @code{#f} on any other character.
 
 @lisp
 (digit-value #\3)     @ok{3}
@@ -169,10 +169,10 @@ or @code{#f} on any other char@value{shy}acter.
 @deffnx procedure integer->char n
 
 Given a Unicode character, @code{char->integer} returns an exact integer
-be@value{shy}tween 0 and @hc{#xD7FF} or between @hc{#xE000} and
-@hc{#x10FFFF} which is equal to the Unicode scalar value of that
+be@value{shy}tween 0 and @code{#xD7FF} or between @code{#xE000} and
+@code{#x10FFFF} which is equal to the Unicode scalar value of that
 character.  Given a non-Unicode character, it re@value{shy}turns an
-exact integer greater than @hc{#x10FFFF}.  This is true independent of
+exact integer greater than @code{#x10FFFF}.  This is true independent of
 whether the implementation uses the Unicode representation internally.
 
 Given an exact integer that is the value returned by a character when
@@ -201,8 +201,9 @@ is not the uppercase member of such a pair, it is returned.
 The @code{char-foldcase} procedure applies the Unicode simple
 case-folding al@value{shy}go@value{shy}rithm to its argument and returns
 the result.  Note that language-sensitive folding is not used.  If the
-character that results from folding is not sup@value{shy}ported by the
-implementation, the argument is returned.  See @acronym{UAX}
+character that results from folding is not
+sup@value{shy}por@value{shy}ted by the implementation, the argument is
+returned.  See @acronym{UAX}
 @hashchar{}44@footnote{@value{refUnicodeAnnex44}} (part of the Unicode
 Standard) for details.
 

@@ -91,7 +91,7 @@ like @code{set-car!} or @code{string-set!}.
 @node Procedure calls
 @subsection Procedure calls
 @defblock
-@deftypeline syntax @/ @t{(@sv{operator} @sv{@pari{operand}} @defdots)}
+@deftypeline syntax @/ @t{(@sv{operator} @sv{@pari{operand}} @value{defdots})}
 A procedure call is written by enclosing in parentheses an expression
 for the procedure to be called followed by expressions for the arguments
 to be passed to it.  The operator and operand expressions are evaluated
@@ -179,7 +179,7 @@ call.
 
 @itemize @bullet
 @item
-@t{(@sv{@pari{variable}} @defdots{})}: The procedure takes a fixed
+@t{(@sv{@pari{variable}} @value{defdots})}: The procedure takes a fixed
 number of arguments; when the procedure is called, the arguments will be
 stored in fresh lo@value{shy}cations that are bound to the corresponding
 variables.
@@ -191,7 +191,7 @@ a newly allocated list, and the list is stored in a fresh location that
 is bound to @angle{variable}.
 
 @item
-@t{(@sv{@pari{variable}} @defdots{} @sv{@parn{variable}}
+@t{(@sv{@pari{variable}} @value{defdots} @sv{@parn{variable}}
 . @sv{@parnplusone{variable}})}: If a space-delimited per@value{shy}iod
 pre@value{shy}cedes the last variable, then the procedure takes @var{n}
 or more arguments, where @var{n} is the number of formal arguments
@@ -266,8 +266,8 @@ the @code{set!}@: expression is unspecified.
 
 @node Inclusion
 @subsection Inclusion
-@deftypefn syntax @/ include @sv{@pari{string}} @sv{@parii{string}} @defdots{}
-@deftypefnx syntax @/ include-ci @sv{@pari{string}} @sv{@parii{string}} @defdots{}
+@deftypefn syntax @/ include @sv{@pari{string}} @sv{@parii{string}} @value{defdots}
+@deftypefnx syntax @/ include-ci @sv{@pari{string}} @sv{@parii{string}} @value{defdots}
 
 @i{Semantics:} Both @code{include} and @code{include-ci} take one or
 more filenames ex@value{shy}pres@value{shy}sed as string literals, apply
@@ -297,14 +297,14 @@ primitive constructs described in the previous section.
 @node Derived Conditionals
 @subsection Conditionals
 
-@deftypefn syntax @/ cond @sv{@pari{clause}} @sv{@parii{clause}} @defdots{}
+@deftypefn syntax @/ cond @sv{@pari{clause}} @sv{@parii{clause}} @value{defdots}
 @deftypefnx {auxiliary syntax} @/ @aux{else}
 @deftypefnx {auxiliary syntax} @/ @aux{=>}
 
 @i{Syntax:} @angle{Clause}s take one of two forms, either
 
 @example grammar
-(@sv{test} @sv{@pari{expression}} @defdots{})
+(@sv{test} @sv{@pari{expression}} @value{defdots})
 @end example
 
 where @angle{test} is any expression, or
@@ -316,7 +316,7 @@ where @angle{test} is any expression, or
 The last @angle{clause} can be an @quotedbl{else clause}, which has the form
 
 @example grammar
-(else @sv{@pari{expression}} @sv{@parii{expression}} @defdots{})@r{.}
+(else @sv{@pari{expression}} @sv{@parii{expression}} @value{defdots})@r{.}
 @end example
 
 @i{Semantics:} A @code{cond} expression is evaluated by evaluating the
@@ -358,13 +358,13 @@ and the values of the last one are re@value{shy}turned.
 @end lisp
 @end deftypefn
 
-@deftypefn syntax @/ case @sv{key} @sv{@pari{clause}} @sv{@parii{clause}} @defdots{}
+@deftypefn syntax @/ case @sv{key} @sv{@pari{clause}} @sv{@parii{clause}} @value{defdots}
 
 @i{Syntax:} @angle{Key} can be any expression.  Each @angle{clause} has
 the form
 
 @example grammar
-((@sv{@pari{datum}} @defdots{}) @sv{@pari{expression}} @sv{@parii{expression} @defdots{}})@r{,}
+((@sv{@pari{datum}} @value{defdots}) @sv{@pari{expression}} @sv{@parii{expression} @value{defdots}})@r{,}
 @end example
 
 where each @angle{datum} is an external representation of some object.
@@ -373,14 +373,14 @@ expression.  Alt@value{shy}er@value{shy}natively, a @angle{clause} can
 be of the form
 
 @example grammar
-((@sv{@pari{datum}} @defdots{}) @aux{=>} @sv{expression})
+((@sv{@pari{datum}} @value{defdots}) @aux{=>} @sv{expression})
 @end example
 
 The last @angle{clause} can be an @quotedbl{else clause}, which has one
 of the forms
 
 @example grammar
-(else @sv{@pari{expression}} @sv{@parii{expression}} @defdots{})
+(else @sv{@pari{expression}} @sv{@parii{expression}} @value{defdots})
 @end example
 
 or
@@ -432,7 +432,7 @@ ex@value{shy}pres@value{shy}sion.
 @end lisp
 @end deftypefn
 
-@deftypefn syntax @/ and @sv{@pari{test}} @defdots{}
+@deftypefn syntax @/ and @sv{@pari{test}} @value{defdots}
 
 @i{Semantics:} The @angle{test} expressions are evaluated from left to
 right, and if any ex@value{shy}pres@value{shy}sion evaluates to
@@ -450,7 +450,7 @@ expressions, then @code{#t} is returned.
 @end lisp
 @end deftypefn
 
-@deftypefn syntax @/ or @sv{@pari{test}} @defdots{}
+@deftypefn syntax @/ or @sv{@pari{test}} @value{defdots}
 
 @i{Semantics:} The @angle{test} expressions are evaluated from left to
 right, and the value of the first expression that evaluates to a true
@@ -468,7 +468,7 @@ expressions, then @code{#f} is returned.
 @end deftypefn
 
 @deftypefn syntax @/ when @
-@sv{test} @sv{@pari{expression}} @sv{@parii{expression}} @defdots{}
+@sv{test} @sv{@pari{expression}} @sv{@parii{expression}} @value{defdots}
 
 @i{Syntax:} The @angle{test} is an expression.
 
@@ -495,7 +495,7 @@ The result of the @code{when} expression is unspecified.
 @end deftypefn
 
 @deftypefn syntax @/ unless @
-@sv{test} @sv{@pari{expression}} @sv{@parii{expression}} @defdots{}
+@sv{test} @sv{@pari{expression}} @sv{@parii{expression}} @value{defdots}
 
 @i{Syntax:} The @angle{test} is an expression.
 
@@ -521,19 +521,19 @@ expression is unspecified.
 @end deftypefn
 
 @deftypefn syntax @/ cond-expand @
-@sv{@pari{ce-clause}} @sv{@parii{ce-clause}} @defdots{}
+@sv{@pari{ce-clause}} @sv{@parii{ce-clause}} @value{defdots}
 
 @i{Syntax:} The @code{cond-expand} expression type provides a way to
 statically ex@value{shy}pand different expressions depending on the
 implementation.  A @angle{ce-clause} takes the following form:
 
 @example grammar
-(@sv{feature requirement} @sv{expression} @defdots{})
+(@sv{feature requirement} @sv{expression} @value{defdots})
 @end example
 
 The last clause can be an @quotedbl{else clause}, which has the form
 @example grammar
-(else @sv{expression} @defdots{})
+(else @sv{expression} @value{defdots})
 @end example
 
 A @angle{feature requirement} takes one of the following forms:
@@ -546,10 +546,10 @@ A @angle{feature requirement} takes one of the following forms:
 @t{@compound{@U{0028}}@aux{library} @sv{library name}@compound{@U{0029}}}
 
 @item
-@t{@compound{@U{0028}}@aux{and} @sv{feature requirement} @defdots{}@compound{@U{0029}}}
+@t{@compound{@U{0028}}@aux{and} @sv{feature requirement} @value{defdots}@compound{@U{0029}}}
 
 @item
-@t{@compound{@U{0028}}@aux{or} @sv{feature requirement} @defdots{}@compound{@U{0029}}}
+@t{@compound{@U{0028}}@aux{or} @sv{feature requirement} @value{defdots}@compound{@U{0029}}}
 
 @item
 @t{@compound{@U{0028}}@aux{not} @sv{feature requirement}@compound{@U{0029}}}
@@ -602,7 +602,7 @@ diff@value{shy}erent identifiers to the returned values.
 @i{Syntax:} @angle{Bindings} has the form
 
 @example grammar
-((@sv{@pari{variable}} @sv{@pari{init}}) @defdots{})@r{,}
+((@sv{@pari{variable}} @sv{@pari{init}}) @value{defdots})@r{,}
 @end example
 
 where each @angle{init} is an expression, and @angle{body} is a sequence
@@ -638,7 +638,7 @@ See also @quotedbl{named @t{let}}, section 4.2.4.
 @i{Syntax:} @angle{Bindings} has the form
 
 @example grammar
-((@sv{@pari{variable}} @sv{@pari{init}}) @defdots{})@r{,}
+((@sv{@pari{variable}} @sv{@pari{init}}) @value{defdots})@r{,}
 @end example
 
 and @angle{body} is a sequence of zero or more definitions followed by one
@@ -658,7 +658,7 @@ environment in which the first binding is visible, and so on.  The
 @i{Syntax:} @angle{Bindings} has the form
 
 @example grammar
-((@sv{@pari{variable}} @sv{@pari{init}}) @defdots{})@r{,}
+((@sv{@pari{variable}} @sv{@pari{init}}) @value{defdots})@r{,}
 @end example
 
 and @angle{body} is a sequence of zero or more definitions
@@ -706,7 +706,7 @@ is satisfied automatically.
 @i{Syntax:} @angle{Bindings} has the form
 
 @example grammar
-((@sv{@pari{variable}} @sv{@pari{init}}) @defdots{})@r{,}
+((@sv{@pari{variable}} @sv{@pari{init}}) @value{defdots})@r{,}
 @end example
 
 and @angle{body} is a sequence of zero or more definitions
@@ -762,7 +762,7 @@ values:@inlinefmt{html,@*} @code{8/3}, @code{2.28942848510666}
 @i{Syntax:} @angle{Mv binding spec} has the form
 
 @example grammar
-((@sv{@pari{formals}} @sv{@pari{init}}) @defdots{})@r{,}
+((@sv{@pari{formals}} @sv{@pari{init}}) @value{defdots})@r{,}
 @end example
 
 where each @angle{init} is an expression, and @angle{body} is zero or
@@ -795,7 +795,7 @@ returned by the corresponding @angle{init}.
 @i{Syntax:} @angle{Mv binding spec} has the form
 
 @example grammar
-((@sv{formals} @sv{init}) @defdots{})@r{,}
+((@sv{formals} @sv{init}) @value{defdots})@r{,}
 @end example
 
 and @angle{body} is a sequence of zero or more definitions followed by
@@ -823,7 +823,7 @@ initialized, and so on.
 Both of Scheme's sequencing constructs are named @code{begin}, but the
 two have slightly different forms and uses:
 
-@deftypefn syntax @/ begin @sv{expression or definition} @defdots{}
+@deftypefn syntax @/ begin @sv{expression or definition} @value{defdots}
 
 This form of @code{begin} can appear as part of a @angle{body}, or at
 the outermost level of a @angle{program}, or at the @acronym{REPL}, or
@@ -840,7 +840,7 @@ into the context in which they are expanded.
 @end deftypefn
 
 @deftypefn syntax @/ begin @
-@sv{@pari{expression}} @sv{@parii{expression}} @defdots{}
+@sv{@pari{expression}} @sv{@parii{expression}} @value{defdots}
 
 This form of @code{begin} can be used as an ordinary expression.  The
 @angle{expression}s are evaluated sequentially from left to right, and
@@ -880,13 +880,13 @@ declaration: see section 5.6.1.
 @t{((@sv{@pari{variable}} @sv{@pari{init}} @sv{@pari{step}})@*@
 @value{syntaxindent}@value{cdspace}@
 @value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@
-@defdots{})@*@
+@value{defdots})@*@
 @value{syntaxindent}@value{cdspace}@
 @value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@
-(@sv{test} @sv{expression} @defdots{})@*@
+(@sv{test} @sv{expression} @value{defdots})@*@
 @value{syntaxindent}@value{cdspace}@
 @value{dnspace}@value{dnspace}@
-@sv{command} @defdots{}}
+@sv{command} @value{defdots}}
 
 @i{Syntax:} All of @angle{init}, @angle{step}, @angle{test}, and
 @angle{command} are expressions.
@@ -1035,8 +1035,8 @@ unchanged.
 The following example is a mechanical transformation of a lazy
 stream-filtering algorithm into Scheme.  Each call to a constructor is
 wrapped in @code{delay}, and each argument passed to a deconstructor is
-wrapped in @code{force}.  The use of @t{(delay-force @defdots{})}@:
-instead of @code{(delay (force @defdots{}))} around the body of the
+wrapped in @code{force}.  The use of @t{(delay-force @value{defdots})}@:
+instead of @code{(delay (force @value{defdots}))} around the body of the
 procedure ensures that an ever-growing sequence of pending
 pro@value{shy}mises does not exhaust available storage, because
 @code{force} will in effect force such sequences iteratively.
@@ -1162,7 +1162,7 @@ implementation-dependent.
 @end deffn
 
 @deftypefn syntax @/ parameterize @
-@t{((@sv{@pari{param}} @sv{@pari{value}}) @defdots{})@*@
+@t{((@sv{@pari{param}} @sv{@pari{value}}) @value{defdots})@*@
 @value{syntaxindent}@value{cdspace}@value{dnspace}@value{dnspace}@sv{body}}
 
 @i{Syntax:} Both @angle{@pari{param}} and @angle{@pari{value}} are
@@ -1230,7 +1230,7 @@ procedure in the call chain explicitly.
 @value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@
 @ @ @ @
 @sv{@pari{cond clause}} @
-@sv{@parii{cond clause}} @defdots{})@*@
+@sv{@parii{cond clause}} @value{defdots})@*@
 @value{syntaxindent}@value{cdspace}@
 @value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@sv{body}}
 
@@ -1407,7 +1407,7 @@ It is an error if any of the identifiers @code{quasiquote},
 
 @node Case-lambda
 @subsection Case-lambda
-@deftypefn {case-lambda library syntax} @/ case-lambda @sv{clause} @defdots{}
+@deftypefn {case-lambda library syntax} @/ case-lambda @sv{clause} @value{defdots}
 
 @i{Syntax:} Each @angle{clause} is of the form @t{(@sv{formals}
 @sv{body})}, where @angle{formals} and @angle{body} have the same
@@ -1447,7 +1447,7 @@ Scheme programs can define and use new derived expression types, called
 @define{macros}.  Program-defined expression types have the syntax
 
 @example grammar
-(@sv{keyword} @sv{datum} @defdots{})
+(@sv{keyword} @sv{datum} @value{defdots})
 @end example
 
 where @angle{keyword} is an identifier that uniquely determines the
@@ -1518,7 +1518,7 @@ also be bound globally or locally with @code{define-syntax}; see section
 @i{Syntax:} @angle{Bindings} has the form
 
 @example grammar
-((@sv{keyword} @sv{transformer spec}) @defdots{})
+((@sv{keyword} @sv{transformer spec}) @value{defdots})
 @end example
 
 Each @angle{keyword} is an identifier, each @angle{transformer spec} is
@@ -1591,13 +1591,13 @@ by the @code{letrec-syntax} expression.
 @subsection Pattern language
 A @angle{transformer spec} has one of the following forms:
 
-@deftypefn syntax @/ syntax-rules (@sv{pattern literal} @defdots{})@*@
+@deftypefn syntax @/ syntax-rules (@sv{pattern literal} @value{defdots})@*@
 @value{syntaxindent}@value{cdspace}@value{dnspace}@value{dnspace}@
-@sv{syntax rule} @defdots{}
+@sv{syntax rule} @value{defdots}
 @deftypefnx syntax @/ syntax-rules @sv{ellipsis} @
-(@sv{pattern literal} @defdots{})@*@
+(@sv{pattern literal} @value{defdots})@*@
 @value{syntaxindent}@value{cdspace}@value{dnspace}@value{dnspace}@
-@sv{syntax rule} @defdots{}
+@sv{syntax rule} @value{defdots}
 @deftypefnx {auxiliary syntax} @/ @aux{@U{005F}}
 @deftypefnx {auxiliary syntax} @/ ...
 
@@ -1616,22 +1616,22 @@ A @angle{pattern} is either an identifier, a constant, or one of the
 following
 
 @example grammar
-(@sv{pattern} @defdots{})
-(@sv{pattern} @sv{pattern} @defdots{} @dot{.} @sv{pattern})
-(@sv{pattern} @defdots{} @sv{pattern} @sv{ellipsis} @sv{pattern} @defdots{})
-(@sv{pattern} @defdots{} @sv{pattern} @sv{ellipsis} @sv{pattern} @defdots{} @dot{.} @sv{pattern})
-@compound{@hashchar{}}(@sv{pattern} @defdots{})
-@compound{@hashchar{}}(@sv{pattern} @defdots{} @sv{pattern} @sv{ellipsis} @sv{pattern} @defdots{})
+(@sv{pattern} @value{defdots})
+(@sv{pattern} @sv{pattern} @value{defdots} @dot{.} @sv{pattern})
+(@sv{pattern} @value{defdots} @sv{pattern} @sv{ellipsis} @sv{pattern} @value{defdots})
+(@sv{pattern} @value{defdots} @sv{pattern} @sv{ellipsis} @sv{pattern} @value{defdots} @dot{.} @sv{pattern})
+@compound{@hashchar{}}(@sv{pattern} @value{defdots})
+@compound{@hashchar{}}(@sv{pattern} @value{defdots} @sv{pattern} @sv{ellipsis} @sv{pattern} @value{defdots})
 @end example
 
 and a @angle{template} is either an identifier, a constant, or one of
 the following
 
 @example grammar
-(@sv{element} @defdots{})
-(@sv{element} @sv{element} @defdots{} @dot{.} @sv{template})
+(@sv{element} @value{defdots})
+(@sv{element} @sv{element} @value{defdots} @dot{.} @sv{template})
 (@sv{ellipsis} @sv{template})
-@compound{@hashchar{}}(@sv{element} @defdots{})
+@compound{@hashchar{}}(@sv{element} @value{defdots})
 @end example
 
 where an @angle{element} is a @angle{template} optionally followed by an
@@ -1668,7 +1668,7 @@ literal}s list, then that takes precedence and under@value{shy}scores in
 the @angle{pattern} match as literals.  Multiple under@value{shy}scores
 can appear in a @angle{pattern}.
 
-Identifiers that appear in @t{(@sv{pattern literal} @defdots{})} are
+Identifiers that appear in @t{(@sv{pattern literal} @value{defdots})} are
 interpreted as literal iden@value{shy}tifiers to be matched against
 corresponding elements of the input.  An ele@value{shy}ment in the input
 matches a literal identifier if and only if it is an identifier and
@@ -1696,20 +1696,20 @@ and only if:
 same binding; or
 
 @item
-@var{P} is a list @t{(@r{@vari{P}} @defdots{} @r{@varn{P}})} and @var{E}
+@var{P} is a list @t{(@r{@vari{P}} @value{defdots} @r{@varn{P}})} and @var{E}
 is a list of @iifinfo{n} elements that match @vari{P} through @varn{P},
 respectively; or
 
 @item
-@var{P} is an improper list @t{(@r{@vari{P}} @r{@varii{P}} @defdots{}
+@var{P} is an improper list @t{(@r{@vari{P}} @r{@varii{P}} @value{defdots}
 @r{@varn{P}} . @r{@varnplusone{P}})} and @var{E} is a list or
 im@value{shy}proper list of @var{n} or more elements that match @vari{P}
 through @varn{P}, re@value{shy}spect@value{shy}ively, and whose
 @iifinfo{n}th tail matches @varnplusone{P}; or
 
 @item
-@var{P} is of the form @t{(@r{@vari{P}} @defdots{} @r{@vark{P}}
-@r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}} @defdots{} @r{@varn{P}})}
+@var{P} is of the form @t{(@r{@vari{P}} @value{defdots} @r{@vark{P}}
+@r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}} @value{defdots} @r{@varn{P}})}
 where @var{E} is a proper list of @iifinfo{n} elements, the first
 @iifinfo{k} of which match @vari{P} through @vark{P},
 re@value{shy}spect@value{shy}ively, whose next @iifinfo{m} @minus{}
@@ -1718,8 +1718,8 @@ re@value{shy}main@value{shy}ing @iifinfo{n} @minus{} @iifinfo{m}
 elements match @varmplusone{P} through @varn{P}; or
 
 @item
-@var{P} is of the form @t{(@r{@vari{P}} @defdots{} @r{@vark{P}}
-@r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}} @defdots{} @r{@varn{P}}
+@var{P} is of the form @t{(@r{@vari{P}} @value{defdots} @r{@vark{P}}
+@r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}} @value{defdots} @r{@varn{P}}
 . @r{@varx{P}})} where @var{E} is a list or im@value{shy}proper list of
 @iifinfo{n} ele@value{shy}ments, the first @iifinfo{k} of which match
 @vari{P} through @vark{P}, whose next @iifinfo{m} @minus{} @iifinfo{k}
@@ -1729,13 +1729,13 @@ ele@value{shy}ments match @varmplusone{P} through @varn{P}, and whose
 @iifinfo{n}th and final @t{cdr} matches @varx{P}; or
 
 @item
-@var{P} is a vector of the form @t{@hashchar{}(@r{@vari{P}} @defdots{}
+@var{P} is a vector of the form @t{@hashchar{}(@r{@vari{P}} @value{defdots}
 @r{@varn{P}})} and @var{E} is a vector of @iifinfo{n}
 ele@value{shy}ments that match @vari{P} through @varn{P}; or
 
 @item
-@var{P} is of the form @t{@hashchar{}(@r{@vari{P}} @defdots{}
-@r{@vark{P}} @r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}} @defdots{}
+@var{P} is of the form @t{@hashchar{}(@r{@vari{P}} @value{defdots}
+@r{@vark{P}} @r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}} @value{defdots}
 @r{@varn{P}})} where @var{E} is a vector of @iifinfo{n}
 ele@value{shy}ments the first @iifinfo{k} of which match @vari{P}
 through @vark{P}, whose next @iifinfo{m} @minus{} @iifinfo{k}
@@ -1823,7 +1823,7 @@ which would result in an invalid procedure call.
 @node Signaling errors in macro transformers
 @subsection Signaling errors in macro transformers
 
-@deftypefn syntax @/ syntax-error @sv{message} @sv{args} @defdots{}
+@deftypefn syntax @/ syntax-error @sv{message} @sv{args} @value{defdots}
 
 @code{syntax-error} behaves similarly to @code{error} (6.11)@: except
 that implemen@value{shy}tations with an expansion pass separate from
