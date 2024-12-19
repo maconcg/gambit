@@ -1,0 +1,473 @@
+@node Pairs and lists
+@section Pairs and lists
+
+A @define{pair} (sometimes called a @define{dotted pair}) is a record
+structure with two fields called the car and cdr fields (for historical
+reasons).  Pairs are created by the procedure @code{cons}.  The car and
+cdr fields are accessed by the procedures @code{car} and @code{cdr}.
+The car and cdr fields are assigned by the procedures @code{set-car!}
+and @code{set-cdr!}.
+
+@cindex empty list
+
+Pairs are used primarily to represent lists.  A @define{list} can be
+defined recursively as either the empty list or a pair whose cdr is a
+list.  More precisely, the set of lists is defined as the smallest set
+@var{X} such that
+
+@itemize
+@item
+The empty list is in @var{X}.
+
+@item
+If @var{list} is in @var{X}, then any pair whose cdr field contains
+@var{list} is also in @var{X}.
+@end itemize
+
+The objects in the car fields of successive pairs of a list are the
+elements of the list.  For example, a two-element list is a pair whose
+car is the first ele@value{shy}ment and whose cdr is a pair whose car is
+the second element and whose cdr is the empty list.  The length of a
+list is the number of elements, which is the same as the number of
+pairs.
+
+@cindex empty list
+
+The empty list is a special object of its own type.  It is not a pair,
+it has no elements, and its length is zero.
+
+@quotation
+@i{Note:} The above definitions imply that all lists have finite length
+and are terminated by the empty list.
+@end quotation
+
+The most general notation (external representation) for Scheme pairs is
+the @quotedbl{dotted} notation @code{(@r{@vari{c}} . @r{@varii{c}})}
+where @vari{c} where is the value of the car field and @varii{c} is the
+value of the cdr field.  For example @code{(4 . 5)} is a pair whose car
+is 4 and whose cdr is 5.  Note that @code{(4 . 5)} is the external
+representation of a pair, not an expression that evaluates to a pair.
+
+@cindex empty list
+
+A more streamlined notation can be used for lists: the elements of the
+list are simply enclosed in parentheses and separated by spaces.  The
+empty list is written @code{()}.  For example,
+
+@lisp
+(a b c d e)
+@end lisp
+
+@lisp
+(a . (b . (c . (d . (e . ())))))
+@end lisp
+
+are equivalent notations for a list of symbols.
+
+A chain of pairs not ending in the empty list is called an
+@define{improper list}.  Note that an improper list is not a list.  The
+list and dotted notations can be com@value{shy}bined to represent
+improper lists:
+
+@lisp
+(a b c . d)
+@end lisp
+
+is equivalent to
+
+@lisp
+(a . (b . (c . d)))
+@end lisp
+
+Whether a given pair is a list depends upon what is stored in the cdr
+field.  When the @code{set-cdr!} procedure is used, an object can be a
+list one moment and not the next:
+
+@lisp
+(define x (list 'a 'b 'c))
+(define y x)
+y              @ok{(a b c)}
+(list? y)      @ok{#t}
+(set-cdr! x 4) @unspecified{unspecified}
+x              @ok{(a . 4)}
+(eqv? x y)     @ok{#t}
+y              @ok{(a . 4)}
+(list? y)      @ok{#f}
+(set-cdr! x x) @unspecified{unspecified}
+(list? x)      @ok{#f}
+@end lisp
+
+Within literal expressions and representations of objects read by the
+@code{read} procedure, the forms @code{'@sv{datum}}, @code{`@sv{datum}},
+@code{,@sv{datum}}, @code{,@atchar{}@sv{datum}}, denote two-element
+lists whose first elements are the symbols @code{quote},
+@code{quasiquote}, @code{unquote}, and @code{unquote-splicing},
+respectively.  The second element in each case is @angle{datum}.  This
+convention is supported so that arbitrary Scheme pro@value{shy}grams can
+be represented as lists.  That is, according to Scheme's
+gram@value{shy}mar, every @angle{expression} is also a @angle{datum}.
+Among other things, this permits the use of the @code{read} procedure to
+parse Scheme programs.
+
+@deffn procedure pair? obj
+
+The @code{pair?} predicate returns @code{#t} if @var{obj} is a pair, and
+otherwise returns @code{#f}.
+
+@lisp
+(pair? '(a . b)) @ok{#t}
+(pair? '(a b c)) @ok{#t}
+(pair? '())      @ok{#f}
+(pair? '#(a b))  @ok{#f}
+@end lisp
+@end deffn
+
+@deffn procedure cons @pari{obj} @parii{obj}
+
+Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
+@varii{obj}.  The pair is guaranteed to be different (in the sense of
+@code{eqv?}) from every existing object.
+
+@lisp
+(cons 'a '())        @ok{(a)}
+(cons '(a) '(b c d)) @ok{((a) b c d)}
+(cons "a" '(b c))    @ok{("a" b c)}
+(cons 'a 3)          @ok{(a . 3)}
+(cons '(a b) 'c)     @ok{((a b) . c)}
+@end lisp
+@end deffn
+
+@deffn procedure car pair
+
+@cindex empty list
+
+Returns the contents of the car field of @var{pair}.  Note that it is an
+error to take the car of the empty list.
+
+@lisp
+(car '(a b c))     @ok{a}
+(car '((a) b c d)) @ok{(a)}
+(car '(1 . 2))     @ok{1}
+(car '())          @lispnote{error}
+@end lisp
+@end deffn
+
+@deffn procedure cdr pair
+
+Returns the contents of the cdr field of @var{pair}.  Note that it is an
+error to take the cdr of the empty list.
+
+@lisp
+(cdr '((a) b c d)) @ok{(b c d)}
+(cdr '(1 . 2))     @ok{2}
+(cdr '())          @lispnote{error}
+@end lisp
+@end deffn
+
+@deffn procedure set-car! pair obj
+
+Stores @var{obj} in the car field of @var{pair}.
+
+@lisp
+(define (f) (list 'not-a-constant-list))
+(define (g) '(constant-list))
+(set-car! (f) 3) @unspecified{unspecified}
+(set-car! (g) 3) @lispnote{error}
+@end lisp
+@end deffn
+
+@deffn procedure set-cdr! pair obj
+
+Stores @var{obj} in the cdr field of @var{pair}.
+@end deffn
+
+@deffn  procedure caar pair
+@deffnx procedure cadr pair
+@deffnx procedure cdar pair
+@deffnx procedure cddr pair
+
+These procedures are compositions of @code{car} and @code{cdr} as
+follows:
+
+@lisp
+(define (caar x) (car (car x)))
+(define (cadr x) (car (cdr x)))
+(define (cdar x) (cdr (car x)))
+(define (cddr x) (cdr (cdr x)))
+@end lisp
+@end deffn
+
+@c This formatting isn't great.
+@ifhtml
+@deffn  {cxr library procedure} caaar @var{pair}
+@deffnx {cxr library procedure} caadr @var{pair}
+@deffnx {cxr library procedure} cdddar @var{pair}
+@deffnx {cxr library procedure} cddddr @var{pair}
+
+These twenty-four procedures are further compositions of @code{car} and
+@code{cdr} on the same principles.  For example, @code{caddr} could be
+defined by
+
+@example grammar
+(define caddr (lambda (x) (car (cdr (cdr x)))))@r{.}
+@end example
+
+Arbitrary compositions up to four deep are provided.
+@end deffn
+@end ifhtml
+@ifnothtml
+@deffn scheme/cxr caaar pair
+@deffnx scheme/cxr caadr pair
+@deffnx scheme/cxr cadar pair
+@deffnx scheme/cxr caddr pair
+@deffnx scheme/cxr cdaar pair
+@deffnx scheme/cxr cdadr pair
+@deffnx scheme/cxr cddar pair
+@deffnx scheme/cxr cdddr pair
+@deffnx scheme/cxr caaaar pair
+@deffnx scheme/cxr caaadr pair
+@deffnx scheme/cxr caadar pair
+@deffnx scheme/cxr caaddr pair
+@deffnx scheme/cxr cadaar pair
+@deffnx scheme/cxr cadadr pair
+@deffnx scheme/cxr caddar pair
+@deffnx scheme/cxr cadddr pair
+@deffnx scheme/cxr cdaaar pair
+@deffnx scheme/cxr cdaadr pair
+@deffnx scheme/cxr cdadar pair
+@deffnx scheme/cxr cdaddr pair
+@deffnx scheme/cxr cddaar pair
+@deffnx scheme/cxr cddadr pair
+@deffnx scheme/cxr cdddar pair
+@deffnx scheme/cxr cddddr pair
+
+These twenty-four procedures are further compositions of @code{car} and
+@code{cdr} on the same principles.  For example, @code{caddr} could be
+defined by
+
+@example grammar
+(define caddr (lambda (x) (car (cdr (cdr x)))))@r{.}
+@end example
+
+Arbitrary compositions up to four deep are provided.
+@end deffn
+@end ifnothtml
+
+@deffn procedure null? obj
+
+@cindex empty list
+
+Returns @code{#t} if @var{obj} is the empty list, otherwise returns
+@code{#f}.
+@end deffn
+
+@deffn procedure list? obj
+
+Returns @code{#t} if @var{obj} is a list.  Otherwise, it returns
+@code{#f}.  By definition, all lists have finite length and are
+terminated by the empty list.
+
+@lisp
+(list? '(a b c))     @ok{#t}
+(list? '())          @ok{#t}
+(list? '(a . b))     @ok{#f}
+(let ((x (list 'a)))
+  (set-cdr! x x)
+  (list? x))         @ok{#f}
+@end lisp
+@end deffn
+
+@deffn  procedure make-list k
+@deffnx procedure make-list k fill
+
+Returns a newly allocated list of @var{k} elements.  If a second
+argument is given, then each element is initialized to @var{fill}.
+Otherwise the initial contents of each element is unspecified.
+
+@lisp
+(make-list 2 3) @ok{(3 3)}
+@end lisp
+@end deffn
+
+@deffn procedure list obj @defdots{}
+
+Returns a newly allocated list of its arguments.
+
+@lisp
+(list 'a (+ 3 4) 'c) @ok{(a 7 c)}
+(list)               @ok{()}
+@end lisp
+@end deffn
+
+@deffn procedure length list
+
+Returns the length of @var{list}.
+
+@lisp
+(length '(a b c))         @ok{3}
+(length '(a (b) (c d e))) @ok{3}
+(length '())              @ok{0}
+@end lisp
+@end deffn
+
+@deffn procedure append list @defdots{}
+
+The last argument, if there is one, can be of any type.
+
+Returns a list consisting of the elements of the first @var{list}
+followed by the ele@value{shy}ments of the other @var{lists}.  If there
+are no arguments, the empty list is re@value{shy}turned.  If there is
+exactly one argument, it is re@value{shy}turned.  Otherwise the
+re@value{shy}sul@value{shy}ting list is always newly allocated, except
+that it shares structure with the last argument.  An improper list
+results if the last argument is not a proper list.
+
+@lisp
+(append '(x) '(y))       @ok{(x y)}
+(append '(a) '(b c d))   @ok{(a b c d)}
+(append '(a (b)) '((c))) @ok{(a (b) (c))}
+
+(append '(a b) '(c . d)) @ok{(a b c . d)}
+(append '() 'a)          @ok{a}
+@end lisp
+@end deffn
+
+@deffn procedure reverse list
+
+Returns a newly allocated list consisting of the elements of @var{list}
+in reverse order.
+
+@lisp
+(reverse '(a b c))             @ok{(c b a)}
+(reverse '(a (b c) d (e (f)))) @ok{((e (f)) d (b c) a)}
+@end lisp
+@end deffn
+
+@deffn procedure list-tail list k
+
+It is an error if @var{list} has fewer than @var{k} elements.
+
+Returns the sublist of @var{list} obtained by omitting the first @var{k}
+elements.  The @code{list-tail} procedure could be defined by
+
+@lisp
+(define list-tail
+  (lambda (x k)
+    (if (zero? k)
+        x
+        (list-tail (cdr x) (- k 1)))))
+@end lisp
+@end deffn
+
+@deffn procedure list-ref list k
+
+The @var{list} argument can be circular, but it is an error if
+@var{list} has @var{k} or fewer ele@value{shy}ments.
+
+Returns the @var{k}th element of @var{list}.  (This is the same as the
+car of @code{(list-tail @rv{list} @rv{k})}.)
+
+@lisp
+(list-ref '(a b c d) 2)                   @ok{c}
+(list-ref '(a b c d) (exact (round 1.8))) @ok{c}
+@end lisp
+@end deffn
+
+@deffn procedure list-set! list k obj
+
+It is an error if @var{k} is not a valid index of @var{list}.
+
+The @code{list-set!} procedure stores @var{obj} in element @var{k} of
+@var{list}.
+
+@lisp
+(let ((ls (list 'one 'two 'five!)))
+  (list-set! ls 2 'three)
+  ls) @ok{(one two three)}
+
+(list-set! '(0 1 2) 1 "oops") @lispnote{error}  ; constant list
+@end lisp
+@end deffn
+
+@deffn  procedure memq obj list
+@deffnx procedure memv obj list
+@deffnx procedure member obj list
+@deffnx procedure member obj list compare
+
+These procedures return the first sublist of @var{list} whose car is
+@var{obj}, where the sub@value{shy}lists of @var{list} are the non-empty
+lists returned by @code{(list-tail @rv{list} @rv{k})} for @var{k} less
+than the length of @var{list}.  If @var{obj} does not occur in
+@var{list}, then @code{#f} (not the empty list) is returned.  The
+@code{memq} procedure uses @code{eq?} to compare @var{obj} with the
+elements of @var{list}, while @code{memv} uses @code{eqv?} and
+@code{member} uses @var{compare}, if given, and @code{equal?} otherwise.
+
+@lisp
+(memq 'a '(a b c))          @ok{(a b c)}
+(memq 'b '(a b c))          @ok{(b c)}
+(memq 'a '(b c d))          @ok{#f}
+(memq (list 'a) '(b (a) c)) @ok{#f}
+(member (list 'a)
+        '(b (a) c))         @ok{((a) c)}
+(member "B"
+        '("a" "b" "c")
+        string-ci=?)        @ok{("b" "c")}
+(memq 101 '(100 101 102))   @unspecified{unspecified}
+(memv 101 '(100 101 102))   @ok{(101 102)}
+@end lisp
+@end deffn
+
+@deffn  procedure assq obj alist
+@deffnx procedure assv obj alist
+@deffnx procedure assoc obj alist
+@deffnx procedure assoc obj alist compare
+
+It is an error if @var{alist} (for @quotedbl{association list}) is not a
+list of pairs.
+
+These procedures find the first pair in @var{alist} whose car field is
+@var{obj}, and re@value{shy}turns that pair.  If no pair in @var{alist}
+has @var{obj} as its car, then @code{#f} (not the empty list) is
+returned.  The @code{assq} procedure uses @code{eq?} to compare
+@var{obj} with the car fields of the pairs in @var{alist}, while
+@code{assv} uses @code{eqv?} and @code{assoc} uses @var{compare} if
+given and @code{equal?} otherwise.
+
+@lisp
+(define e '((a 1) (b 2) (c 3)))
+(assq 'a e)                            @ok{(a 1)}
+(assq 'b e)                            @ok{(b 2)}
+(assq 'd e)                            @ok{#f}
+(assq (list 'a) '(((a)) ((b)) ((c))))  @ok{#f}
+(assoc (list 'a) '(((a)) ((b)) ((c)))) @ok{((a))}
+(assoc 2.0 '((1 1) (2 4) (3 9)) =)     @ok{(2 4)}
+(assq 5 '((2 3) (5 7) (11 13)))        @unspecified{unspecified}
+(assv 5 '((2 3) (5 7) (11 13)))        @ok{(5 7)}
+@end lisp
+
+@quotation
+@i{Rationale:} Although they are often used as predicates, @code{memq},
+@code{memv}, @code{member}, @code{assq}, @code{assv}, and @code{assoc}
+do not have question marks in their names because they return
+potentially useful values rather than just @code{#t} or @code{#f}.
+@end quotation
+@end deffn
+
+@deffn procedure list-copy obj
+
+Returns a newly allocated copy of the given @var{obj} if it is a list.
+Only the pairs themselves are copied; the cars of the result are the
+same (in the sense of @code{eqv?}) as the cars of @var{list}.  If
+@var{obj} is an improper list, so is the result, and the final cdrs are
+the same in the sense of @code{eqv?}.  An @var{obj} which is not a list
+is returned unchanged.  It is an error if @var{obj} is a circular list.
+
+@lisp
+(define a '(1 8 2 8)) ; a may be immutable
+(define b (list-copy a))
+(set-car! b 3)        ; b is mutable
+b @ok{(3 8 2 8)}
+a @ok{(1 8 2 8)}
+@end lisp
+@end deffn

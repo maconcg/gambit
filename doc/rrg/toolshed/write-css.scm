@@ -237,7 +237,7 @@ dl.first-deffn, dl.first-deftypefn, dl.first-deftypevr, dl.first-defblock {
     }
 }
 
-dd pre.lisp-preformatted {
+pre.lisp-preformatted {
     span.and-prints {color: <and-prints>}
     span.exception {color: <exception>}
     span.lisp-note {color: <lisp-note>}
@@ -362,6 +362,11 @@ dl.first-defvr, dl.first-deftp, dl.first-deftypevr {
             font-family: initial;
         }
     }
+}
+
+table.multitable {
+    text-align: left;
+    width: 39rem;
 }
 
 code, dd, p {

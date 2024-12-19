@@ -36,3 +36,10 @@ rather than emulate, the official R7RS content:
 - Section 4.2.6: "This sections" -> "This section"
 
 - Section 5.6.1 header: For consistency, don't capitalize the "s" in "syntax"
+
+- info format only: description of floor/, truncate/, etc.: use GREEK
+  SUBSCRIPT SMALL LETTER PHI instead of "q" subscript (because there
+  is no Unicode LATIN SUBSCRIPT SMALL LETTER Q).  Other formats use Q.
+
+- expt procedure description: as a visual aid, add parentheses around
+  log argument

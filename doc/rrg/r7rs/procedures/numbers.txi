@@ -69,7 +69,7 @@ num@value{shy}bers are @define{inexact complex numbers}.
 
 If two implementations produce exact results for a computation that did
 not involve inexact intermediate results, the two ultimate results will
-be math@value{shy}ema@value{shy}tically equal.  This is generally not
+be mathe@value{shy}ma@value{shy}tically equal.  This is generally not
 true of computations involving in@value{shy}ex@value{shy}act numbers
 since approximate methods such as floating-point arith@value{shy}metic
 may be used, but it is the duty of each implementation to make the
@@ -132,7 +132,7 @@ if expressed by an exact integer syntax, must be read as an exact
 integer, regardless of any implementation restrictions that apply
 out@value{shy}side this range.  Finally, the procedures listed below
 will always return exact integer results provided all their arguments
-are exact integers and the math@value{shy}ema@value{shy}tically expected
+are exact integers and the mathe@value{shy}ma@value{shy}tically expected
 results are representable as exact integers within the implementation:
 
 @example
@@ -317,8 +317,8 @@ There are two notations provided for non-real complex numbers: the
 imaginary part; and the @define{polar notation}
 @i{r}@t{@atchar{}}@i{@U{03B8}}, where @i{r} is the magnitude and
 @i{@U{03B8}} is the phase (an@value{shy}gle) in radians.  These are
-related by the equation @nobr{@i{a} @math{+} @i{b}i @math{=}
-@i{r}@U{2009}cos@U{2009}@i{@U{03B8}} @math{+}
+related by the equation @nobr{@i{a} + @i{b}i =
+@i{r}@U{2009}cos@U{2009}@i{@U{03B8}} +
 (@i{r}@U{2009}sin@U{2009}@i{@U{03B8}})i}.  All of @i{a}, @i{b}, @i{r},
 and @i{@U{03B8}} are real numbers.
 
@@ -541,4 +541,594 @@ These procedures return the sum or product of their arguments.
 (* 4)   @ok{4}
 (*)     @ok{1}
 @end lisp
+@end deffn
+
+@deffn  procedure - z
+@deffnx procedure - @pari{z} @parii{z} @defdots{}
+@deffnx procedure / z
+@deffnx procedure / @pari{z} @parii{z} @defdots{}
+
+With two or more arguments, these procedures return the difference or
+quo@value{shy}tient of their arguments, associating to the left.  With
+one argument, how@value{shy}ever, they return the additive or
+multiplicative inverse of their argument.
+
+It is an error if any argument of @code{/} other than the first is an
+exact zero.  If the first argument is an exact zero, an implementation
+may return an exact zero unless one of the other arguments is a NaN.
+
+@lisp
+(- 3 4)   @ok{-1}
+(- 3 4 5) @ok{-6}
+(- 3)     @ok{-3}
+(/ 3 4 5) @ok{3/20}
+(/ 3)     @ok{1/3}
+@end lisp
+@end deffn
+
+@deffn procedure abs x
+
+The abs procedure returns the absolute value of its argument.
+
+@lisp
+(abs -7) @ok{7}
+@end lisp
+
+@end deffn
+
+@deffn  procedure floor/ @pari{n} @parii{n}
+@deffnx procedure floor-quotient @pari{n} @parii{n}
+@deffnx procedure floor-remainder @pari{n} @parii{n}
+@deffnx procedure truncate/ @pari{n} @parii{n}
+@deffnx procedure truncate-quotient @pari{n} @parii{n}
+@deffnx procedure truncate-remainder @pari{n} @parii{n}
+
+These procedures implement number-theoretic (integer) division.  It is
+an er@value{shy}ror if @var{n} is zero.  The procedures ending in
+@code{/} return two integers; the other procedures return an integer.
+All the procedures compute a quotient @varq{n} and remainder @varr{n}
+such that @vari{n} = @varii{n}@varq{n} + @varr{n}.  For
+each of the division operators, there are three procedures defined as
+follows:
+
+@example grammar
+(@sv{operator}/ @r{@vari{n}} @r{@varii{n}})          @result{} @r{@varq{n}} @r{@varr{n}}
+(@sv{operator}-quotient @r{@vari{n}} @r{@varii{n}})  @result{} @r{@varq{n}}
+(@sv{operator}-remainder @r{@vari{n}} @r{@varii{n}}) @result{} @r{@varr{n}}
+@end example
+
+The remainder @varr{n} is determined the choice of integer @varq{n}:
+@varr{n} = @vari{n} @minus{} @varii{n}@varq{n}.  Each set of
+operators uses a different choice of @varq{n}:
+
+@display
+@t{floor      }@varq{n} = @U{23A3}@vari{n}/@varii{n}@U{23A6}
+@t{truncate   }@varq{n} = truncate(@vari{n}/@varii{n})
+@end display
+
+For any of the operators, and for integers @vari{n} and @varii{n} with
+@varii{n} not equal to 0,
+
+@example grammar
+(= @r{@vari{n}} (+ (* @r{@varii{n}} (@sv{operator}-quotient @r{@vari{n}} @r{@varii{n}}))
+      (@sv{operator}-remainder @r{@vari{n}} @r{@varii{n}})))
+                           @noadorn{@result{} @boolean{#t}}
+@end example
+
+provided all numbers involved in that computation are exact.
+
+Examples:
+
+@lisp
+(floor/ 5 2)        @ok{2    1}
+(floor/ -5 2)       @ok{3    1}
+(floor/ 5 -2)       @ok{3   -1}
+(floor/ -5 -2)      @ok{2   -1}
+(truncate/ 5 2)     @ok{2    1}
+(truncate/ -5 2)    @ok{2   -1}
+(truncate/ 5 -2)    @ok{2    1}
+(truncate/ -5 -2)   @ok{2   -1}
+(truncate/ -5.0 -2) @ok{2.0 -1.0}
+@end lisp
+@end deffn
+
+@deffn  procedure quotient @pari{n} @parii{n}
+@deffnx procedure remainder @pari{n} @parii{n}
+@deffnx procedure modulo @pari{n} @parii{n}
+
+The @code{quotient} and @code{remainder} procedures are equivalent to
+@code{truncate-quotient} and @code{truncate-remainder}, respectively,
+and @code{modulo} is equivalent to @code{floor-remainder}.
+
+@quotation
+@i{Note:} These procedures are provided for backward compatibility with
+earlier versions of this report.
+@end quotation
+@end deffn
+
+@deffn  procedure gcd @pari{n} @defdots{}
+@deffnx procedure lcm @pari{n} @defdots{}
+
+These procedures return the greatest common divisor or least common
+mul@value{shy}tiple of their arguments.  The result is always
+non-negative.
+
+@lisp
+(gcd 32 -36)   @ok{4}
+(gcd)          @ok{0}
+(lcm 32 -36)   @ok{288}
+(lcm 32.0 -36) @ok{288.0}  ; inexact
+(lcm)          @ok{1}
+@end lisp
+@end deffn
+
+@deffn  procedure numerator q
+@deffnx procedure denominator q
+
+These procedures return the numerator or denominator of their argument;
+the result is computed as if the argument was represented as a fraction
+in lowest terms.  The denominator is always positive.  The denominator
+of 0 is defined to be 1.
+
+@lisp
+(numerator (/ 6 4))   @ok{3}
+(denominator (/ 6 4)) @ok{2}
+(denominator
+  (inexact (/ 6 4)))  @ok{2.0}
+@end lisp
+
+@end deffn
+
+@deffn  procedure floor x
+@deffnx procedure ceiling x
+@deffnx procedure truncate x
+@deffnx procedure round x
+
+These procedures return integers.  The @code{floor} procedure returns
+the largest integer not larger than @var{x}.  The @code{ceiling}
+procedure returns the smallest in@value{shy}teger not smaller than
+@var{x}, @code{truncate} returns the integer closest to @var{x} whose
+absolute value is not larger than the absolute value of @var{x}, and
+@code{round} returns the closest integer to @var{x}, rounding to even
+when @var{x} is halfway between two in@value{shy}tegers.
+
+@quotation
+@i{Rationale}: The @code{round} procedure rounds to even for consistency
+with the default rounding mode specified by the @acronym{IEEE} 754
+@acronym{IEEE} floating-point standard.
+@end quotation
+
+@quotation
+@i{Note:} If the argument to one of these procedures is inexact, then
+the result will also be inexact.  If an exact value is needed, the
+result can be passed to the @code{exact} procedure.  If the argument is
+infinite or a NaN, then it is returned.
+@end quotation
+
+@lisp
+(floor -4.3)          @ok{-5.0}
+(ceiling -4.3)        @ok{-4.0}
+(truncate -4.3)       @ok{-4.0}
+(round -4.3)          @ok{-4.0}
+
+(floor 3.5)           @ok{3.0}
+(ceiling 3.5)         @ok{4.0}
+(truncate 3.5)        @ok{3.0}
+(round 3.5)           @ok{4.0}  ; inexact
+
+(round 7/2)           @ok{4}    ; exact
+(round 7)             @ok{7}
+@end lisp
+@end deffn
+
+@deffn procedure rationalize x y
+
+@cindex simplest rational
+
+The @code{rationalize} procedure returns the @emph{simplest} rational
+number differing from @var{x} by no more than @var{y}.  A rational
+number @vari{r} is @emph{simpler} than another ra@value{shy}tional
+number @varii{r} if @vari{r} = @vari{p}@vari{q} and @varii{r} =
+@varii{p}@varii{q} (in lowest terms) and |@vari{p}| @leq{} |@varii{p}|
+and |@vari{q}| @leq{} |@varii{q}|.  Thus @math{3/5} is simpler than
+@math{4/7}.  Although not all rationals are comparable in this ordering
+(consider @math{2/7} and @math{3/5}), any interval contains a rational
+number that is simpler than every other rational number in that
+in@value{shy}terval (the simpler @math{2/5} lies between @math{2/7} and
+@math{3/5}).  Note that @math{0 = 0/1} is the simplest rational of all.
+
+@lisp
+(rationalize (exact .3) 1/10) @ok{1/3}    ; exact
+(rationalize .3 1/10)         @ok{#i1/3}  ; inexact
+@end lisp
+@end deffn
+
+@deffn  {inexact library procedure} exp z
+@deffnx {inexact library procedure} log z
+@deffnx {inexact library procedure} log @pari{z} @parii{z}
+@deffnx {inexact library procedure} sin z
+@deffnx {inexact library procedure} cos z
+@deffnx {inexact library procedure} tan z
+@deffnx {inexact library procedure} asin z
+@deffnx {inexact library procedure} acos z
+@deffnx {inexact library procedure} atan z
+@deffnx {inexact library procedure} atan y x
+
+These procedures compute the usual transcendental functions. The
+@code{log} pro@value{shy}cedure computes the natural logarithm of
+@var{z} (not the base ten logarithm) if a single argument is given, or
+the base-@varii{z} logarithm of @vari{z} if two arguments are given.
+The @code{asin}, @code{acos}, and @code{atan} procedures compute arcsine
+(@inverse{sin}), arc-cosine (@inverse{cos}), and arctangent
+(@inverse{tan}), respectively.  The two-argument variant of @code{atan}
+computes @code{(angle (make-rectangular @rv{x} @rv{y}))} (see below),
+even in implementations that don't support complex numbers.
+
+In general, the mathematical functions log, arcsine, arc-cosine, and
+arctan@value{shy}gent are multiply defined. The value of log @var{z} is
+defined to be the one whose imaginary part lies in the range from
+@minus{}@U{03C0} (inclusive if @code{-0.0} is dis@value{shy}tinguished,
+exclusive otherwise) to @U{03C0} (inclusive).  The value of log 0 is
+mathe@value{shy}matically undefined.  With log defined this way, the
+values of @inverse{sin}@var{z}, @inverse{cos}@var{z}, and
+@inverse{tan}@var{z} are according to the following formul@ae{}:
+
+@display
+@center @inverse{sin}@var{z} = @minus{}log(@var{i}@var{z} + √(1 @minus{} @square{@var{z}}))
+@end display
+@*
+@display
+@center @inverse{cos}@var{z} = @U{03C0}/2 @minus{} @inverse{sin}@var{z}
+@end display
+@*
+@display
+@center @inverse{tan}@var{z} = (log(1 + @var{i}@var{z}) - log(1 @minus{} @var{i}@var{z}))/(2@var{i})
+@end display
+
+However, @code{(log 0.0)} returns @code{-inf.0} (and @code{(log -0.0)}
+returns @code{-inf.0+@r{@U{03C0}}i}) if the implementation supports
+infinities (and @code{-0.0}).
+
+The range of @code{(a @rv{y} @rv{x})} is as in the following table. The
+asterisk (*) indicates that the entry applies to implementations that
+distinguish minus zero.
+
+@ifnothtml
+@indentedblock
+@multitable {*xx} {y condition} {x condition} {range of result r}
+@headitem @tab @var{y} condition @tab @var{x} condition @tab
+  range of result @var{r}
+@item @tab @var{y} = 0.0 @tab @var{x} > 0.0 @tab 0.0
+@item * @tab @var{y} = +0.0 @tab @var{x} > 0.0 @tab +0.0
+@item * @tab @var{y} = @minus{}0.0 @tab @var{x} > 0.0 @tab @minus{}0.0
+@item @tab @var{y} > 0.0 @tab @var{x} > 0.0 @tab
+  0.0 < @var{r} < @U{03C0}/2
+@item @tab @var{y} > 0.0 @tab @var{x} = 0.0 @tab @U{03C0}/2
+@item @tab @var{y} > 0.0 @tab @var{x} < 0.0 @tab
+  @U{03C0}/2 < @var{r} < @U{03C0}
+@item @tab @var{y} = 0.0 @tab @var{x} < 0 @tab @U{03C0}
+@item * @tab @var{y} = +0.0 @tab @var{x} < 0.0 @tab @U{03C0}
+@item * @tab @var{y} = @minus{}0.0 @tab @var{x} < 0.0 @tab
+  @minus{}@U{03C0}
+@item @tab @var{y} < 0.0 @tab @var{x} < 0.0 @tab
+  @minus{}@U{03C0} < @var{r} < @minus{}@U{03C0}/2
+@item @tab @var{y} < 0.0 @tab @var{x} = 0.0 @tab @minus{}@U{03C0}/2
+@item @tab @var{y} < 0.0 @tab @var{x} > 0.0 @tab
+  @minus{}@U{03C0}/2 < @var{r}< 0.0
+@item @tab @var{y} = 0.0 @tab @var{x} = 0.0 @tab undefined
+@item * @tab @var{y} = +0.0 @tab @var{x} = +0.0 @tab +0.0
+@item * @tab @var{y} = @minus{}0.0 @tab @var{x} = +0.0 @tab @minus{}0.0
+@item * @tab @var{y} = +0.0 @tab @var{x} = @minus{}0.0 @tab @U{03C0}
+@item * @tab @var{y} = @minus{}0.0 @tab @var{x} = @minus{}0.0 @tab
+  @minus{}@U{03C0}
+@item * @tab @var{y} = +0.0 @tab @var{x} = 0 @tab
+  @U{03C0}/2
+@item * @tab @var{y} = @minus{}0.0 @tab @var{x} = 0 @tab
+  @minus{}@U{03C0}/2
+@end multitable
+@end indentedblock
+@end ifnothtml
+@ifhtml
+@indentedblock
+@multitable @columnfractions .04 .27 .27 .42
+@headitem @tab @var{y} condition @tab @var{x} condition @tab
+  range of result @var{r}
+@item @tab @var{y} = 0.0 @tab @var{x} > 0.0 @tab 0.0
+@item * @tab @var{y} = +0.0 @tab @var{x} > 0.0 @tab +0.0
+@item * @tab @var{y} = @minus{}0.0 @tab @var{x} > 0.0 @tab @minus{}0.0
+@item @tab @var{y} > 0.0 @tab @var{x} > 0.0 @tab
+  0.0 < @var{r} < @U{03C0}/2
+@item @tab @var{y} > 0.0 @tab @var{x} = 0.0 @tab @U{03C0}/2
+@item @tab @var{y} > 0.0 @tab @var{x} < 0.0 @tab
+  @U{03C0}/2 < @var{r} < @U{03C0}
+@item @tab @var{y} = 0.0 @tab @var{x} < 0 @tab @U{03C0}
+@item * @tab @var{y} = +0.0 @tab @var{x} < 0.0 @tab @U{03C0}
+@item * @tab @var{y} = @minus{}0.0 @tab @var{x} < 0.0 @tab
+  @minus{}@U{03C0}
+@item @tab @var{y} < 0.0 @tab @var{x} < 0.0 @tab
+  @minus{}@U{03C0} < @var{r} < @minus{}@U{03C0}/2
+@item @tab @var{y} < 0.0 @tab @var{x} = 0.0 @tab @minus{}@U{03C0}/2
+@item @tab @var{y} < 0.0 @tab @var{x} > 0.0 @tab
+  @minus{}@U{03C0}/2 < @var{r} < 0.0
+@item @tab @var{y} = 0.0 @tab @var{x} = 0.0 @tab undefined
+@item * @tab @var{y} = +0.0 @tab @var{x} = +0.0 @tab +0.0
+@item * @tab @var{y} = @minus{}0.0 @tab @var{x} = +0.0 @tab @minus{}0.0
+@item * @tab @var{y} = +0.0 @tab @var{x} = @minus{}0.0 @tab @U{03C0}
+@item * @tab @var{y} = @minus{}0.0 @tab @var{x} = @minus{}0.0 @tab
+  @minus{}@U{03C0}
+@item * @tab @var{y} = +0.0 @tab @var{x} = 0 @tab
+  @U{03C0}/2
+@item * @tab @var{y} = @minus{}0.0 @tab @var{x} = 0 @tab
+  @minus{}@U{03C0}/2
+@end multitable
+@end indentedblock
+@end ifhtml
+
+The above specification follows @cite{Common @sc{LISP}: The Language,
+second edi@value{shy}tion}@footnote{@value{refCommonLispTheLanguage}},
+which in turn cites @i{Principal values and branch cuts in complex
+APL}@footnote{@value{refPrincipalValues}}; refer to these sources for
+more detailed discussion of branch cuts, boundary conditions, and
+implementation of these functions.  When it is pos@value{shy}sible,
+these procedures produce a real result from a real argument.
+@end deffn
+
+@deffn procedure square z
+
+Returns the square of @var{z}.  This is equivalent to @code{(* @rv{z}
+@rv{z})}.
+
+@lisp
+(square 42)  @ok{1764}
+(square 2.0) @ok{4.0}
+@end lisp
+@end deffn
+
+@deffn {inexact library procedure} sqrt z
+
+Returns the principal square root of @var{z}.  The result will have
+either a positive real part, or a zero real part and a non-negative
+imaginary part.
+
+@lisp
+(sqrt 9)  @ok{3}
+(sqrt -1) @ok{+i}
+@end lisp
+@end deffn
+
+@deffn procedure exact-integer-sqrt k
+
+Returns two non-negative exact integers @var{s} and @var{r} where
+@var{k} = @square{@var{s}} + @var{r} and @var{k} @U{003C}
+@square{(@var{s} + 1)}
+
+@lisp
+(exact-integer-sqrt 4) @ok{2 0}
+(exact-integer-sqrt 5) @ok{2 1}
+@end lisp
+@end deffn
+
+@deffn procedure expt @pari{z} @parii{z}
+
+Returns @vari{z} raised to the power @varii{z}. For nonzero @vari{z},
+this is
+
+@display
+@vari{z}@sup{@varii{z}} = @i{e}@sup{@varii{z}log(@vari{z})}
+@end display
+
+The value of 0@sup{@var{z}} is 1 if @code{(zero? @rv{z})}, 0 if
+@code{(real-part @rv{z})} is positive, and an er@value{shy}ror
+otherwise.  Similarly for 0.0@sup{@var{z}}, with inexact results.
+@end deffn
+
+@deffn  {complex library procedure} make-rectangular @pari{x} @parii{x}
+@deffnx {complex library procedure} make-polar @pariii{x} @pariv{x}
+@deffnx {complex library procedure} real-part z
+@deffnx {complex library procedure} imag-part z
+@deffnx {complex library procedure} magnitude z
+@deffnx {complex library procedure} angle z
+
+Let @vari{x}, @varii{x}, @variii{x}, and @variv{x} be real numbers and
+@var{z} be a complex number such that
+
+@display
+@var{z} = @vari{x} + @varii{x}@i{i} = @variii{x} @U{2219} @i{e}@sup{@i{i}@variv{x}}
+@end display
+
+Then all of
+
+@ifnothtml
+@indentedblock
+@multitable {(make-rectangular x1 x2)} {} {x__angle_}
+@item @t{@compound{@U{0028}}make-rectangular @r{@vari{x}} @r{@varii{x}}@compound{@U{0029}}}
+@tab @t{@result{}} @tab @var{z}
+
+@item @t{@compound{@U{0028}}make-polar @r{@vari{x}} @r{@varii{x}}@compound{@U{0029}}}
+@tab @t{@result{}} @tab @var{z}
+
+@item @t{@compound{@U{0028}}real-part @r{@var{z}}@compound{@U{0029}}}
+@tab @t{@result{}} @tab @vari{x}
+
+@item @t{@compound{@U{0028}}imag-part @r{@var{z}}@compound{@U{0029}}}
+@tab @t{@result{}} @tab @varii{x}
+
+@item @t{@compound{@U{0028}}magnitude @r{@var{z}}@compound{@U{0029}}}
+@tab @t{@result{}} @tab |@variii{x}|
+
+@item @t{@compound{@U{0028}}angle @r{@var{z}}@compound{@U{0029}}}
+@tab @t{@result{}} @tab @var{x@sub{angle}}
+@end multitable
+@end indentedblock
+@end ifnothtml
+@ifhtml
+@indentedblock
+@multitable @columnfractions .40 .04 .56
+@item @t{@compound{@U{0028}}make-rectangular @r{@vari{x}} @r{@varii{x}}@compound{@U{0029}}}
+@tab @t{@result{}} @tab @var{z}
+
+@item @t{@compound{@U{0028}}make-polar @r{@vari{x}} @r{@varii{x}}@compound{@U{0029}}}
+@tab @t{@result{}} @tab @var{z}
+
+@item @t{@compound{@U{0028}}real-part @r{@var{z}}@compound{@U{0029}}}
+@tab @t{@result{}} @tab @vari{x}
+
+@item @t{@compound{@U{0028}}imag-part @r{@var{z}}@compound{@U{0029}}}
+@tab @t{@result{}} @tab @varii{x}
+
+@item @t{@compound{@U{0028}}magnitude @r{@var{z}}@compound{@U{0029}}}
+@tab @t{@result{}} @tab |@variii{x}|
+
+@item @t{@compound{@U{0028}}angle @r{@var{z}}@compound{@U{0029}}}
+@tab @t{@result{}} @tab @var{x@sub{angle}}
+@end multitable
+@end indentedblock
+@end ifhtml
+
+are true, where @minus{}@U{03C0} @leq{} @var{x@sub{angle}} @leq{}
+@U{03C0} with @var{x@sub{angle}} = @variv{x} + 2@U{03C0}@var{n} for some
+integer @var{n}.
+
+The @code{make-polar} procedure may return an inexact complex number
+even if its arguments are exact.  The @code{real-part} and
+@code{imag-part} procedures may re@value{shy}turn exact real numbers
+when applied to an inexact complex number if the corresponding argument
+passed to @code{make-rectangular} was exact.
+
+The @code{magnitude} procedure is the same as @code{abs} for a real
+argument, but @code{abs} is in the base library, whereas
+@code{magnitude} is in the optional complex library.
+@end deffn
+
+@deffn  procedure inexact z
+@deffnx procedure exact z
+The procedure @code{inexact} returns an inexact representation of
+@var{z}.  The value re@value{shy}turned is the inexact number that is
+numerically closest to the argument.  For inexact arguments, the result
+is the same as the argument.  For exact complex numbers, the result is a
+complex number whose real and imaginary parts are the result of applying
+@code{inexact} to the real and imaginary parts of the argument,
+respectively.  If an exact argument has no reasonably close inexact
+equivalent (in the sense of @code{=}), then a violation of an
+implementation restriction may be reported.
+
+The procedure @code{exact} returns an exact representation of @var{z}.
+The value re@value{shy}turned is the exact number that is numerically
+closest to the argument.  For exact arguments, the result is the same as
+the argument.  For inexact non-integral real arguments, the
+implemen@value{shy}tation may return a rational
+ap@value{shy}prox@value{shy}imation, or may report an
+implemen@value{shy}tation violation.  For inexact complex arguments, the
+result is a complex number whose real and imaginary parts are the result
+of applying @code{exact} to the real and imaginary parts of the
+ar@value{shy}gument, respectively.  If an inexact argument has no
+reasonably close exact equivalent, (in the sense of @code{=}), then a
+violation of an implementation re@value{shy}stric@value{shy}tion may be
+reported.
+
+These procedures implement the natural one-to-one correspondence
+be@value{shy}tween exact and inexact integers throughout an
+implementation-dependent range.  @xref{Implementation restrictions}.
+
+@quotation
+@i{Note:} These procedures were known in @value{R5RS} as
+@code{exact->inexact} and @code{inexact->exact}, respectively, but they
+have always accepted ar@value{shy}gu@value{shy}ments of any exactness.
+The new names are clearer and shorter, as well as being compatible with
+@value{R6RS}.
+@end quotation
+@end deffn
+
+@node Numerical input and output
+@subsection Numerical input and output
+
+@deffn  procedure number->string z
+@deffnx procedure number->string z radix
+
+It is an error if @var{radix} is not one of 2, 8, 10, or 16.
+
+The procedure @code{number->string} takes a number and a radix and
+returns as a string an external representation of the given number in
+the given radix such that
+
+@example grammar
+(let ((@letlikebind{number} @rv{number})
+      (@letlikebind{radix} @rv{radix}))
+  (eqv? number
+        (string->number (number->string number
+                                        radix)
+                        radix)))
+@end example
+
+is true.  It is an error if no possible result makes this expression
+true.  If omit@value{shy}ted, @var{radix} defaults to 10.
+
+If @var{z} is inexact, the radix is 10, and the above expression can be
+satisfied by a result that contains a decimal point, then the result
+contains a decimal point and is expressed using the minimum number of
+digits (exclusive of exponent and trailing zeroes) needed to make the
+above expression true@footnote{@value{refPrintFPQuicklyAccurately}}
+@footnote{@value{refReadFPAccurately}}; other@value{shy}wise the format
+of the result is unspecified.
+
+The result returned by @code{number->string} never contains an explicit
+radix pre@value{shy}fix.
+
+@quotation
+@i{Note:} The error case can occur only when @var{z} is not a complex
+number or is a complex number with a non-rational real or imaginary
+part.
+@end quotation
+
+@quotation
+@i{Rationale:} If @var{z} is an inexact number and the radix is 10, then
+the above expression is normally satisfied by a result containing a
+dec@value{shy}i@value{shy}mal point.  The unspecified case allows for
+infinities, NaNs, and un@value{shy}usual representations.
+@end quotation
+@end deffn
+
+@deffn  procedure string->number string
+@deffnx procedure string->number string radix
+
+Returns a number of the maximally precise representation expressed by
+the given @var{string}.  It is an error if @var{radix} is not 2, 8, 10,
+or 16.
+
+If supplied, @var{radix} is a default radix that will be overridden if
+an explicit radix prefix is present in string (e.g.@:
+@code{"#o177"}). If @var{radix} is not supplied, then the
+de@value{shy}fault radix is 10.  If @var{string} is not a syntactically
+valid notation for a num@value{shy}ber, or would result in a number that
+the implementation cannot represent, then @code{string->number} returns
+@code{#f}.  An error is never signaled due to the con@value{shy}tent of
+@var{string}.
+
+@lisp
+(string->number "100")    @ok{100}
+(string->number "100" 16) @ok{256}
+(string->number "1e2")    @ok{100.0}
+@end lisp
+
+@quotation
+@i{Note:} The domain of @code{string->number} may be restricted by
+im@value{shy}ple@value{shy}men@value{shy}tations in the following ways.
+If all numbers supported by an implementation are real, then
+@nobr{@code{string->number}} is permitted to re@value{shy}turn @code{#f}
+whenever @var{string} uses the polar or rectangular notations for
+complex numbers.  If all numbers are integers, then
+@nobr{@code{string->number}} may return @code{#f} whenever the
+fractional notation is used.  If all num@value{shy}bers are exact, then
+@nobr{@code{string->number}} may return @code{#f} whenever an exponent
+marker or explicit exactness aprefix is used.  If all inexact numbers
+are integers, then @nobr{@code{string->number}} may return @code{#f}
+when@value{shy}ever a decimal point is used.
+
+The rules used by a particular implementation for @code{string->number}
+must also be applied to @code{read} and to the routine that reads
+programs, in order to maintain consistency between internal numeric
+pro@value{shy}cessing, I/O, and the processing of programs.  As a
+consequence, the @value{R5RS} permission to return @code{#f} when
+@var{string} has an explicit radix pre@value{shy}fix has been withdrawn.
+@end quotation
 @end deffn

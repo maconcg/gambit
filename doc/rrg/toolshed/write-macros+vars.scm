@@ -6,29 +6,33 @@
   (for-each write-lisp-syntax-macro lisp-syntax-classes)
   (write-visual-divider)
   (for-each (lambda (args) (apply write-par-macro args))
-            '(("pari"   "1" "@U{2081}" "1") ("parii"   "2" "@U{2082}" "2")
-              ("pariii" "3" "@U{2083}" "3") ("pariv"   "4" "@U{2084}" "4")
-              ("parv"   "5" "@U{2085}" "5") ("parvi"   "6" "@U{2086}" "6")
-              ("parvii" "7" "@U{2087}" "7") ("parviii" "8" "@U{2088}" "8")
-              ("parix"  "9" "@U{2089}" "9") ("pare"    "E" "@U{2091}" "e")
-              ("parj"   "J" "@U{2C7C}" "j") ("park"    "K" "@U{2096}" "k")
-              ("parn"   "N" "@U{2099}" "n") ("parx"    "X" "@U{2093}" "x")
-              ("parmplusone" "M+1" "@U{2098}@U{208A}@U{2081}" "m+1")
-              ("parnplusone" "N+1" "@U{2099}@U{208A}@U{2081}" "n+1")
-              ("parxplusone" "X+1" "@U{2093}@U{208A}@U{2081}" "x+1")))
+            '(("pari"   "_1" "@U{2081}" "1") ("parii"   "_2" "@U{2082}" "2")
+              ("pariii" "_3" "@U{2083}" "3") ("pariv"   "_4" "@U{2084}" "4")
+              ("parv"   "_5" "@U{2085}" "5") ("parvi"   "_6" "@U{2086}" "6")
+              ("parvii" "_7" "@U{2087}" "7") ("parviii" "_8" "@U{2088}" "8")
+              ("parix"  "_9" "@U{2089}" "9") ("pare"    "_E" "@U{2091}" "e")
+              ("parj"   "_J" "@U{2C7C}" "j") ("park"    "_K" "@U{2096}" "k")
+              ("parn"   "_N" "@U{2099}" "n") ("parq"    "_Q" "@U{1D69}" "q")
+              ("parr"   "_R" "@U{1D63}" "r") ("parx"    "_X" "@U{2093}" "x")
+              ("parmplusone" "_M+1" "@U{2098}@U{208A}@U{2081}" "m+1")
+              ("parnplusone" "_N+1" "@U{2099}@U{208A}@U{2081}" "n+1")
+              ("parxplusone" "_X+1" "@U{2093}@U{208A}@U{2081}" "x+1")))
   (write-visual-divider)
   (for-each (lambda (args) (apply write-var-macro args))
-            '(("vari"   "1" "@U{2081}" "1") ("varii"   "2" "@U{2082}" "2")
-              ("variii" "3" "@U{2083}" "3") ("variv"   "4" "@U{2084}" "4")
-              ("varv"   "5" "@U{2085}" "5") ("varvi"   "6" "@U{2086}" "6")
-              ("varvii" "7" "@U{2087}" "7") ("varviii" "8" "@U{2088}" "8")
-              ("varix"  "9" "@U{2089}" "9") ("vare"    "E" "@U{2091}" "e")
-              ("varj"   "J" "@U{2C7C}" "j") ("vark"    "K" "@U{2096}" "k")
-              ("varn"   "N" "@U{2099}" "n") ("varx"    "X" "@U{2093}" "x")
-              ("varmplusone" "M+1" "@U{2098}@U{208A}@U{2081}" "m+1")
-              ("varnplusone" "N+1" "@U{2099}@U{208A}@U{2081}" "n+1")
-              ("varxplusone" "X+1" "@U{2093}@U{208A}@U{2081}" "x+1")))
+            '(("vari"   "_1" "@U{2081}" "1") ("varii"   "_2" "@U{2082}" "2")
+              ("variii" "_3" "@U{2083}" "3") ("variv"   "_4" "@U{2084}" "4")
+              ("varv"   "_5" "@U{2085}" "5") ("varvi"   "_6" "@U{2086}" "6")
+              ("varvii" "_7" "@U{2087}" "7") ("varviii" "_8" "@U{2088}" "8")
+              ("varix"  "_9" "@U{2089}" "9") ("vare"    "_E" "@U{2091}" "e")
+              ("varj"   "_J" "@U{2C7C}" "j") ("vark"    "_K" "@U{2096}" "k")
+              ("varn"   "_N" "@U{2099}" "n") ("varq"    "_Q" "@U{1D69}" "q")
+              ("varr"   "_R" "@U{1D63}" "r") ("varx"    "_X" "@U{2093}" "x")
+              ("varmplusone" "_M+1" "@U{2098}@U{208A}@U{2081}" "m+1")
+              ("varnplusone" "_N+1" "@U{2099}@U{208A}@U{2081}" "n+1")
+              ("varxplusone" "_X+1" "@U{2093}@U{208A}@U{2081}" "x+1")))
   (write-visual-divider)
+  (write-expt-macro "inverse" "@U{207B}@U{00B9}" "@minus{}1")
+  (write-expt-macro "square" "@U{00B2}" "2")
   (write-lisp-result-macro "andprints"
                            (string-append "@r{@i{"
                                           "@inlinefmt{html,@inlineraw{html,"
@@ -292,12 +296,23 @@
                                "@i{\\xx\\}"
                                "}}\n@end macro\n")))
 
+(define (write-expt-macro macro-name info-string other-string)
+  (write-string (string-append "@macro "
+                               macro-name
+                               " {text}\n"
+                               "@inlinefmtifelse{info,\\text\\"
+                               info-string
+                               ","
+                               "\\text\\@sup{"
+                               other-string
+                               "}}\n@end macro\n")))
+
 (define (write-par-macro macro-name plaintext-string info-string other-string)
   (write-string (string-append "@macro "
                                macro-name
                                " {parameter}\n"
-                               "@inlinefmtifelse{plaintext,\\parameter\\_"
-                               plaintext-string
+                               "@inlinefmtifelse{plaintext,\\parameter\\"
+                               info-string ; plaintext-string
                                ","
                                "@inlinefmtifelse{info,\\parameter\\"
                                info-string
@@ -310,8 +325,8 @@
   (write-string (string-append "@macro "
                                macro-name
                                " {variable}\n"
-                               "@inlinefmtifelse{plaintext,@var{\\variable\\_"
-                               plaintext-string
+                               "@inlinefmtifelse{plaintext,@var{\\variable\\"
+                               info-string ; plaintext-string
                                "},"
                                "@inlinefmtifelse{info,@var{\\variable\\"
                                info-string

@@ -1,0 +1,211 @@
+@node Characters
+@section Characters
+
+Characters are objects that represent printed characters such as letters
+and digits.  All Scheme implementations must support at least the
+@acronym{ASCII} char@value{shy}ac@value{shy}ter repertoire: that is,
+Unicode characters U+0000 through U+007F.
+Im@value{shy}ple@value{shy}men@value{shy}tations may support any other
+Unicode characters they see fit, and may also support non-Unicode
+characters as well.  Except as otherwise specified, the result of
+applying any of the following procedures to a non-Unicode character is
+implementation-dependent.
+
+Characters are written using the notation @code{#\}@angle{character} or
+@code{#\}@angle{character name} or @code{#\x}@angle{hex scalar value}.
+
+The following character names must be supported by all implementations
+with the given values.  Implementations may add other names provided
+they cannot be interpreted as hex scalar values preceded by @code{x}.
+
+@indentedblock
+@ifnothtml
+@multitable {xxbackspace} {; the preferred way to write a space}
+@item @ht{#\alarm} @tab ; U+0007
+@item @ht{#\backspace} @tab ; U+0008
+@item @ht{#\delete} @tab ; U+007F
+@item @ht{#\escape} @tab ; U+001B
+@item @ht{#\newline} @tab ; the linefeed character, U+000A
+@item @ht{#\null} @tab ; the null character, U+0000
+@item @ht{#\return} @tab ; the return character, U+000D
+@item @ht{#\space} @tab ; the preferred way to write a space
+@item @ht{#\tab} @tab ; the tab character, U+0009
+@end multitable
+@end ifnothtml
+@ifhtml
+@multitable @columnfractions .2 .8
+@item @ht{#\alarm} @tab ; U+0007
+@item @ht{#\backspace} @tab ; U+0008
+@item @ht{#\delete} @tab ; U+007F
+@item @ht{#\escape} @tab ; U+001B
+@item @ht{#\newline} @tab ; the linefeed character, U+000A
+@item @ht{#\null} @tab ; the null character, U+0000
+@item @ht{#\return} @tab ; the return character, U+000D
+@item @ht{#\space} @tab ; the preferred way to write a space
+@item @ht{#\tab} @tab ; the tab character, U+0009
+@end multitable
+@end ifhtml
+@end indentedblock
+
+Here are some additional examples:
+
+@indentedblock
+@ifnothtml
+@multitable {xxx3bb} {xi (if character and name are supported)x}
+@item @ht{#\a} @tab ; lower case letter
+@item @ht{#\A} @tab ; upper case letter
+@item @ht{#\@U{0028}} @tab ; left parenthesis
+@item @ht{#\ } @tab ; the space character
+@item @ht{#\x03BB} @tab ; @U{03BB} (if character is supported)
+@item @ht{@hashchar{}@backslashchar{}}@t{@charbody{iota}}
+@tab ; @U{03B9} (if character and name are supported)
+@end multitable
+@end ifnothtml
+@ifhtml
+@multitable @columnfractions .15 .85
+@item @ht{#\a} @tab ; lower case letter
+@item @ht{#\A} @tab ; upper case letter
+@item @ht{#\@U{0028}} @tab ; left parenthesis
+@item @ht{#\ } @tab ; the space character
+@item @ht{#\x03BB} @tab ; @U{03BB} (if character is supported)
+@item @ht{@hashchar{}@backslashchar{}}@t{@charbody{iota}}
+@tab ; @U{03B9} (if character and name are supported)
+@end multitable
+@end ifhtml
+@end indentedblock
+
+Case is significant in @code{#@backslashchar{}}@angle{character}, and in
+@code{#@backslashchar{}}@angle{character name}, but not in
+@code{#@backslashchar{}x}@angle{hex scalar value}.  If @angle{character}
+in @code{#@backslashchar{}}@angle{character} is alphabetic, then any
+character immediately following @angle{character} cannot be one that can
+appear in an identifier.  This rule resolves the ambiguous case where,
+for example, the sequence of characters @samp{@value{shy}space} could be
+taken to be either a rep@value{shy}resen@value{shy}tation of the space
+character or a representation of the character @code{#@backslashchar{}s}
+fol@value{shy}lowed by a representation of the symbol @code{pace}.
+
+Characters written in the @code{#@backslashchar{}} notation are
+self-evaluating.  That is, they do not have to be quoted in programs.
+
+Some of the procedures that operate on characters ignore the difference
+between upper case and lower case.  The procedures that ignore case have
+@nobr{@samp{-ci}} (for @quotedbl{case insensitive}) embedded in their
+names.
+
+@deffn procedure char? obj
+
+Returns @code{#t} if @var{obj} is a character, otherwise returns @code{#f}.
+@end deffn
+
+@deffn  procedure char=? @pari{char} @parii{char} @pariii{char} @defdots{}
+@deffnx procedure char<? @pari{char} @parii{char} @pariii{char} @defdots{}
+@deffnx procedure char>? @pari{char} @parii{char} @pariii{char} @defdots{}
+@deffnx procedure char<=? @pari{char} @parii{char} @pariii{char} @defdots{}
+@deffnx procedure char>=? @pari{char} @parii{char} @pariii{char} @defdots{}
+
+These procedures return @code{#t} if the results of passing their
+arguments to @code{char->integer} are respectively equal,
+mono@value{shy}ton@value{shy}ically in@value{shy}creasing,
+mono@value{shy}ton@value{shy}ically de@value{shy}creasing,
+mono@value{shy}ton@value{shy}ically non-decreasing, or
+mono@value{shy}ton@value{shy}ically non-increasing.
+
+These predicates are required to be transitive.
+@end deffn
+
+@deffn  {char library procedure} char-ci=? @
+@pari{char} @parii{char} @pariii{char} @defdots{}
+@deffnx {char library procedure} char-ci< @
+@pari{char} @parii{char} @pariii{char} @defdots{}
+@deffnx {char library procedure} char-ci>? @
+@pari{char} @parii{char} @pariii{char} @defdots{}
+@deffnx {char library procedure} char-ci<=? @
+@pari{char} @parii{char} @pariii{char} @defdots{}
+@deffnx {char library procedure} char-ci>=? @
+@pari{char} @parii{char} @pariii{char} @defdots{}
+
+These procedures are similar to @code{char=?} et cetera, but they treat
+upper case and lower case letters as the same.  For example,
+@code{(char-ci=? #@backslashchar{}A #@backslashchar{}a)}
+re@value{shy}turns @code{#t}.
+
+Specifically, these procedures behave as if @code{char-foldcase} were
+applied to their arguments before they were compared.
+@end deffn
+
+@deffn  {char library procedure} char-alphabetic? char
+@deffnx {char library procedure} char-numeric? char
+@deffnx {char library procedure} char-whitespace? char
+@deffnx {char library procedure} char-upper-case? letter
+@deffnx {char library procedure} char-lower-case? letter
+
+These procedures return @code{#t} if their arguments are alphabetic,
+numeric, whitespace, upper case, or lower case characters, respectively,
+otherwise they return @code{#f}.
+
+Specifically, they must return @code{#t} when applied to characters with
+the Unicode properties Alphabetic, Numeric_Type=Decimal, White_Space,
+Uppercase, and Lowercase respectively, and @code{#f} when applied to any
+other Unicode characters.  Note that many Unicode characters are
+alphabetic but neither upper nor lower case.
+@end deffn
+
+@deffn {char library procedure} digit-value char
+
+This procedure returns the numeric value (0 to 9) of its argument if it
+is a numeric digit (that is, if @code{char-numeric?} returns @code{#t}),
+or @code{#f} on any other char@value{shy}acter.
+
+@lisp
+(digit-value #\3)     @ok{3}
+(digit-value #\x0664) @ok{4}
+(digit-value #\x0AE6) @ok{0}
+(digit-value #\x0EA6) @ok{#f}
+@end lisp
+@end deffn
+
+@deffn  procedure char->integer char
+@deffnx procedure integer->char n
+
+Given a Unicode character, @code{char->integer} returns an exact integer
+be@value{shy}tween 0 and @hc{#xD7FF} or between @hc{#xE000} and
+@hc{#x10FFFF} which is equal to the Unicode scalar value of that
+character.  Given a non-Unicode character, it re@value{shy}turns an
+exact integer greater than @hc{#x10FFFF}.  This is true independent of
+whether the implementation uses the Unicode representation internally.
+
+Given an exact integer that is the value returned by a character when
+@nobr{@code{char->integer}} is applied to it,
+@nobr{@code{integer->char}} returns that character.
+@end deffn
+
+@deffn  {char library procedure} char-upcase char
+@deffnx {char library procedure} char-downcase char
+@deffnx {char library procedure} char-foldcase char
+
+The @code{char-upcase} procedure, given an argument that is the
+lowercase part of a Unicode casing pair, returns the uppercase member of
+the pair, pro@value{shy}vided that both characters are
+sup@value{shy}ported by the Scheme implementation.  Note that
+language-sensitive casing pairs are not used.  If the argument is not
+the lowercase member of such a pair, it is returned.
+
+The @code{char-downcase} procedure, given an argument that is the
+uppercase part of a Unicode casing pair, returns the lowercase member of
+the pair, pro@value{shy}vided that both characters are
+sup@value{shy}ported by the Scheme implemen@value{shy}ta@value{shy}tion.
+Note that language-sensitive casing pairs are not used.  If the argument
+is not the uppercase member of such a pair, it is returned.
+
+The @code{char-foldcase} procedure applies the Unicode simple
+case-folding al@value{shy}go@value{shy}rithm to its argument and returns
+the result.  Note that language-sensitive folding is not used.  If the
+character that results from folding is not sup@value{shy}ported by the
+implementation, the argument is returned.  See @acronym{UAX}
+@hashchar{}44@footnote{@value{refUnicodeAnnex44}} (part of the Unicode
+Standard) for details.
+
+Note that many Unicode lowercase characters do not have uppercase
+equiv@value{shy}alents.
+@end deffn

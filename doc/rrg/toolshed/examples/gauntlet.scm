@@ -29,9 +29,11 @@
 44 .4 .4s4 -.3 +.4 #d#I+.8 #e#X+F 2. #d2. #e#d2. #d#E2. #D.8 #e.8s2 #e9. #D#E.0
 #x#i-InF.0 #i#O+nAN.0 #i#b+inf.0 #x#if #E#xe #e+.4 #e+.4e41 #e#d+.4e4 #D#i-.4s4
 -2.5+0.0i 3+i +inf.0 3.0+inf.0i 32/5 +nan.0+5.0i +inf.0-inf.0i +NAn.0-inf.0i +i
+#o4/5+6/7i -i 4.+I 1.2+3/4i 1/2+3/4i #b1/1+1/1i +1.i #o-6/4i
 ;; Not numbers:
 #b#i12 #b21 #o87 #da1 #xg2 #e#d10ea #o7e1 + - ++ -- +- -+ + 1+ 1- +1+ -1- 12e6.
 +nan.1 +inf.00 -inf.0e1 #e+ #I+ .. .4. ..2 #D#E. #b#o0 #e+inf.0 #E+Nan.0 #e#x#e
+#o4/5+6/8i #x3/4+4/6 i 4.+ #b1/1+1/i +.i #o-7/8i +#o6/4i
 ;==============================================================================
 ;; Strings/identifiers:
 "\\\t\r\a\ffic" "Newline at my end\n" " one\| string\"" | one \" identifier \||

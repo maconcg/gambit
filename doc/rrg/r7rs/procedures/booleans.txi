@@ -1,0 +1,72 @@
+@node Booleans
+@section Booleans
+
+@cindex true
+@cindex false
+
+The standard boolean objects for true and false are written as @code{#t}
+and @code{#f}.  Alternatively, they can be written @code{#true} and
+@code{#false}, respectively.  What really matters, though, are the
+objects that the Scheme conditional ex@value{shy}pres@value{shy}sions
+(@code{if}, @code{cond}, @code{and}, @code{or}, @code{when},
+@code{unless}, @code{do}) treat as true or false.  The phrase
+@quotedbl{a true value} (or sometimes just @quotedbl{true}) means any
+object treated as true by the conditional expressions, and the phrase
+@quotedbl{a false value} (or @quotedbl{false}) means any object treated
+as false by the conditional expressions.
+
+Of all the Scheme values, only @code{#f} counts as false in conditional
+expressions.  All other Scheme values, including @code{#t}, count as
+true.
+
+@cindex empty list
+
+@quotation
+@i{Note:} Unlike some other dialects of Lisp, Scheme distinguishes
+@code{#f} and the empty list empty list from each other and from the
+symbol @code{nil}.
+@end quotation
+
+Boolean constants evaluate to themselves, so they do not need to be
+quoted in programs.
+
+@lisp
+#t  @ok{#t}
+#f  @ok{#f}
+'#f @ok{#f}
+@end lisp
+
+@deffn procedure not obj
+
+The @code{not} procedure returns @code{#t} if @var{obj} is false, and
+returns @code{#f} otherwise.
+
+@lisp
+(not #t)       @ok{#f}
+(not 3)        @ok{#f}
+(not (list 3)) @ok{#f}
+(not #f)       @ok{#t}
+(not '())      @ok{#f}
+(not (list))   @ok{#f}
+(not 'nil)     @ok{#f}
+@end lisp
+@end deffn
+
+@deffn procedure boolean? obj
+
+The @code{boolean?} predicate returns @code{#t} if @var{obj} is either
+@code{#t} or @code{#f} and returns @code{#f} otherwise.
+
+@lisp
+(boolean? #f)  @ok{#t}
+(boolean? 0)   @ok{#f}
+(boolean? '()) @ok{#f}
+@end lisp
+@end deffn
+
+@deffn procedure boolean=? @pari{boolean} @parii{boolean} @pariii{boolean} @defdots{}
+
+Returns @code{#t} if all the arguments are
+@code{#t} or all are @code{#f}.
+
+@end deffn

@@ -27,8 +27,9 @@ Chapter 6 describes Scheme's built-in procedures, which include all of
 the language's data manipulation and input/output primitives.
 
 Chapter 7 provides a formal syntax for Scheme written in extended
-@acronym{BNF}, along with a formal denotational semantics.  An example
-of the use of the language follows the formal syntax and semantics.
+@acronym{BNF, Backus-Naur form}, along with a formal denotational
+semantics.  An ex@value{shy}ample of the use of the lan@value{shy}guage
+follows the formal syntax and semantics.
 
 Appendix A provides a list of the standard libraries and the identifiers
 that they export.
