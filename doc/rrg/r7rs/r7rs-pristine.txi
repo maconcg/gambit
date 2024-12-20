@@ -16,7 +16,7 @@
 
 @dircategory The Algorithmic Language Scheme
 @direntry
-* R7RS: (r7rs)Revised^7 Report on the Algorithmic Language Scheme.
+* R7RS: (r7rs)@value{Revised7RS}.
 @end direntry
 
 @titlepage
@@ -51,37 +51,28 @@
 
 @contents
 
-@include prose/summary.txi
-@include prose/introduction.txi
-@include prose/overview.txi
-@include prose/lexical-conventions.txi
-@include prose/basic-concepts.txi
-@include prose/expressions.txi
-@include prose/program-structure.txi
-
-@node Standard Procedures
-@nodedescription Built-in procedures.
-@chapter Standard Procedures
-@include prose/standard-procedures.txi
-@include procedures/equivalence-predicates.txi
-@include procedures/numbers.txi
-@include procedures/booleans.txi
-@include procedures/pairs-and-lists.txi
-@include procedures/symbols.txi
-@include procedures/characters.txi
-@include procedures/strings.txi
-@include procedures/vectors.txi
-@include procedures/bytevectors.txi
-@include procedures/control-features.txi
-@include procedures/exceptions.txi
-
-@c @node Pairs and lists
-@c @nodedescription The @sc{LIS} in @sc{LISP}.
-@c @chapter Pairs and lists
-@c @lowersections
-@c @include prose/pairs-lists.txi
-@c @include procedures/pairs-lists.txi
-@c @raisesections
+@include prose/0_summary.txi
+@include prose/0_introduction.txi
+@include prose/1_overview.txi
+@include prose/2_lexical-conventions.txi
+@include prose/3_basic-concepts.txi
+@include prose/4_expressions.txi
+@include prose/5_program-structure.txi
+@include prose/6_standard-procedures.txi
+@include procedures/6.1_equivalence-predicates.txi
+@include procedures/6.2_numbers.txi
+@include procedures/6.3_booleans.txi
+@include procedures/6.4_pairs-and-lists.txi
+@include procedures/6.5_symbols.txi
+@include procedures/6.6_characters.txi
+@include procedures/6.7_strings.txi
+@include procedures/6.8_vectors.txi
+@include procedures/6.9_bytevectors.txi
+@include procedures/6.10_control-features.txi
+@include procedures/6.11_exceptions.txi
+@include procedures/6.12_environments-and-evaluation.txi
+@include procedures/6.13_input-and-output.txi
+@include procedures/6.14_system-interface.txi
 
 @c @node General Index
 @c @unnumbered General Index

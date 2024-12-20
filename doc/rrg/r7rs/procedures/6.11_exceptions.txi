@@ -29,6 +29,30 @@ invoking @var{thunk}.  @var{Handler} is installed as the current
 exception handler in the dynamic environment used for the invocation of
 @var{thunk}.
 
+@ifinfo
+@lisp
+(call-with-current-continuation
+ (lambda (k)
+  (with-exception-handler
+   (lambda (x)
+    (display "condition: ")
+    (write x)
+    (newline)
+    (k 'exception))
+   (lambda ()
+    (+ 1 (raise 'an-error))))))
+                               @output{condition: an-error}
+                               @ok{exception}
+
+(with-exception-handler
+ (lambda (x)
+  (display "something went wrong\n"))
+ (lambda ()
+  (+ 1 (raise 'an-error))))
+                               @output{something went wrong}
+@end lisp
+@end ifinfo
+@ifnotinfo
 @lisp
 (call-with-current-continuation
  (lambda (k)
@@ -50,6 +74,7 @@ exception handler in the dynamic environment used for the invocation of
   (+ 1 (raise 'an-error))))
            @prints{something went wrong}
 @end lisp
+@end ifnotinfo
 
 After printing,the second example then raises another exception.
 @end deffn
@@ -73,10 +98,28 @@ Raises an exception by invoking the current exception handler on
 the call to @nobr{@code{raise-continuable}}, except that: (1) the
 current exception handler is the one that was in place when the handler
 being called was installed, and (2) if the handler being called returns,
-then it will again become the current exception handler.  If the handler
-returns, the values it returns become the values returned by the call to
-@nobr{@code{raise-continuable}}.
+then it will again become the current ex@value{shy}cep@value{shy}tion
+handler.  If the handler returns, the values it returns become the
+values returned by the call to @nobr{@code{raise-continuable}}.
 
+@ifinfo
+@lisp
+(with-exception-handler
+  (lambda (con)
+    (cond
+      ((string? con)
+       (display con))
+      (else
+       (display "a warning has been issued")))
+    42)
+  (lambda ()
+    (+ (raise-continuable "should be a number")
+       23)))
+                              @output{should be a number}
+                              @ok{65}
+@end lisp
+@end ifinfo
+@ifnotinfo
 @lisp
 (with-exception-handler
   (lambda (con)
@@ -92,6 +135,7 @@ returns, the values it returns become the values returned by the call to
     @prints{should be a number}
                               @ok{65}
 @end lisp
+@end ifnotinfo
 @end deffn
 
 @deffn procedure error message obj @value{defdots}

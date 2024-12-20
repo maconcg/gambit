@@ -319,7 +319,7 @@
 (define (write-define-macro)
   (write-string (string-append "@macro define {text}\n"
                                "@inlinefmtifelse{html,@inlineraw{html,"
-                               "<dfn>\\text\\</dfn>},@dfn{text}}\n"
+                               "<dfn>\\text\\</dfn>},@dfn{\\text\\}}\n"
                                "@end macro\n")))
 
 (define (write-lisp-syntax-macro kind)

@@ -1,0 +1,191 @@
+@node System interface
+@section System interface
+
+Questions of system interface generally fall outside of the domain of
+this re@value{shy}port.  However, the following operations are important
+enough to deserve description here.
+
+@deffn {load library procedure} load filename
+@deffnx {load library procedure} load filename environment-specifier
+
+It is an error if @var{filename} is not a string.
+
+An implementation-dependent operation is used to transform
+@var{filename} into the name of an existing file containing Scheme
+source code.  The @code{load} pro@value{shy}cedure reads expressions and
+definitions from the file and evaluates them sequentially in the
+environment specified by @var{environment-specifier}.  If
+@var{environment-specifier} is omitted, @code{(interaction-environment)}
+is assumed.
+
+It is unspecified whether the results of the expressions are printed.
+The @code{load} procedure does not affect the values returned by
+@code{current-input-port} and @code{current-output-port}.  It returns an
+unspecified value.
+
+@quotation
+@i{Rationale:} For portability, @code{load} must operate on source
+files.  Its op@value{shy}er@value{shy}ation on other kinds of files
+necessarily varies among imple@value{shy}men@value{shy}tations.
+@end quotation
+@end deffn
+
+@deffn {file library procedure} file-exists? filename
+
+It is an error if @var{filename} is not a string.
+
+The @code{file-exists?} procedure returns @code{#t} if the named file
+exists at the time the procedure is called, and @code{#f} otherwise.
+@end deffn
+
+@deffn {file library procedure} delete-file filename
+
+It is an error if @var{filename} is not a string.
+
+The @code{delete-file} procedure deletes the named file if it exists and
+can be deleted, and returns an unspecified value.  If the file does not
+exist or cannot be deleted, an error that satisfies @code{file-error?}
+is signaled.
+@end deffn
+
+@deffn {process-context library procedure} command-line
+
+Returns the command line passed to the process as a list of strings.
+The first string corresponds to the command name, and is
+implementation-depen@value{shy}dent.  It is an error to mutate any of
+these strings.
+@end deffn
+
+@deffn  {process-context library procedure} exit
+@deffnx {process-context library procedure} exit obj
+
+Runs all outstanding dynamic-wind @var{after} procedures, terminates the
+run@value{shy}ning program, and communicates an exit value to the
+operating system.  If no argument is supplied, or if @var{obj} is
+@code{#t}, the @code{exit} procedure should commun@value{shy}icate to
+the operating system that the program exited normally.  If @var{obj} is
+@code{#f}, the @code{exit} procedure should communicate to the operating
+system that the pro@value{shy}gram exited abnormally.  Otherwise,
+@code{exit} should translate @var{obj} into an ap@value{shy}propriate
+exit value for the operating system, if possible.
+
+The @code{exit} procedure must not signal an exception or return to its
+contin@value{shy}uation.
+
+@quotation
+@i{Note:} Because of the requirement to run handlers, this procedure is
+not just the operating system's exit procedure.
+@end quotation
+@end deffn
+
+@deffn {process-context library procedure} emergency-exit
+@deffnx {process-context library procedure} emergency-exit obj
+
+Terminates the program without running any outstanding dynamic-wind
+@var{after} procedures and communicates an exit value to the operating
+system in the same manner as @code{exit}.
+@end deffn
+
+@deffn {process-context library procedure} get-environment-variable name
+
+Many operating systems provide each running process with an
+@define{environment} consisting of @define{environment variables}.
+(This environment is not to be confused with the Scheme environments
+that can be passed to @code{eval}: see @ref{Environments and
+evaluation}.)  Both the name and value of an environment variable are
+strings.  The procedure @code{get-environment-variable} returns the
+value of the environment variable @var{name}, or @code{#f} if the named
+environment variable is not found.  It may use locale information to
+encode the name and decode the value of the environment variable.  It is
+an error if @code{get-environment-variable} can't decode the value.  It
+is also an error to mutate the resulting string.
+
+@lisp
+(get-environment-variable "PATH")
+    @ok{"/usr/local/bin:/usr/bin:/bin"}
+@end lisp
+@end deffn
+
+@deffn {process-context library procedure} get-environment-variables
+
+Returns the names and values of all the environment variables as an
+alist, where the car of each entry is the name of an environment
+variable and the cdr is its value, both as strings.  The order of the
+list is unspecified.  It is an error to mutate any of these strings or
+the alist itself.
+
+@lisp
+(get-environment-variables)
+    @ok{(("USER" . "root") ("HOME" . "/"))}
+@end lisp
+@end deffn
+
+@deffn {time library procedure} current-second
+
+Returns an inexact number representing the current time on the
+@acronym{TAI,International Atomic Time} scale.  The value 0.0 represents
+midnight on January 1, 1970 @acronym{TAI} (equivalent to 8.000082
+seconds before midnight Uni@value{shy}versal Time) and the value 1.0
+represents one @acronym{TAI} second later.  Neither high accuracy nor
+high precision are required; in particular, returning
+@acronym{UTC,Coordinated Universal Time} plus a suitable constant might
+be the best an implementation can do.
+
+As of 2018, a @acronym{TAI}-@acronym{UTC} offset table can be found at
+@cite{Historical table of @acronym{TAI}-@acronym{UTC}
+offsets}@footnote{@value{refRotationService}}.
+@end deffn
+
+@deffn {time library procedure} current-jiffy
+
+Returns the number of @define{jiffies} as an exact integer that have
+elapsed since an arbitrary, implementation-defined epoch.  A jiffy is an
+implementation-defined fraction of a second which is defined by the
+return value of the @code{jiffies-per-second} procedure.  The starting
+epoch is guaranteed to be constant during a run of the program, but may
+vary between runs.
+
+@quotation
+@i{Rationale:} Jiffies are allowed to be implementation-dependent so
+that @code{current-jiffy} can execute with minimum overhead.  It should
+be very likely that a compactly represented integer will suffice as the
+returned value.  Any particular jiffy size will be inappropriate for
+some implementations: a microsecond is too long for a very fast machine,
+while a much smaller unit would force many
+imple@value{shy}men@value{shy}tations to return integers which have to
+be allocated for most calls, rendering @code{current-jiffy} less useful
+for accurate timing measure@value{shy}ments.
+@end quotation
+@end deffn
+
+@deffn {time library procedure} jiffies-per-second
+
+Returns an exact integer representing the number of jiffies per
+@acronym{SI,International System of Units} second.  This value is an
+implementation-specified constant.
+
+@lisp
+(define (time-length)
+  (let ((list (make-list 100000))
+        (start (current-jiffy)))
+    (length list)
+    (/ (- (current-jiffy) start)
+       (jiffies-per-second))))
+@end lisp
+@end deffn
+
+@deffn procedure features
+
+Returns a list of the feature identifiers which cond-expand treats as
+true. It is an error to modify this list.  Here is an example of what
+@code{features} might return:
+
+@lisp
+(features)
+  @ok{(r7rs ratios exact-complex full-unicode
+     gnu-linux little-endian
+     fantastic-scheme
+     fantastic-scheme-1.0
+     space-ship-control-system)}
+@end lisp
+@end deffn

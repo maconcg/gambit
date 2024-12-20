@@ -1,3 +1,6 @@
+@node Standard Procedures
+@nodedescription Built-in procedures.
+@chapter Standard Procedures
 This chapter describes Scheme's built-in procedures.  The procedures
 @code{force}, @code{promise?}, and @code{make-promise} are intimately
 associated with the expression types @code{delay} and

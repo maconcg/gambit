@@ -10,7 +10,7 @@
 
 @set refProperTailRecursion William Clinger.  @i{Proper Tail Recursion and Space Efficiency}.  In @i{Proceedings of the 1998 ACM Conference on Programming Language Design and Implementation}, June 1998.
 
-@set refSRFI6 William Clinger.  @i{@acronym{SRFI} 6: Basic String Ports}.  @t{@url{http://srfi.schemers.org/srfi-6/}}, 1999.
+@set refSRFI6 William Clinger.  @i{@acronym{SRFI} 6: Basic String Ports}.  @t{@url{https://srfi.schemers.org/srfi-6/}}, 1999.
 
 @set refR2RS William Clinger, editor.  @i{The Revised Revised Report on Scheme or An UnCommon Lisp}.  @i{MIT Artificial Intelligence Memo 848}, August 1985.  Also published as @i{Computer Science Department Technical Report 174}, Indiana University, June 1985.
 
@@ -22,7 +22,7 @@
 
 @set refSyntacticAbstraction R.@tie{}Kent Dybvig, Robert Hieb, and Carl Bruggeman.  @i{Syntactic abstraction in Scheme}.  @i{Lisp and Symbolic Computation} 5(4):295--326, 1993.
 
-@set refSRFI4 Marc Feeley.  @i{@acronym{SRFI} 4: Homogeneous Numeric Vector Datatypes}.  @t{@url{http://srfi.schemers.org/srfi-4/}}, 1999.
+@set refSRFI4 Marc Feeley.  @i{@acronym{SRFI} 4: Homogeneous Numeric Vector Datatypes}.  @t{@url{https://srfi.schemers.org/srfi-4/}}, 1999.
 
 @set refScheme311Ref Carol Fessenden, William Clinger, Daniel P.@tie{}Friedman, and Christopher Haynes.  @i{Scheme 311 version 4 reference manual}.  @i{Indiana University Computer Science Technical Report 137}, February 1983.  Superseded by @i{Scheme 84 Interim Reference Manual}.
 
@@ -34,7 +34,7 @@
 
 @set refIEEE1178 @i{@acronym{IEEE} Standard 1178-1990}.  @i{@acronym{IEEE} Standard for the Scheme Programming Language}.  @acronym{IEEE}, New York, 1991.
 
-@set refSRFI9 Richard Kelsey.  @i{@acronym{SRFI} 9: Defining Record Types}.  @t{@url{http://srfi.schemers.org/srfi-9/}}, 1999.
+@set refSRFI9 Richard Kelsey.  @i{@acronym{SRFI} 9: Defining Record Types}.  @t{@url{https://srfi.schemers.org/srfi-9/}}, 1999.
 
 @set refR5RS Richard Kelsey, William Clinger, and Jonathan Rees, editors.  @i{@value{Revised5RS}}.  @i{Higher-Order and Symbolic Computation}, Vol.@tie{}11, No.@tie{}1, August 1998.
 
@@ -56,7 +56,7 @@
 
 @set refR3RS Jonathan Rees and William Clinger, editors.  @i{@value{Revised3RS}}.  In @i{ACM SIGPLAN Notices} 21(12), pages 37--79, December 1986.
 
-@set refSRFI1 Olin Shivers.  @i{@acronym{SRFI} 1: List Library}.  @t{@url{http://srfi.schemers.org/srfi-1/}}, 1999.
+@set refSRFI1 Olin Shivers.  @i{@acronym{SRFI} 1: List Library}.  @t{@url{https://srfi.schemers.org/srfi-1/}}, 1999.
 
 @set refR1RS Guy Lewis Steele Jr.@tie{}and Gerald Jay Sussman.  @i{The Revised Report on @sc{SCHEME}: A Dialect of @sc{LISP}}.  @i{MIT Artificial Intelligence Memo 452}, January 1978.
 
@@ -72,8 +72,8 @@
 
 @set refTISchemeRef Texas Instruments, Inc.  @i{@acronym{TI} Scheme Language Reference Manual}.  Preliminary version 1.0, November 1985.
 
-@set refSRFI45 @set refSRFI45 Andre van Tonder.  @i{@acronym{SRFI} 45: Primitives for Expressing Iterative Lazy Algorithms}.  @t{@url{http://srfi.schemers.org/srfi-45/}}, 2002.
+@set refSRFI45 @set refSRFI45 Andre van Tonder.  @i{@acronym{SRFI} 45: Primitives for Expressing Iterative Lazy Algorithms}.  @t{@url{https://srfi.schemers.org/srfi-45/}}, 2002.
 
 @set refHowToAddThreads Martin Gasbichler, Eric Knauel, Michael Sperber and Richard Kelsey.  @i{How to Add Threads to a Sequential Language Without Getting Tangled Up}.  @i{Proceedings of the Fourth Workshop on Scheme and Functional Programming}, November 2003.
 
-@set refRotationService International Earth Rotation Service.  @i{Historical table of TAI-UTC offsets}.  @t{@url{http://maia.usno.navy.mil/ser7/tai-utc.dat}}
+@set refRotationService International Earth Rotation Service.  @i{Historical table of TAI-UTC offsets}.  @t{@url{https://maia.usno.navy.mil/ser7/tai-utc.dat}}

@@ -13,14 +13,11 @@ Returns @code{#t} if @var{obj} is a procedure, otherwise returns
 @code{#f}.
 
 @lisp
-(procedure? car)               @ok{#t}
-(procedure? 'car)              @ok{#f}
-(procedure? (lambda (x) (* x x)))
-                               @ok{#t}
-(procedure? '(lambda (x) (* x x)))
-                               @ok{#f}
-(call-with-current-continuation procedure?)
-                               @ok{#t}
+(procedure? car)                            @ok{#t}
+(procedure? 'car)                           @ok{#f}
+(procedure? (lambda (x) (* x x)))           @ok{#t}
+(procedure? '(lambda (x) (* x x)))          @ok{#f}
+(call-with-current-continuation procedure?) @ok{#t}
 @end lisp
 @end deffn
 
@@ -31,14 +28,14 @@ list @code{(append (list @r{@vari{arg}} @value{defdots}) @rv{args})} as
 the actual arguments.
 
 @lisp
-(apply + (list 3 4))           @ok{7}
+(apply + (list 3 4))        @ok{7}
 
 (define compose
   (lambda (f g)
     (lambda args
       (f (apply g args)))))
 
-((compose sqrt *) 12 75)       @ok{30}
+((compose sqrt *) 12 75)    @ok{30}
 @end lisp
 @end deffn
 
@@ -58,21 +55,18 @@ in which @var{proc} is ap@value{shy}plied to the elements of the
 @code{map}, the values returned by earlier returns are not mutated.
 
 @lisp
-(map cadr '((a b) (d e) (g h)))
-             @ok{(b e h)}
+(map cadr '((a b) (d e) (g h)))   @ok{(b e h)}
 
 (map (lambda (n) (expt n n))
-     '(1 2 3 4 5))
-             @ok{(1 4 27 256 3125)}
+     '(1 2 3 4 5))                @ok{(1 4 27 256 3125)}
 
-(map + '(1 2 3) '(4 5 6 7))    @ok{(5 7 9)}
+(map + '(1 2 3) '(4 5 6 7))       @ok{(5 7 9)}
 
 (let ((count 0))
   (map (lambda (ignored)
          (set! count (+ count 1))
          count)
-       '(a b)))
-                               @ok{(1 2)} @unspecifiedtext{or} (2 1)
+       '(a b)))                   @ok{(1 2)} @unspecifiedtext{or} (2 1)
 @end lisp
 @end deffn
 
@@ -91,22 +85,19 @@ returns occur from @code{string-map}, the values returned by earlier
 returns are not mutated.
 
 @lisp
-(string-map char-foldcase "AbdEgH")
-             @ok{"abdegh"}
+(string-map char-foldcase "AbdEgH")         @ok{"abdegh"}
 
 (string-map
  (lambda (c)
    (integer->char (+ 1 (char->integer c))))
- "HAL")
-             @ok{"IBM"}
+ "HAL")                                     @ok{"IBM"}
 
 (string-map
  (lambda (c k)
    ((if (eqv? k #\u) char-upcase char-downcase)
     c))
  "studlycaps xxx"
- "ululululul")
-             @ok{"StUdLyCaPs"}
+ "ululululul")                              @ok{"StUdLyCaPs"}
 @end lisp
 @end deffn
 
@@ -125,23 +116,19 @@ returns occur from @code{vector-map}, the values returned by earlier
 returns are not mutated.
 
 @lisp
-(vector-map cadr '#((a b) (d e) (g h)))
-             @ok{#(b e h)}
+(vector-map cadr '#((a b) (d e) (g h))) @ok{#(b e h)}
 
 (vector-map (lambda (n) (expt n n))
-            '#(1 2 3 4 5))
-             @ok{#(1 4 27 256 3125)}
+            '#(1 2 3 4 5))              @ok{#(1 4 27 256 3125)}
 
-(vector-map + '#(1 2 3) '#(4 5 6 7))
-             @ok{#(5 7 9)}
+(vector-map + '#(1 2 3) '#(4 5 6 7))    @ok{#(5 7 9)}
 
 (let ((count 0))
   (vector-map
    (lambda (ignored)
      (set! count (+ count 1))
      count)
-   '#(a b)))
-                               @ok{#(1 2)} @unspecifiedtext{or} #(2 1)
+   '#(a b)))                            @ok{#(1 2)} @unspecifiedtext{or} #(2 1)
 @end lisp
 @end deffn
 
@@ -167,8 +154,7 @@ It is an error for @var{proc} to mutate any of the lists.
   (for-each (lambda (i)
               (vector-set! v i (* i i)))
             '(0 1 2 3 4))
-  v)
-                               @ok{#(0 1 4 9 16)}
+  v)                           @ok{#(0 1 4 9 16)}
 @end lisp
 @end deffn
 
@@ -194,8 +180,7 @@ is an error for @var{proc} to mutate any of the strings.
   (string-for-each
    (lambda (c) (set! v (cons (char->integer c) v)))
    "abcde")
-  v)
-                               @ok{(101 100 99 98 97)}
+  v)                           @ok{(101 100 99 98 97)}
 @end lisp
 @end deffn
 
@@ -221,8 +206,7 @@ is an error for @var{proc} to mutate any of the vectors.
   (vector-for-each
    (lambda (i) (list-set! v i (* i i)))
    '#(0 1 2 3 4))
-  v)
-                            @ok{(0 1 4 9 16)}
+  v)                           @ok{(0 1 4 9 16)}
 @end lisp
 @end deffn
 
@@ -283,8 +267,7 @@ a procedure with the power of
                 (if (negative? x)
                     (exit x)))
               '(54 0 37 -3 245 19))
-    #t))
-                               @ok{-3}
+    #t)) @ok{-3}
 
 (define list-length
   (lambda (obj)
@@ -298,9 +281,9 @@ a procedure with the power of
                           (else (return #f))))))
           (r obj))))))
 
-(list-length '(1 2 3 4))       @ok{4}
+(list-length '(1 2 3 4)) @ok{4}
 
-(list-length '(a b . c))       @ok{#f}
+(list-length '(a b . c)) @ok{#f}
 @end lisp
 
 @quotation
@@ -351,10 +334,9 @@ those values as arguments.  The continuation for the call to
 
 @lisp
 (call-with-values (lambda () (values 4 5))
-                  (lambda (a b) b))
-                               @ok{5}
+                  (lambda (a b) b))        @ok{5}
 
-(call-with-values * -)         @ok{-1}
+(call-with-values * -)                     @ok{-1}
 @end lisp
 @end deffn
 
@@ -432,9 +414,7 @@ unspecified.
       (lambda () (add 'disconnect)))
     (if (< (length path) 4)
         (c 'talk2)
-        (reverse path))))
-
-            @ok{(connect talk1 disconnect
-               connect talk2 disconnect)}
+        (reverse path))))      @ok{(connect talk1 disconnect
+                                  connect talk2 disconnect)}
 @end lisp
 @end deffn

@@ -17,27 +17,52 @@ lib-samples = _eval _io _kernel _module _nonstd _num _system _thread \
 
 r7rs-deps = toolshed/macros+vars.txi r7rs/bibliography.txi \
  r7rs/r7rs-pristine.txi r7rs/copying/copying.txi r7rs/copying/fdl-1.3.texi \
- r7rs/prose/summary.txi r7rs/prose/introduction.txi r7rs/prose/overview.txi \
- r7rs/prose/lexical-conventions.txi r7rs/prose/basic-concepts.txi \
- r7rs/prose/expressions.txi r7rs/prose/program-structure.txi \
- r7rs/prose/standard-procedures.txi \
- r7rs/procedures/equivalence-predicates.txi \
- r7rs/procedures/numbers.txi r7rs/procedures/booleans.txi \
- r7rs/procedures/pairs-and-lists.txi r7rs/procedures/symbols.txi \
- r7rs/procedures/characters.txi r7rs/procedures/strings.txi \
- r7rs/procedures/vectors.txi r7rs/procedures/bytevectors.txi \
- r7rs/procedures/control-features.txi r7rs/procedures/exceptions.txi
+ r7rs/prose/0_summary.txi \
+ r7rs/prose/0_introduction.txi \
+ r7rs/prose/1_overview.txi \
+ r7rs/prose/2_lexical-conventions.txi \
+ r7rs/prose/3_basic-concepts.txi \
+ r7rs/prose/4_expressions.txi \
+ r7rs/prose/5_program-structure.txi \
+ r7rs/prose/6_standard-procedures.txi \
+ r7rs/procedures/6.1_equivalence-predicates.txi \
+ r7rs/procedures/6.2_numbers.txi \
+ r7rs/procedures/6.3_booleans.txi \
+ r7rs/procedures/6.4_pairs-and-lists.txi \
+ r7rs/procedures/6.5_symbols.txi \
+ r7rs/procedures/6.6_characters.txi \
+ r7rs/procedures/6.7_strings.txi \
+ r7rs/procedures/6.8_vectors.txi \
+ r7rs/procedures/6.9_bytevectors.txi \
+ r7rs/procedures/6.10_control-features.txi \
+ r7rs/procedures/6.11_exceptions.txi \
+ r7rs/procedures/6.12_environments-and-evaluation.txi \
+ r7rs/procedures/6.13_input-and-output.txi \
+ r7rs/procedures/6.14_system-interface.txi
 
-r7rs-annotated-prose = r7rs/prose/a/summary.txi r7rs/prose/a/introduction.txi \
- r7rs/prose/a/overview.txi r7rs/prose/a/lexical-conventions.txi \
- r7rs/prose/a/basic-concepts.txi r7rs/prose/a/expressions.txi \
- r7rs/prose/a/program-structure.txi r7rs/prose/a/standard-procedures.txi \
- r7rs/procedures/a/equivalence-predicates.txi \
- r7rs/procedures/a/numbers.txi r7rs/procedures/a/booleans.txi \
- r7rs/procedures/a/pairs-and-lists.txi r7rs/procedures/a/symbols.txi \
- r7rs/procedures/a/characters.txi r7rs/procedures/a/strings.txi \
- r7rs/procedures/a/vectors.txi r7rs/procedures/a/bytevectors.txi \
- r7rs/procedures/a/control-features.txi r7rs/procedures/a/exceptions.txi
+r7rs-annotated = \
+ r7rs/prose/a/0_summary.txi \
+ r7rs/prose/a/0_introduction.txi \
+ r7rs/prose/a/1_overview.txi \
+ r7rs/prose/a/2_lexical-conventions.txi \
+ r7rs/prose/a/3_basic-concepts.txi \
+ r7rs/prose/a/4_expressions.txi \
+ r7rs/prose/a/5_program-structure.txi \
+ r7rs/prose/a/6_standard-procedures.txi \
+ r7rs/procedures/a/6.1_equivalence-predicates.txi \
+ r7rs/procedures/a/6.2_numbers.txi \
+ r7rs/procedures/a/6.3_booleans.txi \
+ r7rs/procedures/a/6.4_pairs-and-lists.txi \
+ r7rs/procedures/a/6.5_symbols.txi \
+ r7rs/procedures/a/6.6_characters.txi \
+ r7rs/procedures/a/6.7_strings.txi \
+ r7rs/procedures/a/6.8_vectors.txi \
+ r7rs/procedures/a/6.9_bytevectors.txi \
+ r7rs/procedures/a/6.10_control-features.txi \
+ r7rs/procedures/a/6.11_exceptions.txi \
+ r7rs/procedures/a/6.12_environments-and-evaluation.txi \
+ r7rs/procedures/a/6.13_input-and-output.txi \
+ r7rs/procedures/a/6.14_system-interface.txi
 
 set-scm_to_html = \
 if test -x scm-to-html; then\
@@ -98,7 +123,7 @@ toolshed/adorn/adorn.o1: ${adorn-lib}
 	fi &&\
 	${GSC} -o $@ toolshed/adorn/adorn
 
-${r7rs-annotated-prose}: ${adorn-lib} toolshed/annotate-txi.scm
+${r7rs-annotated}: ${adorn-lib} toolshed/annotate-txi.scm
 
 toolshed/annotate-txi.scm: toolshed/adorn/adorn.o1
 
@@ -256,87 +281,102 @@ r7rs-samples.tgz: r7rs-pristine.html r7rs-plain.html r7rs-plain-parens.html \
 		$$archive -z -f "$$OLDPWD"/../$@ r7rs-samples;\
 	}
 
-r7rs/procedures/a/equivalence-predicates.txi: \
- r7rs/procedures/equivalence-predicates.txi
-	readonly txi=equivalence-predicates.txi &&\
+r7rs/procedures/a/6.1_equivalence-predicates.txi: \
+ r7rs/procedures/6.1_equivalence-predicates.txi
+	readonly txi=6.1_equivalence-predicates.txi &&\
 	${annotate-r7rs-procedures-file}
 
-r7rs/procedures/a/numbers.txi: \
- r7rs/procedures/numbers.txi
-	readonly txi=numbers.txi &&\
+r7rs/procedures/a/6.2_numbers.txi: \
+ r7rs/procedures/6.2_numbers.txi
+	readonly txi=6.2_numbers.txi &&\
 	${annotate-r7rs-procedures-file}
 
-r7rs/procedures/a/booleans.txi: \
- r7rs/procedures/booleans.txi
-	readonly txi=booleans.txi &&\
+r7rs/procedures/a/6.3_booleans.txi: \
+ r7rs/procedures/6.3_booleans.txi
+	readonly txi=6.3_booleans.txi &&\
 	${annotate-r7rs-procedures-file}
 
-r7rs/procedures/a/pairs-and-lists.txi: \
- r7rs/procedures/pairs-and-lists.txi
-	readonly txi=pairs-and-lists.txi &&\
+r7rs/procedures/a/6.4_pairs-and-lists.txi: \
+ r7rs/procedures/6.4_pairs-and-lists.txi
+	readonly txi=6.4_pairs-and-lists.txi &&\
 	${annotate-r7rs-procedures-file}
 
-r7rs/procedures/a/symbols.txi: \
- r7rs/procedures/symbols.txi
-	readonly txi=symbols.txi &&\
+r7rs/procedures/a/6.5_symbols.txi: \
+ r7rs/procedures/6.5_symbols.txi
+	readonly txi=6.5_symbols.txi &&\
 	${annotate-r7rs-procedures-file}
 
-r7rs/procedures/a/characters.txi: \
- r7rs/procedures/characters.txi
-	readonly txi=characters.txi &&\
+r7rs/procedures/a/6.6_characters.txi: \
+ r7rs/procedures/6.6_characters.txi
+	readonly txi=6.6_characters.txi &&\
 	${annotate-r7rs-procedures-file}
 
-r7rs/procedures/a/strings.txi: \
- r7rs/procedures/strings.txi
-	readonly txi=strings.txi &&\
+r7rs/procedures/a/6.7_strings.txi: \
+ r7rs/procedures/6.7_strings.txi
+	readonly txi=6.7_strings.txi &&\
 	${annotate-r7rs-procedures-file}
 
-r7rs/procedures/a/vectors.txi: \
- r7rs/procedures/vectors.txi
-	readonly txi=vectors.txi &&\
+r7rs/procedures/a/6.8_vectors.txi: \
+ r7rs/procedures/6.8_vectors.txi
+	readonly txi=6.8_vectors.txi &&\
 	${annotate-r7rs-procedures-file}
 
-r7rs/procedures/a/bytevectors.txi: \
- r7rs/procedures/bytevectors.txi
-	readonly txi=bytevectors.txi &&\
+r7rs/procedures/a/6.9_bytevectors.txi: \
+ r7rs/procedures/6.9_bytevectors.txi
+	readonly txi=6.9_bytevectors.txi &&\
 	${annotate-r7rs-procedures-file}
 
-r7rs/procedures/a/control-features.txi: \
- r7rs/procedures/control-features.txi
-	readonly txi=control-features.txi &&\
+r7rs/procedures/a/6.10_control-features.txi: \
+ r7rs/procedures/6.10_control-features.txi
+	readonly txi=6.10_control-features.txi &&\
 	${annotate-r7rs-procedures-file}
 
-r7rs/procedures/a/exceptions.txi: \
- r7rs/procedures/exceptions.txi
-	readonly txi=exceptions.txi &&\
+r7rs/procedures/a/6.11_exceptions.txi: \
+ r7rs/procedures/6.11_exceptions.txi
+	readonly txi=6.11_exceptions.txi &&\
 	${annotate-r7rs-procedures-file}
 
-r7rs/prose/a/summary.txi: r7rs/prose/summary.txi
-	readonly txi=summary.txi && ${annotate-r7rs-prose-file}
+r7rs/procedures/a/6.12_environments-and-evaluation.txi: \
+ r7rs/procedures/6.12_environments-and-evaluation.txi
+	readonly txi=6.12_environments-and-evaluation.txi &&\
+	${annotate-r7rs-procedures-file}
 
-r7rs/prose/a/introduction.txi: r7rs/prose/introduction.txi
-	readonly txi=introduction.txi && ${annotate-r7rs-prose-file}
+r7rs/procedures/a/6.13_input-and-output.txi: \
+ r7rs/procedures/6.13_input-and-output.txi
+	readonly txi=6.13_input-and-output.txi &&\
+	${annotate-r7rs-procedures-file}
 
-r7rs/prose/a/overview.txi: r7rs/prose/overview.txi
-	readonly txi=overview.txi && ${annotate-r7rs-prose-file}
+r7rs/procedures/a/6.14_system-interface.txi: \
+ r7rs/procedures/6.14_system-interface.txi
+	readonly txi=6.14_system-interface.txi &&\
+	${annotate-r7rs-procedures-file}
 
-r7rs/prose/a/lexical-conventions.txi: r7rs/prose/lexical-conventions.txi
-	readonly txi=lexical-conventions.txi && ${annotate-r7rs-prose-file}
+r7rs/prose/a/0_summary.txi: r7rs/prose/0_summary.txi
+	readonly txi=0_summary.txi && ${annotate-r7rs-prose-file}
 
-r7rs/prose/a/basic-concepts.txi: r7rs/prose/basic-concepts.txi
-	readonly txi=basic-concepts.txi && ${annotate-r7rs-prose-file}
+r7rs/prose/a/0_introduction.txi: r7rs/prose/0_introduction.txi
+	readonly txi=0_introduction.txi && ${annotate-r7rs-prose-file}
 
-r7rs/prose/a/expressions.txi: r7rs/prose/expressions.txi
-	readonly txi=expressions.txi && ${annotate-r7rs-prose-file}
+r7rs/prose/a/1_overview.txi: r7rs/prose/1_overview.txi
+	readonly txi=1_overview.txi && ${annotate-r7rs-prose-file}
 
-r7rs/prose/a/program-structure.txi: r7rs/prose/program-structure.txi
-	readonly txi=program-structure.txi && ${annotate-r7rs-prose-file}
+r7rs/prose/a/2_lexical-conventions.txi: r7rs/prose/2_lexical-conventions.txi
+	readonly txi=2_lexical-conventions.txi && ${annotate-r7rs-prose-file}
 
-r7rs/prose/a/standard-procedures.txi: r7rs/prose/standard-procedures.txi
-	readonly txi=standard-procedures.txi && ${annotate-r7rs-prose-file}
+r7rs/prose/a/3_basic-concepts.txi: r7rs/prose/3_basic-concepts.txi
+	readonly txi=3_basic-concepts.txi && ${annotate-r7rs-prose-file}
 
-r7rs/r7rs.txi: ${r7rs-deps} ${adorn-lib} ${r7rs-annotated-prose} \
- r7rs/r7rs-pristine.txi r7rs/procedures/a/equivalence-predicates.txi
+r7rs/prose/a/4_expressions.txi: r7rs/prose/4_expressions.txi
+	readonly txi=4_expressions.txi && ${annotate-r7rs-prose-file}
+
+r7rs/prose/a/5_program-structure.txi: r7rs/prose/5_program-structure.txi
+	readonly txi=5_program-structure.txi && ${annotate-r7rs-prose-file}
+
+r7rs/prose/a/6_standard-procedures.txi: r7rs/prose/6_standard-procedures.txi
+	readonly txi=6_standard-procedures.txi && ${annotate-r7rs-prose-file}
+
+r7rs/r7rs.txi: ${r7rs-deps} ${adorn-lib} ${r7rs-annotated} \
+ r7rs/r7rs-pristine.txi
 	sed -e 's/^\(@include[[:blank:]]\{1,\}procedures\/\)/\1a\//'\
 		-e 's/^\(@include[[:blank:]]\{1,\}prose\/\)/\1a\//'\
 		r7rs/r7rs-pristine.txi > $@
