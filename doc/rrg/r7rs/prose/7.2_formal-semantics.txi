@@ -11,6 +11,23 @@ Language Without Getting Tangled
 Up}@footnote{@value{refHowToAddThreads}}.  The notation is summarized
 below:
 
+@indentedblock
+@multitable @columnfractions .15 .85
+@item @angle{@value{defdots}} @tab sequence formation
+@item 𝑠 ↓ 𝑘 @tab 𝑘th member of the sequence 𝑠 (1-based)
+@item @hashchar{}𝑠 @tab length of sequence 𝑠
+@item 𝑠 § 𝑡 @tab concatenation of sequences 𝑠 and 𝑡
+@item 𝑠 † 𝑘 @tab drop the first 𝑘 members of sequence 𝑠
+
+@item 𝑡 @arrow{} 𝑎, 𝑏 @tab
+McCarthy conditional @quotedbl{if 𝑡 then 𝑎 else 𝑏}
+
+@item 𝜌[𝑥/𝑖] @tab substitution @quotedbl{𝜌 with 𝑥 for 𝑖}
+@item 𝑥 in @t{D} @tab injection of 𝑥 into domain @t{D}
+@item 𝑥 | @t{D} @tab projection of 𝑥 to domain @t{D}
+@end multitable
+@end indentedblock
+
 The reason that expression continuations take sequences of values
 instead of single values is to simplify the formal treatment of
 procedure calls and multiple return values.
@@ -19,21 +36,22 @@ The boolean flag associated with pairs, vectors, and strings will be
 true for mutable objects and false for immutable objects.
 
 The order of evaluation within a call is unspecified.  We mimic that
-here by applying arbitrary permutations permute and unpermute, which
-must be inverses, to the arguments in a call before and after they are
-evaluated.  This is not quite right since it suggests, incorrectly, that
-the order of evaluation is constant throughout a program (for any given
-number of arguments), but it is a closer approximation to the intended
-semantics than a left-to-right evaluation would be.
+here by applying arbitrary permutations @define{permute} and
+@define{unpermute}, which must be inverses, to the arguments in a call
+before and after they are evaluated.  This is not quite right since it
+suggests, incorrectly, that the order of evaluation is constant
+throughout a program (for any given number of arguments), but it is a
+closer approximation to the intended semantics than a left-to-right
+evaluation would be.
 
 The storage allocator new is implementation-dependent, but it must obey
 the following axiom: if
 @nobr{@i{new}@inlinefmtifelse{html,@U{2009},@tie{}}𝜎 ∈ @t{L}}, then
-@nobr{σ (@i{new}@inlinefmtifelse{html,@U{2009},@tie{}}𝜎∣@t{L})↓2 =
+@nobr{σ (@i{new}@inlinefmtifelse{html,@U{2009},@tie{}}𝜎 ∣ @t{L})↓2 =
 @i{false}}.
 
 The definition of 𝜘 is omitted because an accurate definition of 𝜘 would
-complicate the semantics without being very interesting.
+com@value{shy}plicate the semantics without being very interesting.
 
 If P is a program in which all variables are defined before being
 referenced or assigned, then the meaning of P is
@@ -50,6 +68,7 @@ expressions.
 
 @node Abstract syntax
 @subsection Abstract syntax
+@indentedblock
 @table @asis
 @item K ∈ Con
 constants, including quotations
@@ -60,6 +79,7 @@ expressions
 @item Γ ∈ Com = Exp
 commands
 @end table
+@end indentedblock
 
 @example grammar
 @r{Exp} @longarrow{} @r{K} | @r{I} | (@r{@parzero{E}} @r{E*})
@@ -72,7 +92,6 @@ commands
 
 @node Domain equations
 @subsection Abstract syntax
-@ifhtml
 @multitable @columnfractions .03 .03 .04 .63 .27
 @item 𝛼 @tab ∈ @tab @t{L} @tab @tab locations
 @item 𝜈 @tab ∈ @tab @t{N} @tab @tab natural numbers
@@ -107,7 +126,44 @@ commands
 = (@t{F} × @t{F} × @t{P}) + @{@i{root}@}
 @tab dynamic points
 @end multitable
-@end ifhtml
 
 @node Semantic functions
 @subsection Semantic functions
+
+@multitable @columnfractions .03 .03 0.94
+@item 𝜘 @tab : @tab Con @arrow{} @t{E}
+
+@item 𝜀 @tab : @tab
+Exp @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+
+@item 𝜀* @tab : @tab
+Exp* @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+
+@item 𝐶* @tab : @tab
+Com* @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{C} @arrow{} @t{C}
+@end multitable
+
+Definition of 𝜘 deliberately omitted.
+
+@display
+𝜀⟦K⟧ = 𝜆𝜌𝜔𝜅 . @i{send}(𝜘⟦K⟧)𝜅
+@end display
+
+@display
+𝜀⟦I⟧ = 𝜆𝜌𝜔𝜅 . @i{hold}(@i{lookup} 𝜌 I)
+@t{               }(@i{single}(𝜆𝜖 . 𝜖 = @i{undefined} @arrow{}
+@t{                             }@i{wrong} @quotedbl{undefined variable},
+@t{                           }@i{send} 𝜖 𝜅))
+@end display
+
+@display
+𝜀⟦@t{@U{0028}}@parzero{E} E*@t{@U{0029}}⟧ =
+@t{ }𝜆𝜌𝜔𝜅 . 𝜀*(@i{permute}(@angle{@parzero{E}} § E*))
+@t{         }𝜌
+@t{         }𝜔
+@t{         }(𝜆𝜖* . ((𝜆𝜖* . @i{applicate} (𝜖* ↓ 1)(𝜖* † 1) 𝜔𝜅)
+@t{               }(@i{unpermute} 𝜖*)))
+@end display
+
+@c 𝜔′𝜅′ . #𝜖* = #I* @arrow{}
+@c                        @i{tievals}(𝜆𝛼* . (𝜆𝜌′ . 𝐶
