@@ -137,6 +137,20 @@
                            "@inlinefmtifelse{tex,"
                            "@math{\\\\varsigma},"
                            "@U{03C2}}\n"))))
+        (write-newsigma
+         (lambda ()
+           (write-string
+            (string-append "@set newsigma "
+                           "@i{new}"
+                           "@inlinefmtifelse{html,@U{2009},@tie{}}𝜎"
+                           "\n"))))
+        (write-unspecifiedsigma
+         (lambda ()
+           (write-string
+            (string-append "@set unspecifiedsigma "
+                           "@i{unspecified}"
+                           "@inlinefmtifelse{html,@U{2009},@tie{}}𝜎"
+                           "\n"))))
         (write-r2rs
          (lambda ()
            (write-string "@set R2RS @acronym{RRRS}\n")))
@@ -182,6 +196,8 @@
       (write-greekcapitalsigma)
       (write-greeksmallsigma)
       (write-greekfinalsigma)
+      (write-newsigma)
+      (write-unspecifiedsigma)
       (write-RevisednRS "3" "@U{00B3}")
       (write-RevisednRS "4" "@U{2074}")
       (write-RevisednRS "5" "@U{2075}")

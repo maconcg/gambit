@@ -46,8 +46,8 @@ evaluation would be.
 
 The storage allocator new is implementation-dependent, but it must obey
 the following axiom: if
-@nobr{@i{new}@inlinefmtifelse{html,@U{2009},@tie{}}𝜎 ∈ @t{L}}, then
-@nobr{σ (@i{new}@inlinefmtifelse{html,@U{2009},@tie{}}𝜎 ∣ @t{L})↓2 =
+@nobr{@value{newsigma} ∈ @t{L}}, then
+@nobr{σ (@value{newsigma} ∣ @t{L})↓2 =
 @i{false}}.
 
 The definition of 𝜘 is omitted because an accurate definition of 𝜘 would
@@ -83,16 +83,16 @@ commands
 
 @example grammar
 @r{Exp} @longarrow{} @r{K} | @r{I} | (@r{@parzero{E}} @r{E*})
-    | (lambda (@r{I*}) @r{Γ*} @r{@parzero{E}})
-    | (lambda (@r{I*} . @r{I}) @r{Γ*} @r{@parzero{E}})
-    | (lambda @r{I} @r{Γ*} @r{@parzero{E}})
-    | (if @r{@parzero{E}} @r{@parI{E}} @r{@parII{E}}) | (if @r{@parzero{E}} @r{@parI{E}})
-    | (set! @r{I} @r{E})
+     | (lambda (@r{I*}) @r{Γ*} @r{@parzero{E}})
+     | (lambda (@r{I*} . @r{I}) @r{Γ*} @r{@parzero{E}})
+     | (lambda @r{I} @r{Γ*} @r{@parzero{E}})
+     | (if @r{@parzero{E}} @r{@parI{E}} @r{@parII{E}}) | (if @r{@parzero{E}} @r{@parI{E}})
+     | (set! @r{I} @r{E})
 @end example
 
 @node Domain equations
 @subsection Abstract syntax
-@multitable @columnfractions .03 .03 .04 .63 .27
+@multitable @columnfractions .02 .02 .03 .65 .28
 @item 𝛼 @tab ∈ @tab @t{L} @tab @tab locations
 @item 𝜈 @tab ∈ @tab @t{N} @tab @tab natural numbers
 @item @tab @tab @t{T} @tab = @{@i{false, true}@} @tab booleans
@@ -102,45 +102,29 @@ commands
 @item @tab @tab @t{@parp{E}} @tab = @t{L} × @t{L} × @t{T} @tab pairs
 @item @tab @tab @t{@parv{E}} @tab = @t{L*} × @t{T} @tab vectors
 @item @tab @tab @t{@pars{E}} @tab = @t{L*} × @t{T} @tab strings
-
-@item @tab @tab @t{M} @tab
-= @{@i{false, true, null, undefined, unspecified}@}
-@tab miscellaneous
-
+@item @tab @tab @t{M} @tab = @{@i{false, true, null, undefined, unspecified}@} @tab miscellaneous
 @item 𝜙 @tab ∈ @tab @t{F} @tab
-= @t{L} × (@t{E}* @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C})
-@tab procedure values
-
+= @t{L} × (@t{E}* @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}) @tab procedure values
 @item 𝜖 @tab ∈ @tab @t{E} @tab
-= @t{Q} + @t{H} + @t{R} + @t{@parp{E}} + @t{@parv{E}} + @t{@pars{E}} +
-@t{M} + @t{F}
-@tab expressed values
-
+= @t{Q} + @t{H} + @t{R} + @t{@parp{E}} + @t{@parv{E}} + @t{@pars{E}} + @t{M} + @t{F} @tab expressed values
 @item 𝜎 @tab ∈ @tab @t{S} @tab = @t{L} @arrow{} (@t{E} × @t{T}) @tab stores
 @item 𝜌 @tab ∈ @tab @t{U} @tab = Ide @arrow{} @t{L} @tab environments
 @item 𝜃 @tab ∈ @tab @t{C} @tab = @t{S} @arrow{} @t{A} @tab command conts
 @item 𝜅 @tab ∈ @tab @t{K} @tab = @t{E}* @arrow{} @t{C} @tab expression conts
 @item @tab @tab @t{A} @tab @tab answers
 @item @tab @tab @t{X} @tab @tab errors
-@item 𝜔 @tab ∈ @tab @t{P} @tab
-= (@t{F} × @t{F} × @t{P}) + @{@i{root}@}
+@item 𝜔 @tab ∈ @tab @t{P} @tab = (@t{F} × @t{F} × @t{P}) + @{@i{root}@}
 @tab dynamic points
 @end multitable
 
 @node Semantic functions
 @subsection Semantic functions
 
-@multitable @columnfractions .03 .03 0.94
+@multitable @columnfractions .03 .02 0.95
 @item 𝜘 @tab : @tab Con @arrow{} @t{E}
-
-@item 𝜀 @tab : @tab
-Exp @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
-
-@item 𝜀* @tab : @tab
-Exp* @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
-
-@item 𝐶* @tab : @tab
-Com* @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{C} @arrow{} @t{C}
+@item 𝜀 @tab : @tab Exp @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@item 𝜀* @tab : @tab Exp* @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@item 𝐶* @tab : @tab Com* @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{C} @arrow{} @t{C}
 @end multitable
 
 Definition of 𝜘 deliberately omitted.
@@ -151,19 +135,32 @@ Definition of 𝜘 deliberately omitted.
 
 @display
 𝜀⟦I⟧ = 𝜆𝜌𝜔𝜅 . @i{hold}(@i{lookup} 𝜌 I)
-@t{               }(@i{single}(𝜆𝜖 . 𝜖 = @i{undefined} @arrow{}
-@t{                             }@i{wrong} @quotedbl{undefined variable},
-@t{                           }@i{send} 𝜖 𝜅))
+@t{              }(@i{single}(𝜆𝜖 . 𝜖 = @i{undefined} @arrow{}
+@t{                                }@i{wrong} @quotedbl{undefined variable}@comma{}
+@t{                             }@i{send} 𝜖 𝜅))
 @end display
 
 @display
-𝜀⟦@t{@U{0028}}@parzero{E} E*@t{@U{0029}}⟧ =
+𝜀⟦@t{@compound{@U{0028}}}@parzero{E} E*@t{@compound{@U{0029}}}⟧ =
 @t{ }𝜆𝜌𝜔𝜅 . 𝜀*(@i{permute}(@angle{@parzero{E}} § E*))
-@t{         }𝜌
-@t{         }𝜔
-@t{         }(𝜆𝜖* . ((𝜆𝜖* . @i{applicate} (𝜖* ↓ 1)(𝜖* † 1) 𝜔𝜅)
-@t{               }(@i{unpermute} 𝜖*)))
+@t{          }𝜌
+@t{          }𝜔
+@t{          }(𝜆𝜖* . ((𝜆𝜖* . @i{applicate} (𝜖* ↓ 1)(𝜖* † 1) 𝜔𝜅)
+@t{                  }(@i{unpermute} 𝜖*)))
 @end display
 
-@c 𝜔′𝜅′ . #𝜖* = #I* @arrow{}
-@c                        @i{tievals}(𝜆𝛼* . (𝜆𝜌′ . 𝐶
+@display
+𝜀⟦@t{@compound{@U{0028}}@syntax{lambda} @U{0028}}I*@t{@U{0029}} Γ* @parzero{E}@t{@compound{@U{0029}}}⟧ =
+@t{ }𝜆𝜌𝜔𝜅 . 𝜆𝜎 .
+@t{   }@value{newsigma} ∈ @t{L} @arrow{}
+@t{    }@i{send}(@angle{@value{newsigma} | @t{L}@comma{}
+@t{         }𝜆𝜖*𝜔′𝜅′ . #𝜖* = #I* @arrow{}
+@t{           }@i{tievals}(𝜆𝛼* . (𝜆𝜌′ . 𝐶⟦Γ*⟧𝜌′𝜔′(𝜀⟦@parzero{E}⟧𝜌′𝜔′𝜅′))
+@t{                          }(@i{extends} 𝜌 I* 𝛼*))
+@t{                  }𝜖*@comma{}
+@t{           }@i{wrong} @quotedbl{wrong number of arguments}}
+@t{         }in @t{E})
+@t{        }𝜅
+@t{        }(@i{update} (@value{newsigma} | @t{L}) @value{unspecifiedsigma})@comma{}
+@t{    }@i{wrong} @quotedbl{out of memory} 𝜎
+@end display
