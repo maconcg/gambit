@@ -1,0 +1,113 @@
+@node Formal semantics
+@section Formal semantics
+
+This section provides a formal denotational semantics for the primitive
+expressions of Scheme and selected built-in procedures.  The concepts
+and notation used here are described in @cite{Denotational Semantics:
+The Scott-Strachey Approach to Programming Language
+Theory}@footnote{@value{refScottStrachey}}; the definition of
+dynamic-wind is taken from @cite{How to Add Threads to a Sequential
+Language Without Getting Tangled
+Up}@footnote{@value{refHowToAddThreads}}.  The notation is summarized
+below:
+
+The reason that expression continuations take sequences of values
+instead of single values is to simplify the formal treatment of
+procedure calls and multiple return values.
+
+The boolean flag associated with pairs, vectors, and strings will be
+true for mutable objects and false for immutable objects.
+
+The order of evaluation within a call is unspecified.  We mimic that
+here by applying arbitrary permutations permute and unpermute, which
+must be inverses, to the arguments in a call before and after they are
+evaluated.  This is not quite right since it suggests, incorrectly, that
+the order of evaluation is constant throughout a program (for any given
+number of arguments), but it is a closer approximation to the intended
+semantics than a left-to-right evaluation would be.
+
+The storage allocator new is implementation-dependent, but it must obey
+the following axiom: if
+@nobr{@i{new}@inlinefmtifelse{html,@U{2009},@tie{}}𝜎 ∈ @t{L}}, then
+@nobr{σ (@i{new}@inlinefmtifelse{html,@U{2009},@tie{}}𝜎∣@t{L})↓2 =
+@i{false}}.
+
+The definition of 𝜘 is omitted because an accurate definition of 𝜘 would
+complicate the semantics without being very interesting.
+
+If P is a program in which all variables are defined before being
+referenced or assigned, then the meaning of P is
+
+@display
+𝜀⟦@t{((@syntax{lambda} (@r{I*}) @r{P′}) @angle{undefined} @value{defdots})}⟧
+@end display
+
+where I* is the sequence of variables defined in P, P′ is the sequence
+of expressions obtained by replacing every definition in P by an
+assignment, @angle{undefined} is an expression that evaluates to
+undefined, and 𝜀 is the semantic function that assigns meaning to
+expressions.
+
+@node Abstract syntax
+@subsection Abstract syntax
+@table @asis
+@item K ∈ Con
+constants, including quotations
+@item I ∈ Ide
+identifiers (variables)
+@item E ∈ Exp
+expressions
+@item Γ ∈ Com = Exp
+commands
+@end table
+
+@example grammar
+@r{Exp} @longarrow{} @r{K} | @r{I} | (@r{@parzero{E}} @r{E*})
+    | (lambda (@r{I*}) @r{Γ*} @r{@parzero{E}})
+    | (lambda (@r{I*} . @r{I}) @r{Γ*} @r{@parzero{E}})
+    | (lambda @r{I} @r{Γ*} @r{@parzero{E}})
+    | (if @r{@parzero{E}} @r{@parI{E}} @r{@parII{E}}) | (if @r{@parzero{E}} @r{@parI{E}})
+    | (set! @r{I} @r{E})
+@end example
+
+@node Domain equations
+@subsection Abstract syntax
+@ifhtml
+@multitable @columnfractions .03 .03 .04 .63 .27
+@item 𝛼 @tab ∈ @tab @t{L} @tab @tab locations
+@item 𝜐 @tab ∈ @tab @t{N} @tab @tab natural numbers
+@item @tab @tab @t{T} @tab = @{@i{false, true}@} @tab booleans
+@item @tab @tab @t{Q} @tab @tab symbols
+@item @tab @tab @t{H} @tab @tab characters
+@item @tab @tab @t{R} @tab @tab numbers
+@item @tab @tab @t{@parp{E}} @tab = @t{L} × @t{L} × @t{T} @tab pairs
+@item @tab @tab @t{@parv{E}} @tab = @t{L*} × @t{T} @tab vectors
+@item @tab @tab @t{@pars{E}} @tab = @t{L*} × @t{T} @tab strings
+
+@item @tab @tab @t{M} @tab
+= @{@i{false, true, null, undefined, unspecified}@}
+@tab miscellaneous
+
+@item 𝜙 @tab ∈ @tab @t{F} @tab
+= @t{L} × (@t{E}* @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C})
+@tab procedure values
+
+@item 𝜖 @tab ∈ @tab @t{E} @tab
+= @t{Q} + @t{H} + @t{R} + @t{@parp{E}} + @t{@parv{E}} + @t{@pars{E}} +
+@t{M} + @t{F}
+@tab expressed values
+
+@item 𝜎 @tab ∈ @tab @t{S} @tab = @t{L} @arrow{} (@t{E} × @t{T}) @tab stores
+@item 𝜌 @tab ∈ @tab @t{U} @tab = Ide @arrow{} @t{L} @tab environments
+@item 𝜃 @tab ∈ @tab @t{C} @tab = @t{S} @arrow{} @t{A} @tab command conts
+@item 𝜅 @tab ∈ @tab @t{K} @tab = @t{E}* @arrow{} @t{C} @tab expression conts
+@item @tab @tab @t{A} @tab @tab answers
+@item @tab @tab @t{X} @tab @tab errors
+@item 𝜔 @tab ∈ @tab @t{P} @tab
+= (@t{F} × @t{F} × @t{P}) + @{@i{root}@}
+@tab dynamic points
+@end multitable
+@end ifhtml
+
+@node Semantic functions
+@subsection Semantic functions

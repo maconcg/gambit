@@ -38,7 +38,9 @@ r7rs-deps = toolshed/macros+vars.txi r7rs/bibliography.txi \
  r7rs/procedures/6.11_exceptions.txi \
  r7rs/procedures/6.12_environments-and-evaluation.txi \
  r7rs/procedures/6.13_input-and-output.txi \
- r7rs/procedures/6.14_system-interface.txi
+ r7rs/procedures/6.14_system-interface.txi \
+ r7rs/prose/7.1_formal-syntax.txi \
+ r7rs/prose/7.2_formal-semantics.txi
 
 r7rs-annotated = \
  r7rs/prose/a/0_summary.txi \
@@ -62,7 +64,9 @@ r7rs-annotated = \
  r7rs/procedures/a/6.11_exceptions.txi \
  r7rs/procedures/a/6.12_environments-and-evaluation.txi \
  r7rs/procedures/a/6.13_input-and-output.txi \
- r7rs/procedures/a/6.14_system-interface.txi
+ r7rs/procedures/a/6.14_system-interface.txi \
+ r7rs/prose/a/7.1_formal-syntax.txi \
+ r7rs/prose/a/7.2_formal-semantics.txi
 
 set-scm_to_html = \
 if test -x scm-to-html; then\
@@ -374,6 +378,12 @@ r7rs/prose/a/5_program-structure.txi: r7rs/prose/5_program-structure.txi
 
 r7rs/prose/a/6_standard-procedures.txi: r7rs/prose/6_standard-procedures.txi
 	readonly txi=6_standard-procedures.txi && ${annotate-r7rs-prose-file}
+
+r7rs/prose/a/7.1_formal-syntax.txi: r7rs/prose/7.1_formal-syntax.txi
+	readonly txi=7.1_formal-syntax.txi && ${annotate-r7rs-prose-file}
+
+r7rs/prose/a/7.2_formal-semantics.txi: r7rs/prose/7.2_formal-semantics.txi
+	readonly txi=7.2_formal-semantics.txi && ${annotate-r7rs-prose-file}
 
 r7rs/r7rs.txi: ${r7rs-deps} ${adorn-lib} ${r7rs-annotated} \
  r7rs/r7rs-pristine.txi

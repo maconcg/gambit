@@ -73,6 +73,8 @@
 @include procedures/6.12_environments-and-evaluation.txi
 @include procedures/6.13_input-and-output.txi
 @include procedures/6.14_system-interface.txi
+@include prose/7.1_formal-syntax.txi
+@include prose/7.2_formal-semantics.txi
 
 @c @node General Index
 @c @unnumbered General Index

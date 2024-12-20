@@ -1,7 +1,7 @@
 @node Environments and evaluation
 @section Environments and evaluation
 
-@deffn {eval library procedure} environment @pari{list} @value{defdots}
+@deffn {eval library procedure} environment @parI{list} @value{defdots}
 
 This procedure returns a specifier for the environment that results by
 starting with an empty environment and then importing each @var{list},

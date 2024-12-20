@@ -1,0 +1,705 @@
+@node Formal syntax and semantics
+@chapter Formal syntax and semantics
+@node Formal syntax
+@section Formal syntax
+
+This section provides a formal syntax for Scheme written in an extended
+@acronym{BNF,Backus-Naur Form}.
+
+All spaces in the grammar are for legibility.  Case is not significant
+except in the definitions of @angle{letter}, @angle{character name} and
+@angle{mnemonic escape}; for example, @code{#x1A} and @code{#X1a} are
+equivalent, but @code{foo} and @code{Foo} and @code{#\space} and
+@code{#\Space} are distinct.  @angle{empty} stands for the empty string.
+
+@c The following extensions to BNF are used to make the description
+@c more concise: @arbno{@svar{thing}} means zero or more occurrences
+@c of @svar{thing}; and @atleastone{@svar{thing}} means at least one
+@c @svar{thing}.
+
+@c @node Lexical structure
+@c @subsection Lexical structure
+
+@c @cindex token
+
+@c This section describes how individual tokens (identifiers, numbers,
+@c etc.) are formed from sequences of characters.  The following sections
+@c describe how expressions and programs are formed from sequences
+@c of tokens.
+
+@c @svar{Intertoken space} can occur on either side of any token, but
+@c not within a token.
+
+@c Identifiers that do not begin with a vertical line are terminated by
+@c a @svar{delimiter} or by the end of the input.  So are dot, numbers,
+@c characters, and booleans.  Identifiers that begin with a vertical
+@c line are terminated by another vertical line.
+
+@c The following four characters from the ASCII repertoire are reserved
+@c for future extensions to the language: @code{[ ] @{ @}}
+
+@c In addition to the identifier characters of the ASCII repertoire
+@c specified below, Scheme implementations may permit any additional
+@c repertoire of Unicode characters to be employed in identifiers,
+@c provided that each such character has a Unicode general category of Lu,
+@c Ll, Lt, Lm, Lo, Mn, Mc, Me, Nd, Nl, No, Pd, Pc, Po, Sc, Sm, Sk, So,
+@c or Co, or is U+200C or U+200D (the zero-width non-joiner and joiner,
+@c respectively, which are needed for correct spelling in Persian, Hindi,
+@c and other languages).  However, it is an error for the first character
+@c to have a general category of Nd, Mc, or Me.  It is also an error to
+@c use a non-Unicode character in symbols or identifiers.
+
+@c All Scheme implementations must permit the escape sequence
+@c @code{\x}@svar{hexdigits}@code{;} to appear in Scheme identifiers
+@c that are enclosed in vertical lines. If the character with the given
+@c Unicode scalar value is supported by the implementation, identifiers
+@c containing such a sequence are equivalent to identifiers containing
+@c the corresponding character.
+
+@c @cindex identifier
+@c @cindex comment
+
+@c @c TODO: Better alignment in output.
+@c @indentedblock
+
+@c @svar{token} @expansion{} @svar{identifier} | @svar{boolean}
+@c     | @svar{number} | @svar{character} | @svar{string}
+@c     | @code{(} | @code{)} | @code{@hashchar{}(} | @code{@hashchar{}u8}
+@c     | @code{'}
+@c     | @code{`} | @code{,} | @code{,@@} | @code{.}
+
+@c @svar{delimiter} @expansion{} @svar{whitespace} | @svar{vertical line}
+@c     | @code{(} | @code{)} | @code{"} | @code{;}
+
+@c @svar{intraline whitespace} @expansion{} @svar{space or tab}
+
+@c @svar{whitespace} @expansion{} @svar{intraline whitespace}
+@c     | @svar{line ending}
+
+@c @svar{vertical line} @expansion{} @code{|}
+
+@c @svar{line ending} @expansion{} @svar{newline}
+@c     | @svar{return} @svar{newline} | @svar{return}
+
+@c @svar{comment} @expansion{} @code{;}
+@c       @pseudoprod{all subsequent characters up to a line ending}
+@c     | @svar{nested comment}
+@c     | @code{@hashchar{};} @svar{intertoken space} @svar{datum}
+
+@c @svar{nested comment} @expansion{}
+@c       @code{@hashchar{}|} @svar{comment text}
+@c         @arbno{@svar{comment cont}} @code{|@hashchar{}}
+
+@c @svar{comment text} @expansion{}
+@c   @pseudoprod{character sequence not containing @code{@hashchar{}|}
+@c               or @code{|@hashchar{}}}
+
+@c @svar{comment cont} @expansion{} @svar{nested comment}
+@c     @svar{comment text}
+
+@c @svar{directive} @expansion{} @code{@hashchar{}!fold-case}
+@c     | @code{@hashchar{}!no-fold-case}
+
+@c @end indentedblock
+
+@c Note that it is ungrammatical to follow a @svar{directive} with
+@c anything but a @svar{delimiter} or the end of file.
+
+@c @indentedblock
+
+@c @svar{atmosphere} @expansion{} @svar{whitespace} ∣ @svar{comment}
+@c     ∣ @svar{directive}
+
+@c @svar{intertoken space} @expansion{} @arbno{@svar{atmosphere}}
+
+@c @end indentedblock
+
+@c Note that @code{+i}, @code{-i} and @svar{infnan} below are exceptions
+@c to the @svar{peculiar identifier} rule; they are parsed as numbers, not
+@c identifiers.
+
+@c @indentedblock
+
+@c @svar{identifier} @expansion{} @svar{initial} @arbno{@svar{subsequent}}
+@c     | @svar{vertical line} @arbno{@svar{symbol element}}
+@c         @svar{vertical line}
+@c     | @svar{peculiar identifier}
+
+@c @svar{initial} @expansion{} @svar{letter} | @svar{special initial}
+
+@c @svar{letter} @expansion{} @code{a} | @code{b} | @code{c}
+@c     | @dots{} | @code{z}
+@c     | @code{A} | @code{B} | @code{C} | @dots{} | @code{Z}
+
+@c @svar{special initial} @expansion{} @code{!} | @code{$} | @code{%}
+@c     | @code{&} | @code{*} | @code{/} | @code{:} | @code{<} | @code{=}
+@c     | @code{>} | @code{?} | @code{^} | @code{_} | @code{~}
+
+@c @svar{subsequent} @expansion{} @svar{initial} | @svar{digit}
+@c     | @svar{special subsequent}
+
+@c @svar{digit} @expansion{} @code{0} | @code{1} | @code{2} | @code{3}
+@c     | @code{4} | @code{5} | @code{6} | @code{7} | @code{8} | @code{9}
+
+@c @svar{hex digit} @expansion{} @svar{digit} | @code{a} | @code{b}
+@c     | @code{c} | @code{d} | @code{e} | @code{f}
+
+@c @svar{explicit sign} @expansion{} @code{+} | @code{-}
+
+@c @svar{special subsequent} @expansion{} @svar{explicit sign} | @code{.}
+@c     | @code{@@}
+
+@c @svar{inline hex escape} @expansion{}
+@c       @code{\x}@svar{hex scalar value}@code{;}
+
+@c @svar{hex scalar value} @expansion{} @atleastone{@svar{hex digit}}
+
+@c @svar{mnemonic escape} @expansion{} @code{\a} | @code{\b} | @code{\t}
+@c     | @code{\n} | @code{\r}
+
+@c @svar{peculiar identifier} @expansion{} @svar{explicit sign}
+@c     | @svar{explicit sign} @svar{sign subsequent}
+@c         @arbno{@svar{subsequent}}
+@c     | @svar{explicit sign} @code{.} @svar{dot subsequent}
+@c       @arbno{@svar{subsequent}}
+@c     | @code{.} @svar{dot subsequent} @arbno{@svar{subsequent}}
+
+@c @svar{dot subsequent} @expansion{} @svar{sign subsequent} | @code{.}
+
+@c @svar{sign subsequent} @expansion{} @svar{initial} | @svar{explicit sign}
+@c     | @code{@@}
+
+@c @svar{symbol element} @expansion{}
+@c     @pseudoprod{any character other than @svar{vertical line} or
+@c                 @code{@backslashchar{}}}
+@c     | @svar{inline hex escape} | @svar{mnemonic escape} | @code{|}
+
+@c @svar{boolean} @expansion{} @code{@hashchar{}t} | @code{@hashchar{}f}
+@c     | @code{@hashchar{}true}
+@c     | @code{@hashchar{}false}
+
+@c @svar{character} @expansion{} @hashchar{}\ @svar{any character}
+@c     | @hashchar{}\ @svar{character name}
+@c     | @hashchar{}\x@svar{hex scalar value}
+
+@c @svar{character name} @expansion{} @code{alarm} | @code{backspace}
+@c    | @code{delete} | @code{escape} | @code{newline} | @code{null}
+@c    | @code{return} | @code{space} | @code{tab}
+
+@c @svar{string} @expansion{} @code{"} @arbno{@svar{string element}} @code{"}
+
+@c @svar{string element} @expansion{}
+@c       @pseudoprod{any character other than @code{"} or
+@c                   @code{@backslashchar{}}}
+@c     | @svar{mnemonic escape} | @code{\"} | @code{\\}
+@c     | \@arbno{@svar{intraline whitespace}}@svar{line ending}
+@c       @arbno{@svar{intraline whitespace}}
+@c     | @svar{inline hex escape}
+
+@c @svar{bytevector} @expansion{} \@hashchar{}u8(@arbno{@svar{byte}})
+
+@c @svar{byte} @expansion{} @pseudoprod{any exact integer between 0 and 255}
+
+@c @end indentedblock
+
+@c The following rules for @svar{num R}, @svar{complex R}, @svar{real R},
+@c @svar{ureal R}, @svar{uinteger R}, and @svar{prefix R} are implicitly
+@c replicated for R = 2, 8, 10, and 16. There are no rules for
+@c @svar{decimal 2}, @svar{decimal 8}, and @svar{decimal 16}, which means
+@c that numbers containing decimal points or exponents are always in
+@c decimal radix. Although not shown below, all alphabetic characters used
+@c in the grammar of numbers can appear in either upper or lower case.
+
+@c @indentedblock
+
+@c @svar{num @var{R}} @expansion{} @svar{prefix @var{R}}
+@c     @svar{complex @var{R}}
+
+@c @svar{complex @var{R}} @expansion{} @svar{real @var{R}}
+@c     | @svar{real @var{R}} @code{@@} @svar{real @var{R}}
+@c     | @svar{real @var{R}} @code{+} @svar{ureal @var{R}} @code{i}
+@c     | @svar{real @var{R}} @code{-} @svar{ureal @var{R}} @code{i}
+@c     | @svar{real @var{R}} @code{+ i}
+@c     | @svar{real @var{R}} @code{- i}
+@c     | @svar{real @var{R}} @svar{infnan} @code{i}
+@c     | @code{+} @svar{ureal @var{R}} @code{i}
+@c     | @code{-} @svar{ureal @var{R}} @code{i}
+@c     | @svar{infnan} @code{i}
+@c     | @code{+ i}
+@c     | @code{- i}
+
+@c @svar{real @var{R}} @expansion{} @svar{sign} @svar{ureal @var{R}}
+@c     | @svar{infnan}
+
+@c @svar{ureal @var{R}} @expansion{} @svar{uinteger @var{R}}
+@c     | @svar{uinteger @var{R}} @code{/} @svar{uinteger @var{R}}
+@c     | @svar{decimal @var{R}}
+
+@c @svar{decimal 10} @expansion{} @svar{uinteger 10} @svar{suffix}
+@c     | @code{.} @atleastone{@svar{digit 10}} @svar{suffix}
+@c     | @atleastone{@svar{digit 10}} @code{.} @arbno{@svar{digit 10}}
+@c       @svar{suffix}
+
+@c @svar{uinteger @var{R}} @expansion{} @atleastone{@svar{digit @var{R}}}
+
+@c @svar{prefix @var{R}} @expansion{} @svar{radix @var{R}} @svar{exactness}
+@c     | @svar{exactness} @svar{radix @var{R}}
+
+@c @svar{infnan} @expansion{} @code{+inf.0} | @code{-inf.0}
+@c     | @code{+nan.0} | @code{-nan.0}
+
+@c @end indentedblock
+
+@c @sharpindex{b}
+@c @sharpindex{o}
+@c @sharpindex{x}
+@c @sharpindex{e}
+@c @sharpindex{i}
+
+@c @indentedblock
+
+@c @svar{suffix} @expansion{} @svar{empty}
+@c     | @svar{exponent marker} @svar{sign} @atleastone{@svar{digit 10}}
+
+@c @svar{exponent marker} @expansion{} @code{e}
+
+@c @svar{sign} @expansion{} @svar{empty} | @code{+} | @code{-}
+
+@c @svar{exactness} @expansion{} @svar{empty} | @code{@hashchar{}i}
+@c     | @code{@hashchar{}e}
+
+@c @svar{radix 2} @expansion{} @code{@hashchar{}b}
+
+@c @svar{radix 8} @expansion{} @code{@hashchar{}o}
+
+@c @svar{radix 10} @expansion{} @svar{empty} | @code{@hashchar{}d}
+
+@c @svar{radix 16} @expansion{} @code{@hashchar{}x}
+
+@c @svar{digit 2} @expansion{} @code{0} | @code{1}
+
+@c @svar{digit 8} @expansion{} @code{0} | @code{1} | @code{2} | @code{3}
+@c     | @code{4} | @code{5} | @code{6} | @code{7}
+
+@c @svar{digit 10} @expansion{} @svar{digit}
+
+@c @svar{digit 16} @expansion{} @svar{digit 10} | @code{a} | @code{b}
+@c     | @code{c} | @code{d} | @code{e} | @code{f}
+
+@c @end indentedblock
+
+@c @node External representations formal
+@c @subsection External representations
+
+@c @svar{Datum} is what the read procedure (@ref{Input}) successfully
+@c parses. Note that any string that parses as an @svar{expression} will
+@c also parse as a @svar{datum}.
+
+@c @indentedblock
+
+@c @svar{datum} @expansion{} @svar{simple datum} ∣ @svar{compound datum}
+@c     ∣ @svar{label} @code{=} @svar{datum} ∣ @svar{label} @code{@hashchar{}}
+
+@c @svar{simple datum} @expansion{} @svar{boolean} ∣ @svar{number}
+@c     ∣ @svar{character} ∣ @svar{string} ∣ @svar{symbol}
+@c     ∣ @svar{bytevector}
+
+@c @svar{symbol} @expansion{} @svar{identifier}
+
+@c @svar{compound datum} @expansion{} @svar{list} ∣ @svar{vector}
+@c     ∣ @svar{abbreviation}
+
+@c @svar{list} @expansion{} @code{(}@arbno{@svar{datum}}@code{)}
+@c     ∣ @code{(}@atleastone{@svar{datum}} @code{.} @svar{datum}@code{)}
+
+@c @svar{abbreviation} @expansion{} @svar{abbrev prefix} @svar{datum}
+
+@c @svar{abbrev prefix} @expansion{} @code{'} ∣ @code{`} ∣ @code{,}
+@c     ∣ @code{,@@}
+
+@c @svar{vector} @expansion{} @code{@hashchar{}(}@arbno{@svar{datum}}@code{)}
+
+@c @svar{label} @expansion{} @code{@hashchar{}} @svar{uinteger 10}
+
+@c @end indentedblock
+
+@c @node Expressions formal
+@c @subsection Expressions
+
+@c The definitions in this and the following subsections assume that all
+@c the syntax keywords defined in this report have been properly imported
+@c from their libraries, and that none of them have been redefined or
+@c shadowed.
+
+@c @indentedblock
+
+@c @svar{expression} @expansion{} @svar{identifier}@*
+@c @ @ | @svar{literal}@*
+@c @ @ | @svar{procedure call}@*
+@c @ @ | @svar{lambda expression}@*
+@c @ @ | @svar{conditional}@*
+@c @ @ | @svar{assignment}@*
+@c @ @ | @svar{derived expression}@*
+@c @ @ | @svar{macro use}@*
+@c @ @ | @svar{macro block}@*
+@c @ @ | @svar{includer}
+
+@c @sp 1
+
+@c @svar{literal} @expansion{} @svar{quotation} | @svar{self-evaluating}
+
+@c @svar{self-evaluating} @expansion{} @svar{boolean} | @svar{number}
+@c     | @svar{vector} | @svar{character} | @svar{string} | @svar{bytevector}
+
+@c @svar{quotation} @expansion{} @code{'}@svar{datum}
+@c     | @code{(quote} @svar{datum}@code{)}
+
+@c @svar{procedure call} @expansion{}
+@c     @code{(}@svar{operator} @arbno{@svar{operand}}@code{)}
+
+@c @svar{operator} @expansion{} @svar{expression}
+
+@c @svar{operand} @expansion{} @svar{expression}
+
+@c @sp 1
+
+@c @svar{lambda expression} @expansion{}
+@c     @code{(lambda} @svar{formals} @svar{body}@code{)}
+
+@c @svar{formals} @expansion{} @code{(}@arbno{@svar{identifier}}@code{)}
+@c     | @svar{identifier}
+@c     | @code{(}@atleastone{@svar{identifier}} @code{.}
+@c         @svar{identifier}@code{)}
+
+@c @svar{body} @expansion{} @arbno{@svar{definition}} @svar{sequence}
+
+@c @svar{sequence} @expansion{} @arbno{@svar{command}} @svar{expression}
+
+@c @svar{command} @expansion{} @svar{expression}
+
+@c @sp 1
+
+@c @svar{conditional} @expansion{}
+@c     @code{(if} @svar{test} @svar{consequent} @svar{alternate}@code{)}
+
+@c @svar{test} @expansion{} @svar{expression}
+
+@c @svar{consequent} @expansion{} @svar{expression}
+
+@c @svar{alternate} @expansion{} @svar{expression} | @svar{empty}
+
+@c @sp 1
+
+@c @svar{assignment} @expansion{}
+@c     @code{(set!} @svar{identifier} @svar{expression}@code{)}
+
+@c @sp 1
+
+@c @c This is going to need some serious line-breaking.
+@c @svar{derived expression} @expansion{}
+@c       @code{(cond }@atleastone{@svar{cond clause}}@code{)}@*
+@c @ @ | @code{(cond }@arbno{@svar{cond clause}} @code{(else}
+@c         @svar{sequence})@code{)}@*
+@c @ @ | @code{(case }@svar{expression}
+@c            @atleastone{@svar{case clause}}@code{)}@*
+@c @ @ | @code{(case }@svar{expression}
+@c            @arbno{@svar{case clause}}
+@c            @code{(else }@svar{sequence})@code{)}@*
+@c @ @ | @code{(case }@svar{expression}
+@c            @arbno{@svar{case clause}}
+@c            @code{(else =>} @svar{recipient})@code{)}@*
+@c @ @ | @code{(and }@arbno{@svar{test}}@code{)}@*
+@c @ @ | @code{(or }@arbno{@svar{test}}@code{)}@*
+@c @ @ | @code{(when }@svar{test} @svar{sequence}@code{)}@*
+@c @ @ | @code{(unless }@svar{test} @svar{sequence}@code{)}@*
+@c @ @ | @code{(let }(@arbno{@svar{binding spec}}) @svar{body}@code{)}@*
+@c @ @ | @code{(let }@svar{identifier} (@arbno{@svar{binding spec}})
+@c         @svar{body}@code{)}@*
+@c @ @ | @code{(let* }(@arbno{@svar{binding spec}}) @svar{body}@code{)}@*
+@c @ @ | @code{(letrec }(@arbno{@svar{binding spec}}) @svar{body}@code{)}@*
+@c @ @ | @code{(letrec* }(@arbno{@svar{binding spec}}) @svar{body}@code{)}@*
+@c @ @ | @code{(let-values }(@arbno{@svar{mv binding spec}})
+@c         @svar{body}@code{)}@*
+@c @ @ | @code{(let*-values }(@arbno{@svar{mv binding spec}})
+@c         @svar{body}@code{)}@*
+@c @ @ | @code{(begin }@svar{sequence}@code{)}@*
+@c @ @ | @code{(do }(@arbno{@svar{iteration spec}}@code{)}
+@c                (@svar{test} @svar{do result}@code{)}
+@c            @arbno{@svar{command}}@code{)}@*
+@c @ @ | @code{(delay }@svar{expression}@code{)}@*
+@c @ @ | @code{(delay-force }@svar{expression}@code{)}@*
+@c @ @ | @code{(parameterize }(@arbno{(@svar{expression}
+@c         @svar{expression})}@code{)} @svar{body}@code{)}@*
+@c @ @ | @code{(guard }(@svar{identifier} @arbno{@svar{cond clause}})
+@c         @svar{body}@code{)}@*
+@c @ @ | @svar{quasiquotation}@*
+@c @ @ | @code{(case-lambda }@arbno{@svar{case-lambda clause}}@code{)}
+
+@c @sp 1
+
+@c @svar{cond clause} @expansion{} @code{(}@svar{test} @svar{sequence}@code{)}
+@c     | @code{(}@svar{test}@code{)}
+@c     | @code{(}@svar{test} @code{=>} @svar{recipient}@code{)}
+
+@c @svar{recipient} @expansion{} @svar{expression}
+
+@c @svar{case clause} @expansion{}
+@c       @code{((}@arbno{@svar{datum}}@code{)} @svar{sequence}@code{)}
+@c     | @code{((}@arbno{@svar{datum}}@code{) =>} @svar{recipient}@code{)}
+
+@c @svar{binding spec} @expansion{} @code{(}@svar{identifier}
+@c       @svar{expression}@code{)}
+
+@c @svar{mv binding spec} @expansion{} @code{(}@svar{formals}
+@c       @svar{expression}@code{)}
+
+@c @svar{iteration spec} @expansion{} @code{(}@svar{identifier} @svar{init}
+@c      @svar{step}@code{)}
+@c    | @code{(}@svar{identifier} @svar{init}@code{)}
+
+@c @svar{case-lambda clause} @expansion{} @code{(}@svar{formals}
+@c      @svar{body}@code{)}
+
+@c @svar{init} @expansion{} @svar{expression}
+
+@c @svar{step} @expansion{} @svar{expression}
+
+@c @svar{do result} @expansion{} @svar{sequence} | @svar{empty}
+
+@c @sp 1
+
+@c @svar{macro use} @expansion{} @code{(}@svar{keyword}
+@c       @arbno{@svar{datum}}@code{)}
+
+@c @svar{keyword} @expansion{} @svar{identifier}
+
+@c @svar{macro block} @expansion{}
+@c       @code{@code{(}let-syntax }@code{(}@arbno{@svar{syntax spec}}@code{)}
+@c         @svar{body}@code{)}
+@c     | @code{(letrec-syntax }@code{(}@arbno{@svar{syntax spec}}@code{)}
+@c         @svar{body}@code{)}
+
+@c @svar{syntax spec} @expansion{} @code{(}@svar{keyword}
+@c       @svar{transformer spec}@code{)}
+
+@c @sp 1
+
+@c @svar{includer} @expansion{}
+@c    | @code{(include }@atleastone{@svar{string}}@code{)}
+@c    | @code{(include-ci }@atleastone{@svar{string}}@code{)}
+
+@c @end indentedblock
+
+@c @node Quasiquotations
+@c @subsection Quasiquotations
+
+@c The following grammar for quasiquote expressions is not context-free.
+@c It is presented as a recipe for generating an infinite number of
+@c production rules. Imagine a copy of the following rules for @var{D} =
+@c 1, 2, 3, @dots{}, where @var{D} is the nesting depth.
+
+@c @indentedblock
+@c @svar{quasiquotation} @expansion{} @svar{quasiquotation 1}
+
+@c @svar{qq template 0} @expansion{} @svar{expression}
+
+@c @svar{quasiquotation @var{D}} @expansion{}
+@c       @code{`}@svar{qq template @var{D}}
+@c     | @code{(quasiquote }@svar{qq template @var{D}}@code{)}
+
+@c @svar{qq template @var{D}} @expansion{} @svar{simple datum}
+@c     | @svar{list qq template @var{D}}
+@c     | @svar{vector qq template @var{D}}
+@c     | @svar{unquotation @var{D}}
+
+@c @svar{list qq template @var{D}} @expansion{}
+@c       @code{(}@arbno{@svar{qq template or splice @var{D}}}@code{)}
+@c     | @code{(}@atleastone{@svar{qq template or splice @var{D}}} @code{.}
+@c         @svar{qq template @var{D}}@code{)}
+@c     | @code{'}@svar{qq template @var{D}}
+@c     | @svar{quasiquotation @var{D}+1}
+
+@c @svar{vector qq template @var{D}} @expansion{}
+@c       @code{@hashchar{}(}@arbno{@svar{qq template or
+@c         splice @var{D}}}@code{)}
+
+@c @svar{unquotation @var{D}} @expansion{}
+@c       @code{,}@svar{qq template @var{D}@minus{}1}
+@c     | @code{(unquote }@svar{qq template @var{D}@minus{}1}@code{)}
+
+@c @svar{qq template or splice @var{D}} @expansion{}
+@c       @svar{qq template @var{D}}
+@c     | @svar{splicing unquotation @var{D}}
+
+@c @svar{splicing unquotation @var{D}} @expansion{}
+@c       @code{,@@}@svar{qq template @var{D}@minus{}1}
+@c     | @code{(unquote-splicing }@svar{qq template @var{D}@minus{}1})
+
+@c @end indentedblock
+
+@c In @svar{quasiquotation}s, a @svar{list qq template @var{D}} can
+@c sometimes be confused with either an @svar{unquotation @var{D}} or a
+@c @svar{splicing unquotation @var{D}}.
+
+@c The interpretation as an @svar{unquotation} or
+@c @svar{splicing unquotation @var{D}} takes precedence.
+
+@c @node Transformers
+@c @subsection Transformers
+
+@c Note: Though this grammar does not say so, a top-level
+@c @code{syntax-rules} pattern must be a list pattern, not a vector
+@c pattern or an identifier pattern.
+
+@c @indentedblock
+
+@c @svar{transformer spec} @expansion{}
+@c       @code{(syntax-rules }(@arbno{@svar{identifier}}@code{)}
+@c         @arbno{@svar{syntax rule}}@code{)}
+@c     | @code{(syntax-rules }@svar{identifier}
+@c         @code{(}@arbno{@svar{identifier}}@code{)}
+@c         @arbno{@svar{syntax rule}}@code{)}
+
+@c @svar{syntax rule} @expansion{}
+@c       @code{(}@svar{pattern} @svar{template}@code{)}
+
+@c @svar{pattern} @expansion{} @svar{pattern identifier}@*
+@c @ @ | @svar{underscore}@*
+@c @ @ | @code{(}@arbno{@svar{pattern}}@code{)}@*
+@c @ @ | @code{(}@atleastone{@svar{pattern}} @code{.} @svar{pattern}@code{)}@*
+@c @ @ | @code{(}@arbno{@svar{pattern}} @svar{pattern} @svar{ellipsis}
+@c         @arbno{@svar{pattern}}@code{)}@*
+@c @ @ | @code{(}@arbno{@svar{pattern}} @svar{pattern} @svar{ellipsis}
+@c         @arbno{@svar{pattern}} @code{.} @svar{pattern}@code{)}@*
+@c @ @ | @code{@hashchar{}(}@arbno{@svar{pattern}}@code{)}@*
+@c @ @ | @code{@hashchar{}(}@arbno{@svar{pattern}} @svar{pattern}
+@c         @svar{ellipsis} @arbno{@svar{pattern}}@code{)}@*
+@c @ @ | @svar{pattern datum}
+
+@c @svar{pattern datum} @expansion{} @svar{string}
+@c     | @svar{character}
+@c     | @svar{boolean}
+@c     | @svar{number}
+@c     | @svar{bytevector}
+
+@c @svar{template} @expansion{} @svar{pattern identifier}
+@c     | @code{(}@arbno{@svar{template element}}@code{)}
+@c     | @code{(}@atleastone{@svar{template element}} @code{.}
+@c         @svar{template}@code{)}
+@c     | @code{@hashchar{}(}@arbno{@svar{template element}}@code{)}
+@c     | @svar{template datum}
+
+@c @svar{template element} @expansion{} @svar{template}
+@c     | @svar{template} @svar{ellipsis}
+
+@c @svar{template datum} @expansion{} @svar{pattern datum}
+
+@c @c Don't use @dots{} for the ellipsis identifier; this will emit an
+@c @c ellipsis character in most output formats, which is wrong here.
+@c @svar{pattern identifier} @expansion{}
+@c       @svar{any identifier except @code{...}}
+
+@c @svar{ellipsis} @expansion{} @svar{an identifier defaulting to @code{...}}
+
+@c @svar{underscore} @expansion{} @svar{the identifier @code{_}}
+
+@c @end indentedblock
+
+@c @node Programs and definitions
+@c @subsection Programs and definitions
+
+@c @indentedblock
+
+@c @svar{program} @expansion{}
+@c    @atleastone{@svar{import declaration}}
+@c    @atleastone{@svar{command or definition}}
+
+@c @svar{command or definition} @expansion{} @svar{command}
+@c     | @svar{definition}
+@c     | @code{(begin }@atleastone{@svar{command or definition}}@code{)}
+
+@c @svar{definition} @expansion{}
+@c       @code{(define }@svar{identifier} @svar{expression}@code{)}@*
+@c @ @ | @code{(define }(@svar{identifier} @svar{def formals}@code{)}
+@c         @svar{body}@code{)}@*
+@c @ @ | @svar{syntax definition}@*
+@c @ @ | @code{(define-values }@svar{formals} @svar{body}@code{)}@*
+@c @ @ | @code{(define-record-type }@svar{identifier}
+@c         @svar{constructor} @svar{identifier}
+@c         @arbno{@svar{field spec}}@code{)}@*
+@c @ @ | @code{(begin }@arbno{@svar{definition}}@code{)}
+
+@c @svar{def formals} @expansion{} @arbno{@svar{identifier}}
+@c     | @arbno{@svar{identifier}} @code{.} @svar{identifier}
+
+@c @svar{constructor} @expansion{}
+@c       @code{(}@svar{identifier} @arbno{@svar{field name}}@code{)}
+
+@c @svar{field spec} @expansion{}
+@c       @code{(}@svar{field name} @svar{accessor}@code{)}
+@c     | @code{(}@svar{field name} @svar{accessor} @svar{mutator}@code{)}
+
+@c @svar{field name} @expansion{} @svar{identifier}
+
+@c @svar{accessor} @expansion{} @svar{identifier}
+
+@c @svar{mutator} @expansion{} @svar{identifier}
+
+@c @svar{syntax definition} @expansion{}
+@c     @code{(define-syntax }@svar{keyword} @svar{transformer spec}@code{)}
+
+@c @end indentedblock
+
+@c @node Libraries formal
+@c @subsection Libraries
+
+@c @indentedblock
+
+@c @svar{library} @expansion{}
+@c       @code{(define-library }@svar{library name}
+@c         @arbno{@svar{library declaration}}@code{)}
+
+@c @svar{library name} @expansion{}
+@c       @code{(}@atleastone{@svar{library name part}}@code{)}
+
+@c @svar{library name part} @expansion{} @svar{identifier}
+@c     | @svar{uinteger 10}
+
+@c @svar{library declaration} @expansion{}
+@c       @code{(export }@arbno{@svar{export spec}}@code{)}@*
+@c @ @   | @svar{import declaration}@*
+@c @ @   | @code{(begin }@arbno{@svar{command or definition}}@code{)}@*
+@c @ @   | @svar{includer}@*
+@c @ @   | @code{(include-library-declarations}
+@c           @atleastone{@svar{string}}@code{)}@*
+@c @ @   | @code{(cond-expand}
+@c           @atleastone{@svar{cond-expand clause}}@code{)}@*
+@c @ @   | @code{(cond-expand}
+@c           @atleastone{@svar{cond-expand clause}}
+@c           @code{(else }@arbno{@svar{library declaration}})@code{)}
+
+@c @svar{import declaration} @expansion{}
+@c       @code{(import }@atleastone{@svar{import set}}@code{)}
+
+@c @svar{export spec} @expansion{} @svar{identifier}
+@c    | @code{(rename }@svar{identifier} @svar{identifier}@code{)}
+
+@c @svar{import set} @expansion{} @svar{library name}@*
+@c @ @ | @code{(only }@svar{import set}
+@c        @atleastone{@svar{identifier}}@code{)}@*
+@c @ @ | @code{(except }@svar{import set}
+@c        @atleastone{@svar{identifier}}@code{)}@*
+@c @ @ | @code{(prefix }@svar{import set} @svar{identifier}@code{)}@*
+@c @ @ | @code{(rename }@svar{import set}
+@c        @atleastone{(@svar{identifier} @svar{identifier})}@code{)}
+
+@c @svar{cond-expand clause} @expansion{}
+@c    (@svar{feature requirement} @arbno{@svar{library declaration}}@code{)}
+
+@c @svar{feature requirement} @expansion{} @svar{identifier}
+@c @ @ | @code{(library }@svar{library name}@code{)}@*
+@c @ @ | @code{(and }@arbno{@svar{feature requirement}}@code{)}@*
+@c @ @ | @code{(or }@arbno{@svar{feature requirement}}@code{)}@*
+@c @ @ | @code{(not }@svar{feature requirement}@code{)}
+
+@c @end indentedblock

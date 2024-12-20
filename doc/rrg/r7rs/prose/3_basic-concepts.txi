@@ -280,10 +280,10 @@ shown here.
 
 @item
 If a @code{cond} or @code{case} expression is in a tail context, and has
-a clause of the form @t{(@sv{@pari{expression}} =>
-@sv{@parii{expression}})} then the (implied) call to the procedure that
-results from the evaluation of @angle{@parii{expression}} is in a tail
-context.  @angle{@parii{expression}} itself is not in a tail context.
+a clause of the form @t{(@sv{@parI{expression}} =>
+@sv{@parII{expression}})} then the (implied) call to the procedure that
+results from the evaluation of @angle{@parII{expression}} is in a tail
+context.  @angle{@parII{expression}} itself is not in a tail context.
 @end itemize
 
 Certain procedures defined in this report are also required to perform

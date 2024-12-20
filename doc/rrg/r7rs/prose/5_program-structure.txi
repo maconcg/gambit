@@ -16,10 +16,10 @@ outermost level of a @angle{program} and at the begin@value{shy}ning of
 a @angle{body}.
 
 At the outermost level of a program, @t{(begin @sv{expression or
-@pari{definition}} @value{defdots})} is equivalent to the sequence of
+@parI{definition}} @value{defdots})} is equivalent to the sequence of
 expressions and definitions in the @code{begin}.  Similarly, in a
-@angle{body}, @t{(begin @sv{@pari{definition}} @value{defdots})} is
-equivalent to the sequence @sv{@pari{definition}}
+@angle{body}, @t{(begin @sv{@parI{definition}} @value{defdots})} is
+equivalent to the sequence @sv{@parI{definition}}
 @value{defdots}@inlinefmtifelse{html,@U{2009},@tie{}}@.  Macros can expand
 into such @code{begin} forms.  For the formal definition, see 4.2.3.
 
@@ -66,8 +66,8 @@ one of the following forms:
 @t{@compound{@U{0028}}@aux{prefix} @sv{import set} @sv{identifier} @value{defdots}@compound{@U{0029}}}
 
 @item
-@t{@compound{@U{0028}}@aux{rename} @sv{import set} @compound{@U{0028}}@sv{@pari{identifier}}
-@sv{@parii{identifier}}@compound{@U{0029}} @value{defdots}@compound{@U{0029}}}
+@t{@compound{@U{0028}}@aux{rename} @sv{import set} @compound{@U{0028}}@sv{@parI{identifier}}
+@sv{@parII{identifier}}@compound{@U{0029}} @value{defdots}@compound{@U{0029}}}
 @end itemize
 
 In the first form, all of the identifiers in the named library's export
@@ -88,8 +88,8 @@ if any of the listed identifiers are not found in the original set.
 
 @item
 @code{rename} modifies the given @angle{import set}, replacing each
-instance of @angle{@pari{identifier}} with @angle{@parii{identifier}}.
-It is an error if any of the listed @angle{@pari{identifier}}s are not
+instance of @angle{@parI{identifier}} with @angle{@parII{identifier}}.
+It is an error if any of the listed @angle{@parI{identifier}}s are not
 found in the original set.
 
 @item
@@ -211,7 +211,7 @@ It is an error to define the same identifier more than once in the same
 @angle{body}.
 
 Wherever an internal definition can occur, @t{(begin
-@sv{@pari{definition}} @value{defdots})} is equiv@value{shy}alent to the
+@sv{@parI{definition}} @value{defdots})} is equiv@value{shy}alent to the
 sequence of definitions that form the body of the @code{begin}.
 
 @node Multiple-value definitions
@@ -458,17 +458,17 @@ A @angle{library declaration} is any of:
 @t{@compound{@U{0028}}@aux{begin} @sv{command or definition} @value{defdots}@compound{@U{0029}}}
 
 @item
-@t{@compound{@U{0028}}@aux{include} @sv{@pari{filename}} @sv{@parii{filename}} @value{defdots}@compound{@U{0029}}}
+@t{@compound{@U{0028}}@aux{include} @sv{@parI{filename}} @sv{@parII{filename}} @value{defdots}@compound{@U{0029}}}
 
 @item
-@t{@compound{@U{0028}}@aux{include-ci} @sv{@pari{filename}} @sv{@parii{filename}} @value{defdots}@compound{@U{0029}}}
+@t{@compound{@U{0028}}@aux{include-ci} @sv{@parI{filename}} @sv{@parII{filename}} @value{defdots}@compound{@U{0029}}}
 
 @item
-@t{@compound{@U{0028}}@aux{include-library-declarations} @sv{@pari{filename}}
-@sv{@parii{filename}} @value{defdots}@compound{@U{0029}}}
+@t{@compound{@U{0028}}@aux{include-library-declarations} @sv{@parI{filename}}
+@sv{@parII{filename}} @value{defdots}@compound{@U{0029}}}
 
 @item
-@t{@compound{@U{0028}}@aux{cond-expand} @sv{@pari{ce-clause}} @sv{@parii{ce-clause}} @value{defdots}@compound{@U{0029}}}
+@t{@compound{@U{0028}}@aux{cond-expand} @sv{@parI{ce-clause}} @sv{@parII{ce-clause}} @value{defdots}@compound{@U{0029}}}
 @end itemize
 
 An @code{export} declaration specifies a list of identifiers which can
@@ -481,16 +481,16 @@ forms:
 @angle{identifier}
 
 @item
-@t{@compound{@U{0028}}@aux{rename} @sv{@pari{identifier}} @sv{@parii{identifier}} @value{defdots}@compound{@U{0029}}}
+@t{@compound{@U{0028}}@aux{rename} @sv{@parI{identifier}} @sv{@parII{identifier}} @value{defdots}@compound{@U{0029}}}
 @end itemize
 
 In an @angle{export spec}, an @angle{identifier} names a single binding
 defined within or imported into the library, where the external name for
 the export is the same as the name of the binding within the library.  A
 @code{rename} spec exports the binding defined within or imported into
-the library and named by @angle{@pari{identifier}} in each
-@t{(@sv{@pari{identifier}} @sv{@parii{identifier}})} pairing, using
-@angle{@parii{identifier}} as the external name.
+the library and named by @angle{@parI{identifier}} in each
+@t{(@sv{@parI{identifier}} @sv{@parII{identifier}})} pairing, using
+@angle{@parII{identifier}} as the external name.
 
 An @code{import} declaration provides a way to import the identifiers
 exported by an@value{shy}other library.  It has the same syntax and

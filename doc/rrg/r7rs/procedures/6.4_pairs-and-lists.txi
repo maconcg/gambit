@@ -42,8 +42,8 @@ and are terminated by the empty list.
 @end quotation
 
 The most general notation (external representation) for Scheme pairs is
-the @quotedbl{dotted} notation @code{(@r{@vari{c}} . @r{@varii{c}})}
-where @vari{c} where is the value of the car field and @varii{c} is the
+the @quotedbl{dotted} notation @code{(@r{@varI{c}} . @r{@varII{c}})}
+where @varI{c} where is the value of the car field and @varII{c} is the
 value of the cdr field.  For example @code{(4 . 5)} is a pair whose car
 is 4 and whose cdr is 5.  Note that @code{(4 . 5)} is the external
 representation of a pair, not an expression that evaluates to a pair.
@@ -122,10 +122,10 @@ otherwise returns @code{#f}.
 @end lisp
 @end deffn
 
-@deffn procedure cons @pari{obj} @parii{obj}
+@deffn procedure cons @parI{obj} @parII{obj}
 
-Returns a newly allocated pair whose car is @vari{obj} and whose cdr is
-@varii{obj}.  The pair is guaranteed to be different (in the sense of
+Returns a newly allocated pair whose car is @varI{obj} and whose cdr is
+@varII{obj}.  The pair is guaranteed to be different (in the sense of
 @code{eqv?}) from every existing object.
 
 @lisp

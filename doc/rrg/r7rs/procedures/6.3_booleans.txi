@@ -64,7 +64,8 @@ The @code{boolean?} predicate returns @code{#t} if @var{obj} is either
 @end lisp
 @end deffn
 
-@deffn procedure boolean=? @pari{boolean} @parii{boolean} @pariii{boolean} @value{defdots}
+@deffn procedure boolean=? @
+@parI{boolean} @parII{boolean} @parIII{boolean} @value{defdots}
 
 Returns @code{#t} if all the arguments are
 @code{#t} or all are @code{#f}.

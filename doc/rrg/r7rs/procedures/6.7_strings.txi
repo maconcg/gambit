@@ -87,7 +87,7 @@ features}) to return a forbidden character, or for @code{read-string}
 Returns @code{#t} if @var{obj} is a string, otherwise returns @code{#f}.
 @end deffn
 
-@deffn  procedure make-string k
+@deffn procedure make-string k
 @deffnx procedure make-string k char
 
 The @code{make-string} procedure returns a newly allocated string of
@@ -138,14 +138,15 @@ constant time.
 @end deffn
 
 @deffn procedure string=? @
-@pari{string} @parii{string} @pariii{string} @value{defdots}
+@parI{string} @parII{string} @parIII{string} @value{defdots}
 
 Returns @code{#t} if all the strings are the same length and contain
 exactly the same characters in the same positions, otherwise returns
 @code{#f}.
 @end deffn
 
-@deffn {char library procedure} string-ci=? @pari{string} @parii{string} @pariii{string} @value{defdots}
+@deffn {char library procedure} string-ci=? @
+@parI{string} @parII{string} @parIII{string} @value{defdots}
 
 Returns @code{#t} if, after case-folding, all the strings are the same
 length and con@value{shy}tain the same characters in the same positions,
@@ -155,21 +156,21 @@ comparing them.
 @end deffn
 
 @deffn procedure string<? @
-@pari{string} @parii{string} @pariii{string} @value{defdots}
+@parI{string} @parII{string} @parIII{string} @value{defdots}
 @deffnx procedure string>? @
-@pari{string} @parii{string} @pariii{string} @value{defdots}
+@parI{string} @parII{string} @parIII{string} @value{defdots}
 @deffnx procedure string<=? @
-@pari{string} @parii{string} @pariii{string} @value{defdots}
+@parI{string} @parII{string} @parIII{string} @value{defdots}
 @deffnx procedure string>=? @
-@pari{string} @parii{string} @pariii{string} @value{defdots}
+@parI{string} @parII{string} @parIII{string} @value{defdots}
 @deffnx {char library procedure} string-ci<? @
-@pari{string} @parii{string} @pariii{string} @value{defdots}
+@parI{string} @parII{string} @parIII{string} @value{defdots}
 @deffnx {char library procedure} string-ci>? @
-@pari{string} @parii{string} @pariii{string} @value{defdots}
+@parI{string} @parII{string} @parIII{string} @value{defdots}
 @deffnx {char library procedure} string-ci<=? @
-@pari{string} @parii{string} @pariii{string} @value{defdots}
+@parI{string} @parII{string} @parIII{string} @value{defdots}
 @deffnx {char library procedure} string-ci>=? @
-@pari{string} @parii{string} @pariii{string} @value{defdots}
+@parI{string} @parII{string} @parIII{string} @value{defdots}
 
 These procedures return @code{#t} if their arguments are (respectively):
 mono@value{shy}ton@value{shy}ically increasing, monotonically
@@ -200,7 +201,7 @@ The @samp{-ci} procedures behave as if they applied
 corresponding procedures without @samp{-ci}.
 @end deffn
 
-@deffn  {char library procedure} string-upcase string
+@deffn {char library procedure} string-upcase string
 @deffnx {char library procedure} string-downcase string
 @deffnx {char library procedure} string-foldcase string
 
@@ -236,7 +237,7 @@ Returns a newly allocated string whose characters are the concatenation
 of the characters in the given strings.
 @end deffn
 
-@deffn  procedure string->list string
+@deffn procedure string->list string
 @deffnx procedure string->list string start
 @deffnx procedure string->list string start end
 @deffnx procedure list->string list
@@ -251,7 +252,7 @@ procedures, order is preserved.  @code{string->list} and
 @code{list->string} are inverses so far as @code{equal?} is concerned.
 @end deffn
 
-@deffn  procedure string-copy string
+@deffn procedure string-copy string
 @deffnx procedure string-copy string start
 @deffnx procedure string-copy string start end
 
@@ -259,7 +260,7 @@ Returns a newly allocated copy of the part of the given @var{string}
 between @var{start} and @var{end}.
 @end deffn
 
-@deffn  procedure string-copy! to at from
+@deffn procedure string-copy! to at from
 @deffnx procedure string-copy! to at from start
 @deffnx procedure string-copy! to at from start end
 
@@ -283,7 +284,7 @@ b                             @ok{"a12de"}
 @end lisp
 @end deffn
 
-@deffn  procedure string-fill! string fill
+@deffn procedure string-fill! string fill
 @deffnx procedure string-fill! string fill start
 @deffnx procedure string-fill! string fill start end
 

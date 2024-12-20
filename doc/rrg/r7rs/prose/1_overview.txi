@@ -206,13 +206,13 @@ in@value{shy}tended to denote segments of program text; for example,
 syntactically valid expression.  The notation
 
 @quotation
-@angle{@pari{thing}} @value{defdots}
+@angle{@parI{thing}} @value{defdots}
 @end quotation
 
 indicates zero or more occurrences of a @angle{thing}, and
 
 @quotation
-@angle{@pari{thing}} @angle{@parii{thing}} @value{defdots}
+@angle{@parI{thing}} @angle{@parII{thing}} @value{defdots}
 @end quotation
 
 indicates one or more occurrences of a @angle{thing}.
@@ -272,16 +272,16 @@ character
 @item end
 exact non-negative integer
 
-@item k, @pari{k}, @value{defdots} @parj{k}, @value{defdots}
+@item k, @parI{k}, @value{defdots} @parj{k}, @value{defdots}
 exact non-negative integer
 
 @item letter
 alphabetic character
 
-@item list, @pari{list}, @value{defdots} @parj{list}, @value{defdots}
+@item list, @parI{list}, @value{defdots} @parj{list}, @value{defdots}
 list (see section 6.4)
 
-@item n, @pari{n}, @value{defdots} @parj{n}, @value{defdots}
+@item n, @parI{n}, @value{defdots} @parj{n}, @value{defdots}
 integer
 
 @item obj
@@ -293,7 +293,7 @@ pair
 @item proc
 procedure
 
-@item q, @pari{q}, @value{defdots} @parj{q}, @value{defdots}
+@item q, @parI{q}, @value{defdots} @parj{q}, @value{defdots}
 rational number
 
 @item start
@@ -311,13 +311,13 @@ zero-argument procedure
 @item vector
 vector
 
-@item x, @pari{x}, @value{defdots} @parj{x}, @value{defdots}
+@item x, @parI{x}, @value{defdots} @parj{x}, @value{defdots}
 real number
 
-@item y, @pari{y}, @value{defdots} @parj{y}, @value{defdots}
+@item y, @parI{y}, @value{defdots} @parj{y}, @value{defdots}
 real number
 
-@item z, @pari{z}, @value{defdots} @parj{z}, @value{defdots}
+@item z, @parI{z}, @value{defdots} @parj{z}, @value{defdots}
 complex number
 @end table
 

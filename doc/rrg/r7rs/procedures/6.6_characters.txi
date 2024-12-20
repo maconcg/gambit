@@ -98,11 +98,11 @@ names.
 Returns @code{#t} if @var{obj} is a character, otherwise returns @code{#f}.
 @end deffn
 
-@deffn  procedure char=? @pari{char} @parii{char} @pariii{char} @value{defdots}
-@deffnx procedure char<? @pari{char} @parii{char} @pariii{char} @value{defdots}
-@deffnx procedure char>? @pari{char} @parii{char} @pariii{char} @value{defdots}
-@deffnx procedure char<=? @pari{char} @parii{char} @pariii{char} @value{defdots}
-@deffnx procedure char>=? @pari{char} @parii{char} @pariii{char} @value{defdots}
+@deffn  procedure char=? @parI{char} @parII{char} @parIII{char} @value{defdots}
+@deffnx procedure char<? @parI{char} @parII{char} @parIII{char} @value{defdots}
+@deffnx procedure char>? @parI{char} @parII{char} @parIII{char} @value{defdots}
+@deffnx procedure char<=? @parI{char} @parII{char} @parIII{char} @value{defdots}
+@deffnx procedure char>=? @parI{char} @parII{char} @parIII{char} @value{defdots}
 
 These procedures return @code{#t} if the results of passing their
 arguments to @code{char->integer} are respectively equal,
@@ -115,15 +115,15 @@ These predicates are required to be transitive.
 @end deffn
 
 @deffn  {char library procedure} char-ci=? @
-@pari{char} @parii{char} @pariii{char} @value{defdots}
+@parI{char} @parII{char} @parIII{char} @value{defdots}
 @deffnx {char library procedure} char-ci< @
-@pari{char} @parii{char} @pariii{char} @value{defdots}
+@parI{char} @parII{char} @parIII{char} @value{defdots}
 @deffnx {char library procedure} char-ci>? @
-@pari{char} @parii{char} @pariii{char} @value{defdots}
+@parI{char} @parII{char} @parIII{char} @value{defdots}
 @deffnx {char library procedure} char-ci<=? @
-@pari{char} @parii{char} @pariii{char} @value{defdots}
+@parI{char} @parII{char} @parIII{char} @value{defdots}
 @deffnx {char library procedure} char-ci>=? @
-@pari{char} @parii{char} @pariii{char} @value{defdots}
+@parI{char} @parII{char} @parIII{char} @value{defdots}
 
 These procedures are similar to @code{char=?} et cetera, but they treat
 upper case and lower case letters as the same.  For example,

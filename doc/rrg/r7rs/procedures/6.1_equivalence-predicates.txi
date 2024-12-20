@@ -2,10 +2,10 @@
 @section Equivalence predicates
 @nodedescription Procedures that deal with equivalence.
 
-@deffn procedure eqv? @pari{obj} @parii{obj}
+@deffn procedure eqv? @parI{obj} @parII{obj}
 
 The @code{eqv?} procedure defines a useful equivalence relation on
-objects.  Briefly, it returns @code{#t} if @vari{obj} and @varii{obj}
+objects.  Briefly, it returns @code{#t} if @varI{obj} and @varII{obj}
 are normally regarded as the same object.  This relation is left
 slightly open to interpretation, but the following partial
 spec@value{shy}ification of @code{eqv?} holds for all implementations of
@@ -115,7 +115,7 @@ equality is correct by the above definition.
 @end quotation
 @end deffn
 
-@deffn procedure eq? @pari{obj} @parii{obj}
+@deffn procedure eq? @parI{obj} @parII{obj}
 
 The @code{eq?} procedure is similar to @code{eqv?} except that in some
 cases it is capable of discerning distinctions finer than those
@@ -162,7 +162,7 @@ comparison will always finish in constant time.
 @end quotation
 @end deffn
 
-@deffn procedure equal? @pari{obj} @parii{obj}
+@deffn procedure equal? @parI{obj} @parII{obj}
 
 The @code{equal?} procedure, when applied to pairs, vectors, strings and
 byte@value{shy}vectors, recursively compares them, returning @code{#t}

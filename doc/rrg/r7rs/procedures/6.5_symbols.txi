@@ -38,7 +38,7 @@ Returns @code{#t} if @var{obj} is a symbol, otherwise returns @code{#f}.
 @end deffn
 
 @deffn procedure symbol=? @
-@pari{symbol} @parii{symbol} @pariii{symbol} @value{defdots}
+@parI{symbol} @parII{symbol} @parIII{symbol} @value{defdots}
 
 Returns @code{#t} if all the arguments all have the same names in the
 sense of @code{string=?}.

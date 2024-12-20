@@ -459,11 +459,11 @@ on complex numbers if their real or imaginary parts or both are
 @end lisp
 @end deffn
 
-@deffn  procedure = @pari{z} @parii{z} @pariii{z} @value{defdots}
-@deffnx procedure < @pari{x} @parii{x} @pariii{x} @value{defdots}
-@deffnx procedure > @pari{x} @parii{x} @pariii{x} @value{defdots}
-@deffnx procedure <= @pari{x} @parii{x} @pariii{x} @value{defdots}
-@deffnx procedure >= @pari{x} @parii{x} @pariii{x} @value{defdots}
+@deffn  procedure = @parI{z} @parII{z} @parIII{z} @value{defdots}
+@deffnx procedure < @parI{x} @parII{x} @parIII{x} @value{defdots}
+@deffnx procedure > @parI{x} @parII{x} @parIII{x} @value{defdots}
+@deffnx procedure <= @parI{x} @parII{x} @parIII{x} @value{defdots}
+@deffnx procedure >= @parI{x} @parII{x} @parIII{x} @value{defdots}
 
 These procedures return @code{#t} if their arguments are (respectively):
 equal, mono@value{shy}ton@value{shy}ically increasing,
@@ -510,8 +510,8 @@ These numerical predicates test a number for a particular property,
 re@value{shy}turning @code{#t} or @code{#f}.  See note above.
 @end deffn
 
-@deffn  procedure max @pari{x} @parii{x} @value{defdots}
-@deffnx procedure min @pari{x} @parii{x} @value{defdots}
+@deffn  procedure max @parI{x} @parII{x} @value{defdots}
+@deffnx procedure min @parI{x} @parII{x} @value{defdots}
 
 These procedures return the maximum or minimum of their arguments.
 
@@ -530,8 +530,8 @@ then the procedure may report a violation of an implementation
 re@value{shy}stric@value{shy}tion.
 @end deffn
 
-@deffn  procedure + @pari{z} @value{defdots}
-@deffnx procedure * @pari{z} @value{defdots}
+@deffn  procedure + @parI{z} @value{defdots}
+@deffnx procedure * @parI{z} @value{defdots}
 
 These procedures return the sum or product of their arguments.
 
@@ -545,9 +545,9 @@ These procedures return the sum or product of their arguments.
 @end deffn
 
 @deffn  procedure - z
-@deffnx procedure - @pari{z} @parii{z} @value{defdots}
+@deffnx procedure - @parI{z} @parII{z} @value{defdots}
 @deffnx procedure / z
-@deffnx procedure / @pari{z} @parii{z} @value{defdots}
+@deffnx procedure / @parI{z} @parII{z} @value{defdots}
 
 With two or more arguments, these procedures return the difference or
 quo@value{shy}tient of their arguments, associating to the left.  With
@@ -577,42 +577,42 @@ The abs procedure returns the absolute value of its argument.
 
 @end deffn
 
-@deffn  procedure floor/ @pari{n} @parii{n}
-@deffnx procedure floor-quotient @pari{n} @parii{n}
-@deffnx procedure floor-remainder @pari{n} @parii{n}
-@deffnx procedure truncate/ @pari{n} @parii{n}
-@deffnx procedure truncate-quotient @pari{n} @parii{n}
-@deffnx procedure truncate-remainder @pari{n} @parii{n}
+@deffn  procedure floor/ @parI{n} @parII{n}
+@deffnx procedure floor-quotient @parI{n} @parII{n}
+@deffnx procedure floor-remainder @parI{n} @parII{n}
+@deffnx procedure truncate/ @parI{n} @parII{n}
+@deffnx procedure truncate-quotient @parI{n} @parII{n}
+@deffnx procedure truncate-remainder @parI{n} @parII{n}
 
 These procedures implement number-theoretic (integer) division.  It is
 an er@value{shy}ror if @var{n} is zero.  The procedures ending in
 @code{/} return two integers; the other procedures return an integer.
 All the procedures compute a quotient @varq{n} and remainder @varr{n}
-such that @vari{n} = @varii{n}@varq{n} + @varr{n}.  For
+such that @varI{n} = @varII{n}@varq{n} + @varr{n}.  For
 each of the division operators, there are three procedures defined as
 follows:
 
 @example grammar
-(@sv{operator}/ @r{@vari{n}} @r{@varii{n}})          @result{} @r{@varq{n}} @r{@varr{n}}
-(@sv{operator}-quotient @r{@vari{n}} @r{@varii{n}})  @result{} @r{@varq{n}}
-(@sv{operator}-remainder @r{@vari{n}} @r{@varii{n}}) @result{} @r{@varr{n}}
+(@sv{operator}/ @r{@varI{n}} @r{@varII{n}})          @result{} @r{@varq{n}} @r{@varr{n}}
+(@sv{operator}-quotient @r{@varI{n}} @r{@varII{n}})  @result{} @r{@varq{n}}
+(@sv{operator}-remainder @r{@varI{n}} @r{@varII{n}}) @result{} @r{@varr{n}}
 @end example
 
 The remainder @varr{n} is determined the choice of integer @varq{n}:
-@varr{n} = @vari{n} @minus{} @varii{n}@varq{n}.  Each set of
+@varr{n} = @varI{n} @minus{} @varII{n}@varq{n}.  Each set of
 operators uses a different choice of @varq{n}:
 
 @display
-@t{floor      }@varq{n} = @U{23A3}@vari{n}/@varii{n}@U{23A6}
-@t{truncate   }@varq{n} = truncate(@vari{n}/@varii{n})
+@t{floor      }@varq{n} = @U{23A3}@varI{n}/@varII{n}@U{23A6}
+@t{truncate   }@varq{n} = truncate(@varI{n}/@varII{n})
 @end display
 
-For any of the operators, and for integers @vari{n} and @varii{n} with
-@varii{n} not equal to 0,
+For any of the operators, and for integers @varI{n} and @varII{n} with
+@varII{n} not equal to 0,
 
 @example grammar
-(= @r{@vari{n}} (+ (* @r{@varii{n}} (@sv{operator}-quotient @r{@vari{n}} @r{@varii{n}}))
-      (@sv{operator}-remainder @r{@vari{n}} @r{@varii{n}})))
+(= @r{@varI{n}} (+ (* @r{@varII{n}} (@sv{operator}-quotient @r{@varI{n}} @r{@varII{n}}))
+      (@sv{operator}-remainder @r{@varI{n}} @r{@varII{n}})))
                            @noadorn{@result{} @boolean{#t}}
 @end example
 
@@ -633,9 +633,9 @@ Examples:
 @end lisp
 @end deffn
 
-@deffn  procedure quotient @pari{n} @parii{n}
-@deffnx procedure remainder @pari{n} @parii{n}
-@deffnx procedure modulo @pari{n} @parii{n}
+@deffn  procedure quotient @parI{n} @parII{n}
+@deffnx procedure remainder @parI{n} @parII{n}
+@deffnx procedure modulo @parI{n} @parII{n}
 
 The @code{quotient} and @code{remainder} procedures are equivalent to
 @code{truncate-quotient} and @code{truncate-remainder}, respectively,
@@ -647,8 +647,8 @@ earlier versions of this report.
 @end quotation
 @end deffn
 
-@deffn  procedure gcd @pari{n} @value{defdots}
-@deffnx procedure lcm @pari{n} @value{defdots}
+@deffn  procedure gcd @parI{n} @value{defdots}
+@deffnx procedure lcm @parI{n} @value{defdots}
 
 These procedures return the greatest common divisor or least common
 mul@value{shy}tiple of their arguments.  The result is always
@@ -728,10 +728,10 @@ infinite or a NaN, then it is returned.
 
 The @code{rationalize} procedure returns the @emph{simplest} rational
 number differing from @var{x} by no more than @var{y}.  A rational
-number @vari{r} is @emph{simpler} than another ra@value{shy}tional
-number @varii{r} if @vari{r} = @vari{p}@vari{q} and @varii{r} =
-@varii{p}@varii{q} (in lowest terms) and |@vari{p}| @leq{} |@varii{p}|
-and |@vari{q}| @leq{} |@varii{q}|.  Thus @math{3/5} is simpler than
+number @varI{r} is @emph{simpler} than another ra@value{shy}tional
+number @varII{r} if @varI{r} = @varI{p}@varI{q} and @varII{r} =
+@varII{p}@varII{q} (in lowest terms) and |@varI{p}| @leq{} |@varII{p}|
+and |@varI{q}| @leq{} |@varII{q}|.  Thus @math{3/5} is simpler than
 @math{4/7}.  Although not all rationals are comparable in this ordering
 (consider @math{2/7} and @math{3/5}), any interval contains a rational
 number that is simpler than every other rational number in that
@@ -746,7 +746,7 @@ in@value{shy}terval (the simpler @math{2/5} lies between @math{2/7} and
 
 @deffn  {inexact library procedure} exp z
 @deffnx {inexact library procedure} log z
-@deffnx {inexact library procedure} log @pari{z} @parii{z}
+@deffnx {inexact library procedure} log @parI{z} @parII{z}
 @deffnx {inexact library procedure} sin z
 @deffnx {inexact library procedure} cos z
 @deffnx {inexact library procedure} tan z
@@ -758,7 +758,7 @@ in@value{shy}terval (the simpler @math{2/5} lies between @math{2/7} and
 These procedures compute the usual transcendental functions. The
 @code{log} pro@value{shy}cedure computes the natural logarithm of
 @var{z} (not the base ten logarithm) if a single argument is given, or
-the base-@varii{z} logarithm of @vari{z} if two arguments are given.
+the base-@varII{z} logarithm of @varI{z} if two arguments are given.
 The @code{asin}, @code{acos}, and @code{atan} procedures compute arcsine
 (@inverse{sin}), arc-cosine (@inverse{cos}), and arctangent
 (@inverse{tan}), respectively.  The two-argument variant of @code{atan}
@@ -909,13 +909,13 @@ Returns two non-negative exact integers @var{s} and @var{r} where
 @end lisp
 @end deffn
 
-@deffn procedure expt @pari{z} @parii{z}
+@deffn procedure expt @parI{z} @parII{z}
 
-Returns @vari{z} raised to the power @varii{z}. For nonzero @vari{z},
+Returns @varI{z} raised to the power @varII{z}. For nonzero @varI{z},
 this is
 
 @display
-@vari{z}@sup{@varii{z}} = @i{e}@sup{@varii{z}log(@vari{z})}
+@varI{z}@sup{@varII{z}} = @i{e}@sup{@varII{z}log(@varI{z})}
 @end display
 
 The value of 0@sup{@var{z}} is 1 if @code{(zero? @rv{z})}, 0 if
@@ -923,18 +923,18 @@ The value of 0@sup{@var{z}} is 1 if @code{(zero? @rv{z})}, 0 if
 otherwise.  Similarly for 0.0@sup{@var{z}}, with inexact results.
 @end deffn
 
-@deffn  {complex library procedure} make-rectangular @pari{x} @parii{x}
-@deffnx {complex library procedure} make-polar @pariii{x} @pariv{x}
+@deffn  {complex library procedure} make-rectangular @parI{x} @parII{x}
+@deffnx {complex library procedure} make-polar @parIII{x} @parIV{x}
 @deffnx {complex library procedure} real-part z
 @deffnx {complex library procedure} imag-part z
 @deffnx {complex library procedure} magnitude z
 @deffnx {complex library procedure} angle z
 
-Let @vari{x}, @varii{x}, @variii{x}, and @variv{x} be real numbers and
+Let @varI{x}, @varII{x}, @varIII{x}, and @varIV{x} be real numbers and
 @var{z} be a complex number such that
 
 @display
-@var{z} = @vari{x} + @varii{x}@i{i} = @variii{x} @U{2219} @i{e}@sup{@i{i}@variv{x}}
+@var{z} = @varI{x} + @varII{x}@i{i} = @varIII{x} @U{2219} @i{e}@sup{@i{i}@varIV{x}}
 @end display
 
 Then all of
@@ -942,20 +942,20 @@ Then all of
 @ifnothtml
 @indentedblock
 @multitable {(make-rectangular x1 x2)} {} {x__angle_}
-@item @t{@compound{@U{0028}}make-rectangular @r{@vari{x}} @r{@varii{x}}@compound{@U{0029}}}
+@item @t{@compound{@U{0028}}make-rectangular @r{@varI{x}} @r{@varII{x}}@compound{@U{0029}}}
 @tab @t{@result{}} @tab @var{z}
 
-@item @t{@compound{@U{0028}}make-polar @r{@vari{x}} @r{@varii{x}}@compound{@U{0029}}}
+@item @t{@compound{@U{0028}}make-polar @r{@varI{x}} @r{@varII{x}}@compound{@U{0029}}}
 @tab @t{@result{}} @tab @var{z}
 
 @item @t{@compound{@U{0028}}real-part @r{@var{z}}@compound{@U{0029}}}
-@tab @t{@result{}} @tab @vari{x}
+@tab @t{@result{}} @tab @varI{x}
 
 @item @t{@compound{@U{0028}}imag-part @r{@var{z}}@compound{@U{0029}}}
-@tab @t{@result{}} @tab @varii{x}
+@tab @t{@result{}} @tab @varII{x}
 
 @item @t{@compound{@U{0028}}magnitude @r{@var{z}}@compound{@U{0029}}}
-@tab @t{@result{}} @tab |@variii{x}|
+@tab @t{@result{}} @tab |@varIII{x}|
 
 @item @t{@compound{@U{0028}}angle @r{@var{z}}@compound{@U{0029}}}
 @tab @t{@result{}} @tab @var{x@sub{angle}}
@@ -965,20 +965,20 @@ Then all of
 @ifhtml
 @indentedblock
 @multitable @columnfractions .40 .04 .56
-@item @t{@compound{@U{0028}}make-rectangular @r{@vari{x}} @r{@varii{x}}@compound{@U{0029}}}
+@item @t{@compound{@U{0028}}make-rectangular @r{@varI{x}} @r{@varII{x}}@compound{@U{0029}}}
 @tab @t{@result{}} @tab @var{z}
 
-@item @t{@compound{@U{0028}}make-polar @r{@vari{x}} @r{@varii{x}}@compound{@U{0029}}}
+@item @t{@compound{@U{0028}}make-polar @r{@varI{x}} @r{@varII{x}}@compound{@U{0029}}}
 @tab @t{@result{}} @tab @var{z}
 
 @item @t{@compound{@U{0028}}real-part @r{@var{z}}@compound{@U{0029}}}
-@tab @t{@result{}} @tab @vari{x}
+@tab @t{@result{}} @tab @varI{x}
 
 @item @t{@compound{@U{0028}}imag-part @r{@var{z}}@compound{@U{0029}}}
-@tab @t{@result{}} @tab @varii{x}
+@tab @t{@result{}} @tab @varII{x}
 
 @item @t{@compound{@U{0028}}magnitude @r{@var{z}}@compound{@U{0029}}}
-@tab @t{@result{}} @tab |@variii{x}|
+@tab @t{@result{}} @tab |@varIII{x}|
 
 @item @t{@compound{@U{0028}}angle @r{@var{z}}@compound{@U{0029}}}
 @tab @t{@result{}} @tab @var{x@sub{angle}}
@@ -987,7 +987,7 @@ Then all of
 @end ifhtml
 
 are true, where @minus{}@U{03C0} @leq{} @var{x@sub{angle}} @leq{}
-@U{03C0} with @var{x@sub{angle}} = @variv{x} + 2@U{03C0}@var{n} for some
+@U{03C0} with @var{x@sub{angle}} = @varIV{x} + 2@U{03C0}@var{n} for some
 integer @var{n}.
 
 The @code{make-polar} procedure may return an inexact complex number
