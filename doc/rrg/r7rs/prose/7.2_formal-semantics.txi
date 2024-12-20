@@ -75,7 +75,7 @@ commands
 @ifhtml
 @multitable @columnfractions .03 .03 .04 .63 .27
 @item 𝛼 @tab ∈ @tab @t{L} @tab @tab locations
-@item 𝜐 @tab ∈ @tab @t{N} @tab @tab natural numbers
+@item 𝜈 @tab ∈ @tab @t{N} @tab @tab natural numbers
 @item @tab @tab @t{T} @tab = @{@i{false, true}@} @tab booleans
 @item @tab @tab @t{Q} @tab @tab symbols
 @item @tab @tab @t{H} @tab @tab characters
