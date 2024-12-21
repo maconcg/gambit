@@ -269,14 +269,14 @@ formally in Formal Constants.  Note that case is not significant in
 numerical con@value{shy}stants.@c @ref{Formal syntax}.
 
 A number can be written in binary, octal, decimal, or hexadecimal by the
-use of a radix prefix.  The radix prefixes are @nobr{@hc{#b}
-@U{0028}}binary@U{0029}, @nobr{@hc{#o} @U{0028}}octal@U{0029},
-@nobr{@hc{#d} @U{0028}}deci@value{shy}mal@U{0029}, and @nobr{@hc{#x}
+use of a radix prefix.  The radix prefixes are @nobr{@code{#b}
+@U{0028}}binary@U{0029}, @nobr{@code{#o} @U{0028}}octal@U{0029},
+@nobr{@code{#d} @U{0028}}deci@value{shy}mal@U{0029}, and @nobr{@code{#x}
 @U{0028}}hexa@value{shy}deci@value{shy}mal@U{0029}.  With no radix
 prefix, a number is as@value{shy}sumed to be expressed in decimal.
 
 A numerical constant can be specified to be either exact or inexact by a
-pre@value{shy}fix.  The prefixes are @hc{#e} for exact, and @hc{#i} for
+pre@value{shy}fix.  The prefixes are @code{#e} for exact, and @code{#i} for
 inexact.  An exactness prefix can appear before or after any radix
 pre@value{shy}fix that is used.  If the written
 rep@value{shy}resen@value{shy}tation of a number has no exactness
@@ -302,8 +302,8 @@ this default to be set by the user.
 @end example
 
 The numbers positive infinity, negative infinity, and NaN are written
-@nobr{@hc{+inf.0}}, @nobr{@hc{-inf.0}} and @nobr{@hc{+nan.0}}
-respectively.  NaN may also be written @hc{-nan.0}.  The use of signs in
+@nobr{@code{+inf.0}}, @nobr{@code{-inf.0}} and @nobr{@code{+nan.0}}
+respectively.  NaN may also be written @code{-nan.0}.  The use of signs in
 the written representation does not necessarily reflect the
 under@value{shy}lying sign of the NaN value, if any.  Implementations
 are not required to sup@value{shy}port these numbers, but if they do,
