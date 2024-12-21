@@ -72,7 +72,7 @@
 
 @set refTISchemeRef Texas Instruments, Inc.  @i{@acronym{TI} Scheme Language Reference Manual}.  Preliminary version 1.0, November 1985.
 
-@set refSRFI45 @set refSRFI45 Andre van Tonder.  @i{@acronym{SRFI} 45: Primitives for Expressing Iterative Lazy Algorithms}.  @t{@url{https://srfi.schemers.org/srfi-45/}}, 2002.
+@set refSRFI45 Andre van Tonder.  @i{@acronym{SRFI} 45: Primitives for Expressing Iterative Lazy Algorithms}.  @t{@url{https://srfi.schemers.org/srfi-45/}}, 2002.
 
 @set refHowToAddThreads Martin Gasbichler, Eric Knauel, Michael Sperber and Richard Kelsey.  @i{How to Add Threads to a Sequential Language Without Getting Tangled Up}.  @i{Proceedings of the Fourth Workshop on Scheme and Functional Programming}, November 2003.
 

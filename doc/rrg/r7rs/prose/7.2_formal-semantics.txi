@@ -50,20 +50,20 @@ the following axiom: if
 @nobr{σ (@value{newsigma} ∣ @t{L})↓2 =
 @i{false}}.
 
-The definition of 𝜘 is omitted because an accurate definition of 𝜘 would
+The definition of 𝐾 is omitted because an accurate definition of 𝐾 would
 com@value{shy}plicate the semantics without being very interesting.
 
 If P is a program in which all variables are defined before being
 referenced or assigned, then the meaning of P is
 
 @display
-𝜀⟦@t{((@syntax{lambda} (@r{I*}) @r{P′}) @angle{undefined} @value{defdots})}⟧
+𝐸⟦@t{@compound{@U{0028}@U{0028}}@syntax{lambda} }I*@t{@compound{@U{0029}} }P′@t{@compound{@U{0029}} }@angle{undefined} @value{defdots}@t{@compound{@U{0029}}}⟧
 @end display
 
 where I* is the sequence of variables defined in P, P′ is the sequence
 of expressions obtained by replacing every definition in P by an
 assignment, @angle{undefined} is an expression that evaluates to
-undefined, and 𝜀 is the semantic function that assigns meaning to
+undefined, and 𝐸 is the semantic function that assigns meaning to
 expressions.
 
 @node Abstract syntax
@@ -84,7 +84,7 @@ commands
 @example grammar
 @r{Exp} @longarrow{} @r{K} | @r{I} | (@r{@parzero{E}} @r{E*})
      | (lambda (@r{I*}) @r{Γ*} @r{@parzero{E}})
-     | (lambda (@r{I*} . @r{I}) @r{Γ*} @r{@parzero{E}})
+     | (lambda (@r{I*} @dot{.} @r{I}) @r{Γ*} @r{@parzero{E}})
      | (lambda @r{I} @r{Γ*} @r{@parzero{E}})
      | (if @r{@parzero{E}} @r{@parI{E}} @r{@parII{E}}) | (if @r{@parzero{E}} @r{@parI{E}})
      | (set! @r{I} @r{E})
@@ -121,28 +121,28 @@ commands
 @subsection Semantic functions
 
 @multitable @columnfractions .03 .02 0.95
-@item 𝜘 @tab : @tab Con @arrow{} @t{E}
-@item 𝜀 @tab : @tab Exp @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
-@item 𝜀* @tab : @tab Exp* @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@item 𝐾 @tab : @tab Con @arrow{} @t{E}
+@item 𝐸 @tab : @tab Exp @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@item 𝐸* @tab : @tab Exp* @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
 @item 𝐶* @tab : @tab Com* @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{C} @arrow{} @t{C}
 @end multitable
 
-Definition of 𝜘 deliberately omitted.
+Definition of 𝐾 deliberately omitted.
 
 @display
-𝜀⟦K⟧ = 𝜆𝜌𝜔𝜅 . @i{send}(𝜘⟦K⟧)𝜅
+𝐸⟦K⟧ = 𝜆𝜌𝜔𝜅 . @i{send}(𝐾⟦K⟧)𝜅
 @end display
 
 @display
-𝜀⟦I⟧ = 𝜆𝜌𝜔𝜅 . @i{hold}(@i{lookup} 𝜌 I)
+𝐸⟦I⟧ = 𝜆𝜌𝜔𝜅 . @i{hold}(@i{lookup} 𝜌 I)
 @t{              }(@i{single}(𝜆𝜖 . 𝜖 = @i{undefined} @arrow{}
 @t{                                }@i{wrong} @quotedbl{undefined variable}@comma{}
 @t{                             }@i{send} 𝜖 𝜅))
 @end display
 
 @display
-𝜀⟦@t{@compound{@U{0028}}}@parzero{E} E*@t{@compound{@U{0029}}}⟧ =
-@t{ }𝜆𝜌𝜔𝜅 . 𝜀*(@i{permute}(@angle{@parzero{E}} § E*))
+𝐸⟦@t{@compound{@U{0028}}}@parzero{E} E*@t{@compound{@U{0029}}}⟧ =
+@t{ }𝜆𝜌𝜔𝜅 . 𝐸*(@i{permute}(@angle{@parzero{E}} § E*))
 @t{          }𝜌
 @t{          }𝜔
 @t{          }(𝜆𝜖* . ((𝜆𝜖* . @i{applicate} (𝜖* ↓ 1)(𝜖* † 1) 𝜔𝜅)
@@ -150,12 +150,12 @@ Definition of 𝜘 deliberately omitted.
 @end display
 
 @display
-𝜀⟦@t{@compound{@U{0028}}@syntax{lambda} @U{0028}}I*@t{@U{0029}} Γ* @parzero{E}@t{@compound{@U{0029}}}⟧ =
+𝐸⟦@t{@compound{@U{0028}}@syntax{lambda} @compound{@U{0028}}}I*@t{@compound{@U{0029}}} Γ* @parzero{E}@t{@compound{@U{0029}}}⟧ =
 @t{ }𝜆𝜌𝜔𝜅 . 𝜆𝜎 .
 @t{   }@value{newsigma} ∈ @t{L} @arrow{}
 @t{    }@i{send}(@angle{@value{newsigma} | @t{L}@comma{}
 @t{         }𝜆𝜖*𝜔′𝜅′ . #𝜖* = #I* @arrow{}
-@t{           }@i{tievals}(𝜆𝛼* . (𝜆𝜌′ . 𝐶⟦Γ*⟧𝜌′𝜔′(𝜀⟦@parzero{E}⟧𝜌′𝜔′𝜅′))
+@t{           }@i{tievals}(𝜆𝛼* . (𝜆𝜌′ . 𝐶⟦Γ*⟧𝜌′𝜔′(𝐸⟦@parzero{E}⟧𝜌′𝜔′𝜅′))
 @t{                          }(@i{extends} 𝜌 I* 𝛼*))
 @t{                  }𝜖*@comma{}
 @t{           }@i{wrong} @quotedbl{wrong number of arguments}}
@@ -164,3 +164,807 @@ Definition of 𝜘 deliberately omitted.
 @t{        }(@i{update} (@value{newsigma} | @t{L}) @value{unspecifiedsigma})@comma{}
 @t{    }@i{wrong} @quotedbl{out of memory} 𝜎
 @end display
+
+@display
+𝐸⟦@t{@compound{@U{0028}}@syntax{lambda} @compound{@U{0028}}}I* . I@t{@compound{@U{0029}}} Γ* @parzero{E}@t{@compound{@U{0029}}}⟧ =
+@t{ }𝜆𝜌𝜔𝜅 . 𝜆𝜎 .
+@t{   }@value{newsigma} ∈ @t{L} @arrow{}
+@t{    }@i{send}@U{0028}@angle{@value{newsigma} | @t{L}@comma{}
+@t{         }𝜆𝜖*𝜔′𝜅′ . #𝜖* @geq{} #I* @arrow{}
+@t{           }@i{tievalsrest}
+@t{             }(𝜆𝛼* . (𝜆𝜌′ . 𝐶⟦Γ*⟧𝜌′𝜔′(𝐸⟦@parzero{E}⟧𝜌′𝜔′𝜅′))
+@t{                          }(@i{extends} 𝜌(I* § @U{2329}I@U{232A})𝛼*))
+@t{                    }𝜖*
+@t{                    }(#I*)@comma{}
+@t{           }@i{wrong} @quotedbl{too few arguments} in @t{E}@U{0029}}
+@t{        }𝜅
+@t{        }(@i{update} (@value{newsigma} | @t{L}) @value{unspecifiedsigma})@comma{}
+@t{    }@i{wrong} @quotedbl{out of memory} 𝜎
+@end display
+
+@display
+𝐸⟦@t{@compound{@U{0028}}@syntax{lambda}} I Γ* @parzero{E}@t{@compound{@U{0029}}}⟧ = 𝐸⟦@t{@compound{@U{0028}}@syntax{lambda} @compound{@U{0028}}@dot{.}} I@t{@compound{@U{0029}}} Γ* @parzero{E}@t{@compound{@U{0029}}}⟧
+@end display
+
+@display
+𝐸⟦@t{@compound{@U{0028}}@syntax{if}} @parzero{E} @parI{E} @parII{E}@t{@compound{@U{0029}}}⟧ =
+@t{  }𝜆𝜌𝜔𝜅 . 𝐸⟦@parzero{E}⟧ 𝜌𝜔 (@i{single} (𝜆𝜖 . @value{truishsigma} @arrow{} 𝐸⟦@parI{E}⟧𝜌𝜔𝜅@comma{}
+@t{                                  }𝐸⟦@parI{E}⟧𝜌𝜔𝜅))
+@end display
+
+@display
+𝐸⟦@t{@compound{@U{0028}}@syntax{if}} @parzero{E} @parI{E}@t{@compound{@U{0029}}}⟧ =
+@t{  }𝜆𝜌𝜔𝜅 . 𝐸⟦@parzero{E}⟧ 𝜌𝜔 (@i{single} (𝜆𝜖 . @value{truishsigma} @arrow{} 𝐸⟦@parI{E}⟧𝜌𝜔𝜅@comma{}
+@t{                                  }@i{send unspecified} 𝜅))
+@end display
+
+Here and elsewhere, any expressed value other than @dfn{undefined} may
+be used in place of @dfn{unspecified}.
+
+@display
+𝐸⟦@t{@compound{@U{0028}}@syntax{set!}} I E@t{@compound{@U{0029}}}⟧ =
+@t{  }𝜆𝜌𝜔𝜅 . 𝐸⟦@parzero{E}⟧ 𝜌𝜔 (@i{single} (𝜆𝜖 . @i{assign} (@i{lookup 𝜌} I)
+@t{                                       }𝜖
+@t{                                       }(@i{send unspecified} 𝜅)))
+@end display
+
+@display
+𝐸⟦⟧ = 𝜆𝜌𝜔𝜅 . 𝜅@angle{}
+@end display
+
+@display
+𝐸⟦@parzero{E} E*⟧ =
+𝜆𝜌𝜔𝜅 . 𝐸⟦@parzero{E}⟧ 𝜌𝜔 (@i{single} (𝜆@parzero{𝜖} . 𝐸*⟦@parzero{E*}⟧ 𝜌𝜔 (𝜆𝜖* . 𝜅 (@angle{@parzero{𝜖}} § 𝜖*))))
+@end display
+
+@display
+𝐶⟦⟧ = 𝜆𝜌𝜔𝜃 . 𝜃
+@end display
+
+@display
+𝐶⟦@parzero{Γ} Γ*⟧ = 𝜆𝜌𝜔𝜃 . 𝐸⟦@parzero{Γ}⟧ 𝜌𝜔 (𝜆𝜖* . 𝐶⟦Γ*⟧𝜌𝜔𝜃)
+@end display
+
+@node Auxiliary functions
+@subsection Auxiliary functions
+@display
+@i{lookup} : @t{U} @arrow{} Ide @arrow{} @t{L}
+@i{lookup} = 𝜆𝜌I . 𝜌I
+@end display
+
+@display
+@i{extends} : @t{U} @arrow{} Ide* @arrow{} @t{L}* @arrow{} @t{U}
+@i{extends} =
+@t{  }𝜆𝜌I*𝛼* . #I = 0 @arrow{} 𝜌@comma{}
+@t{            }@i{extends} (𝜌[(𝛼* ↓ 1)/(I* ↓ 1)])(I* † 1)(𝛼* † 1)
+@end display
+
+@display
+@i{wrong} : @t{X} @arrow{} @t{C}@t{  }[implementation-dependent]
+@end display
+
+@display
+@i{send} : @t{E} @arrow{} @t{K} @arrow{} @t{C}
+@i{send} = 𝜆𝜖𝜅 . 𝜅@angle{𝜖}
+@end display
+
+@display
+@i{single} : (@t{E} @arrow{} @t{C}) @arrow{} @t{K}
+@i{single} =
+@t{  }𝜆𝜓𝜖* . #𝜖* = 1 @arrow{} 𝜓(𝜖* ↓ 1)@comma{}
+@t{         }@i{wrong} @quotedbl{wrong number of return values}
+@end display
+
+@display
+@i{new} : @t{S} @arrow{} (@t{L} + @{@i{error}@})@t{  }[implementation-dependent]
+@end display
+
+@display
+@i{hold} : @t{L} @arrow{} @t{K} @arrow{} @t{C}
+@i{hold} = 𝜆𝛼𝜅𝜎 . @i{send}(𝜎𝛼 ↓ 1)𝜅𝜎
+@end display
+
+@display
+@i{assign} : @t{L} @arrow{} @t{E} @arrow{} @t{C} @arrow{} @t{C}
+@i{assign} = 𝜆𝛼𝜖𝜃𝜎 . 𝜃(@i{update} 𝛼𝜖𝜎)
+@end display
+
+@display
+@i{update} : @t{L} @arrow{} @t{E} @arrow{} @t{S} @arrow{} @t{S}
+@i{update} = 𝜆𝛼𝜖𝜎 . 𝜎[@angle{𝜖@comma{} @i{true}}/𝛼]
+@end display
+
+@display
+@i{tievals} : (@t{L*} @arrow{} @t{C}) @arrow{} @t{E}* @arrow{} @t{C}
+@i{tievals} =
+@t{   }𝜆𝜓𝜖*𝜎 . #𝜖* = 0 @arrow{} 𝜓@angle{}𝜎@comma{}
+@t{           }@value{newsigma} ∈ @t{L} @arrow{} @i{tievals} (𝜆𝛼* . 𝜓(@angle{@value{newsigma} | @t{L}} § 𝛼*))
+@t{                               }(𝜖* † 1)
+@t{                               }(@i{update} (@value{newsigma} | @t{L})(𝜖* ↓ 1)𝜎)@comma{}
+@t{             }@i{wrong} @quotedbl{out of memory} 𝜎
+@end display
+
+@display
+@i{tievalsrest} : @t{L} @arrow{} @t{E} @arrow{} @t{S} @arrow{} @t{S}
+@i{tievalsrest} =
+@t{  }𝜆𝜓𝜖*𝜈 . @i{list} (@i{dropfirst} 𝜖*𝜈)
+@t{           }(@i{single}(𝜆𝜖 . @i{tievals} 𝜓 ((@i{takefirst} 𝜖*𝜈) § @angle{𝜖})))
+@end display
+
+@display
+@i{dropfirst} : 𝜆@i{ln} . @i{n} = 0 @arrow{} @i{l}, @i{dropfirst} (@i{l} † 1)(@i{n} @minus{} 1)
+@end display
+
+@display
+@i{takefirst} : 𝜆@i{ln} . @i{n} = 0 @arrow{} @angle{}@comma{}@angle{@i{l} ↓ 1} § (@i{takefirst} (@i{l} † 1)(@i{n} @minus{} 1))
+@end display
+
+@display
+@i{truish} : @t{E} @arrow{} @t{T}
+@i{truish} : 𝜆𝜖 . 𝜖 = @i{false} @arrow{} @i{false}, @i{true}
+@end display
+
+@display
+@i{permute} : Exp* @arrow{} Exp*@t{  }[implementation-dependent]
+@end display
+
+@display
+@i{unpermute} : @t{E} @arrow{} @t{E}@t{  }[inverse of @i{permute}]
+@end display
+
+@display
+@i{applicate} : @t{E} @arrow{} @t{E}* @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@i{applicate} =
+@t{  }𝜆𝜖𝜖*𝜔𝜅 . 𝜖 ∈ @t{F} @arrow{} (𝜖 | @t{F} ↓ 2)𝜖*𝜔𝜅@comma{} @i{wrong}, @quotedbl{bad procedure}
+@end display
+
+@display
+@i{onearg} : (@t{E} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}) @arrow{} (@t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C})
+@end display
+
+@display
+@i{twoarg} : (@t{E} @arrow{} @t{E} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}) @arrow{} (@t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C})
+@end display
+
+@display
+@i{threearg} : (@t{E} @arrow{} @t{E} @arrow{} @t{E} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}) @arrow{} (@t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C})
+@end display
+
+@display
+@i{list} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@end display
+
+@display
+@i{cons} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@end display
+
+@display
+@i{less} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@end display
+
+@display
+@i{add} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@end display
+
+@display
+@i{car} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@end display
+
+@display
+@i{car-internal} : @t{E} @arrow{} @t{K} @arrow{} @t{C}
+@end display
+
+@display
+@i{cdr} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}@t{  }[similar to @i{car}]
+@end display
+
+@display
+@i{cdr-internal} : @t{E} @arrow{} @t{K} @arrow{} @t{C}@t{  }[similar to @i{car-internal}]
+@end display
+
+@display
+@i{setcar} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@end display
+
+@display
+@i{eqv} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@end display
+
+@display
+@i{apply} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@end display
+
+@display
+@i{valueslist} : @t{E} @arrow{} @t{K} @arrow{} @t{C}
+@end display
+
+@display
+@i{cwcc} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@end display
+
+@display
+@i{travel} : @t{P} @arrow{} @t{P} @arrow{} @t{C} @arrow{} @t{C}
+@end display
+
+@display
+@i{pointdepth} : @t{P} @arrow{} @t{N}
+@end display
+
+@display
+@i{ancestors} : @t{P} @arrow{} 𝑃@t{P}
+@end display
+
+@display
+@i{commonancest} : @t{P} @arrow{} @t{P} @arrow{} @t{P}
+@end display
+
+@display
+@i{pathup} : @t{P} @arrow{} @t{P} @arrow{} (@t{P} × @t{F})*
+@end display
+
+@display
+@i{pathdown} : @t{P} @arrow{} @t{P} @arrow{} (@t{P} × @t{F})*
+@end display
+
+@display
+@i{travelpath} : (@t{P} × @t{F})* @arrow{} @t{C} @arrow{} @t{C}
+@end display
+
+@display
+@i{dynamicwind} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@end display
+
+@display
+@i{values} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@end display
+
+@display
+@i{cwv} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}@t{  }[@t{call-with-values}]
+@end display
+
+@node Formal derived expression types
+@section Derived expression types
+
+This section gives syntax definitions for the derived expression types
+in terms of the primitive expression types (literal, variable, call,
+@code{lambda}, @code{if}, and @code{set!}), except for
+@code{quasiquote}.
+
+Conditional derived syntax types:
+
+@lisp
+(define-syntax cond
+  (syntax-rules (else =>)
+    ((cond (else result1 result2 ...))
+     (begin result1 result2 ...))
+    ((cond (test => result))
+     (let ((temp test))
+       (if temp (result temp))))
+    ((cond (test => result) clause1 clause2 ...)
+     (let ((temp test))
+       (if temp
+           (result temp)
+           (cond clause1 clause2 ...))))
+    ((cond (test)) test)
+    ((cond (test) clause1 clause2 ...)
+     (let ((temp test))
+       (if temp
+           temp
+           (cond clause1 clause2 ...))))
+    ((cond (test result1 result2 ...))
+     (if test (begin result1 result2 ...)))
+    ((cond (test result1 result2 ...)
+           clause1 clause2 ...)
+     (if test
+         (begin result1 result2 ...)
+         (cond clause1 clause2 ...)))))
+
+(define-syntax case
+  (syntax-rules (else =>)
+    ((case (key ...)
+       clauses ...)
+     (let ((atom-key (key ...)))
+       (case atom-key clauses ...)))
+    ((case key
+       (else => result))
+     (result key))
+    ((case key
+       (else result1 result2 ...))
+     (begin result1 result2 ...))
+    ((case key
+       ((atoms ...) => result))
+     (if (memv key '(atoms ...))
+         (result key)))
+    ((case key
+       ((atoms ...) result1 result2 ...))
+     (if (memv key '(atoms ...))
+         (begin result1 result2 ...)))
+    ((case key
+       ((atoms ...) => result)
+       clause clauses ...)
+     (if (memv key '(atoms ...))
+         (result key)
+         (case key clause clauses ...)))
+    ((case key
+       ((atoms ...) result1 result2 ...)
+       clause clauses ...)
+     (if (memv key '(atoms ...))
+         (begin result1 result2 ...)
+         (case key clause clauses ...)))))
+
+(define-syntax and
+  (syntax-rules ()
+    ((and) #t)
+    ((and test) test)
+    ((and test1 test2 ...)
+     (if test1 (and test2 ...) #f))))
+
+(define-syntax or
+  (syntax-rules ()
+    ((or) #f)
+    ((or test) test)
+    ((or test1 test2 ...)
+     (let ((x test1))
+       (if x x (or test2 ...))))))
+
+(define-syntax when
+  (syntax-rules ()
+    ((when test result1 result2 ...)
+     (if test
+         (begin result1 result2 ...)))))
+
+(define-syntax unless
+  (syntax-rules ()
+    ((unless test result1 result2 ...)
+     (if (not test)
+         (begin result1 result2 ...)))))
+@end lisp
+
+Binding constructs:
+
+@lisp
+(define-syntax let
+  (syntax-rules ()
+    ((let ((name val) ...) body1 body2 ...)
+     ((lambda (name ...) body1 body2 ...)
+      val ...))
+    ((let tag ((name val) ...) body1 body2 ...)
+     ((letrec ((tag (lambda (name ...)
+                      body1 body2 ...)))
+        tag)
+      val ...))))
+
+(define-syntax let*
+  (syntax-rules ()
+    ((let* () body1 body2 ...)
+     (let () body1 body2 ...))
+    ((let* ((name1 val1) (name2 val2) ...)
+       body1 body2 ...)
+     (let ((name1 val1))
+       (let* ((name2 val2) ...)
+         body1 body2 ...)))))
+@end lisp
+
+The following @code{letrec} macro uses the symbol @code{<undefined>} in
+place of an expression which returns something that when stored in a
+location makes it an error to try to obtain the value stored in the
+location.  (No such ex@value{shy}pres@value{shy}sion is defined in
+Scheme.)  A trick is used to generate the temporary names needed to
+avoid specifying the order in which the values are evaluated.  This
+could also be accomplished by using an auxiliary macro.
+
+@lisp
+(define-syntax letrec
+  (syntax-rules ()
+    ((letrec ((var1 init1) ...) body ...)
+     (letrec "generate_temp_names"
+       (var1 ...)
+       ()
+       ((var1 init1) ...)
+       body ...))
+    ((letrec "generate_temp_names"
+       ()
+       (temp1 ...)
+       ((var1 init1) ...)
+       body ...)
+     (let ((var1 <undefined>) ...)
+       (let ((temp1 init1) ...)
+         (set! var1 temp1)
+         ...
+         body ...)))
+    ((letrec "generate_temp_names"
+       (x y ...)
+       (temp ...)
+       ((var1 init1) ...)
+       body ...)
+     (letrec "generate_temp_names"
+       (y ...)
+       (newtemp temp ...)
+       ((var1 init1) ...)
+       body ...))))
+
+(define-syntax letrec*
+  (syntax-rules ()
+    ((letrec* ((var1 init1) ...) body1 body2 ...)
+     (let ((var1 <undefined>) ...)
+       (set! var1 init1)
+       ...
+       (let () body1 body2 ...)))))
+
+(define-syntax let-values
+  (syntax-rules ()
+    ((let-values (binding ...) body0 body1 ...)
+     (let-values "bind"
+       (binding ...) () (begin body0 body1 ...)))
+
+    ((let-values "bind" () tmps body)
+     (let tmps body))
+
+    ((let-values "bind" ((b0 e0)
+                         binding ...) tmps body)
+     (let-values "mktmp" b0 e0 ()
+                 (binding ...) tmps body))
+
+    ((let-values "mktmp" () e0 args
+                 bindings tmps body)
+     (call-with-values
+         (lambda () e0)
+       (lambda args
+         (let-values "bind"
+           bindings tmps body))))
+
+    ((let-values "mktmp" (a . b) e0 (arg ...)
+                 bindings (tmp ...) body)
+     (let-values "mktmp" b e0 (arg ... x)
+                 bindings (tmp ... (a x)) body))
+
+    ((let-values "mktmp" a e0 (arg ...)
+                 bindings (tmp ...) body)
+     (call-with-values
+         (lambda () e0)
+       (lambda (arg ... . x)
+         (let-values "bind"
+           bindings (tmp ... (a x)) body))))))
+
+(define-syntax let*-values
+  (syntax-rules ()
+    ((let*-values () body0 body1 ...)
+     (let () body0 body1 ...))
+
+    ((let*-values (binding0 binding1 ...)
+       body0 body1 ...)
+     (let-values (binding0)
+       (let*-values (binding1 ...)
+         body0 body1 ...)))))
+
+(define-syntax define-values
+  (syntax-rules ()
+    ((define-values () expr)
+     (define dummy
+       (call-with-values (lambda () expr)
+         (lambda args #f))))
+    ((define-values (var) expr)
+     (define var expr))
+    ((define-values (var0 var1 ... varn) expr)
+     (begin
+       (define var0
+         (call-with-values (lambda () expr)
+           list))
+       (define var1
+         (let ((v (cadr var0)))
+           (set-cdr! var0 (cddr var0))
+           v)) ...
+           (define varn
+             (let ((v (cadr var0)))
+               (set! var0 (car var0))
+               v))))
+    ((define-values (var0 var1 ... . varn) expr)
+     (begin
+       (define var0
+         (call-with-values (lambda () expr)
+           list))
+       (define var1
+         (let ((v (cadr var0)))
+           (set-cdr! var0 (cddr var0))
+           v)) ...
+           (define varn
+             (let ((v (cdr var0)))
+               (set! var0 (car var0))
+               v))))
+    ((define-values var expr)
+     (define var
+       (call-with-values (lambda () expr)
+         list)))))
+
+(define-syntax begin
+  (syntax-rules ()
+    ((begin exp ...)
+     ((lambda () exp ...)))))
+@end lisp
+
+The following alternative expansion for @code{begin} does not make use
+of the ability to write more than one expression in the body of a lambda
+expression.  In any case, note that these rules apply only if the body
+of the @code{begin} contains no definitions.
+
+@lisp
+(define-syntax begin
+  (syntax-rules ()
+    ((begin exp)
+     exp)
+    ((begin exp1 exp2 ...)
+     (call-with-values
+         (lambda () exp1)
+       (lambda args
+         (begin exp2 ...))))))
+@end lisp
+
+The following syntax definition of do uses a trick to expand the
+variable clauses.  As with @code{letrec} above, an auxiliary macro would
+also work.  The expression @code{(if #f #f)} is used to obtain an
+unspecific value.
+
+
+Here is a possible implementation of @code{delay}, @code{force} and
+@code{delay-force}. We define the expression
+
+@example grammar
+(delay-force @sv{expression})
+@end example
+
+to have the same meaning as the procedure call
+
+@example grammar
+(make-promise @boolean{#f} (lambda () @sv{expression}))
+@end example
+
+as follows
+
+@lisp
+(define-syntax delay-force
+  (syntax-rules ()
+    ((delay-force expression)
+     (make-promise #f (lambda () expression)))))
+@end lisp
+
+and we define the expression
+
+@example grammar
+(delay @sv{expression})
+@end example
+
+to have the same meaning as:
+
+@example grammar
+(delay-force (make-promise @boolean{#t} @sv{expression}))
+@end example
+
+as follows
+
+@lisp
+(define-syntax delay
+  (syntax-rules ()
+    ((delay expression)
+     (delay-force (make-promise #t expression)))))
+@end lisp
+
+where @code{make-promise} is defined as follows:
+
+@lisp
+(define make-promise
+  (lambda (done? proc)
+    (list (cons done? proc))))
+@end lisp
+
+Finally, we define @code{force} to call the procedure expressions in
+promises iteratively using a trampoline technique following
+@acronym{SRFI} 45@footnote{@value{refSRFI45}} until a non-lazy result
+(i.e.@: a value created by @code{delay} instead of @code{delay-force})
+is returned, as follows:
+
+@lisp
+(define (force promise)
+  (if (promise-done? promise)
+      (promise-value promise)
+      (let ((promise* ((promise-value promise))))
+        (unless (promise-done? promise)
+          (promise-update! promise* promise))
+        (force promise))))
+@end lisp
+
+with the following promise accessors:
+
+@lisp
+(define promise-done?
+  (lambda (x) (car (car x))))
+(define promise-value
+  (lambda (x) (cdr (car x))))
+(define promise-update!
+  (lambda (new old)
+    (set-car! (car old) (promise-done? new))
+    (set-cdr! (car old) (promise-value new))
+    (set-car! new (car old))))
+@end lisp
+
+The following implementation of @code{make-parameter} and
+@code{parameterize} is suitable for an implementation with no threads.
+Parameter objects are implemented here as procedures, using two
+arbitrary unique objects @code{<param-set!>} and @code{<param-convert>}:
+
+@lisp
+(define (make-parameter init . o)
+  (let* ((converter
+          (if (pair? o) (car o) (lambda (x) x)))
+         (value (converter init)))
+    (lambda args
+      (cond
+       ((null? args)
+        value)
+       ((eq? (car args) <param-set!>)
+        (set! value (cadr args)))
+       ((eq? (car args) <param-convert>)
+        converter)
+       (else
+        (error "bad parameter syntax"))))))
+@end lisp
+
+Then @code{parameterize} uses @code{dynamic-wind} to dynamically rebind
+the associated value:
+
+@lisp
+(define-syntax parameterize
+  (syntax-rules ()
+    ((parameterize ("step")
+                   ((param value p old new) ...)
+                   ()
+                   body)
+     (let ((p param) ...)
+       (let ((old (p)) ...
+             (new ((p <param-convert>) value)) ...)
+         (dynamic-wind
+          (lambda () (p <param-set! new) ...)
+          (lambda () . body)
+          (lambda () (p <param-set!> old) ...)))))
+    ((parameterize ("step")
+                   args
+                   ((param value) . rest)
+                   body)
+     (parameterize ("step")
+                   ((param value p old new) . args)
+                   rest
+                   body))
+    ((parameterize ((param value) ...) . body)
+     (parameterize ("step")
+                   ()
+                   ((param value) ...)
+                   body))))
+@end lisp
+
+The following implementation of @code{guard} depends on an auxiliary
+macro, here called @code{guard-aux}.
+
+@lisp
+(define-syntax guard-aux
+  (syntax-rules (else =>)
+    ((guard-aux reraise (else result1 result2 ...))
+     (begin result1 result2 ...))
+    ((guard-aux reraise (test => result))
+     (let ((temp test))
+       (if temp
+           (result temp)
+           reraise)))
+    ((guard-aux reraise (test => result)
+                clause1 clause2 ...)
+     (let ((temp test))
+       (if temp
+           (result temp)
+           (guard-aux reraise clause1 clause2 ...))))
+    ((guard-aux reraise (test))
+     (or test reraise))
+    ((guard-aux reraise (test) clause1 clause2 ...)
+     (let ((temp test))
+       (if temp
+           temp
+           (guard-aux reraise clause1 clause2 ...))))
+    ((guard-aux reraise (test result1 result2 ...))
+     (if test
+         (begin result1 result2 ...)
+         reraise))
+    ((guard-aux reraise
+                (test result1 result2 ...)
+                clause1 clause2 ...)
+     (if test
+         (begin result1 result2 ...)
+         (guard-aux reraise clause1 clause2 ...)))))
+
+(define-syntax case-lambda
+  (syntax-rules ()
+    ((case-lambda (params body0 ...) ...)
+     (lambda args
+       (let ((len (length args)))
+         (letrec-syntax
+             ((cl (syntax-rules ::: ()
+                    ((cl)
+                     (error "no matching clause"))
+                    ((cl ((p :::) . body) . rest)
+                     (if (= len (length '(p :::)))
+                         (apply (lambda (p :::)
+                                  . body)
+                                args)
+                         (cl . rest)))
+                    ((cl ((p ::: . tail) . body)
+                         . rest)
+                     (if (>= len (length '(p :::)))
+                         (apply
+                          (lambda (p ::: . tail)
+                            . body)
+                          args)
+                         (cl . rest))))))
+           (cl (params body0 ...) ...)))))))
+@end lisp
+
+This definition of @code{cond-expand} does not interact with the
+@code{features} pro@value{shy}ce@value{shy}dure.  It requires that each
+feature identifier provided by the implementation be explicitly
+mentioned.
+
+@lisp
+(define-syntax cond-expand
+  ;; Extend this to mention all feature ids and libraries
+  (syntax-rules (and or not else r7rs library scheme base)
+    ((cond-expand)
+     (syntax-error "Unfulfilled cond-expand"))
+    ((cond-expand (else body ...))
+     (begin body ...))
+    ((cond-expand ((and) body ...) more-clauses ...)
+     (begin body ...))
+    ((cond-expand ((and req1 req2 ...) body ...)
+                  more-clauses ...)
+     (cond-expand
+       (req1
+         (cond-expand
+           ((and req2 ...) body ...)
+           more-clauses ...))
+       more-clauses ...))
+    ((cond-expand ((or) body ...) more-clauses ...)
+     (cond-expand more-clauses ...))
+    ((cond-expand ((or req1 req2 ...) body ...)
+                  more-clauses ...)
+     (cond-expand
+       (req1
+        (begin body ...))
+       (else
+        (cond-expand
+           ((or req2 ...) body ...)
+           more-clauses ...))))
+    ((cond-expand ((not req) body ...)
+                  more-clauses ...)
+     (cond-expand
+       (req
+         (cond-expand more-clauses ...))
+       (else body ...)))
+    ((cond-expand (r7rs body ...)
+                  more-clauses ...)
+       (begin body ...))
+    ;; Add clauses here for each
+    ;; supported feature identifier.
+    ;; Samples:
+    ;; ((cond-expand (exact-closed body ...)
+    ;;               more-clauses ...)
+    ;;   (begin body ...))
+    ;; ((cond-expand (ieee-float body ...)
+    ;;               more-clauses ...)
+    ;;   (begin body ...))
+    ((cond-expand ((library (scheme base))
+                   body ...)
+                  more-clauses ...)
+      (begin body ...))
+    ;; Add clauses here for each library
+    ((cond-expand (feature-id body ...)
+                  more-clauses ...)
+       (cond-expand more-clauses ...))
+    ((cond-expand ((library (name ...))
+                   body ...)
+                  more-clauses ...)
+       (cond-expand more-clauses ...))))
+@end lisp

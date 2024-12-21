@@ -142,14 +142,21 @@
            (write-string
             (string-append "@set newsigma "
                            "@i{new}"
-                           "@inlinefmtifelse{html,@U{2009},@tie{}}𝜎"
+                           "@inlinefmtifelse{html,@U{2009},}𝜎"
+                           "\n"))))
+        (write-truishsigma
+         (lambda ()
+           (write-string
+            (string-append "@set truishsigma "
+                           "@i{truish}"
+                           "@inlinefmtifelse{html,@U{2009},}𝜎"
                            "\n"))))
         (write-unspecifiedsigma
          (lambda ()
            (write-string
             (string-append "@set unspecifiedsigma "
                            "@i{unspecified}"
-                           "@inlinefmtifelse{html,@U{2009},@tie{}}𝜎"
+                           "@inlinefmtifelse{html,@U{2009},}𝜎"
                            "\n"))))
         (write-r2rs
          (lambda ()
@@ -197,6 +204,7 @@
       (write-greeksmallsigma)
       (write-greekfinalsigma)
       (write-newsigma)
+      (write-truishsigma)
       (write-unspecifiedsigma)
       (write-RevisednRS "3" "@U{00B3}")
       (write-RevisednRS "4" "@U{2074}")

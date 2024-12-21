@@ -204,13 +204,13 @@
 (define def-like-compounds
   '(defun defproc defrec-cons-list defrec-field-list deflib-r7rs-list))
 
-(define syntax-rules-compounds '(sr-literals sr-pattern sr-subpattern))
+(define syntax-rules-binding-compounds '(sr-literals sr-pattern sr-subpattern))
 
 (define let-like-compounds
   (append '( lambda-bind-list let-sv-inner case-lambda-inner defproc-inner
              rest-spec-list let-syntax-inner guard-list )
           dsssl-compounds
-          syntax-rules-compounds))
+          syntax-rules-binding-compounds))
 
 (define binding-compounds (append def-like-compounds let-like-compounds))
 
@@ -229,10 +229,9 @@
 (define compound-kinds (append list-compounds vector-compounds))
 (define sublist-mesgs (map ->sub list-compounds))
 (define sublist-end-mesgs (map ->end sublist-mesgs))
-(define subcompound-end-mesgs (append sublist-end-mesgs subvector-end-mesgs))
 (define comment-end-mesgs '(linec-end datumc-end nestc-end))
 (define subcompound/comment-end-mesgs
-  (append subcompound-end-mesgs comment-end-mesgs))
+  (append sublist-end-mesgs subvector-end-mesgs comment-end-mesgs))
 
 (define non-syntax-compounds (cons 'list vector-compounds))
 
@@ -363,7 +362,7 @@
                                       (rt-syntax-mesg (cdr ac-list)))))))))))))
 
 (define (start-of-list ac-list)
-  ;; Return a truncated version of ac-list from the start of the current list.
+  ;; Return a truncated portion of ac-list from the start of the current list.
   (if (null? ac-list)
       '()
       (let* ((ac (car ac-list)) (mesg (get-mesg ac)))
@@ -381,9 +380,61 @@
               (else (start-of-list (cdr ac-list)))))))
 
 (define (up-list ac-list)
-  ;; Return a truncated version of ac-list from just before the current list.
+  ;; Return a truncated portion of ac-list from just before the current list.
   (let ((list-start (start-of-list ac-list)))
     (if (null? list-start) '() (cdr list-start))))
+
+(define (skip-list ac-list)
+  ;; Return a truncated portion of ac-list from just before the previous closed
+  ;; list.
+  (if (null? ac-list)
+      ac-list
+      (let ((ac (car ac-list)))
+        (if (memq (get-mesg ac) sublist-end-mesgs)
+            (let skip ((rest (cdr ac-list)) (i (get-hop ac)))
+              (if (negative? i)
+                  (skip (cdr rest) (+ i 1))
+                  rest))
+            (skip-list (cdr ac-list))))))
+
+(define get-sr-literals
+  (letrec ((seek-rule-start
+            (lambda (ac-list)
+              (if (null? ac-list)
+                  '()
+                  (let ((ac (car ac-list)))
+                    (if (eq? (get-mesg ac) 'subsr-rule-unmatched)
+                        (cdr ac-list)
+                        (seek-rule-start (up-list ac-list)))))))
+           (seek-literals
+            (lambda (ac-list)
+              (if (null? ac-list)
+                  ac-list
+                  (let ((ac (car ac-list)))
+                    (if (memq (get-kind ac) atmosphere-kinds)
+                        (seek-literals (cdr ac-list))
+                        (let ((mesg (get-mesg ac)))
+                          (cond
+                           ((eq? mesg 'subsr-literals-end)
+                            (char-list->char-lists
+                             (cdr (chars-until (cdr ac-list)
+                                               'subsr-literals-begin))))
+                           ((memq mesg '(subsr-subpattern-end subsr-rule-end))
+                            (seek-literals (skip-list ac-list)))
+                           (else '())))))))))
+    (lambda (ac-list)
+      (seek-literals (seek-rule-start (start-of-list (up-list ac-list)))))))
+
+(define (char-list->char-lists char-list)
+  (let loop ((rest char-list) (next '()) (char-lists '()))
+    (if (null? rest)
+        (if (null? next)
+            char-lists
+            (cons (reverse next) char-lists))
+        (let ((nc (car rest)))
+          (if (memc nc whitespace-chars)
+              (loop (cdr rest) '() (cons (reverse next) char-lists))
+              (loop (cdr rest) (cons nc next) char-lists))))))
 
 (define (distance-until ac-list char/mesg)
   ;; Return the integer distance to the most recent occurrence of char/mesg.
