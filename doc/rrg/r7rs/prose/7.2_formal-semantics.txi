@@ -684,8 +684,8 @@ could also be accomplished by using an auxiliary macro.
 
 The following alternative expansion for @code{begin} does not make use
 of the ability to write more than one expression in the body of a lambda
-expression.  In any case, note that these rules apply only if the body
-of the @code{begin} contains no definitions.
+ex@value{shy}pres@value{shy}sion.  In any case, note that these rules
+apply only if the body of the @code{begin} contains no definitions.
 
 @lisp
 (define-syntax begin
@@ -701,9 +701,8 @@ of the @code{begin} contains no definitions.
 
 The following syntax definition of do uses a trick to expand the
 variable clauses.  As with @code{letrec} above, an auxiliary macro would
-also work.  The expression @code{(if #f #f)} is used to obtain an
-unspecific value.
-
+also work.  The ex@value{shy}pres@value{shy}sion @code{(if #f #f)} is
+used to obtain an unspecific value.
 
 Here is a possible implementation of @code{delay}, @code{force} and
 @code{delay-force}. We define the expression
@@ -809,7 +808,7 @@ arbitrary unique objects @code{<param-set!>} and @code{<param-convert>}:
 @end lisp
 
 Then @code{parameterize} uses @code{dynamic-wind} to dynamically rebind
-the associated value:
+the assoc@value{shy}i@value{shy}ated value:
 
 @lisp
 (define-syntax parameterize
@@ -822,7 +821,7 @@ the associated value:
        (let ((old (p)) ...
              (new ((p <param-convert>) value)) ...)
          (dynamic-wind
-          (lambda () (p <param-set! new) ...)
+          (lambda () (p <param-set!> new) ...)
           (lambda () . body)
           (lambda () (p <param-set!> old) ...)))))
     ((parameterize ("step")
