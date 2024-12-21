@@ -73,7 +73,7 @@
                    (adorn-char nc 'default '~~rt-syntax)))
               ((aux-ellipsis? ac-list nc)
                (revise-until! ac-list 'aux-ellipsis 2)
-               (adorn-char nc 'aux-ellipsis 'sr-ellipsis))
+               (adorn-char nc 'aux-ellipsis (get-mesg pac)))
               (else #f))))))
 
 (define (^handle:potential-decimal kind ~mesg)
