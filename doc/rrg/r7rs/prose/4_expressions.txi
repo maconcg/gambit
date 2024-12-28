@@ -153,9 +153,9 @@ actual argument values will be stored in those locations.  (A
 existing location.)  Next, the expressions in the body of the
 @code{lambda} expression (which, if it contains definitions, represents
 a @code{letrec*} form---@pxref{Binding constructs}) will be evaluated
-sequentially in the extended environment.  The results of the last
-expression in the body will be returned as the results of the procedure
-call.
+sequentially in the ex@value{shy}tended environment.  The results of the
+last expression in the body will be returned as the results of the
+procedure call.
 
 @lisp
 (lambda (x) (+ x x))     @lispnote{a procedure}
@@ -829,11 +829,11 @@ two have slightly different forms and uses:
 @deftypefn syntax @/ begin @sv{expression or definition} @value{defdots}
 
 This form of @code{begin} can appear as part of a @angle{body}, or at
-the outermost level of a @angle{program}, or at the @acronym{REPL}, or
-directly nested in a @code{begin} that is itself of this form.  It
-causes the contained expressions and definitions to be
-eval@value{shy}uated exactly as if the enclosing @code{begin} construct
-were not present.
+the outermost level of a @angle{program}, or at the
+@acronym{REPL,Read-Eval-Print Loop}, or directly nested in a
+@code{begin} that is itself of this form.  It causes the contained
+expressions and definitions to be eval@value{shy}uated exactly as if the
+enclosing @code{begin} construct were not present.
 
 @quotation
 @i{Rationale:} This form is commonly used in the output of macros
@@ -1140,9 +1140,10 @@ The @define{dynamic extent} of a procedure call is the time
 be@value{shy}tween when it is initi@value{shy}ated and when it
 re@value{shy}turns.  In Scheme,
 @nobr{@code{call-with-current-continuation}} (@pxref{Control features})
-allows reentering a dynamic extent after its procedure call has
-returned.  Thus, the dynamic extent of a call might not be a single,
-con@value{shy}tinuous time period.
+allows reentering a dynamic extent after its
+pro@value{shy}ce@value{shy}dure call has returned.  Thus, the dynamic
+extent of a call might not be a single, con@value{shy}tinuous time
+period.
 
 This section introduces @define{parameter objects}, which can be bound
 to new values for the duration of a dynamic extent.  The set of all
@@ -1153,12 +1154,12 @@ parameter bind@value{shy}ings at a given time is called the
 @deffnx procedure make-parameter init converter
 
 Returns a newly allocated parameter object, which is a procedure that
-accepts zero arguments and returns the value associated with the
-param@value{shy}eter object.  Initially, this value is the value of
+ac@value{shy}cepts zero arguments and returns the value associated with
+the parameter object.  Initially, this value is the value of
 @t{(@r{@var{converter}} @r{@var{init}})}, or @var{init} if the
-conversion procedure @var{converter} is not specified.  The associated
-value can be temporarily changed using @code{parameterize}, which is
-described below.
+con@value{shy}ver@value{shy}sion procedure @var{converter} is not
+specified.  The associated value can be temporarily changed using
+@code{parameterize}, which is described below.
 
 The effect of passing arguments to a parameter object is
 implementation-dependent.
@@ -1172,7 +1173,7 @@ implementation-dependent.
 expressions.
 
 It is an error if the value of any @angle{param} expression is not a
-parameter object.
+parameter ob@value{shy}ject.
 
 @i{Semantics:} A @code{parameterize} expression is used to change the
 values re@value{shy}turned by specified parameter objects during the
@@ -1243,14 +1244,15 @@ procedure in the call chain explicitly.
 @i{Semantics:} The @angle{body} is evaluated with an exception handler
 that binds the raised object (see @code{raise} in @ref{Exceptions}) to
 @angle{variable} and, within the scope of that binding, evaluates the
-clauses as if they were the clauses of a @code{cond} expression.  That
-implicit @code{cond} expression is evaluated with the continuation and
-dynamic environment of the @code{guard} expression.  If every
-@angle{cond clause}'s @angle{test} evaluates to @code{#f} and there is
-no else clause, then @code{raise-continuable} is invoked on the raised
-object within the dynamic environment of the original call to
-@code{raise} or @code{raise-continuable}, except that the current
-exception han@value{shy}dler is that of the @code{guard} expression.
+clauses as if they were the clauses of a @code{cond}
+ex@value{shy}pres@value{shy}sion.  That implicit @code{cond} expression
+is evaluated with the continuation and dynamic environment of the
+@code{guard} expression.  If every @angle{cond clause}'s @angle{test}
+evaluates to @code{#f} and there is no else clause, then
+@code{raise-continuable} is invoked on the raised object within the
+dynamic environment of the original call to @code{raise} or
+@code{raise-continuable}, except that the current exception
+han@value{shy}dler is that of the @code{guard} expression.
 
 @xref{Exceptions} for a more complete discussion of exceptions.
 

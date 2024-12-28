@@ -31,7 +31,8 @@ in con@value{shy}stant space, even if the iterative computation is
 described by a syntactically recursive procedure.  Thus with a properly
 tail-recursive im@value{shy}ple@value{shy}mentation, iteration can be
 expressed using the ordinary procedure-call mechanics, so that special
-iteration constructs are useful only as syntactic sugar.@c See section 3.5.
+iteration constructs are useful only as syntactic sugar.  @xref{Proper
+tail recursion}.
 
 Scheme procedures are objects in their own right.  Procedures can be
 created dynamically, stored in data structures, returned as results of
@@ -40,7 +41,7 @@ is that con@value{shy}tinuations, which in most other languages only
 operate behind the scenes, also have @quotedbl{first-class} status.
 Continuations are useful for implementing a wide variety of advanced
 control constructs, including non-local exits, back@value{shy}tracking,
-and coroutines.@c See section 6.10.
+and coroutines.  @xref{Control features}.
 
 Arguments to Scheme procedures are always passed by value, which means
 that the actual argument expressions are evaluated before the
@@ -60,19 +61,18 @@ approximations.  Exact arithmetic is not limited to integers.
 @section Syntax
 
 Scheme, like most dialects of Lisp, employs a fully parenthesized prefix
-notation for programs and other data; the grammar of Scheme generates a
-sub@value{shy}language of the language used for data.  An important
-consequence of this simple, uniform representation is that Scheme
-programs and data can easily be treated uniformly by other Scheme
-programs.  For example, the @code{eval} procedure evaluates a Scheme
-program expressed as data.
+no@value{shy}ta@value{shy}tion for programs and other data; the grammar
+of Scheme generates a sub@value{shy}language of the language used for
+data.  An important consequence of this simple, uniform representation
+is that Scheme programs and data can easily be treated uniformly by
+other Scheme programs.  For example, the @code{eval} procedure evaluates
+a Scheme program expressed as data.
 
 The @code{read} procedure performs syntactic as well as lexical
 decomposition of the data it reads.  The @code{read} procedure parses
-its input as data, not as program.@c(section 7.1.2)
+its input as data (@pxref{External representations}), not as program.
 
-The formal syntax of Scheme is described in @ref{Formal syntax,section
-7.1}.
+The formal syntax of Scheme is described in @ref{Formal syntax}.
 
 @node Notation and terminology
 @section Notation and terminology
@@ -87,7 +87,7 @@ procedures that manipulate data.  For example, the variable @code{abs}
 is bound to a procedure of one argument that computes the absolute value
 of a number, and the variable @code{+} is bound to a procedure that
 computes sums.  The full list of all the standard libraries and the
-identifiers they export is given in Appendix A.
+identifiers they export is given in @ref{Standard Libraries,Appendix A}.
 
 All implementations of Scheme:
 
@@ -196,7 +196,8 @@ for identifiers in the base library, or
 @deftypeline {@i{name} library @i{category}} @/ @i{template}
 @end defblock
 
-where @var{name} is the short name of a library as defined in Appendix A.
+where @var{name} is the short name of a library as defined in
+@ref{Standard Libraries,Appendix A}.
 
 If @var{category} is @quotedbl{syntax}, the the entry describes an
 expression type, and the template gives the syntax of the expression

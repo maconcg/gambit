@@ -172,10 +172,8 @@ shadowed.
 @sv{literal} @value{longarrow} @sv{quotation} | @sv{self-evaluating}
 @sv{self-evaluating} @value{longarrow} @sv{boolean} | @sv{number} | @sv{vector}
     | @sv{character} | @sv{string} | @sv{bytevector}
-@sv{quotation} @value{longarrow} @syntax{'}@sv{datum}
-    | (quote @sv{datum})
-@sv{procedure call} @value{longarrow}
-    (@sv{operator} @sv{operand}*)
+@sv{quotation} @value{longarrow} @syntax{'}@sv{datum} | (quote @sv{datum})
+@sv{procedure call} @value{longarrow} (@sv{operator} @sv{operand}*)
 @sv{operator} @value{longarrow} @sv{expression}
 @sv{operand} @value{longarrow} @sv{expression}
 @end example
@@ -199,13 +197,6 @@ shadowed.
 @example grammar
 @sv{assignment} @value{longarrow} (set! @sv{identifier} @sv{expression})
 @end example
-
-@c @lisp
-@c       (cond blah)
-@c     (cond ((clause) thing) (else sequence))
-@c     (case expr
-@c       (clause blor))
-@c @end lisp
 
 @example grammar
 @sv{derived expression} @value{longarrow}
@@ -263,246 +254,158 @@ shadowed.
 @sv{do result} @value{longarrow} @sv{sequence} | @sv{empty}
 @end example
 
-@c @sv{init} @value{longarrow} @sv{expression}
+@example grammar
+@sv{macro use} @value{longarrow} (@sv{keyword} @sv{datum}*)
+@sv{keyword} @value{longarrow} @sv{identifier}
+@end example
 
-@c @sv{step} @value{longarrow} @sv{expression}
+@example grammar
+@sv{macro block} @value{longarrow} (let-syntax (@sv{syntax spec}*) @sv{body})
+    | (letrec-syntax (@sv{syntax spec}*) @sv{body})
+@sv{syntax spec} @value{longarrow} (@sv{keyword} @sv{transformer spec})
+@end example
 
-@c @sv{do result} @value{longarrow} @sv{sequence} | @sv{empty}
+@example grammar
+@sv{includer} @value{longarrow}
+    | (include @sv{string}+)
+    | (include-ci @sv{string}+)
+@end example
 
-@c @sp 1
+@node Quasiquotations
+@subsection Quasiquotations
 
-@c @sv{macro use} @value{longarrow} @code{(}@sv{keyword}
-@c       @arbno{@sv{datum}}@code{)}
+The following grammar for quasiquote expressions is not context-free.
+It is presented as a recipe for generating an infinite number of
+production rules.  Imagine a copy of the following rules for @var{D} =
+1, 2, 3, @value{defdots}, where @var{D} is the nest@value{shy}ing depth.
 
-@c @sv{keyword} @value{longarrow} @sv{identifier}
+@example grammar
+@sv{quasiquotation} @value{longarrow} @sv{quasiquotation 1}
+@sv{qq template 0} @value{longarrow} @sv{expression}
+@sv{quasiquotation @var{D}} @value{longarrow} @syntax{`}@sv{qq template @var{D}}
+    | (quasiquote @sv{qq template @var{D}})
+@sv{qq template @var{D}} @value{longarrow} @sv{simple datum}
+    | @sv{list qq template @var{D}}
+    | @sv{vector qq template @var{D}}
+    | @sv{unquotation @var{D}}
+@sv{list qq template @var{D}} @value{longarrow} (@sv{qq template or splice @var{D}}*)
+    | (@sv{qq template or splice @var{D}}+ @dot{.} @sv{qq template @var{D}})
+    | @syntax{'}@sv{qq template @var{D}}
+    | @sv{quasiquotation @var{D} + 1}
+@sv{vector qq template @var{D}} @value{longarrow} @compound{@hashchar{}}(@sv{qq template or splice @var{D}}*)
+@sv{unquotation @var{D}} @value{longarrow} @aux{@comma{}}@sv{qq template @var{D} @minus{} 1}
+    | (@aux{unquote} @sv{qq template @var{D} @minus{} 1})
+@sv{qq template or splice @var{D}} @value{longarrow} @sv{qq template @var{D}}
+    | @sv{splicing unquotation @var{D}}
+@sv{splicing unquotation @var{D}} @value{longarrow} @aux{@comma{}@atchar{}}@sv{qq template @var{D} @minus{} 1}
+    | (@aux{unquote-splicing} @sv{qq template @var{D} @minus{} 1})
+@end example
 
-@c @sv{macro block} @value{longarrow}
-@c       @code{@code{(}let-syntax }@code{(}@arbno{@sv{syntax spec}}@code{)}
-@c         @sv{body}@code{)}
-@c     | @code{(letrec-syntax }@code{(}@arbno{@sv{syntax spec}}@code{)}
-@c         @sv{body}@code{)}
+In @angle{quasiquotation}s, a @angle{list qq template @var{D}} can
+sometimes be confused with either an @angle{unquotation @var{D}} or a
+@angle{splicing unquotation @var{D}}.  The interpretation as an
+@angle{unquotation} or @angle{splicing unquotation @var{D}} takes
+precedence.
 
-@c @sv{syntax spec} @value{longarrow} @code{(}@sv{keyword}
-@c       @sv{transformer spec}@code{)}
+@node Transformers
+@subsection Transformers
 
-@c @sp 1
+@quotation
+@i{Note:} Though this grammar does not say so, a top-level
+@nobr{@code{syntax-rules}} pattern must be a list pattern, not a vector
+pattern or an identifier pattern.
+@end quotation
 
-@c @sv{includer} @value{longarrow}
-@c    | @code{(include }@atleastone{@sv{string}}@code{)}
-@c    | @code{(include-ci }@atleastone{@sv{string}}@code{)}
+@example grammar
+@sv{transformer spec} @value{longarrow}
+    (syntax-rules (@sv{identifier}*) @sv{syntax rule}*)
+    | (syntax-rules @sv{identifier} (@sv{identifier}*) @sv{syntax rule}*)
+@sv{syntax rule} @value{longarrow} (@sv{pattern} @sv{template})
+@sv{pattern} @value{longarrow} @sv{pattern identifier}
+    | @sv{underscore}
+    | (@sv{pattern}*)
+    | (@sv{pattern}+ @dot{.} @sv{pattern})
+    | (@sv{pattern}* @sv{pattern} @sv{ellipsis} @sv{pattern}*)
+    | (@sv{pattern}* @sv{pattern} @sv{ellipsis} @sv{pattern}* @dot{.} @sv{pattern})
+    | @compound{@hashchar{}}(@sv{pattern}*)
+    | @compound{@hashchar{}}(@sv{pattern}* @sv{pattern} @sv{ellipsis} @sv{pattern})
+    | @sv{pattern datum}
+@sv{pattern datum} @value{longarrow} @sv{string}
+    | @sv{character}
+    | @sv{boolean}
+    | @sv{number}
+    | @sv{bytevector}
+@sv{template} @value{longarrow} @sv{pattern identifier}
+    | (@sv{template element})
+    | (@sv{template element} @dot{.} @sv{template})
+    | @compound{@hashchar{}}(@sv{template element})
+    | @sv{template datum}
+@sv{template element} @value{longarrow} @sv{template}
+    | @sv{template} @sv{ellipsis}
+@sv{template datum} @value{longarrow} @sv{pattern datum}
+@sv{pattern identifier} @value{longarrow} @sv{any identifier except @code{...}}
+@sv{ellipsis} @value{longarrow} @sv{an identifier defaulting to @code{...}}
+@sv{underscore} @value{longarrow} @sv{the identifier @code{_}}
+@end example
 
-@c @end indentedblock
+@node Programs and definitions
+@subsection Programs and definitions
 
-@c @node Quasiquotations
-@c @subsection Quasiquotations
+@example grammar
+@sv{program} @value{longarrow}
+   @sv{import declaration}+
+   @sv{command or definition}+
+@sv{command or definition} @value{longarrow} @sv{command}
+    | @sv{definition}
+    | (begin @sv{command or definition}+)
+@sv{definition} @value{longarrow} (define @sv{identifier} @sv{expression})
+    | (define (@sv{identifier} @sv{def formals}) @sv{body})
+    | @sv{syntax definition}
+    | (define-values @sv{formals} @sv{body})
+    | (define-record-type @sv{identifier}
+        @sv{constructor} @sv{identifier} @sv{field spec}*)
+    | (begin @sv{definition}*)
+@sv{def formals} @value{longarrow} @sv{identifier}*
+    | @sv{identifier}* @dot{.} @sv{identifier}
+@sv{constructor} @value{longarrow} (@sv{identifier} @sv{field name}*)
+@sv{field spec} @value{longarrow} (@sv{field name} @sv{accessor})
+    | (@sv{field name} @sv{accessor} @sv{mutator})
+@sv{field name} @value{longarrow} @sv{identifier}
+@sv{accessor} @value{longarrow} @sv{identifier}
+@sv{mutator} @value{longarrow} @sv{identifier}
+@sv{syntax definition} @value{longarrow}
+    (define-syntax @sv{keyword} @sv{transformer spec})
+@end example
 
-@c The following grammar for quasiquote expressions is not context-free.
-@c It is presented as a recipe for generating an infinite number of
-@c production rules. Imagine a copy of the following rules for @var{D} =
-@c 1, 2, 3, @dots{}, where @var{D} is the nesting depth.
-
-@c @indentedblock
-@c @sv{quasiquotation} @value{longarrow} @sv{quasiquotation 1}
-
-@c @sv{qq template 0} @value{longarrow} @sv{expression}
-
-@c @sv{quasiquotation @var{D}} @value{longarrow}
-@c       @code{`}@sv{qq template @var{D}}
-@c     | @code{(quasiquote }@sv{qq template @var{D}}@code{)}
-
-@c @sv{qq template @var{D}} @value{longarrow} @sv{simple datum}
-@c     | @sv{list qq template @var{D}}
-@c     | @sv{vector qq template @var{D}}
-@c     | @sv{unquotation @var{D}}
-
-@c @sv{list qq template @var{D}} @value{longarrow}
-@c       @code{(}@arbno{@sv{qq template or splice @var{D}}}@code{)}
-@c     | @code{(}@atleastone{@sv{qq template or splice @var{D}}} @code{.}
-@c         @sv{qq template @var{D}}@code{)}
-@c     | @code{'}@sv{qq template @var{D}}
-@c     | @sv{quasiquotation @var{D}+1}
-
-@c @sv{vector qq template @var{D}} @value{longarrow}
-@c       @code{@hashchar{}(}@arbno{@sv{qq template or
-@c         splice @var{D}}}@code{)}
-
-@c @sv{unquotation @var{D}} @value{longarrow}
-@c       @code{,}@sv{qq template @var{D}@minus{}1}
-@c     | @code{(unquote }@sv{qq template @var{D}@minus{}1}@code{)}
-
-@c @sv{qq template or splice @var{D}} @value{longarrow}
-@c       @sv{qq template @var{D}}
-@c     | @sv{splicing unquotation @var{D}}
-
-@c @sv{splicing unquotation @var{D}} @value{longarrow}
-@c       @code{,@@}@sv{qq template @var{D}@minus{}1}
-@c     | @code{(unquote-splicing }@sv{qq template @var{D}@minus{}1})
-
-@c @end indentedblock
-
-@c In @sv{quasiquotation}s, a @sv{list qq template @var{D}} can
-@c sometimes be confused with either an @sv{unquotation @var{D}} or a
-@c @sv{splicing unquotation @var{D}}.
-
-@c The interpretation as an @sv{unquotation} or
-@c @sv{splicing unquotation @var{D}} takes precedence.
-
-@c @node Transformers
-@c @subsection Transformers
-
-@c Note: Though this grammar does not say so, a top-level
-@c @code{syntax-rules} pattern must be a list pattern, not a vector
-@c pattern or an identifier pattern.
-
-@c @indentedblock
-
-@c @sv{transformer spec} @value{longarrow}
-@c       @code{(syntax-rules }(@arbno{@sv{identifier}}@code{)}
-@c         @arbno{@sv{syntax rule}}@code{)}
-@c     | @code{(syntax-rules }@sv{identifier}
-@c         @code{(}@arbno{@sv{identifier}}@code{)}
-@c         @arbno{@sv{syntax rule}}@code{)}
-
-@c @sv{syntax rule} @value{longarrow}
-@c       @code{(}@sv{pattern} @sv{template}@code{)}
-
-@c @sv{pattern} @value{longarrow} @sv{pattern identifier}@*
-@c @ @ | @sv{underscore}@*
-@c @ @ | @code{(}@arbno{@sv{pattern}}@code{)}@*
-@c @ @ | @code{(}@atleastone{@sv{pattern}} @code{.} @sv{pattern}@code{)}@*
-@c @ @ | @code{(}@arbno{@sv{pattern}} @sv{pattern} @sv{ellipsis}
-@c         @arbno{@sv{pattern}}@code{)}@*
-@c @ @ | @code{(}@arbno{@sv{pattern}} @sv{pattern} @sv{ellipsis}
-@c         @arbno{@sv{pattern}} @code{.} @sv{pattern}@code{)}@*
-@c @ @ | @code{@hashchar{}(}@arbno{@sv{pattern}}@code{)}@*
-@c @ @ | @code{@hashchar{}(}@arbno{@sv{pattern}} @sv{pattern}
-@c         @sv{ellipsis} @arbno{@sv{pattern}}@code{)}@*
-@c @ @ | @sv{pattern datum}
-
-@c @sv{pattern datum} @value{longarrow} @sv{string}
-@c     | @sv{character}
-@c     | @sv{boolean}
-@c     | @sv{number}
-@c     | @sv{bytevector}
-
-@c @sv{template} @value{longarrow} @sv{pattern identifier}
-@c     | @code{(}@arbno{@sv{template element}}@code{)}
-@c     | @code{(}@atleastone{@sv{template element}} @code{.}
-@c         @sv{template}@code{)}
-@c     | @code{@hashchar{}(}@arbno{@sv{template element}}@code{)}
-@c     | @sv{template datum}
-
-@c @sv{template element} @value{longarrow} @sv{template}
-@c     | @sv{template} @sv{ellipsis}
-
-@c @sv{template datum} @value{longarrow} @sv{pattern datum}
-
-@c @c Don't use @dots{} for the ellipsis identifier; this will emit an
-@c @c ellipsis character in most output formats, which is wrong here.
-@c @sv{pattern identifier} @value{longarrow}
-@c       @sv{any identifier except @code{...}}
-
-@c @sv{ellipsis} @value{longarrow} @sv{an identifier defaulting to @code{...}}
-
-@c @sv{underscore} @value{longarrow} @sv{the identifier @code{_}}
-
-@c @end indentedblock
-
-@c @node Programs and definitions
-@c @subsection Programs and definitions
-
-@c @indentedblock
-
-@c @sv{program} @value{longarrow}
-@c    @atleastone{@sv{import declaration}}
-@c    @atleastone{@sv{command or definition}}
-
-@c @sv{command or definition} @value{longarrow} @sv{command}
-@c     | @sv{definition}
-@c     | @code{(begin }@atleastone{@sv{command or definition}}@code{)}
-
-@c @sv{definition} @value{longarrow}
-@c       @code{(define }@sv{identifier} @sv{expression}@code{)}@*
-@c @ @ | @code{(define }(@sv{identifier} @sv{def formals}@code{)}
-@c         @sv{body}@code{)}@*
-@c @ @ | @sv{syntax definition}@*
-@c @ @ | @code{(define-values }@sv{formals} @sv{body}@code{)}@*
-@c @ @ | @code{(define-record-type }@sv{identifier}
-@c         @sv{constructor} @sv{identifier}
-@c         @arbno{@sv{field spec}}@code{)}@*
-@c @ @ | @code{(begin }@arbno{@sv{definition}}@code{)}
-
-@c @sv{def formals} @value{longarrow} @arbno{@sv{identifier}}
-@c     | @arbno{@sv{identifier}} @code{.} @sv{identifier}
-
-@c @sv{constructor} @value{longarrow}
-@c       @code{(}@sv{identifier} @arbno{@sv{field name}}@code{)}
-
-@c @sv{field spec} @value{longarrow}
-@c       @code{(}@sv{field name} @sv{accessor}@code{)}
-@c     | @code{(}@sv{field name} @sv{accessor} @sv{mutator}@code{)}
-
-@c @sv{field name} @value{longarrow} @sv{identifier}
-
-@c @sv{accessor} @value{longarrow} @sv{identifier}
-
-@c @sv{mutator} @value{longarrow} @sv{identifier}
-
-@c @sv{syntax definition} @value{longarrow}
-@c     @code{(define-syntax }@sv{keyword} @sv{transformer spec}@code{)}
-
-@c @end indentedblock
-
-@c @node Libraries formal
-@c @subsection Libraries
-
-@c @indentedblock
-
-@c @sv{library} @value{longarrow}
-@c       @code{(define-library }@sv{library name}
-@c         @arbno{@sv{library declaration}}@code{)}
-
-@c @sv{library name} @value{longarrow}
-@c       @code{(}@atleastone{@sv{library name part}}@code{)}
-
-@c @sv{library name part} @value{longarrow} @sv{identifier}
-@c     | @sv{uinteger 10}
-
-@c @sv{library declaration} @value{longarrow}
-@c       @code{(export }@arbno{@sv{export spec}}@code{)}@*
-@c @ @   | @sv{import declaration}@*
-@c @ @   | @code{(begin }@arbno{@sv{command or definition}}@code{)}@*
-@c @ @   | @sv{includer}@*
-@c @ @   | @code{(include-library-declarations}
-@c           @atleastone{@sv{string}}@code{)}@*
-@c @ @   | @code{(cond-expand}
-@c           @atleastone{@sv{cond-expand clause}}@code{)}@*
-@c @ @   | @code{(cond-expand}
-@c           @atleastone{@sv{cond-expand clause}}
-@c           @code{(else }@arbno{@sv{library declaration}})@code{)}
-
-@c @sv{import declaration} @value{longarrow}
-@c       @code{(import }@atleastone{@sv{import set}}@code{)}
-
-@c @sv{export spec} @value{longarrow} @sv{identifier}
-@c    | @code{(rename }@sv{identifier} @sv{identifier}@code{)}
-
-@c @sv{import set} @value{longarrow} @sv{library name}@*
-@c @ @ | @code{(only }@sv{import set}
-@c        @atleastone{@sv{identifier}}@code{)}@*
-@c @ @ | @code{(except }@sv{import set}
-@c        @atleastone{@sv{identifier}}@code{)}@*
-@c @ @ | @code{(prefix }@sv{import set} @sv{identifier}@code{)}@*
-@c @ @ | @code{(rename }@sv{import set}
-@c        @atleastone{(@sv{identifier} @sv{identifier})}@code{)}
-
-@c @sv{cond-expand clause} @value{longarrow}
-@c    (@sv{feature requirement} @arbno{@sv{library declaration}}@code{)}
-
-@c @sv{feature requirement} @value{longarrow} @sv{identifier}
-@c @ @ | @code{(library }@sv{library name}@code{)}@*
-@c @ @ | @code{(and }@arbno{@sv{feature requirement}}@code{)}@*
-@c @ @ | @code{(or }@arbno{@sv{feature requirement}}@code{)}@*
-@c @ @ | @code{(not }@sv{feature requirement}@code{)}
-
-@c @end indentedblock
+@node Libraries formal
+@subsection Libraries
+@example grammar
+@sv{library} @value{longarrow}
+      (define-library @sv{library name}
+        @sv{library declaration}*)
+@sv{library name} @value{longarrow} (@sv{library name part}+)
+@sv{library name part} @value{longarrow} @sv{identifier} | @sv{uinteger 10}
+@sv{library declaration} @value{longarrow} (@aux{export} @sv{export spec}*)
+    | @sv{import declaration}
+    | (@aux{begin} @sv{command or definition}*)
+    | @sv{includer}
+    | (@aux{include-library-declarations} @sv{string}+)
+    | (@aux{cond-expand} @sv{cond-expand clause}+)
+    | (@aux{cond-expand} @sv{cond-expand clause}+
+                (@aux{else} @sv{library declaration}*))
+@sv{import declaration} @value{longarrow} (@aux{import} @sv{import set}+)
+@sv{export spec} @value{longarrow} @sv{identifier}
+    | (@aux{rename} @sv{identifier} @sv{identifier})
+@sv{import set} @value{longarrow} @sv{library name}
+    | (@aux{only} @sv{import set} @sv{identifier}+)
+    | (@aux{except} @sv{import set} @sv{identifier}+)
+    | (@aux{prefix} @sv{import set} @sv{identifier})
+    | (@aux{rename} @sv{import set} (@sv{identifier} @sv{identifier})+)
+@sv{cond-expand clause} @value{longarrow}
+   (@sv{feature requirement} @sv{library declaration}*)
+@sv{feature requirement} @value{longarrow} @sv{identifier}
+    | (@aux{library} @sv{library name})
+    | (@aux{and} @sv{feature requirement})
+    | (@aux{or} @sv{feature requirement})
+    | (@aux{not} @sv{feature requirement})
+@end example

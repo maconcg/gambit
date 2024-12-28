@@ -1,4 +1,4 @@
-@node Appendix B
+@node Standard Feature Identifiers
 @appendix Standard Feature Identifiers
 
 An implementation may provide any or all of the feature identifiers

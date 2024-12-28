@@ -110,10 +110,11 @@ exactly like whitespace.
 A semicolon (@code{;}) indicates the start of a line comment.  The
 comment con@value{shy}tinues to the end of the line on which the
 semicolon appears.  Another way to indicate a comment is to prefix a
-@angle{datum} (cf. section 7.1.2) with @code{@hashchar{};} and optional
-@angle{whitespace}.  The comment consists of the comment prefix
-@code{@hashchar{};}, the space, and the @angle{datum} together.  This
-notation is useful for @quotedbl{commenting out} sections of code.
+@angle{datum} (cf.@: @ref{External representations}) with
+@code{@hashchar{};} and optional @angle{whitespace}.  The comment
+consists of the comment prefix @code{@hashchar{};}, the space, and the
+@angle{datum} together.  This notation is useful for
+@quotedbl{commenting out} sections of code.
 
 Block comments are indicated with properly nested
 @code{@hashchar{}@U{007C}} and @code{@U{007C}@hashchar{}} pairs.
@@ -187,15 +188,15 @@ This introduces a character constant (@pxref{Characters}).
 
 @item @hashchar{}@U{0028}
 This introduces a vector constant (@pxref{Vectors}).  Vector constants
-are terminated by @code{)}.
+are termi@value{shy}nated by @code{)}.
 
 @item @hashchar{}u8@U{0028}
 This introduces a bytevector constant (@pxref{Vectors}).  Bytevector
-constants are terminated by @code{)}.
+constants are termi@value{shy}nated by @code{)}.
 
 @item @hashchar{}e @hashchar{}i @hashchar{}b @hashchar{}o @hashchar{}d @hashchar{}x
 These are used in the notation for numbers (@pxref{Syntax of numerical
-constants}).
+constants,Syntax of numerical con@value{shy}stants}).
 
 @item @hashchar{}@sv{n}= @hashchar{}@sv{n}@hashchar{}
 These are used for labeling and referencing other literal data
@@ -215,9 +216,9 @@ The lexical syntax @prosedatumlabel{n}@angle{datum} reads the same as
 
 The lexical syntax @prosedatumref{n} serves as a reference to some
 object labeled by @prosedatumlabel{n}; the result is the same object as
-the @prosedatumlabel{n} (@pxref{Equivalence predicates}).  Together,
-these syntaxes permit the notation of structures with shared or circular
-sub@value{shy}structure.
+the @prosedatumlabel{n} (@pxref{Equivalence predicates,Equivalence
+predi@value{shy}cates}).  Together, these syntaxes permit the notation
+of structures with shared or circular sub@value{shy}structure.
 
 @lisp
 (let ((x (list 'a 'b 'c)))
@@ -235,7 +236,9 @@ labeled by @prosedatumlabel{n} is not well defined in this case.
 
 It is an error for a @angle{program} or @angle{library} to include
 circular references ex@value{shy}cept in literals.  In particular, it is
-an error for @code{quasiquote} (@pxref{Quasiquotation}) to contain them.
+an error for @code{quasiquote}
+(@pxref{Quasiquotation,Quasiquo@value{shy}ta@value{shy}tion}) to contain
+them.
 
 @lisp
 #1=(begin (display #\x) #1#) @lispnote{error}
