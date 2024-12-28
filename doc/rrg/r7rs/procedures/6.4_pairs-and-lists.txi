@@ -8,8 +8,7 @@ cdr fields are accessed by the procedures @code{car} and @code{cdr}.
 The car and cdr fields are assigned by the procedures @code{set-car!}
 and @code{set-cdr!}.
 
-@cindex empty list
-
+@cindex list @subentry definition
 Pairs are used primarily to represent lists.  A @define{list} can be
 defined recursively as either the empty list or a pair whose cdr is a
 list.  More precisely, the set of lists is defined as the smallest set

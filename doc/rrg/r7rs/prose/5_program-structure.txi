@@ -1,9 +1,7 @@
 @node Program structure
 @chapter Program structure
-
 @node Programs
 @section Programs
-
 A Scheme program consists of one or more import declarations followed by
 a sequence of expressions and definitions.  Import declarations specify
 the libraries on which a program or library depends; a subset of the
@@ -41,7 +39,6 @@ mapping from the name of a library to its location in the file system.
 
 @node Import declarations
 @section Import declarations
-
 An import declaration takes the following form:
 
 @example grammar
@@ -108,7 +105,6 @@ permit these actions.
 
 @node Variable definitions
 @section Variable definitions
-
 A variable definition binds one or more identifiers and specifies an
 initial value for each of them.  The simplest kind of variable definition
 takes one of the following forms:
@@ -309,6 +305,8 @@ body it belongs to.  For ex@value{shy}ample, the following are errors:
 @end lisp
 
 @node Record-type definitions
+@cindex define-record-type
+@cindex record type definitions
 @section Record-type definitions
 @define{Record-type definitions} are used to introduce new data types,
 called @define{record types}.  Like other definitions, they can appear
@@ -418,6 +416,7 @@ predicate for instances of @code{<pare>}.
 @end deftypefn
 
 @node Libraries
+@cindex libraries
 @section Libraries
 Libraries provide a way to organize Scheme programs into reusable parts
 with explicitly defined interfaces to the rest of the program.  This
@@ -441,10 +440,10 @@ future versions of this report.  Libraries whose first identifier is
 im@value{shy}ple@value{shy}menting Scheme Requests for Implementation.
 It is inadvis@value{shy}able, but not an error, for
 iden@value{shy}tifiers in library names to contain any of the characters
-@nobr{@code{@U{007C}} @code{@backslashchar{}} @code{@U{003F}}
-@code{@U{002A}} @code{@U{003C}} @code{@U{0022}} @code{@U{003A}}
-@code{@U{003E}} @code{@U{002B}} @code{@U{005B}} @code{@U{005D}}
-@code{@U{002F}}} or control characters after escapes are expanded.
+@code{@U{007C}} @code{@backslashchar{}} @code{@U{003F}} @code{@U{002A}}
+@code{@U{003C}} @code{@U{0022}} @code{@U{003A}} @code{@U{003E}}
+@code{@U{002B}} @code{@U{005B}} @code{@U{005D}} @code{@U{002F}} or
+control characters after escapes are expanded.
 
 A @angle{library declaration} is any of:
 
@@ -502,7 +501,7 @@ The @code{begin}, @code{include}, and @code{include-ci} declarations are
 used to specify the body of the library.  They have the same syntax and
 semantics as the cor@value{shy}res@value{shy}ponding expression types.
 This form of @code{begin} is analogous to, but not the same as, the two
-types of @code{begin} defined in @ref{Sequencing}.
+types of @code{begin} defined in section 4.2.3 (@pxref{Sequencing}).
 
 The @code{include-library-declarations} declaration is similar to
 include ex@value{shy}cept that the contents of the file are spliced
@@ -658,8 +657,8 @@ syntax of Scheme and generally useful procedures that manipulate data.
 For example, the variable @code{abs} is bound to a procedure of one
 argument that computes the absolute value of a number, and the variable
 @code{+} is bound to a procedure that computes sums.  The full list of
-@nobr{@code{(scheme base)}} bindings can be found in @ref{Standard
-Libraries,Appendix A}.
+@nobr{@code{(scheme base)}} bindings can be found in Appendix A
+(@pxref{Standard Libraries}).
 
 Implementations may provide an initial @acronym{REPL} environment which
 behaves as if all possible variables are bound to locations, most of

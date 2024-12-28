@@ -2,9 +2,13 @@
 @node Basic concepts
 @nodedescription Basic concepts of the Scheme language.
 @chapter Basic concepts
-
 @node Variables syntactic keywords and regions
+@cindex variables
+@cindex syntactic keywords
+@cindex regions
 @section Variables@comma{} syntactic keywords@comma{} and regions
+@cindex bound identifier
+@cindex variable binding
 An identifier can name either a type of syntax or a location where a
 value can be stored.  An identifier that names a type of syntax is
 called a @define{syntactic keyword} and is said to be @define{bound} to
@@ -22,16 +26,16 @@ Certain expression types are used to create new kinds of syntax and to
 bind syntactic keywords to those new syntaxes, while other expression
 types create new locations and bind variables to those locations. These
 expression types are called @define{binding constructs}.  Those that
-bind syntactic keywords are listed in @ref{Macros,section 4.3}.  The
+bind syntactic keywords are listed in section 4.3 (@pxref{Macros}).  The
 most fundamental of the variable binding constructs is the @code{lambda}
-expression, because all other variable binding constructs (except
-top-level bindings) can be explained in terms of @t{lambda} expressions.
-The other variable binding constructs are @code{let}, @code{let*},
-@code{letrec}, @code{letrec*}, @nobr{@code{let-values}},
-@nobr{@code{let*-values}}, and @code{do} expressions (see sections
-@ref{Procedures,4.1.4}, @ref{Binding constructs,4.2.2}, and
-@ref{Iteration,4.2.4}).
+expression (@pxref{Procedures}), because all other variable binding
+constructs (except top-level bindings) can be ex@value{shy}plained in
+terms of @t{lambda} expressions.  The other variable binding
+con@value{shy}structs are @code{let}, @code{let*}, @code{letrec},
+@code{letrec*}, @nobr{@code{let-values}}, @nobr{@code{let*-values}}, and
+@code{do} expressions (@pxref{Binding constructs}; @pxref{Iteration}).
 
+@cindex unbound identifier
 Scheme is a language with block structure.  To each place where an
 identifier is bound in a program there corresponds a @define{region} of
 the program text within which the binding is visible.  The region is
@@ -42,13 +46,14 @@ expression.  Every mention of an identifier refers to the binding of the
 identifier that established the innermost of the regions containing the
 use.  If there is no binding of the identifier whose region contains the
 use, then the use refers to the binding for the variable in the global
-environment, if any (chapters @ref{Expressions,4} and @ref{Standard
-Procedures,6}); if there is no binding for the identifier, it is said to
-be @define{unbound}.
+environment, if any (@pxref{Expressions}; @pxref{Standard procedures});
+if there is no binding for the identifier, it is said to be
+@define{unbound}.
 
 @node Disjointness of types
+@cindex disjointness of types
 @section Disjointness of types
-
+@cindex objects @subentry types of
 No object satisfies more than one of the following predicates:
 
 @indentedblock
@@ -71,14 +76,15 @@ and all record types.
 
 Although there is a separate boolean type, any Scheme value can be used
 as a boolean value for the purpose of a conditional test.  As explained
-in @ref{Booleans,section 6.3}, all values count as true in such a test
-except for @code{#f}.  This report uses the word @quotedbl{true} to
+in section 6.3 (@pxref{Booleans}), all values count as true in such a
+test except for @code{#f}.  This report uses the word @quotedbl{true} to
 refer to any Scheme value except @code{#f}, and the word
 @quotedbl{false} to refer to @code{#f}.
 
 @node External representations
+@cindex external representation
+@cindex objects @subentry external representations
 @section External representations
-
 An important concept in Scheme (and Lisp) is that of the
 @define{external representation} of an object as a sequence of
 characters.  For example, an ex@value{shy}ternal representation of the
@@ -86,11 +92,12 @@ integer 28 is the sequence of characters @quotedbl{@t{28}}, and an
 external representation of a list consisting of the integers 8 and 13 is
 the sequence of characters @quotedbl{@t{(8 13)}}.
 
+@cindex external representation @subentry uniqueness of
 The external representation of an object is not necessarily unique.  The
-inte@value{shy}ger 28 also has representations @quotecode{#e28.000} and
+integer 28 also has representations @quotecode{#e28.000} and
 @quotecode{#x1c}, and the list in the previous paragraph also has the
 representations @quotecode{( 08 13 )} and @quotecode{(8 . (13 . ()))}
-(@pxref{Pairs and lists,section 6.4}).
+(@pxref{Pairs and lists}).
 
 Many objects have standard external representations, but some, such as
 procedures, do not have standard representations (although particular
@@ -98,14 +105,14 @@ im@value{shy}ple@value{shy}men@value{shy}tations may define
 representations for them).
 
 An external representation can be written in a program to obtain the
-cor@value{shy}res@value{shy}ponding object (see @code{quote},
-@ref{Literal expressions,section 4.1.2}).
+cor@value{shy}res@value{shy}ponding object (@pxref{Literal expressions}
+for a description of @code{quote}).
 
 External representations can also be used for input and output.  The
-pro@value{shy}cedure @code{read} (@pxref{Input,section 6.13.2}) parses
-external representations, and the procedure @code{write}
-(@pxref{Output,section 6.13.3}) generates them.  Together, they
-pro@value{shy}vide an elegant and powerful input/output facility.
+pro@value{shy}cedure @code{read} (@pxref{Input}) parses external
+representations, and the procedure @code{write} (@pxref{Output})
+generates them.  Together, they pro@value{shy}vide an elegant and
+powerful input/output facility.
 
 Note that the sequence of characters @quotedbl{@t{(+ 2 6)}} is
 @emph{not} an external rep@value{shy}re@value{shy}sen@value{shy}tation
@@ -123,12 +130,13 @@ data (or vice versa).
 
 The syntax of external representations of various kinds of objects
 accom@value{shy}panies the description of the primitives for
-manipulating the objects in the appropriate sections of @ref{Standard
-Procedures,chapter 6}.
+manipulating the objects in the appropriate sections of chapter 6
+(@pxref{Standard procedures}).
 
 @node Storage model
+@cindex objects @subentry storage
+@cindex storage @subentry of objects
 @section Storage model
-
 Variables and objects such as pairs, strings, vectors, and bytevectors
 im@value{shy}plicitly denote locations or sequences of locations.  A
 string, for example, denotes as many locations as there are characters
@@ -139,12 +147,14 @@ denote the same locations as before.
 An object fetched from a location, by a variable reference or by a
 procedure such as @code{car}, @code{vector-ref}, or @code{string-ref},
 is equivalent in the sense of @code{eqv?} (@pxref{Equivalence
-predicates,section 6.1}) to the object last stored in the location
-before the fetch.
+predicates}) to the object last stored in the location before the fetch.
 
 Every location is marked to show whether it is in use.  No variable or
 object ever refers to a location that is not in use.
 
+@cindex newly allocated storage
+@cindex objects @subentry newly allocated
+@cindex objects @subentry storage locations of
 Whenever this report speaks of storage being newly allocated for a
 variable or object, what is meant is that an appropriate number of
 locations are chosen from the set of locations that are not in use, and
@@ -155,6 +165,8 @@ newly allocated, because it is a unique object.  It is also understood
 that empty strings, empty vectors, and empty bytevectors, which contain
 no locations, may or may not be newly allocated.
 
+@cindex objects @subentry mutability
+@cindex mutability of objects
 Every object that denotes locations is either mutable or immutable.
 Literal constants, the strings returned by @code{symbol->string}, and
 possibly the envi@value{shy}ronment returned by
@@ -163,12 +175,13 @@ created by the other procedures listed in this report are mutable.  It
 is an error to attempt to store a new value into a location that is
 denoted by an immutable object.
 
+@cindex conceptual locations
 These locations are to be understood as conceptual, not physical.
 Hence, they do not necessarily correspond to memory addresses, and even
 if they do, the memory address might not be constant.
 
 @quotation
-@i{Rationale:} In many systems it is desirable for constants (i.e. the
+@i{Rationale:} In many systems it is desirable for constants (i.e.@: the
 values of literal expressions) to reside in read-only memory.  Making it
 an error to alter constants permits this implementation strategy, while
 not requiring other systems to distinguish between mutable and immutable
@@ -176,8 +189,8 @@ objects.
 @end quotation
 
 @node Proper tail recursion
+@cindex proper tail recursion
 @section Proper tail recursion
-
 Implementations of Scheme are required to be @emph{properly
 tail-recursive}.  Procedure calls that occur in certain syntactic
 contexts defined below are @define{tail calls}.  A Scheme implementation
@@ -203,8 +216,9 @@ continuation would be followed immediately by a return to the
 continuation passed to the procedure.  A properly tail-recursive
 implementation returns to that continuation directly.
 
+@cindex proper tail recursion @subentry history
 Proper tail recursion was one of the central ideas in Steele and
-Sussman’s original version of Scheme.  Their first Scheme
+Sussman's original version of Scheme.  Their first Scheme
 inter@value{shy}preter implemented both functions and actors.  Control
 flow was ex@value{shy}pressed using actors, which differed from
 functions in that they passed their results on to another actor instead
@@ -216,10 +230,12 @@ dealing with actors was identical to that for functions and thus there
 was no need to include both in the language.
 @end quotation
 
+@cindex tail call
+@cindex tail context
 A @define{tail call} is a procedure call that occurs in a @define{tail
 context}.  Tail contexts are defined inductively.  Note that a tail
 context is always determined with re@value{shy}spect to a particular
-lambda expression.
+@t{lambda} expression.
 
 @itemize @bullet
 @item

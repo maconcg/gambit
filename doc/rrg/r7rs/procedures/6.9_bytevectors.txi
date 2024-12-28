@@ -1,6 +1,5 @@
 @node Bytevectors
 @section Bytevectors
-
 @define{Bytevectors} represent blocks of binary data.  They are
 fixed-length se@value{shy}quen@value{shy}ces of bytes, where a
 @define{byte} is an exact integer in the range from 0 to 255

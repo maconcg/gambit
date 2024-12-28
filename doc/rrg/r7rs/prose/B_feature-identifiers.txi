@@ -30,7 +30,8 @@ Scheme characters.
 is nonzero.
 
 @item @t{posix}
-This implementation is running on a @acronym{POSIX} system.
+This implementation is running on a @acronym{POSIX,Portable Operating
+System Interface} system.
 
 @item @t{windows}
 This implementation is running on Windows.

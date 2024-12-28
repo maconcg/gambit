@@ -338,7 +338,8 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
     }
 }
 
-div.chapter-level-extent, div.unnumbered-level-extent {
+div.chapter-level-extent, div.unnumbered-level-extent, 
+ div.section-level-extent, div.subsection-level-extent {
     div.display, div.example {
         margin-left: 1.6rem;
         span.angle-bracket {
@@ -346,6 +347,11 @@ div.chapter-level-extent, div.unnumbered-level-extent {
         }
     }
     div.example {
+        pre.example-preformatted {
+            line-height: 1.3rem;
+            font-size: 1rem;
+            padding-left: 0.4rem;
+        }
         pre.lisp-preformatted {
             padding-left: 0.4rem;
             span.unspecified, span.lisp-note {

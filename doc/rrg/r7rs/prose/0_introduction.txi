@@ -58,11 +58,12 @@ and Indiana University in the summer of 1985.  Further revision took
 place in the spring of 1986, resulting in the
 @value{R3RS}@footnote{@value{refR3RS}}.  Work in the spring of 1988
 resulted in @value{R4RS}@footnote{@value{refR4RS}}, which became the
-basis for the @acronym{IEEE} Standard for the Scheme Programming
-Language in 1991@footnote{@value{refIEEE1178}}.  In 1998,
-sev@value{shy}eral additions to the @acronym{IEEE} standard, including
-high-level hygienic macros, multiple return values, and @t{eval}, were
-finalized as the @value{R5RS}@footnote{@value{refR5RS}}).
+basis for the @acronym{IEEE,Institute of Electrical and Electronics
+Engineers} Standard for the Scheme Programming Language in
+1991@footnote{@value{refIEEE1178}}.  In 1998, sev@value{shy}eral
+additions to the @acronym{IEEE} standard, including high-level hygienic
+macros, multiple return values, and @t{eval}, were finalized as the
+@value{R5RS}@footnote{@value{refR5RS}}).
 
 In the fall of 2006, work began on a more ambitious standard, including
 many new improvements and stricter requirements made in the interest of

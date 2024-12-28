@@ -40,15 +40,17 @@ that is different from any other identifier.
 
 Here are some examples of identifiers:
 
-@lisp
-...                      +
-+soup+                   <=?
-.>string                 a34kTMNs
-lambda                   list->vector
-q                        V17a
-|two words|              |two\x20;words|
-the-word-recursion-has-many-meanings
-@end lisp
+@indentedblock
+@multitable @columnfractions .6 .4
+@item @t{...} @tab @t{+}
+@item @t{+soup+} @tab @t{<=?}
+@item @t{.>string} @tab @t{a34kTMNs}
+@item @t{lambda} @tab @t{list->vector}
+@item @t{q} @tab @t{V17a}
+@item @t{|two words|} @tab @t{|two@identesc{@backslashchar{}x20;}words|}
+@item @t{the-word-recursion-has-many-meanings}
+@end multitable
+@end indentedblock
 
 @xref{Lexical structure} for the formal syntax of identifiers.
 
@@ -56,8 +58,8 @@ Identifiers have two uses within Scheme programs:
 
 @itemize @bullet
 @item
-Any identifier can be used as a variable or as a syntactic keyword (see
-@ref{Variables syntactic keywords and regions} and @ref{Macros}).
+Any identifier can be used as a variable or as a syntactic keyword
+(@pxref{Variables syntactic keywords and regions}; @pxref{Macros}).
 
 @item
 When an identifier appears as a literal or within a literal
@@ -65,6 +67,7 @@ When an identifier appears as a literal or within a literal
 (@pxref{Symbols}).
 @end itemize
 
+@cindex case sensitivity
 In contrast with earlier revisions of the
 report@footnote{@value{refR5RS}}, the syntax distinguishes between upper
 and lower case in identifiers and in characters specified using their
@@ -75,6 +78,8 @@ defined in this report contain upper-case characters, even when they
 appear to do so as a result of the English-language convention of
 capitalizing the first word of a sentence.
 
+@cindex directives
+@cindex atmosphere @subentry directives @seeentry{directives}
 The following directives give explicit control over case folding.
 
 @example
@@ -92,8 +97,11 @@ character literals.  The @code{#!no-fold-case} directive causes a
 re@value{shy}turn to the default, non-folding behavior.
 
 @node Whitespace and comments
+@cindex comments
+@cindex whitespace
+@cindex atmosphere @subentry comments @seeentry{comments}
+@cindex atmosphere @subentry whitespace @seeentry{whitespace}
 @section Whitespace and comments
-
 @define{Whitespace} characters include the space, tab, and newline
 characters.  (Im@value{shy}plemen@value{shy}tations may provide
 additional whitespace characters such as page break.)  Whitespace is
@@ -110,7 +118,7 @@ exactly like whitespace.
 A semicolon (@code{;}) indicates the start of a line comment.  The
 comment con@value{shy}tinues to the end of the line on which the
 semicolon appears.  Another way to indicate a comment is to prefix a
-@angle{datum} (cf.@: @ref{External representations}) with
+@angle{datum} (@pxref{External representations}) with
 @code{@hashchar{};} and optional @angle{whitespace}.  The comment
 consists of the comment prefix @code{@hashchar{};}, the space, and the
 @angle{datum} together.  This notation is useful for
@@ -134,7 +142,6 @@ Block comments are indicated with properly nested
 
 @node Other notations
 @section Other notations
-
 For a description of the notations used for numbers, @pxref{Numbers}.
 
 @table @t
@@ -196,7 +203,7 @@ constants are termi@value{shy}nated by @code{)}.
 
 @item @hashchar{}e @hashchar{}i @hashchar{}b @hashchar{}o @hashchar{}d @hashchar{}x
 These are used in the notation for numbers (@pxref{Syntax of numerical
-constants,Syntax of numerical con@value{shy}stants}).
+constants}).
 
 @item @hashchar{}@sv{n}= @hashchar{}@sv{n}@hashchar{}
 These are used for labeling and referencing other literal data
@@ -204,8 +211,8 @@ These are used for labeling and referencing other literal data
 @end table
 
 @node Datum labels
+@cindex datum label
 @section Datum labels
-
 @defblock
 @deftypeline {lexical syntax} @/ @prosedatumlabel{n}@sv{datum}
 @deftypeline {lexical syntax} @/ @prosedatumref{n}
@@ -214,11 +221,14 @@ The lexical syntax @prosedatumlabel{n}@angle{datum} reads the same as
 @angle{datum}, but also results in @angle{datum} being labeled by
 @angle{n}.  It is an error if @angle{n} is not a sequence of digits.
 
+@cindex datum reference
+@cindex circular structure
+@cindex shared structure
 The lexical syntax @prosedatumref{n} serves as a reference to some
 object labeled by @prosedatumlabel{n}; the result is the same object as
-the @prosedatumlabel{n} (@pxref{Equivalence predicates,Equivalence
-predi@value{shy}cates}).  Together, these syntaxes permit the notation
-of structures with shared or circular sub@value{shy}structure.
+the @prosedatumlabel{n} (@pxref{Equivalence predicates}).  Together,
+these syntaxes permit the notation of structures with shared or circular
+sub@value{shy}structure.
 
 @lisp
 (let ((x (list 'a 'b 'c)))
@@ -234,11 +244,10 @@ addition, it is an error if the reference appears as the labeled object
 itself (as in @prosedatumlabel{n}@prosedatumref{n}, because the object
 labeled by @prosedatumlabel{n} is not well defined in this case.
 
+@cindex datum reference @subentry circular datum reference
 It is an error for a @angle{program} or @angle{library} to include
 circular references ex@value{shy}cept in literals.  In particular, it is
-an error for @code{quasiquote}
-(@pxref{Quasiquotation,Quasiquo@value{shy}ta@value{shy}tion}) to contain
-them.
+an error for @code{quasiquote} (@pxref{Quasiquotation}) to contain them.
 
 @lisp
 #1=(begin (display #\x) #1#) @lispnote{error}

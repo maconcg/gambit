@@ -12,7 +12,6 @@ and Scheme numbers.
 
 @node Numerical types
 @subsection Numerical types
-
 Mathematically, numbers are arranged into a tower of subtypes in which
 each level is a subset of the level above it:
 
@@ -81,7 +80,7 @@ exact result, then it may either report the violation of an
 implementation restriction or it may silently coerce its result to an
 inexact value.  However, @code{(/ 3 4)} must not return the
 mathematically incorrect value @code{0}.  @xref{Implementation
-restrictions,,section 6.2.3}.
+restrictions}.
 
 Except for @code{exact}, the operations described in this section must
 generally return inexact results when given any inexact arguments.  An
@@ -98,14 +97,13 @@ ways.
 
 @node Implementation restrictions
 @subsection Implementation restrictions
-
 Implementations of Scheme are not required to implement the whole tower
-of subtypes given in @ref{Numerical types}, but they must implement a
-coherent subset consistent with both the purposes of the implementation
-and the spirit of the Scheme language.  For example, implementations in
-which all num@value{shy}bers are real, or in which non-real
-num@value{shy}bers are always inexact, or in which exact
-num@value{shy}bers are always integer, are still quite useful.
+of subtypes given in section 6.2.1 (@pxref{Numerical types}), but they
+must implement a coherent subset consistent with both the purposes of
+the implementation and the spirit of the Scheme language.  For example,
+implementations in which all numbers are real, or in which non-real
+numbers are always inexact, or in which exact numbers are always
+integer, are still quite useful.
 
 Implementations may also support only a limited range of numbers of any
 type, subject to the requirements of this section.  The supported range
@@ -135,22 +133,24 @@ will always return exact integer results provided all their arguments
 are exact integers and the mathe@value{shy}ma@value{shy}tically expected
 results are representable as exact integers within the implementation:
 
-@example
--                     *
-+                     abs
-ceiling               denominator
-exact-integer-sqrt    expt
-floor                 floor/
-floor-quotient        floor-remainder
-gcd                   lcm
-max                   min
-modulo                numerator
-quotient              rationalize
-remainder             round
-square                truncate
-truncate/             truncate-quotient
-truncate-remainder
-@end example
+@indentedblock
+@multitable @columnfractions .4 .6
+@item @t{-} @tab @t{*}
+@item @t{+} @tab @t{abs}
+@item @t{ceiling} @tab @t{denominator}
+@item @t{exact-integer-sqrt} @tab @t{expt}
+@item @t{floor} @tab @t{floor/}
+@item @t{floor-quotient} @tab @t{floor-remainder}
+@item @t{gcd} @tab @t{lcm}
+@item @t{max} @tab @t{min}
+@item @t{modulo} @tab @t{numerator}
+@item @t{quotient} @tab @t{rationalize}
+@item @t{remainder} @tab @t{round}
+@item @t{square} @tab @t{truncate}
+@item @t{truncate/} @tab @t{truncate-quotient}
+@item @t{truncate-remainder}
+@end multitable
+@end indentedblock
 
 It is recommended, but not required, that implementations support exact
 integers and exact rationals of practically unlimited size and
@@ -191,7 +191,6 @@ constant by an inexact number.
 
 @node Implementation extensions
 @subsection Implementation extensions
-
 Implementations may provide more than one representation of
 floating-point numbers with differing precisions.  In an implementation
 which does so, an inexact result must be represented with at least as
@@ -263,10 +262,9 @@ be infinities, NaNs, or negative zero.
 
 @node Syntax of numerical constants
 @subsection Syntax of numerical constants
-
 The syntax of the written representations for numbers is described
 formally in Formal Constants.  Note that case is not significant in
-numerical con@value{shy}stants.@c @ref{Formal syntax}.
+numerical con@value{shy}stants. @xref{Formal syntax}.
 
 A number can be written in binary, octal, decimal, or hexadecimal by the
 use of a radix prefix.  The radix prefixes are @nobr{@code{#b}
@@ -325,13 +323,13 @@ and @i{@U{03B8}} are real numbers.
 
 @node Numerical operations
 @subsection Numerical operations
-The reader is referred to @ref{Error situations and unspecified
-behavior} for a sum@value{shy}mary of the naming conventions used to
-specify restrictions on the types of arguments to numerical routines.
-The examples used in this section assume that any numerical constant
-written using an exact notation is in@value{shy}deed represented as an
-exact number.  Some examples also assume that certain numerical
-constants written using an inexact notation can be
+The reader is referred to section 1.3.3 (@pxref{Error situations and
+unspecified behavior}) for a sum@value{shy}mary of the naming
+conventions used to specify restrictions on the types of arguments to
+numerical routines.  The examples used in this section assume that any
+numerical constant written using an exact notation is in@value{shy}deed
+represented as an exact number.  Some examples also assume that certain
+numerical constants written using an inexact notation can be
 rep@value{shy}resen@value{shy}ted without loss of accuracy; the inexact
 constants were chosen so that this is likely to be true in
 implementations that use @acronym{IEEE} binary doubles to represent
@@ -1042,8 +1040,7 @@ The new names are clearer and shorter, as well as being compatible with
 
 @node Numerical input and output
 @subsection Numerical input and output
-
-@deffn  procedure number->string z
+@deffn procedure number->string z
 @deffnx procedure number->string z radix
 
 It is an error if @var{radix} is not one of 2, 8, 10, or 16.

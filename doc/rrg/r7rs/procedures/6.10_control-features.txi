@@ -1,6 +1,5 @@
 @node Control features
 @section Control features
-
 This section describes various primitive procedures which control the
 flow of program execution in special ways.  Procedures in this section
 that invoke procedure arguments always do so in the same dynamic
@@ -287,12 +286,15 @@ a procedure with the power of
 @end lisp
 
 @quotation
+@cindex non-local exits
+@cindex non-local exits @subentry via @code{guard} @seeentry{non-local exits}
 @i{Rationale:} A common use of @code{call-with-current-continuation} is
 for structured, non-local exits from loops or procedure bodies, but in
 fact @code{call-with-current-continuation} is useful for implementing a
 wide variety of advanced control structures.  In fact, @code{raise} and
 @code{guard} provide a more structured mechanism for non-local exits.
 
+@cindex continuations
 Whenever a Scheme expression is evaluated there is a
 @define{continuation} wanting the result of the expression.  The
 continuation represents an entire (default) future for the computation.

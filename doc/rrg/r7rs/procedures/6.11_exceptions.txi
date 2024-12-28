@@ -1,6 +1,5 @@
 @node Exceptions
 @section Exceptions
-
 This section describes Scheme's exception-handling and exception-raising
 procedures.  For the concept of Scheme exceptions, @pxref{Error
 situations and unspecified behavior}.  @xref{Exception handling} for the

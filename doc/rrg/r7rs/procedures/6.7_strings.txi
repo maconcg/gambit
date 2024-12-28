@@ -1,13 +1,11 @@
 @node Strings
 @section Strings
-
 @cindex escape sequence
-
 Strings are sequences of characters.  Strings are written as sequences
 of characters enclosed within quotation marks (@code{"}).  Within a
 string literal, vari@value{shy}ous escape sequences represent characters
 other than themselves.  Escape sequences always start with a backslash
-(@code{\}):
+(@code{@backslashchar{}}):
 
 @itemize @bullet
 @item
@@ -67,20 +65,22 @@ between upper and lower case.  The names of the versions that ignore
 case end with @nobr{@samp{-ci}} (for @quotedbl{case insensitive}).
 
 Implementations may forbid certain characters from appearing in strings.
-However, with the exception of @code{#\null}, @acronym{ASCII} characters
-must not be for@value{shy}bidden.  For example, an implementation might
-support the entire Unicode repertoire, but only allow characters U+0001
-to U+00FF (the Latin-1 repertoire without @code{#\null}) in strings.
+However, with the exception of @code{@hashchar{}@backslashchar{}null},
+@acronym{ASCII} characters must not be for@value{shy}bidden.  For
+example, an implementation might support the entire Unicode repertoire,
+but only allow characters U+0001 to U+00FF (the Latin-1 repertoire
+without @code{@hashchar{}@backslashchar{}null}) in strings.
 
 It is an error to pass such a forbidden character to @code{make-string},
 @code{string}, @code{string-set!}, or @code{string-fill!}, as part of
 the list passed to @code{list->string}, or as part of the vector passed
-to @code{vector->string} (see @i{Vectors}), or in @acronym{UTF-8}
-en@value{shy}coded form within a bytevector passed to
-@code{utf8->string} (see @i{Byte@value{shy}vectors}).  It is also an
-error for a procedure passed to @code{string-map} (see @i{Control
-features}) to return a forbidden character, or for @code{read-string}
-(see @i{Input}) to attempt to read one.
+to @code{vector->string} (@pxref{Vectors}), or in @acronym{UTF-8,Unicode
+Transformation Format -- 8-bit} en@value{shy}coded form within a
+bytevector passed to @code{utf8->string} (@pxref{Bytevectors}).  It is
+also an error for a pro@value{shy}ce@value{shy}dure passed to
+@code{string-map} (@pxref{Control features}) to return a forbidden
+character, or for @code{read-string} (@pxref{Input}) to attempt to read
+one.
 
 @deffn procedure string? obj
 

@@ -1,6 +1,5 @@
 @node System interface
 @section System interface
-
 Questions of system interface generally fall outside of the domain of
 this re@value{shy}port.  However, the following operations are important
 enough to deserve description here.
@@ -91,14 +90,14 @@ system in the same manner as @code{exit}.
 Many operating systems provide each running process with an
 @define{environment} consisting of @define{environment variables}.
 (This environment is not to be confused with the Scheme environments
-that can be passed to @code{eval}: see @ref{Environments and
-evaluation}.)  Both the name and value of an environment variable are
-strings.  The procedure @code{get-environment-variable} returns the
-value of the environment variable @var{name}, or @code{#f} if the named
-environment variable is not found.  It may use locale information to
-encode the name and decode the value of the environment variable.  It is
-an error if @code{get-environment-variable} can't decode the value.  It
-is also an error to mutate the resulting string.
+that can be passed to @code{eval}: @pxref{Environments and evaluation}.)
+Both the name and value of an environment variable are strings.  The
+procedure @code{get-environment-variable} returns the value of the
+environment variable @var{name}, or @code{#f} if the named environment
+variable is not found.  It may use locale information to encode the name
+and decode the value of the environment variable.  It is an error if
+@code{get-environment-variable} can't decode the value.  It is also an
+error to mutate the resulting string.
 
 @lisp
 (get-environment-variable "PATH")

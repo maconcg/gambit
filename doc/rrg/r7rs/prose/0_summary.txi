@@ -24,7 +24,7 @@ Chapters 4 (@pxref{Expressions}) and 5 (@pxref{Program structure})
 describe the syntax and semantics of expressions,
 def@value{shy}ini@value{shy}tions, programs, and libraries.
 
-Chapter 6 (@pxref{Standard Procedures}) describes Scheme's built-in
+Chapter 6 (@pxref{Standard procedures}) describes Scheme's built-in
 procedures, which include all of the language's data manipulation and
 input/output primitives.
 

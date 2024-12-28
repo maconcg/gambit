@@ -1,9 +1,7 @@
 @node Booleans
-@section Booleans
-
 @cindex true
 @cindex false
-
+@section Booleans
 The standard boolean objects for true and false are written as @code{#t}
 and @code{#f}.  Alternatively, they can be written @code{#true} and
 @code{#false}, respectively.  What really matters, though, are the
@@ -20,7 +18,6 @@ expressions.  All other Scheme values, including @code{#t}, count as
 true.
 
 @cindex empty list
-
 @quotation
 @i{Note:} Unlike some other dialects of Lisp, Scheme distinguishes
 @code{#f} and the empty list empty list from each other and from the
@@ -69,5 +66,4 @@ The @code{boolean?} predicate returns @code{#t} if @var{obj} is either
 
 Returns @code{#t} if all the arguments are
 @code{#t} or all are @code{#f}.
-
 @end deffn
