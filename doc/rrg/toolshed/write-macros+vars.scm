@@ -13,7 +13,7 @@
               ("parVIII" "_8" "@U{2088}" "8") ("parIX"  "_9" "@U{2089}" "9")
               ("pare"    "_E" "@U{2091}" "e") ("parj"   "_J" "@U{2C7C}" "j")
               ("park"    "_K" "@U{2096}" "k") ("parn"   "_N" "@U{2099}" "n")
-              ("parp"    "_P" "@U{209A}" "p") ("parq"   "_Q" "@U{1D69}" "q")
+              ("parp"    "_P" "@U{209A}" "p") ("parq"   "_Q" "@U{2093}" "q")
               ("parr"    "_R" "@U{1D63}" "r") ("pars"   "_S" "@U{209B}" "s")
               ("parv"    "_V" "@U{1D65}" "v") ("parx"   "_X" "@U{2093}" "x")
               ("parmplusone" "_M+1" "@U{2098}@U{208A}@U{2081}" "m+1")
@@ -28,7 +28,7 @@
               ("varVIII" "_8" "@U{2088}" "8") ("varIX"  "_9" "@U{2089}" "9")
               ("vare"    "_E" "@U{2091}" "e") ("varj"   "_J" "@U{2C7C}" "j")
               ("vark"    "_K" "@U{2096}" "k") ("varn"   "_N" "@U{2099}" "n")
-              ("varp"    "_P" "@U{209A}" "p") ("varq"   "_Q" "@U{1D69}" "q")
+              ("varp"    "_P" "@U{209A}" "p") ("varq"   "_Q" "@U{2093}" "q")
               ("varr"    "_R" "@U{1D63}" "r") ("vars"   "_S" "@U{209B}" "s")
               ("varv"    "_V" "@U{1D65}" "v") ("varx"   "_X" "@U{2093}" "x")
               ("varmplusone" "_M+1" "@U{2098}@U{208A}@U{2081}" "m+1")
@@ -78,7 +78,6 @@
   (write-quotedbl-macro)
   (write-quotecode-macro)
   (write-angle-macro)
-  (write-longarrow-macro)
   (write-nobr-macro)
   (write-rv-macro)
   (write-sv-macro)
@@ -106,7 +105,7 @@
                            "@r{@dots{}}"
                            "@inlineraw{html,"
                            "</span>},"
-                           ",@dots{}}\n"))))
+                           "@dots{}}\n"))))
         (write-dnspace
          (lambda ()
            (write-string
@@ -137,6 +136,13 @@
                            "@inlinefmtifelse{tex,"
                            "@math{\\\\varsigma},"
                            "@U{03C2}}\n"))))
+        (write-longarrow
+         (lambda ()
+           (write-string
+            (string-append "@set longarrow "
+                           "@inlinefmtifelse{info,@arrow{},"
+                           "@inlinefmtifelse{plaintext,@arrow{},"
+                           "@r{@U{27F6}}}}\n"))))
         (write-newsigma
          (lambda ()
            (write-string
@@ -161,6 +167,14 @@
         (write-r2rs
          (lambda ()
            (write-string "@set R2RS @acronym{RRRS}\n")))
+        (write-Revisedn
+         (lambda (n superscript)
+           (write-string
+            (string-append "@set Revised" n
+                           " @inlinefmtifelse{plaintext,Revised^" n
+                           ",@inlinefmtifelse{info,Revised" superscript
+                           ",Revised@sup{" (string-downcase n)
+                           "}}}\n"))))
         (write-RevisednRS
          (lambda (n superscript)
            (write-string
@@ -203,9 +217,12 @@
       (write-greekcapitalsigma)
       (write-greeksmallsigma)
       (write-greekfinalsigma)
+      (write-longarrow)
       (write-newsigma)
       (write-truishsigma)
       (write-unspecifiedsigma)
+      (write-Revisedn "5" "@U{2075}")
+      (write-Revisedn "6" "@U{2076}")
       (write-RevisednRS "3" "@U{00B3}")
       (write-RevisednRS "4" "@U{2074}")
       (write-RevisednRS "5" "@U{2075}")
@@ -462,8 +479,8 @@
                                "@end macro\n")))
 
 (define (write-angle-macro)
-  (let ((left-angle-bracket "@U{2329}" #;"@U{3008}")
-        (right-angle-bracket "@U{232A}" #;"@U{3009}"))
+  (let ((left-angle-bracket "@U{2329}" )  ; @U{27E8} @U{3008}
+        (right-angle-bracket "@U{232A}")) ; @U{27E9} @U{3009}
     (write-string
      (string-append "@macro angle {text}\n"
                     "@inlinefmtifelse{plaintext,"
@@ -483,13 +500,6 @@
                     ","
                     left-angle-bracket "\\text\\" right-angle-bracket
                     "}}}\n@end macro\n"))))
-
-(define (write-longarrow-macro)
-  (write-string (string-append "@macro longarrow {}\n"
-                               "@inlinefmtifelse{info,==>,"
-                               "@inlinefmtifelse{plaintext,==>,"
-                               "@U{27F6}}}\n"
-                               "@end macro\n")))
 
 (define (write-rv-macro) ; rv ==> "roman variable"
   (write-string (string-append "@macro rv {v}\n"

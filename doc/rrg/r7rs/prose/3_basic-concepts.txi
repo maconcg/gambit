@@ -272,10 +272,10 @@ shown here.
 
 @r{where}
 
-@sv{cond clause} @r{@longarrow{}} (@sv{test} @sv{tail sequence})
-@sv{case clause} @r{@longarrow{}} ((@sv{datum}*) @sv{tail sequence})
-@sv{tail body} @r{@longarrow{}} @sv{definition}* @sv{tail sequence}
-@sv{tail sequence} @r{@longarrow{}} @sv{expression}* @sv{tail expression}
+@sv{cond clause} @value{longarrow} (@sv{test} @sv{tail sequence})
+@sv{case clause} @value{longarrow} ((@sv{datum}*) @sv{tail sequence})
+@sv{tail body} @value{longarrow} @sv{definition}* @sv{tail sequence}
+@sv{tail sequence} @value{longarrow} @sv{expression}* @sv{tail expression}
 @end example
 
 @item

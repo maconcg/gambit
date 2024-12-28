@@ -20,8 +20,9 @@ At the outermost level of a program, @t{(begin @sv{expression or
 expressions and definitions in the @code{begin}.  Similarly, in a
 @angle{body}, @t{(begin @sv{@parI{definition}} @value{defdots})} is
 equivalent to the sequence @sv{@parI{definition}}
-@value{defdots}@inlinefmtifelse{html,@U{2009},@tie{}}@.  Macros can expand
-into such @code{begin} forms.  For the formal definition, see 4.2.3.
+@value{defdots}@inlinefmtifelse{html,@U{2009},@tie{}}@.  Macros can
+expand into such @code{begin} forms.  For the formal definition,
+@pxref{Sequencing}.
 
 Import declarations and definitions cause bindings to be created in the
 glo@value{shy}bal environment or modify the value of existing global
@@ -495,13 +496,13 @@ the library and named by @angle{@parI{identifier}} in each
 An @code{import} declaration provides a way to import the identifiers
 exported by an@value{shy}other library.  It has the same syntax and
 semantics as an import decla@value{shy}ration used in a program or at
-the @acronym{REPL} (see section 5.2).
+the @acronym{REPL} (@pxref{Import declarations}).
 
 The @code{begin}, @code{include}, and @code{include-ci} declarations are
 used to specify the body of the library.  They have the same syntax and
 semantics as the cor@value{shy}res@value{shy}ponding expression types.
 This form of @code{begin} is analogous to, but not the same as, the two
-types of @code{begin} defined in section 4.2.3.
+types of @code{begin} defined in @ref{Sequencing}.
 
 The @code{include-library-declarations} declaration is similar to
 include ex@value{shy}cept that the contents of the file are spliced
@@ -648,7 +649,7 @@ library.
 @node The REPL
 @section The REPL
 Implementations may provide an interactive session called a
-@acronym{REPL} (Read-Eval-Print Loop), where import declarations,
+@acronym{REPL,Read-Eval-Print Loop}, where import declarations,
 expressions and definitions can be entered and evaluated one at a time.
 For convenience and ease of use, the global Scheme environment in a
 @acronym{REPL} must not be empty, but must start out with at least the
@@ -657,7 +658,8 @@ syntax of Scheme and generally useful procedures that manipulate data.
 For example, the variable @code{abs} is bound to a procedure of one
 argument that computes the absolute value of a number, and the variable
 @code{+} is bound to a procedure that computes sums.  The full list of
-@nobr{@code{(scheme base)}} bindings can be found in Appendix A.
+@nobr{@code{(scheme base)}} bindings can be found in @ref{Standard
+Libraries,Appendix A}.
 
 Implementations may provide an initial @acronym{REPL} environment which
 behaves as if all possible variables are bound to locations, most of

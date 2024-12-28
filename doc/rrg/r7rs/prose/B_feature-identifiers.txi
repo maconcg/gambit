@@ -1,0 +1,55 @@
+@node Appendix B
+@appendix Standard Feature Identifiers
+
+An implementation may provide any or all of the feature identifiers
+listed below for use by @code{cond-expand} and features, but must not
+provide a feature identifier if it does not provide the corresponding
+feature.
+
+@table @asis
+@item @t{r7rs}
+All @value{R7RS} Scheme implementations have this feature.
+
+@item @t{exact-closed}
+The algebraic operations @code{+}, @code{-}, @code{*}, and @code{expt}
+where the second argument is a non-negative integer produce exact values
+given exact inputs.
+
+@item @t{exact-complex}
+Exact complex numbers are provided.
+
+@item @t{ieee-float}
+Inexact numbers are @acronym{IEEE} 754 binary floating point values.
+
+@item @t{full-unicode}
+All Unicode characters present in Unicode version 6.0 are supported as
+Scheme characters.
+
+@item @t{ratios}
+@code{/} with exact arguments produces an exact result when the divisor
+is nonzero.
+
+@item @t{posix}
+This implementation is running on a @acronym{POSIX} system.
+
+@item @t{windows}
+This implementation is running on Windows.
+
+@item @t{unix, darwin, gnu-linux, bsd, freebsd, solaris, @value{defdots}}
+Operating system flags (perhaps more than one).
+
+@item @t{i386}, @t{x86-64}, @t{ppc}, @t{sparc}, @t{jvm}, @t{clr}, @t{llvm}, @value{defdots}
+CPU architecture flags.
+
+@item @t{ilp32}, @t{lp64}, @t{ilp64}, @value{defdots}
+C memory model flags.
+
+@item @t{big-endian, little-endian}
+Byte order flags.
+
+@item @angle{name}
+The name of this implementation.
+
+@item @angle{name-version}
+The name and version of this implementation.
+@end table

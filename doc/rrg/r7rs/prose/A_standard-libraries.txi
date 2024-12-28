@@ -1,0 +1,495 @@
+@node Standard Libraries
+@appendix Standard Libraries
+
+This section lists the exports provided by the standard libraries.  The
+libraries are factored so as to separate features which might not be
+sup@value{shy}ported by all implementations, or which might be expensive
+to load.
+
+The @code{scheme} library prefix is used for all standard libraries, and
+is reserved for use by future standards.
+
+@node Base Library
+@appendixsec Base Library
+
+The @code{(scheme base)} library exports many of the procedures and
+syntax bind@value{shy}ings that are traditionally associated with
+Scheme.  The division between the base library and the other standard
+libraries is based on use, not on con@value{shy}struc@value{shy}tion.
+In particular, some facilities that are typically implemented as
+primitives by a compiler or the run-time system rather than in terms of
+other standard procedures or syntax are not part of the base library,
+but are defined in separate libraries.  By the same token, some exports
+of the base library are implementable in terms of other exports.  They
+are redundant in the strict sense of the word, but they capture common
+patterns of usage, and are therefore provided as convenient
+abbreviations.
+
+@indentedblock
+@multitable @columnfractions .45 .55
+@item @t{*} @tab @t{+}
+@item @t{-} @tab @t{...}
+@item @t{/} @tab @t{<}
+@item @t{<=} @tab @t{=}
+@item @t{=>} @tab @t{>}
+@item @t{>=} @tab @t{_}
+@item @t{abs} @tab @t{and}
+@item @t{append} @tab @t{apply}
+@item @t{assoc} @tab @t{assq}
+@item @t{assv} @tab @t{begin}
+@item @t{binary-port?} @tab @t{boolean=?}
+@item @t{boolean?} @tab @t{bytevector}
+@item @t{bytevector-append} @tab @t{bytevector-copy}
+@item @t{bytevector-copy!} @tab @t{bytevector-length}
+@item @t{bytevector-u8-ref} @tab @t{bytevector-u8-set!}
+@item @t{bytevector?} @tab @t{caar}
+@item @t{cadr} @tab @t{call-with-current-continuation}
+@item @t{call-with-port} @tab @t{call-with-values}
+@item @t{call/cc} @tab @t{car}
+@item @t{case} @tab @t{cdar}
+@item @t{cddr} @tab @t{cdr}
+@item @t{ceiling} @tab @t{char->integer}
+@item @t{char-ready?} @tab @t{char<=?}
+@item @t{char<?} @tab @t{char=?}
+@item @t{char>=?} @tab @t{char>?}
+@item @t{char?} @tab @t{close-input-port}
+@item @t{close-output-port} @tab @t{close-port}
+@item @t{complex?} @tab @t{cond}
+@item @t{cond-expand} @tab @t{cons}
+@item @t{current-error-port} @tab @t{current-input-port}
+@item @t{current-output-port} @tab @t{define}
+@item @t{define-record-type} @tab @t{define-syntax}
+@item @t{define-values} @tab @t{denominator}
+@item @t{do} @tab @t{dynamic-wind}
+@item @t{else} @tab @t{eof-object}
+@item @t{eof-object?} @tab @t{eq?}
+@item @t{equal?} @tab @t{eqv?}
+@item @t{error} @tab @t{error-object-irritants}
+@item @t{error-object-message} @tab @t{error-object?}
+@item @t{even?} @tab @t{exact}
+@item @t{exact-integer-sqrt} @tab @t{exact-integer?}
+@item @t{exact?} @tab @t{expt}
+@item @t{features} @tab @t{file-error?}
+@item @t{floor} @tab @t{floor-quotient}
+@item @t{floor-remainder} @tab @t{floor/}
+@item @t{flush-output-port} @tab @t{for-each}
+@item @t{gcd} @tab @t{get-output-bytevector}
+@item @t{get-output-string} @tab @t{guard}
+@item @t{if} @tab @t{include}
+@item @t{include-ci} @tab @t{inexact}
+@item @t{inexact?} @tab @t{input-port-open?}
+@item @t{input-port?} @tab @t{integer->char}
+@item @t{integer?} @tab @t{lambda}
+@item @t{lcm} @tab @t{length}
+@item @t{let} @tab @t{let*}
+@item @t{let*-values} @tab @t{let-syntax}
+@item @t{let-values} @tab @t{letrec}
+@item @t{letrec*} @tab @t{letrec-syntax}
+@item @t{list} @tab @t{list->string}
+@item @t{list->vector} @tab @t{list-copy}
+@item @t{list-ref} @tab @t{list-set!}
+@item @t{list-tail} @tab @t{list?}
+@item @t{make-bytevector} @tab @t{make-list}
+@item @t{make-parameter} @tab @t{make-string}
+@item @t{make-vector} @tab @t{map}
+@item @t{max} @tab @t{member}
+@item @t{memq} @tab @t{memv}
+@item @t{min} @tab @t{modulo}
+@item @t{negative?} @tab @t{newline}
+@item @t{not} @tab @t{null?}
+@item @t{number->string} @tab @t{number?}
+@item @t{numerator} @tab @t{odd?}
+@item @t{open-input-bytevector} @tab @t{open-input-string}
+@item @t{open-output-bytevector} @tab @t{open-output-string}
+@item @t{or} @tab @t{output-port-open?}
+@item @t{output-port?} @tab @t{pair?}
+@item @t{parameterize} @tab @t{peek-char}
+@item @t{peek-u8} @tab @t{port?}
+@item @t{positive?} @tab @t{procedure?}
+@item @t{quasiquote} @tab @t{quote}
+@item @t{quotient} @tab @t{raise}
+@item @t{raise-continuable} @tab @t{rational?}
+@item @t{rationalize} @tab @t{read-bytevector}
+@item @t{read-bytevector!} @tab @t{read-char}
+@item @t{read-error?} @tab @t{read-line}
+@item @t{read-string} @tab @t{read-u8}
+@item @t{real?} @tab @t{remainder}
+@item @t{reverse} @tab @t{round}
+@item @t{set!} @tab @t{set-car!}
+@item @t{set-cdr!} @tab @t{square}
+@item @t{string} @tab @t{string->list}
+@item @t{string->number} @tab @t{string->symbol}
+@item @t{string->utf8} @tab @t{string->vector}
+@item @t{string-append} @tab @t{string-copy}
+@item @t{string-copy!} @tab @t{string-fill!}
+@item @t{string-for-each} @tab @t{string-length}
+@item @t{string-map} @tab @t{string-ref}
+@item @t{string-set!} @tab @t{string<=?}
+@item @t{string<?} @tab @t{string=?}
+@item @t{string>=?} @tab @t{string>?}
+@item @t{string?} @tab @t{substring}
+@item @t{symbol->string} @tab @t{symbol=?}
+@item @t{symbol?} @tab @t{syntax-error}
+@item @t{syntax-rules} @tab @t{textual-port?}
+@item @t{truncate} @tab @t{truncate-quotient}
+@item @t{truncate-remainder} @tab @t{truncate/}
+@item @t{u8-ready?} @tab @t{unless}
+@item @t{unquote} @tab @t{unquote-splicing}
+@item @t{utf8->string} @tab @t{values}
+@item @t{vector} @tab @t{vector->list}
+@item @t{vector->string} @tab @t{vector-append}
+@item @t{vector-copy} @tab @t{vector-copy!}
+@item @t{vector-fill!} @tab @t{vector-for-each}
+@item @t{vector-length} @tab @t{vector-map}
+@item @t{vector-ref} @tab @t{vector-set!}
+@item @t{vector?} @tab @t{when}
+@item @t{with-exception-handler} @tab @t{write-bytevector}
+@item @t{write-char} @tab @t{write-string}
+@item @t{write-u8} @tab @t{zero?}
+@end multitable
+@end indentedblock
+
+@node Case-Lambda Library
+@appendixsec Case-Lambda Library
+
+The @code{(scheme case-lambda)} library exports the @code{case-lambda}
+syntax.
+
+@indentedblock
+@multitable @columnfractions .45 .55
+@item @t{case-lambda}
+@end multitable
+@end indentedblock
+
+@node Char Library
+@appendixsec Char Library
+
+The @code{(scheme char)} library provides the procedures for dealing
+with char@value{shy}ac@value{shy}ters that involve potentially large
+tables when supporting all of Unicode.
+
+@indentedblock
+@multitable @columnfractions .45 .55
+@item @t{char-alphabetic?} @tab @t{char-ci<=?}
+@item @t{char-ci<?} @tab @t{char-ci=?}
+@item @t{char-ci>=?} @tab @t{char-ci>?}
+@item @t{char-downcase} @tab @t{char-foldcase}
+@item @t{char-lower-case?} @tab @t{char-numeric?}
+@item @t{char-upcase} @tab @t{char-upper-case?}
+@item @t{char-whitespace?} @tab @t{digit-value}
+@item @t{string-ci<=?} @tab @t{string-ci<?}
+@item @t{string-ci=?} @tab @t{string-ci>=?}
+@item @t{string-ci>?} @tab @t{string-downcase}
+@item @t{string-foldcase} @tab @t{string-upcase}
+@end multitable
+@end indentedblock
+
+@node Complex Library
+@appendixsec Complex Library
+
+The @code{(scheme complex)} library exports procedures which are
+typically only useful with non-real numbers.
+
+@indentedblock
+@multitable @columnfractions .45 .55
+@item @t{angle} @tab @t{imag-part}
+@item @t{magnitude} @tab @t{make-polar}
+@item @t{make-rectangular} @tab @t{real-part}
+@end multitable
+@end indentedblock
+
+@node CxR Library
+@appendixsec CxR Library
+
+The @code{(scheme cxr)} library exports twenty-four procedures which are
+the compositions of from three to four @code{car} and @code{cdr}
+operations.  For example @code{caddar} could be defined by
+
+@example grammar
+(define @deflikebind{caddar}
+  (lambda (@letlikebind{x}) (car (cdr (cdr (car x))))))@r{.}
+@end example
+
+The procedures @code{car} and @code{cdr} themselves and the four
+two-level compositions are included in the base library.  @xref{Pairs
+and lists}.
+
+@indentedblock
+@multitable @columnfractions .45 .55
+@item @t{caaaar} @tab @t{caaadr}
+@item @t{caaar} @tab @t{caadar}
+@item @t{caaddr} @tab @t{caadr}
+@item @t{cadaar} @tab @t{cadadr}
+@item @t{cadar} @tab @t{caddar}
+@item @t{cadddr} @tab @t{caddr}
+@item @t{cdaaar} @tab @t{cdaadr}
+@item @t{cdaar} @tab @t{cdadar}
+@item @t{cdaddr} @tab @t{cdadr}
+@item @t{cddaar} @tab @t{cddadr}
+@item @t{cddar} @tab @t{cdddar}
+@item @t{cddddr} @tab @t{cdddr}
+@end multitable
+@end indentedblock
+
+@node Eval Library
+@appendixsec Eval Library
+
+The @code{(scheme eval)} library exports procedures for evaluating
+Scheme data as programs.
+
+@indentedblock
+@multitable @columnfractions .45 .55
+@item @t{environment} @tab @t{eval}
+@end multitable
+@end indentedblock
+
+@node File Library
+@appendixsec File Library
+
+The @code{(scheme file)} library provides procedures for accessing
+files.
+
+@indentedblock
+@multitable @columnfractions .45 .55
+@item @t{call-with-input-file} @tab @t{call-with-output-file}
+@item @t{delete-file} @tab @t{file-exists?}
+@item @t{open-binary-input-file} @tab @t{open-binary-output-file}
+@item @t{open-input-file} @tab @t{open-output-file}
+@item @t{with-input-from-file} @tab @t{with-output-to-file}
+@end multitable
+@end indentedblock
+
+@node Inexact Library
+@appendixsec Inexact Library
+
+The @code{(scheme inexact)} library exports procedures which are
+typically only useful with inexact values.
+
+@indentedblock
+@multitable @columnfractions .45 .55
+@item @t{acos} @tab @t{asin}
+@item @t{atan} @tab @t{cos}
+@item @t{exp} @tab @t{finite?}
+@item @t{infinite?} @tab @t{log}
+@item @t{nan?} @tab @t{sin}
+@item @t{sqrt} @tab @t{tan}
+@end multitable
+@end indentedblock
+
+@node Lazy Library
+@appendixsec Lazy Library
+
+The @code{(scheme lazy)} library exports procedures and syntax keywords
+for lazy evaluation.
+
+@indentedblock
+@multitable @columnfractions .45 .55
+@item @t{delay} @tab @t{delay-force}
+@item @t{force} @tab @t{make-promise}
+@item @t{promise?}
+@end multitable
+@end indentedblock
+
+@node Load Library
+@appendixsec Load Library
+
+The @code{(scheme load)} library exports procedures for loading Scheme
+ex@value{shy}pres@value{shy}sions from files.
+
+@indentedblock
+@multitable @columnfractions .45 .55
+@item @t{load}
+@end multitable
+@end indentedblock
+
+@node Process-Context Library
+@appendixsec Process-Context Library
+
+The @code{(scheme process-context)} library exports procedures for
+accessing with the program's calling context.
+
+@indentedblock
+@multitable @columnfractions .45 .55
+@item @t{command-line} @tab @t{emergency-exit}
+@item @t{exit} @tab @t{get-environment-variable}
+@item @t{get-environment-variables}
+@end multitable
+@end indentedblock
+
+@node Read Library
+@appendixsec Read Library
+
+The @code{(scheme read)} library provides procedures for reading Scheme
+ob@value{shy}jects.
+
+@indentedblock
+@multitable @columnfractions .45 .55
+@item @t{read}
+@end multitable
+@end indentedblock
+
+@node Repl Library
+@appendixsec Repl Library
+
+The @code{(scheme repl)} library exports the interaction-environment
+procedure.
+
+@indentedblock
+@multitable @columnfractions .45 .55
+@item @t{interaction-environment}
+@end multitable
+@end indentedblock
+
+@node Time Library
+@appendixsec Time Library
+
+The @code{(scheme time)} library provides access to time-related
+values.
+
+@indentedblock
+@multitable @columnfractions .45 .55
+@item @t{current-jiffy} @tab @t{current-second}
+@item @t{jiffies-per-second}
+@end multitable
+@end indentedblock
+
+@node Write Library
+@appendixsec Write Library
+
+The @code{(scheme write)} library provides procedures for writing Scheme
+ob@value{shy}jects.
+
+@indentedblock
+@multitable @columnfractions .45 .55
+@item @t{display} @tab @t{write}
+@item @t{write-shared} @tab @t{write-simple}
+@end multitable
+@end indentedblock
+
+@node R5RS Library
+@appendixsec R5RS Library
+
+The @code{(scheme r5rs)} library provides the identifiers defined by
+@value{R5RS}, except that @code{transcript-on} and @code{transcript-off}
+are not present.  Note that the @code{exact} and @code{inexact}
+procedures appear under their @value{R5RS} names
+@nobr{@code{inexact->exact}} and @nobr{@code{exact->inexact}}
+respectively.  However, if an im@value{shy}ple@value{shy}mentation does
+not provide a particular library such as the complex library, the
+corresponding identifiers will not appear in this library either.
+
+@indentedblock
+@multitable @columnfractions .45 .55
+@item @t{*} @tab @t{+}
+@item @t{-} @tab @t{@dots{}}
+@item @t{/} @tab @t{<}
+@item @t{<=} @tab @t{=}
+@item @t{=>} @tab @t{>}
+@item @t{>=} @tab @t{_}
+@item @t{abs} @tab @t{acos}
+@item @t{and} @tab @t{angle}
+@item @t{append} @tab @t{apply}
+@item @t{asin} @tab @t{assoc}
+@item @t{assq} @tab @t{assv}
+@item @t{atan} @tab @t{begin}
+@item @t{boolean?} @tab @t{caaaar}
+@item @t{caaadr} @tab @t{caaar}
+@item @t{caadar} @tab @t{caaddr}
+@item @t{caadr} @tab @t{caar}
+@item @t{cadaar} @tab @t{cadadr}
+@item @t{cadar} @tab @t{caddar}
+@item @t{cadddr} @tab @t{caddr}
+@item @t{cadr} @tab @t{call-with-current-continuation}
+@item @t{call-with-input-file} @tab @t{call-with-output-file}
+@item @t{call-with-values} @tab @t{car}
+@item @t{case} @tab @t{cdaaar}
+@item @t{cdaadr} @tab @t{cdaar}
+@item @t{cdadar} @tab @t{cdaddr}
+@item @t{cdadr} @tab @t{cdar}
+@item @t{cddaar} @tab @t{cddadr}
+@item @t{cddar} @tab @t{cdddar}
+@item @t{cddddr} @tab @t{cdddr}
+@item @t{cddr} @tab @t{cdr}
+@item @t{ceiling} @tab @t{char->integer}
+@item @t{char-alphabetic?} @tab @t{char-ci<=?}
+@item @t{char-ci<?} @tab @t{char-ci=?}
+@item @t{char-ci>=?} @tab @t{char-ci>?}
+@item @t{char-downcase} @tab @t{char-lower-case?}
+@item @t{char-numeric?} @tab @t{char-ready?}
+@item @t{char-upcase} @tab @t{char-upper-case?}
+@item @t{char-whitespace?} @tab @t{char<=?}
+@item @t{char<?} @tab @t{char=?}
+@item @t{char>=?} @tab @t{char>?}
+@item @t{char?} @tab @t{close-input-port}
+@item @t{close-output-port} @tab @t{complex?}
+@item @t{cond} @tab @t{cons}
+@item @t{cos} @tab @t{current-input-port}
+@item @t{current-output-port} @tab @t{define}
+@item @t{define-syntax} @tab @t{delay}
+@item @t{denominator} @tab @t{display}
+@item @t{do} @tab @t{dynamic-wind}
+@item @t{else} @tab @t{eof-object?}
+@item @t{eq?} @tab @t{equal?}
+@item @t{eqv?} @tab @t{eval}
+@item @t{even?} @tab @t{exact->inexact}
+@item @t{exact?} @tab @t{exp}
+@item @t{expt} @tab @t{floor}
+@item @t{for-each} @tab @t{force}
+@item @t{gcd} @tab @t{if}
+@item @t{imag-part} @tab @t{inexact->exact}
+@item @t{inexact?} @tab @t{input-port?}
+@item @t{integer->char} @tab @t{integer?}
+@item @t{interaction-environment} @tab @t{lambda}
+@item @t{lcm} @tab @t{length}
+@item @t{let} @tab @t{let*}
+@item @t{let-syntax} @tab @t{letrec}
+@item @t{letrec-syntax} @tab @t{list}
+@item @t{list->string} @tab @t{list->vector}
+@item @t{list-ref} @tab @t{list-tail}
+@item @t{list?} @tab @t{load}
+@item @t{log} @tab @t{magnitude}
+@item @t{make-polar} @tab @t{make-rectangular}
+@item @t{make-string} @tab @t{make-vector}
+@item @t{map} @tab @t{max}
+@item @t{member} @tab @t{memq}
+@item @t{memv} @tab @t{min}
+@item @t{modulo} @tab @t{negative?}
+@item @t{newline} @tab @t{not}
+@item @t{null-environment} @tab @t{null?}
+@item @t{number->string} @tab @t{number?}
+@item @t{numerator} @tab @t{odd?}
+@item @t{open-input-file} @tab @t{open-output-file}
+@item @t{or} @tab @t{output-port?}
+@item @t{pair?} @tab @t{peek-char}
+@item @t{positive?} @tab @t{procedure?}
+@item @t{quasiquote} @tab @t{quote}
+@item @t{quotient} @tab @t{rational?}
+@item @t{rationalize} @tab @t{read}
+@item @t{read-char} @tab @t{real-part}
+@item @t{real?} @tab @t{remainder}
+@item @t{reverse} @tab @t{round}
+@item @t{scheme-report-environment} @tab @t{set!}
+@item @t{set-car!} @tab @t{set-cdr!}
+@item @t{sin} @tab @t{sqrt}
+@item @t{string} @tab @t{string->list}
+@item @t{string->number} @tab @t{string->symbol}
+@item @t{string-append} @tab @t{string-ci<=?}
+@item @t{string-ci<?} @tab @t{string-ci=?}
+@item @t{string-ci>=?} @tab @t{string-ci>?}
+@item @t{string-copy} @tab @t{string-fill!}
+@item @t{string-length} @tab @t{string-ref}
+@item @t{string-set!} @tab @t{string<=?}
+@item @t{string<?} @tab @t{string=?}
+@item @t{string>=?} @tab @t{string>?}
+@item @t{string?} @tab @t{substring}
+@item @t{symbol->string} @tab @t{symbol?}
+@item @t{syntax-rules} @tab @t{tan}
+@item @t{truncate} @tab @t{values}
+@item @t{vector} @tab @t{vector->list}
+@item @t{vector-fill!} @tab @t{vector-length}
+@item @t{vector-ref} @tab @t{vector-set!}
+@item @t{vector?} @tab @t{with-input-from-file}
+@item @t{with-output-to-file} @tab @t{write}
+@item @t{write-char} @tab @t{zero?}
+@end multitable
+@end indentedblock

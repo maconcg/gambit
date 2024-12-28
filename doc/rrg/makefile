@@ -40,7 +40,12 @@ r7rs-deps = toolshed/macros+vars.txi r7rs/bibliography.txi \
  r7rs/procedures/6.13_input-and-output.txi \
  r7rs/procedures/6.14_system-interface.txi \
  r7rs/prose/7.1_formal-syntax.txi \
- r7rs/prose/7.2_formal-semantics.txi
+ r7rs/prose/7.2_formal-semantics.txi \
+ r7rs/prose/A_standard-libraries.txi \
+ r7rs/prose/B_feature-identifiers.txi \
+ r7rs/prose/_language-changes.txi \
+ r7rs/prose/_additional-material.txi \
+ r7rs/prose/_example.txi \
 
 r7rs-annotated = \
  r7rs/prose/a/0_summary.txi \
@@ -66,7 +71,12 @@ r7rs-annotated = \
  r7rs/procedures/a/6.13_input-and-output.txi \
  r7rs/procedures/a/6.14_system-interface.txi \
  r7rs/prose/a/7.1_formal-syntax.txi \
- r7rs/prose/a/7.2_formal-semantics.txi
+ r7rs/prose/a/7.2_formal-semantics.txi \
+ r7rs/prose/a/A_standard-libraries.txi \
+ r7rs/prose/a/B_feature-identifiers.txi \
+ r7rs/prose/a/_language-changes.txi \
+ r7rs/prose/a/_additional-material.txi \
+ r7rs/prose/a/_example.txi
 
 set-scm_to_html = \
 if test -x scm-to-html; then\
@@ -384,6 +394,26 @@ r7rs/prose/a/7.1_formal-syntax.txi: r7rs/prose/7.1_formal-syntax.txi
 
 r7rs/prose/a/7.2_formal-semantics.txi: r7rs/prose/7.2_formal-semantics.txi
 	readonly txi=7.2_formal-semantics.txi && ${annotate-r7rs-prose-file}
+
+r7rs/prose/a/A_standard-libraries.txi: r7rs/prose/A_standard-libraries.txi
+	readonly txi=A_standard-libraries.txi &&\
+		${annotate-r7rs-prose-file}
+
+r7rs/prose/a/B_feature-identifiers.txi: r7rs/prose/B_feature-identifiers.txi
+	readonly txi=B_feature-identifiers.txi &&\
+		${annotate-r7rs-prose-file}
+
+r7rs/prose/a/_language-changes.txi: r7rs/prose/_language-changes.txi
+	readonly txi=_language-changes.txi &&\
+		${annotate-r7rs-prose-file}
+
+r7rs/prose/a/_additional-material.txi: r7rs/prose/_additional-material.txi
+	readonly txi=_additional-material.txi &&\
+		${annotate-r7rs-prose-file}
+
+r7rs/prose/a/_example.txi: r7rs/prose/_example.txi
+	readonly txi=_example.txi &&\
+		${annotate-r7rs-prose-file}
 
 r7rs/r7rs.txi: ${r7rs-deps} ${adorn-lib} ${r7rs-annotated} \
  r7rs/r7rs-pristine.txi

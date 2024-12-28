@@ -5,7 +5,7 @@
 
 This section gives an informal account of some of the lexical
 conventions used in writing Scheme programs.  For a formal syntax of
-Scheme, see sec@value{shy}tion 7.1.
+Scheme, @pxref{Formal syntax}.
 
 @node Identifiers
 @section Identifiers
@@ -50,18 +50,19 @@ q                        V17a
 the-word-recursion-has-many-meanings
 @end lisp
 
-See section 7.1.1 for the formal syntax of identifiers.
+@xref{Lexical structure} for the formal syntax of identifiers.
 
 Identifiers have two uses within Scheme programs:
 
 @itemize @bullet
 @item
 Any identifier can be used as a variable or as a syntactic keyword (see
-sections 3.1 and 4.3).
+@ref{Variables syntactic keywords and regions} and @ref{Macros}).
 
 @item
-When an identifier appears as a literal or within a literal (see section
-4.1.2), it is being used to denote a @emph{symbol} (see section 6.5).
+When an identifier appears as a literal or within a literal
+(@pxref{Literal expressions}), it is being used to denote a @emph{symbol}
+(@pxref{Symbols}).
 @end itemize
 
 In contrast with earlier revisions of the
@@ -81,14 +82,14 @@ The following directives give explicit control over case folding.
 #!no-fold-case
 @end example
 
-These directives can appear anywhere comments are permitted (see section
-2.2) but must be followed by a delimiter.  They are treated as comments,
-except that they affect the reading of subsequent data from the same
-port.  The @code{#!fold-case} directive causes subsequent identifiers
-and character names to be case-folded as if by @code{string-foldcase}
-(see section 6.7). It has no effect on character literals.  The
-@code{#!no-fold-case} directive causes a re@value{shy}turn to the
-default, non-folding behavior.
+These directives can appear anywhere comments are permitted
+(@pxref{Whitespace and comments}) but must be followed by a delimiter.
+They are treated as comments, except that they affect the reading of
+subsequent data from the same port.  The @code{#!fold-case} directive
+causes subsequent identifiers and character names to be case-folded as
+if by @code{string-foldcase} (@pxref{Strings}). It has no effect on
+character literals.  The @code{#!no-fold-case} directive causes a
+re@value{shy}turn to the default, non-folding behavior.
 
 @node Whitespace and comments
 @section Whitespace and comments
@@ -133,39 +134,41 @@ Block comments are indicated with properly nested
 @node Other notations
 @section Other notations
 
-For a description of the notations used for numbers, see section 6.2.
+For a description of the notations used for numbers, @pxref{Numbers}.
 
 @table @t
 @item . + -
 These are used in numbers, and can also occur anywhere in an identifier.
 A delimited plus or minus sign by itself is also an identifier.  A
 delimited period (not occurring within a number or identifier) is used
-in the notation for pairs (section 6.4), and to indicate a
-rest-parameter in a formal parameter list (section 4.1.4).  Note that a
-sequence of two or more periods @emph{is} an identifier.
+in the notation for pairs (@pxref{Pairs and lists}), and to indicate a
+rest-parameter in a formal parameter list (@pxref{Procedures}).  Note
+that a sequence of two or more periods @emph{is} an identifier.
 
 @item ( )
-Parentheses are used for grouping and to notate lists (section 6.4).
+Parentheses are used for grouping and to notate lists (@pxref{Pairs and
+lists}).
 
 @item '
 The apostrophe (single quote) character is used to indicate literal data
-(section 4.1.2).
+(@pxref{Literal expressions}).
 
 @item `
 The grave accent (backquote) character is used to indicate partly
-constant data (section 4.2.8).
+constant data (@pxref{Quasiquotation}).
 
 @item @comma{} @comma{}@atchar{}
 The character comma and the sequence comma at-sign are used in
-conjunction with quasiquotation (section 4.2.8).
+conjunction with quasiquotation (@pxref{Quasiquotation}).
 
 @item "
-The quotation mark character is used to delimit strings (section 6.7).
+The quotation mark character is used to delimit strings
+(@pxref{Strings}).
 
 @item @backslashchar{}
-Backslash is used in the syntax for character constants (section 6.6)
-and as an escape character within string constants (section 6.7) and
-identifiers (section 7.1.1).
+Backslash is used in the syntax for character constants
+(@pxref{Characters}) and as an escape character within string constants
+(@pxref{Strings}) and identifiers (@pxref{Lexical structure}).
 
 @item [ ] @lbracechar{} @rbracechar{}
 Left and right square and curly brackets (braces) are reserved for
@@ -176,26 +179,27 @@ The number sign is used for a variety of purposes depending on the
 character that immediately follows it:
 
 @item @hashchar{}t @hashchar{}f
-These are the boolean constants (section 6.3), along with the
+These are the boolean constants (@pxref{Booleans}), along with the
 alternatives @code{@hashchar{}true} @code{@hashchar{}false}.
 
 @item @hashchar{}@backslashchar{}
-This introduces a character constant (section 6.6).
+This introduces a character constant (@pxref{Characters}).
 
-@item @hashchar{}(
-This introduces a vector constant (section 6.8).  Vector constants are
-terminated by @code{)} .
+@item @hashchar{}@U{0028}
+This introduces a vector constant (@pxref{Vectors}).  Vector constants
+are terminated by @code{)}.
 
-@item @hashchar{}u8(
-This introduces a bytevector constant (section 6.8).  Bytevector
-constants are terminated by @code{)} .
+@item @hashchar{}u8@U{0028}
+This introduces a bytevector constant (@pxref{Vectors}).  Bytevector
+constants are terminated by @code{)}.
 
 @item @hashchar{}e @hashchar{}i @hashchar{}b @hashchar{}o @hashchar{}d @hashchar{}x
-These are used in the notation for numbers (section 6.2.5).
+These are used in the notation for numbers (@pxref{Syntax of numerical
+constants}).
 
 @item @hashchar{}@sv{n}= @hashchar{}@sv{n}@hashchar{}
-These are used for labeling and referencing other literal data (section
-2.4).
+These are used for labeling and referencing other literal data
+(@pxref{Datum labels}).
 @end table
 
 @node Datum labels
@@ -211,8 +215,8 @@ The lexical syntax @prosedatumlabel{n}@angle{datum} reads the same as
 
 The lexical syntax @prosedatumref{n} serves as a reference to some
 object labeled by @prosedatumlabel{n}; the result is the same object as
-the @prosedatumlabel{n} (see section 6.1).  Together, these syntaxes
-permit the notation of structures with shared or circular
+the @prosedatumlabel{n} (@pxref{Equivalence predicates}).  Together,
+these syntaxes permit the notation of structures with shared or circular
 sub@value{shy}structure.
 
 @lisp
@@ -231,7 +235,7 @@ labeled by @prosedatumlabel{n} is not well defined in this case.
 
 It is an error for a @angle{program} or @angle{library} to include
 circular references ex@value{shy}cept in literals.  In particular, it is
-an error for @code{quasiquote} (section 4.2.8) to contain them.
+an error for @code{quasiquote} (@pxref{Quasiquotation}) to contain them.
 
 @lisp
 #1=(begin (display #\x) #1#) @lispnote{error}

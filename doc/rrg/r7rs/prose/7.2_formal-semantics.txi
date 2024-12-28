@@ -50,39 +50,35 @@ the following axiom: if
 @nobr{σ (@value{newsigma} ∣ @t{L})↓2 =
 @i{false}}.
 
-The definition of 𝐾 is omitted because an accurate definition of 𝐾 would
+The definition of 𝒦 is omitted because an accurate definition of 𝒦 would
 com@value{shy}plicate the semantics without being very interesting.
 
 If P is a program in which all variables are defined before being
 referenced or assigned, then the meaning of P is
 
 @display
-𝐸⟦@t{@compound{@U{0028}@U{0028}}@syntax{lambda} }I*@t{@compound{@U{0029}} }P′@t{@compound{@U{0029}} }@angle{undefined} @value{defdots}@t{@compound{@U{0029}}}⟧
+@i{Ɛ}⟦@t{@compound{@U{0028}@U{0028}}@syntax{lambda} }I*@t{@compound{@U{0029}} }P′@t{@compound{@U{0029}} }@angle{undefined} @value{defdots}@t{@compound{@U{0029}}}⟧
 @end display
 
 where I* is the sequence of variables defined in P, P′ is the sequence
 of expressions obtained by replacing every definition in P by an
 assignment, @angle{undefined} is an expression that evaluates to
-undefined, and 𝐸 is the semantic function that assigns meaning to
-expressions.
+undefined, and @i{Ɛ} is the se@value{shy}man@value{shy}tic function that
+assigns meaning to expressions.
 
 @node Abstract syntax
 @subsection Abstract syntax
 @indentedblock
-@table @asis
-@item K ∈ Con
-constants, including quotations
-@item I ∈ Ide
-identifiers (variables)
-@item E ∈ Exp
-expressions
-@item Γ ∈ Com = Exp
-commands
-@end table
+@multitable @columnfractions .02 .02 .2 .76
+@item K @tab ∈ @tab Con @tab constants, including quotations
+@item I @tab ∈ @tab Ide @tab identifiers (variables)
+@item E @tab ∈ @tab Exp @tab expressions
+@item Γ @tab ∈ @tab Com = Exp @tab commands
+@end multitable
 @end indentedblock
 
 @example grammar
-@r{Exp} @longarrow{} @r{K} | @r{I} | (@r{@parzero{E}} @r{E*})
+@r{Exp} @value{longarrow} @r{K} | @r{I} | (@r{@parzero{E}} @r{E*})
      | (lambda (@r{I*}) @r{Γ*} @r{@parzero{E}})
      | (lambda (@r{I*} @dot{.} @r{I}) @r{Γ*} @r{@parzero{E}})
      | (lambda @r{I} @r{Γ*} @r{@parzero{E}})
@@ -91,8 +87,9 @@ commands
 @end example
 
 @node Domain equations
-@subsection Abstract syntax
-@multitable @columnfractions .02 .02 .03 .65 .28
+@subsection Domain equations
+@indentedblock
+@multitable @columnfractions .02 .02 .03 .61 .32
 @item 𝛼 @tab ∈ @tab @t{L} @tab @tab locations
 @item 𝜈 @tab ∈ @tab @t{N} @tab @tab natural numbers
 @item @tab @tab @t{T} @tab = @{@i{false, true}@} @tab booleans
@@ -116,33 +113,35 @@ commands
 @item 𝜔 @tab ∈ @tab @t{P} @tab = (@t{F} × @t{F} × @t{P}) + @{@i{root}@}
 @tab dynamic points
 @end multitable
+@end indentedblock
 
 @node Semantic functions
 @subsection Semantic functions
-
+@indentedblock
 @multitable @columnfractions .03 .02 0.95
-@item 𝐾 @tab : @tab Con @arrow{} @t{E}
-@item 𝐸 @tab : @tab Exp @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
-@item 𝐸* @tab : @tab Exp* @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
-@item 𝐶* @tab : @tab Com* @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{C} @arrow{} @t{C}
+@item 𝒦 @tab : @tab Con @arrow{} @t{E}
+@item @i{Ɛ} @tab : @tab Exp @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@item @i{Ɛ}* @tab : @tab Exp* @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@item 𝒞* @tab : @tab Com* @arrow{} @t{U} @arrow{} @t{P} @arrow{} @t{C} @arrow{} @t{C}
 @end multitable
+@end indentedblock
 
-Definition of 𝐾 deliberately omitted.
+Definition of 𝒦 deliberately omitted.
 
 @display
-𝐸⟦K⟧ = 𝜆𝜌𝜔𝜅 . @i{send}(𝐾⟦K⟧)𝜅
+@i{Ɛ}⟦K⟧ = 𝜆𝜌𝜔𝜅 . @i{send} (𝒦⟦K⟧)𝜅
 @end display
 
 @display
-𝐸⟦I⟧ = 𝜆𝜌𝜔𝜅 . @i{hold}(@i{lookup} 𝜌 I)
-@t{              }(@i{single}(𝜆𝜖 . 𝜖 = @i{undefined} @arrow{}
+@i{Ɛ}⟦I⟧ = 𝜆𝜌𝜔𝜅 . @i{hold} (@i{lookup} 𝜌 I)
+@t{              }(@i{single} (𝜆𝜖 . 𝜖 = @i{undefined} @arrow{}
 @t{                                }@i{wrong} @quotedbl{undefined variable}@comma{}
 @t{                             }@i{send} 𝜖 𝜅))
 @end display
 
 @display
-𝐸⟦@t{@compound{@U{0028}}}@parzero{E} E*@t{@compound{@U{0029}}}⟧ =
-@t{ }𝜆𝜌𝜔𝜅 . 𝐸*(@i{permute}(@angle{@parzero{E}} § E*))
+@i{Ɛ}⟦@t{@compound{@U{0028}}}@parzero{E} E*@t{@compound{@U{0029}}}⟧ =
+@t{ }𝜆𝜌𝜔𝜅 . @i{Ɛ}*(@i{permute} (⟨@parzero{E}⟩ § E*))
 @t{          }𝜌
 @t{          }𝜔
 @t{          }(𝜆𝜖* . ((𝜆𝜖* . @i{applicate} (𝜖* ↓ 1)(𝜖* † 1) 𝜔𝜅)
@@ -150,15 +149,15 @@ Definition of 𝐾 deliberately omitted.
 @end display
 
 @display
-𝐸⟦@t{@compound{@U{0028}}@syntax{lambda} @compound{@U{0028}}}I*@t{@compound{@U{0029}}} Γ* @parzero{E}@t{@compound{@U{0029}}}⟧ =
+@i{Ɛ}⟦@t{@compound{@U{0028}}@syntax{lambda} @compound{@U{0028}}}I*@t{@compound{@U{0029}}} Γ* @parzero{E}@t{@compound{@U{0029}}}⟧ =
 @t{ }𝜆𝜌𝜔𝜅 . 𝜆𝜎 .
 @t{   }@value{newsigma} ∈ @t{L} @arrow{}
-@t{    }@i{send}(@angle{@value{newsigma} | @t{L}@comma{}
+@t{    }@i{send} (⟨@value{newsigma} | @t{L}@comma{}
 @t{         }𝜆𝜖*𝜔′𝜅′ . #𝜖* = #I* @arrow{}
-@t{           }@i{tievals}(𝜆𝛼* . (𝜆𝜌′ . 𝐶⟦Γ*⟧𝜌′𝜔′(𝐸⟦@parzero{E}⟧𝜌′𝜔′𝜅′))
+@t{           }@i{tievals} (𝜆𝛼* . (𝜆𝜌′ . 𝒞⟦Γ*⟧𝜌′𝜔′(@i{Ɛ}⟦@parzero{E}⟧𝜌′𝜔′𝜅′))
 @t{                          }(@i{extends} 𝜌 I* 𝛼*))
 @t{                  }𝜖*@comma{}
-@t{           }@i{wrong} @quotedbl{wrong number of arguments}}
+@t{           }@i{wrong} @quotedbl{wrong number of arguments}⟩
 @t{         }in @t{E})
 @t{        }𝜅
 @t{        }(@i{update} (@value{newsigma} | @t{L}) @value{unspecifiedsigma})@comma{}
@@ -166,35 +165,35 @@ Definition of 𝐾 deliberately omitted.
 @end display
 
 @display
-𝐸⟦@t{@compound{@U{0028}}@syntax{lambda} @compound{@U{0028}}}I* . I@t{@compound{@U{0029}}} Γ* @parzero{E}@t{@compound{@U{0029}}}⟧ =
+@i{Ɛ}⟦@t{@compound{@U{0028}}@syntax{lambda} @compound{@U{0028}}}I* . I@t{@compound{@U{0029}}} Γ* @parzero{E}@t{@compound{@U{0029}}}⟧ =
 @t{ }𝜆𝜌𝜔𝜅 . 𝜆𝜎 .
 @t{   }@value{newsigma} ∈ @t{L} @arrow{}
-@t{    }@i{send}@U{0028}@angle{@value{newsigma} | @t{L}@comma{}
+@t{    }@i{send}@U{0028}⟨@value{newsigma} | @t{L}@comma{}
 @t{         }𝜆𝜖*𝜔′𝜅′ . #𝜖* @geq{} #I* @arrow{}
 @t{           }@i{tievalsrest}
-@t{             }(𝜆𝛼* . (𝜆𝜌′ . 𝐶⟦Γ*⟧𝜌′𝜔′(𝐸⟦@parzero{E}⟧𝜌′𝜔′𝜅′))
+@t{             }(𝜆𝛼* . (𝜆𝜌′ . 𝒞⟦Γ*⟧𝜌′𝜔′(@i{Ɛ}⟦@parzero{E}⟧𝜌′𝜔′𝜅′))
 @t{                          }(@i{extends} 𝜌(I* § @U{2329}I@U{232A})𝛼*))
 @t{                    }𝜖*
 @t{                    }(#I*)@comma{}
-@t{           }@i{wrong} @quotedbl{too few arguments} in @t{E}@U{0029}}
+@t{           }@i{wrong} @quotedbl{too few arguments}⟩ in @t{E}@U{0029}
 @t{        }𝜅
 @t{        }(@i{update} (@value{newsigma} | @t{L}) @value{unspecifiedsigma})@comma{}
 @t{    }@i{wrong} @quotedbl{out of memory} 𝜎
 @end display
 
 @display
-𝐸⟦@t{@compound{@U{0028}}@syntax{lambda}} I Γ* @parzero{E}@t{@compound{@U{0029}}}⟧ = 𝐸⟦@t{@compound{@U{0028}}@syntax{lambda} @compound{@U{0028}}@dot{.}} I@t{@compound{@U{0029}}} Γ* @parzero{E}@t{@compound{@U{0029}}}⟧
+@i{Ɛ}⟦@t{@compound{@U{0028}}@syntax{lambda}} I Γ* @parzero{E}@t{@compound{@U{0029}}}⟧ = @i{Ɛ}⟦@t{@compound{@U{0028}}@syntax{lambda} @compound{@U{0028}}@dot{.}} I@t{@compound{@U{0029}}} Γ* @parzero{E}@t{@compound{@U{0029}}}⟧
 @end display
 
 @display
-𝐸⟦@t{@compound{@U{0028}}@syntax{if}} @parzero{E} @parI{E} @parII{E}@t{@compound{@U{0029}}}⟧ =
-@t{  }𝜆𝜌𝜔𝜅 . 𝐸⟦@parzero{E}⟧ 𝜌𝜔 (@i{single} (𝜆𝜖 . @value{truishsigma} @arrow{} 𝐸⟦@parI{E}⟧𝜌𝜔𝜅@comma{}
-@t{                                  }𝐸⟦@parI{E}⟧𝜌𝜔𝜅))
+@i{Ɛ}⟦@t{@compound{@U{0028}}@syntax{if}} @parzero{E} @parI{E} @parII{E}@t{@compound{@U{0029}}}⟧ =
+@t{  }𝜆𝜌𝜔𝜅 . @i{Ɛ}⟦@parzero{E}⟧ 𝜌𝜔 (@i{single} (𝜆𝜖 . @value{truishsigma} @arrow{} @i{Ɛ}⟦@parI{E}⟧𝜌𝜔𝜅@comma{}
+@t{                                  }@i{Ɛ}⟦@parI{E}⟧𝜌𝜔𝜅))
 @end display
 
 @display
-𝐸⟦@t{@compound{@U{0028}}@syntax{if}} @parzero{E} @parI{E}@t{@compound{@U{0029}}}⟧ =
-@t{  }𝜆𝜌𝜔𝜅 . 𝐸⟦@parzero{E}⟧ 𝜌𝜔 (@i{single} (𝜆𝜖 . @value{truishsigma} @arrow{} 𝐸⟦@parI{E}⟧𝜌𝜔𝜅@comma{}
+@i{Ɛ}⟦@t{@compound{@U{0028}}@syntax{if}} @parzero{E} @parI{E}@t{@compound{@U{0029}}}⟧ =
+@t{  }𝜆𝜌𝜔𝜅 . @i{Ɛ}⟦@parzero{E}⟧ 𝜌𝜔 (@i{single} (𝜆𝜖 . @value{truishsigma} @arrow{} @i{Ɛ}⟦@parI{E}⟧𝜌𝜔𝜅@comma{}
 @t{                                  }@i{send unspecified} 𝜅))
 @end display
 
@@ -202,27 +201,27 @@ Here and elsewhere, any expressed value other than @dfn{undefined} may
 be used in place of @dfn{unspecified}.
 
 @display
-𝐸⟦@t{@compound{@U{0028}}@syntax{set!}} I E@t{@compound{@U{0029}}}⟧ =
-@t{  }𝜆𝜌𝜔𝜅 . 𝐸⟦@parzero{E}⟧ 𝜌𝜔 (@i{single} (𝜆𝜖 . @i{assign} (@i{lookup 𝜌} I)
+@i{Ɛ}⟦@t{@compound{@U{0028}}@syntax{set!}} I E@t{@compound{@U{0029}}}⟧ =
+@t{  }𝜆𝜌𝜔𝜅 . @i{Ɛ}⟦@parzero{E}⟧ 𝜌𝜔 (@i{single} (𝜆𝜖 . @i{assign} (@i{lookup 𝜌} I)
 @t{                                       }𝜖
 @t{                                       }(@i{send unspecified} 𝜅)))
 @end display
 
 @display
-𝐸⟦⟧ = 𝜆𝜌𝜔𝜅 . 𝜅@angle{}
+@i{Ɛ}*⟦⟧ = 𝜆𝜌𝜔𝜅 . 𝜅⟨⟩
 @end display
 
 @display
-𝐸⟦@parzero{E} E*⟧ =
-𝜆𝜌𝜔𝜅 . 𝐸⟦@parzero{E}⟧ 𝜌𝜔 (@i{single} (𝜆@parzero{𝜖} . 𝐸*⟦@parzero{E*}⟧ 𝜌𝜔 (𝜆𝜖* . 𝜅 (@angle{@parzero{𝜖}} § 𝜖*))))
+@i{Ɛ}*⟦@parzero{E} E*⟧ =
+𝜆𝜌𝜔𝜅 . @i{Ɛ}⟦@parzero{E}⟧ 𝜌𝜔 (@i{single} (𝜆@parzero{𝜖} . @i{Ɛ}*⟦@parzero{E*}⟧ 𝜌𝜔 (𝜆𝜖* . 𝜅 (⟨@parzero{𝜖}⟩ § 𝜖*))))
 @end display
 
 @display
-𝐶⟦⟧ = 𝜆𝜌𝜔𝜃 . 𝜃
+𝒞⟦⟧ = 𝜆𝜌𝜔𝜃 . 𝜃
 @end display
 
 @display
-𝐶⟦@parzero{Γ} Γ*⟧ = 𝜆𝜌𝜔𝜃 . 𝐸⟦@parzero{Γ}⟧ 𝜌𝜔 (𝜆𝜖* . 𝐶⟦Γ*⟧𝜌𝜔𝜃)
+𝒞⟦@parzero{Γ} Γ*⟧ = 𝜆𝜌𝜔𝜃 . @i{Ɛ}⟦@parzero{Γ}⟧ 𝜌𝜔 (𝜆𝜖* . 𝒞⟦Γ*⟧𝜌𝜔𝜃)
 @end display
 
 @node Auxiliary functions
@@ -245,7 +244,7 @@ be used in place of @dfn{unspecified}.
 
 @display
 @i{send} : @t{E} @arrow{} @t{K} @arrow{} @t{C}
-@i{send} = 𝜆𝜖𝜅 . 𝜅@angle{𝜖}
+@i{send} = 𝜆𝜖𝜅 . 𝜅⟨𝜖⟩
 @end display
 
 @display
@@ -261,7 +260,7 @@ be used in place of @dfn{unspecified}.
 
 @display
 @i{hold} : @t{L} @arrow{} @t{K} @arrow{} @t{C}
-@i{hold} = 𝜆𝛼𝜅𝜎 . @i{send}(𝜎𝛼 ↓ 1)𝜅𝜎
+@i{hold} = 𝜆𝛼𝜅𝜎 . @i{send} (𝜎𝛼 ↓ 1)𝜅𝜎
 @end display
 
 @display
@@ -271,14 +270,14 @@ be used in place of @dfn{unspecified}.
 
 @display
 @i{update} : @t{L} @arrow{} @t{E} @arrow{} @t{S} @arrow{} @t{S}
-@i{update} = 𝜆𝛼𝜖𝜎 . 𝜎[@angle{𝜖@comma{} @i{true}}/𝛼]
+@i{update} = 𝜆𝛼𝜖𝜎 . 𝜎[⟨𝜖@comma{} @i{true}⟩/𝛼]
 @end display
 
 @display
 @i{tievals} : (@t{L*} @arrow{} @t{C}) @arrow{} @t{E}* @arrow{} @t{C}
 @i{tievals} =
-@t{   }𝜆𝜓𝜖*𝜎 . #𝜖* = 0 @arrow{} 𝜓@angle{}𝜎@comma{}
-@t{           }@value{newsigma} ∈ @t{L} @arrow{} @i{tievals} (𝜆𝛼* . 𝜓(@angle{@value{newsigma} | @t{L}} § 𝛼*))
+@t{   }𝜆𝜓𝜖*𝜎 . #𝜖* = 0 @arrow{} 𝜓⟨⟩𝜎@comma{}
+@t{           }@value{newsigma} ∈ @t{L} @arrow{} @i{tievals} (𝜆𝛼* . 𝜓(⟨@value{newsigma} | @t{L}⟩ § 𝛼*))
 @t{                               }(𝜖* † 1)
 @t{                               }(@i{update} (@value{newsigma} | @t{L})(𝜖* ↓ 1)𝜎)@comma{}
 @t{             }@i{wrong} @quotedbl{out of memory} 𝜎
@@ -288,20 +287,20 @@ be used in place of @dfn{unspecified}.
 @i{tievalsrest} : @t{L} @arrow{} @t{E} @arrow{} @t{S} @arrow{} @t{S}
 @i{tievalsrest} =
 @t{  }𝜆𝜓𝜖*𝜈 . @i{list} (@i{dropfirst} 𝜖*𝜈)
-@t{           }(@i{single}(𝜆𝜖 . @i{tievals} 𝜓 ((@i{takefirst} 𝜖*𝜈) § @angle{𝜖})))
+@t{           }(@i{single} (𝜆𝜖 . @i{tievals} 𝜓 ((@i{takefirst} 𝜖*𝜈) § ⟨𝜖⟩)))
 @end display
 
 @display
-@i{dropfirst} : 𝜆@i{ln} . @i{n} = 0 @arrow{} @i{l}, @i{dropfirst} (@i{l} † 1)(@i{n} @minus{} 1)
+@i{dropfirst} = 𝜆@i{ln} . @i{n} = 0 @arrow{} @i{l}, @i{dropfirst} (@i{l} † 1)(@i{n} @minus{} 1)
 @end display
 
 @display
-@i{takefirst} : 𝜆@i{ln} . @i{n} = 0 @arrow{} @angle{}@comma{}@angle{@i{l} ↓ 1} § (@i{takefirst} (@i{l} † 1)(@i{n} @minus{} 1))
+@i{takefirst} = 𝜆@i{ln} . @i{n} = 0 @arrow{} ⟨⟩@comma{} ⟨@i{l} ↓ 1⟩ § (@i{takefirst} (@i{l} † 1)(@i{n} @minus{} 1))
 @end display
 
 @display
 @i{truish} : @t{E} @arrow{} @t{T}
-@i{truish} : 𝜆𝜖 . 𝜖 = @i{false} @arrow{} @i{false}, @i{true}
+@i{truish} = 𝜆𝜖 . 𝜖 = @i{false} @arrow{} @i{false}, @i{true}
 @end display
 
 @display
@@ -320,38 +319,72 @@ be used in place of @dfn{unspecified}.
 
 @display
 @i{onearg} : (@t{E} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}) @arrow{} (@t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C})
+@i{onearg} =
+@t{  }𝜆𝜁𝜖*𝜔𝜅 . #𝜖* = 1 @arrow{} 𝜁(𝜖* ↓ 1)𝜔𝜅,
+@t{            }@i{wrong} @quotedbl{wrong number of arguments}
 @end display
 
 @display
 @i{twoarg} : (@t{E} @arrow{} @t{E} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}) @arrow{} (@t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C})
+@i{twoarg} =
+@t{  }𝜆𝜁𝜖*𝜔𝜅 . #𝜖* = 2 @arrow{} 𝜁(𝜖* ↓ 1)(𝜖* ↓ 2)𝜔𝜅,
+@t{            }@i{wrong} @quotedbl{wrong number of arguments}
 @end display
 
 @display
 @i{threearg} : (@t{E} @arrow{} @t{E} @arrow{} @t{E} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}) @arrow{} (@t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C})
+@i{threearg} =
+@t{  }𝜆𝜁𝜖*𝜔𝜅 . #𝜖* = 2 @arrow{} 𝜁(𝜖* ↓ 1)(𝜖* ↓ 2)(𝜖* ↓ 3)𝜔𝜅,
+@t{            }@i{wrong} @quotedbl{wrong number of arguments}
 @end display
 
 @display
 @i{list} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@i{list} =
+@t{  }𝜆𝜖*𝜔𝜅 . #𝜖* = 0 @arrow{} @i{send null} 𝜅,
+@t{            }@i{list} (𝜖* † 1)(@i{single} (𝜆𝜖 . @i{cons} ⟨𝜖* ↓ 1@comma{} 𝜖⟩𝜅))
 @end display
 
 @display
 @i{cons} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@i{cons} =
+@t{  }@i{twoarg} (𝜆@parI{𝜖}@parII{𝜖}𝜅𝜔𝜎 . @value{newsigma} ∈ @t{L} @arrow{}
+@t{                     }(𝜆𝜎′ . @value{newsigma}′ ∈ @t{L} @arrow{}
+@t{                       }@i{send} (⟨@value{newsigma} | @t{L}@comma{} @value{newsigma}′ | @t{L}@comma{} @i{true}⟩
+@t{                             }in @t{E})
+@t{                            }𝜅
+@t{                            }(@i{update} (@value{newsigma}′ | @t{L})@parII{𝜖}𝜎′)@comma{}
+@t{                       }@i{wrong} @quotedbl{out of memory} 𝜎′)
+@t{                     }(@i{update} (@value{newsigma} | @t{L})@parI{𝜖}𝜎)@comma{}
+@t{                     }@i{wrong} @quotedbl{out of memory} 𝜎)
 @end display
 
 @display
 @i{less} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@i{less} =
+@t{  }@i{twoarg} (𝜆@parI{𝜖}@parII{𝜖}𝜔𝜅 . (@parI{𝜖} ∈ @t{R} ∧ @parII{𝜖} ∈ @t{R}) @arrow{}
+@t{                      }@i{send} (@parI{𝜖} | @t{R} < @parII{𝜖} | @t{R} @arrow{} @i{true}, @i{false})𝜅@comma{}
+@t{                      }@i{wrong} @quotedbl{non-numeric argument to @t{<}})
 @end display
 
 @display
 @i{add} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@i{add} =
+@t{  }@i{twoarg} (𝜆@parI{𝜖}@parII{𝜖}𝜔𝜅 . (@parI{𝜖} ∈ @t{R} ∧ @parII{𝜖} ∈ @t{R}) @arrow{}
+@t{                      }@i{send} ((@parI{𝜖} | @t{R} + @parII{𝜖} | @t{R}) in @t{E})𝜅@comma{}
+@t{                      }@i{wrong} @quotedbl{non-numeric argument to @t{+}})
 @end display
 
 @display
 @i{car} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@i{car} =
+@t{  }@i{onearg} (𝜆𝜖𝜔𝜅 . 𝜖 ∈ @parp{@t{E}} @arrow{} @i{car-internal} 𝜖𝜅@comma{}
+@t{                   }@i{wrong} @quotedbl{non-pair argument to @t{car}})
 @end display
 
 @display
 @i{car-internal} : @t{E} @arrow{} @t{K} @arrow{} @t{C}
+@i{car-internal} = 𝜆𝜖𝜔𝜅 . @i{hold} (𝜖 | @parp{@t{E}} ↓ 1)𝜅
 @end display
 
 @display
@@ -364,62 +397,152 @@ be used in place of @dfn{unspecified}.
 
 @display
 @i{setcar} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@i{setcar} =
+@t{  }@i{twoarg} (𝜆@parI{𝜖}@parII{𝜖}𝜔𝜅 . @parI{𝜖} ∈ @parp{@t{E}} @arrow{}
+@t{                    }(@parI{𝜖} | @parp{@t{E}} ↓ 3) @arrow{} @i{assign} (@parI{𝜖} | @parp{@t{E}} ↓ 1)
+@t{                                           }@parII{𝜖}
+@t{                                           }(@i{send unspecified} 𝜅),
+@t{                    }@i{wrong} @quotedbl{immutable argument to @t{set-car!}}@comma{}
+@t{                    }@i{wrong} @quotedbl{non-pair argument to @t{set-car!}})
 @end display
 
 @display
 @i{eqv} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@i{eqv} =
+@t{  }@i{twoarg} (𝜆@parI{𝜖}@parII{𝜖}𝜔𝜅 . (@parI{𝜖} ∈ @t{M} ∧ @parII{𝜖} ∈ @t{M}) @arrow{}
+@t{                      }@i{send} (@parI{𝜖} | @t{M} = @parII{𝜖} | @t{M} @arrow{} @i{true}@comma{} @i{false})𝜅@comma{}
+@t{                    }(@parI{𝜖} ∈ @t{Q} ∧ @parII{𝜖} ∈ @t{Q}) @arrow{}
+@t{                      }@i{send} (@parI{𝜖} | @t{Q} = @parII{𝜖} | @t{Q} @arrow{} @i{true}@comma{} @i{false})𝜅@comma{}
+@t{                    }(@parI{𝜖} ∈ @t{H} ∧ @parII{𝜖} ∈ @t{H}) @arrow{}
+@t{                      }@i{send} (@parI{𝜖} | @t{H} = @parII{𝜖} | @t{H} @arrow{} @i{true}@comma{} @i{false})𝜅@comma{}
+@t{                    }(@parI{𝜖} ∈ @t{R} ∧ @parII{𝜖} ∈ @t{R}) @arrow{}
+@t{                      }@i{send} (@parI{𝜖} | @t{R} = @parII{𝜖} | @t{R} @arrow{} @i{true}@comma{} @i{false})𝜅@comma{}
+@t{                    }(@parI{𝜖} ∈ @parp{@t{E}} ∧ @parII{𝜖} ∈ @parp{@t{E}}) @arrow{}
+@t{                      }@i{send} ((𝜆@parI{𝑝}@parII{𝑝} . ((@parI{𝑝} ↓ 1) = (@parII{𝑝} ↓ 1)∧
+@t{                                     } (@parI{𝑝} ↓ 2) = (@parII{𝑝} ↓ 2)) @arrow{} @i{true}@comma{}
+@t{                                        }@i{false})
+@t{                           }(@parI{𝜖} | @parp{@t{E}})
+@t{                           }(@parII{𝜖} | @parp{@t{E}}))
+@t{                           }𝜅@comma{}
+@t{                    }(@parI{𝜖} ∈ @parv{@t{E}} ∧ @parII{𝜖} ∈ @parv{@t{E}}) @arrow{} @value{defdots} @comma{}
+@t{                    }(@parI{𝜖} ∈ @pars{@t{E}} ∧ @parII{𝜖} ∈ @pars{@t{E}}) @arrow{} @value{defdots} @comma{}
+@t{                    }(@parI{𝜖} ∈ @t{F} ∧ @parII{𝜖} ∈ @t{F}) @arrow{}
+@t{                      }@i{send} ((@parI{𝜖} | @t{F} ↓ 1) = (@parII{𝜖} | @t{F} ↓ 1) @arrow{} @i{true}, @i{false})
+@t{                          }𝜅@comma{}
+@t{                      }@i{send} @i{false} 𝜅)
 @end display
 
 @display
 @i{apply} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@i{apply} =
+@t{  }@i{twoarg} (𝜆@parI{𝜖}@parII{𝜖}𝜔𝜅 . @parI{𝜖} ∈ @t{F} @arrow{} @i{valueslist} @parII{𝜖}(𝜆𝜖* . @i{applicate} @parI{𝜖}𝜖*𝜔𝜅)@comma{}
+@t{                       }@i{wrong} @quotedbl{bad procedure argument to @t{apply}})
 @end display
 
 @display
 @i{valueslist} : @t{E} @arrow{} @t{K} @arrow{} @t{C}
+@i{valueslist} =
+@t{  }𝜆𝜖𝜅 . 𝜖 ∈ @parp{@t{E}} @arrow{}
+@t{          }@i{cdr-internal} 𝜖
+@t{                       }(𝜆𝜖* . @i{valueslist}
+@t{                              }𝜖*
+@t{                              }(𝜆𝜖* . @i{car-internal}
+@t{                                     }𝜖
+@t{                                     }(@i{single} (𝜆𝜖 . 𝜅(⟨𝜖⟩ § 𝜖*)))))@comma{}
+@t{        }𝜖 = @i{null} @arrow{} 𝜅⟨⟩@comma{}
+@t{           }@i{wrong} @quotedbl{non-list argument to @t{values-list}}
 @end display
 
 @display
 @i{cwcc} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@t{          }[@t{call-with-current-continuation}]
+@i{cwcc} =
+@t{  }@i{onearg} (𝜆𝜖𝜔𝜅 . 𝜖 ∈ @t{F} @arrow{}
+@t{                 }(𝜆𝜎 . @value{newsigma} ∈ @t{L} @arrow{}
+@t{                         }@i{applicate} 𝜖
+@t{                                   }⟨⟨@value{newsigma} | @t{L}@comma{}
+@t{                                     }𝜆𝜖*𝜔′𝜅′ . @i{travel} 𝜔′𝜔(𝜅𝜖*)⟩
+@t{                                    }in @t{E}⟩
+@t{                                   }𝜔
+@t{                                   }𝜅
+@t{                                   }(@i{update} (@value{newsigma} | @t{L})
+@t{                                           }@i{unspecified}
+@t{                                           }𝜎)@comma{}
+@t{                         }@i{wrong} @quotedbl{out of memory} 𝜎)@comma{}
+@t{                 }@i{wrong} @quotedbl{bad procedure argument})
 @end display
 
 @display
 @i{travel} : @t{P} @arrow{} @t{P} @arrow{} @t{C} @arrow{} @t{C}
+@i{travel} =
+@t{  }𝜆@parI{𝜔}@parII{𝜔} . @i{travelpath} ((@i{pathup} @parI{𝜔}(@i{commonancest} @parI{𝜔}@parII{𝜔})) §
+@t{                      }(@i{pathdown} (@i{commonancest} @parI{𝜔}@parII{𝜔})@parII{𝜔}))
 @end display
 
 @display
 @i{pointdepth} : @t{P} @arrow{} @t{N}
+@i{pointdepth} =
+@t{  }𝜆𝜔 . 𝜔 = @i{root} @arrow{} 0@comma{} 1 + (@i{pointdepth} (𝜔 | (@t{F} × @t{F} × @t{P}) ↓ 3))
 @end display
 
 @display
-@i{ancestors} : @t{P} @arrow{} 𝑃@t{P}
+@i{ancestors} : @t{P} @arrow{} 𝒫@t{P}
+@i{ancestors} =
+@t{  }𝜆𝜔 . 𝜔 = @i{root} @arrow{} @lbracechar{}𝜔@rbracechar{}@comma{} @lbracechar{}𝜔@rbracechar{} ∪ (@i{ancestors} (𝜔 | (@t{F} × @t{F} × @t{P}) ↓ 3))
 @end display
 
 @display
 @i{commonancest} : @t{P} @arrow{} @t{P} @arrow{} @t{P}
+@i{commonancest} =
+@t{  }𝜆@parI{𝜔}@parII{𝜔} . the only element of
+@t{          }@lbracechar{}𝜔′ | 𝜔′ ∈ (@i{ancestors} @parI{𝜔}) ∩ (@i{ancestors} @parII{𝜔})@comma{}
+@t{                 }@i{pointdepth} 𝜔′ @geq{} @i{pointdepth} 𝜔″
+@t{                 }∀𝜔″ ∈ (@i{ancestors} @parI{𝜔}) ∩ (@i{ancestors} @parII{𝜔})@rbracechar{}
 @end display
 
 @display
 @i{pathup} : @t{P} @arrow{} @t{P} @arrow{} (@t{P} × @t{F})*
+@i{pathup} =
+@t{  }𝜆@parI{𝜔}@parII{𝜔} . @parI{𝜔} = @parII{𝜔} @arrow{} ⟨⟩@comma{}
+@t{          }⟨(@parI{𝜔}, @parI{𝜔} | (@t{F} × @t{F} × @t{P}) ↓ 2)⟩ §
+@t{          }(@i{pathup} (@parI{𝜔} | (@t{F} × @t{F} × @t{P}) ↓ 3)@parII{𝜔})
 @end display
 
 @display
 @i{pathdown} : @t{P} @arrow{} @t{P} @arrow{} (@t{P} × @t{F})*
+@i{pathdown} =
+@t{  }𝜆@parI{𝜔}@parII{𝜔} . @parI{𝜔} = @parII{𝜔} @arrow{} ⟨⟩@comma{}
+@t{          }(@i{pathdown} @parI{𝜔}(@parII{𝜔} | (@t{F} × @t{F} × @t{P}) ↓ 3)) §
+@t{          }⟨(@parII{𝜔}@comma{} @parII{𝜔} | (@t{F} × @t{F} × @t{P}) ↓ 1)⟩
 @end display
 
 @display
 @i{travelpath} : (@t{P} × @t{F})* @arrow{} @t{C} @arrow{} @t{C}
+@i{travelpath} =
+@t{  }𝜆𝜋*𝜃 . #𝜋* = 0 @arrow{} 𝜃@comma{}
+@t{         }((𝜋* ↓ 1) ↓ 2)⟨⟩((𝜋* ↓ 1) ↓ 1)
+@t{                       }(𝜆𝜖* . @i{travelpath} (𝜋* † 1)𝜃)
 @end display
 
 @display
 @i{dynamicwind} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@i{dynamicwind} =
+@t{  }@i{threearg} (𝜆@parI{𝜖}@parII{𝜖}@parIII{𝜖}𝜔𝜅 . (@parI{𝜖} ∈ @t{F} ∧ @parII{𝜖} ∈ @t{F} ∧ @parIII{𝜖} ∈ @t{F}) @arrow{}
+@t{             }@i{applicate} @parI{𝜖}⟨⟩𝜔(𝜆𝜁* .
+@t{                       }@i{applicate} @parII{𝜖}⟨⟩((@parI{𝜖} | @t{F}@comma{} @parIII{𝜖} | @t{F}@comma{} 𝜔) in @t{P})
+@t{                                 }(𝜆𝜖* . @i{applicate} @parIII{𝜖}⟨⟩𝜔(𝜆𝜁* . 𝜅𝜖*)))@comma{}
+@t{             }@i{wrong} @quotedbl{bad procedure argument})
 @end display
 
 @display
 @i{values} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}
+@i{values} = 𝜆𝜖*𝜔𝜅 . 𝜅 𝜖*
 @end display
 
 @display
 @i{cwv} : @t{E*} @arrow{} @t{P} @arrow{} @t{K} @arrow{} @t{C}@t{  }[@t{call-with-values}]
+@i{cwv} =
+@t{  }@i{twoarg} (𝜆@parI{𝜖}@parII{𝜖}𝜔𝜅 . @i{applicate} @parI{𝜖}⟨⟩(𝜆𝜖* . @i{applicate} @parII{𝜖} 𝜖*𝜔))
 @end display
 
 @node Formal derived expression types

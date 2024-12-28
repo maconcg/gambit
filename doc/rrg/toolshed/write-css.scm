@@ -116,7 +116,8 @@ body {
     background-color: <bg-main>;
 }
 
-code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
+code.code, code.t, pre.display-preformatted, pre.example-preformatted,
+ pre.lisp-preformatted {
     span.abbrev {color: <abbrev>}
     span.aux, span.aux-esc {color: <aux>}
     span.aux-abbrev {color: <aux-abbrev>}
@@ -160,7 +161,8 @@ END
 )
 
 (define examples-noncolor-css #<<END
-code.code, code.t, pre.lisp-preformatted, pre.example-preformatted {
+code.code, code.t, pre.display-preformatted, pre.example-preformatted,
+ pre.lisp-preformatted {
     font-size: 1rem;
     span.and-prints, span.atmosphere, span.directive, span.dsssl, span.output {
         font-style: oblique;
@@ -257,6 +259,9 @@ END
 dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
  dl.first-deftypevr, dl.first-defblock {
     line-height: 1.3;
+    sub, sup {
+       font-size: 0.7rem;
+    }
     dt {
         font-size: 1.06rem;
         span.category-def, span.cdspace {
@@ -334,8 +339,13 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
 }
 
 div.chapter-level-extent, div.unnumbered-level-extent {
-    div.example {
+    div.display, div.example {
         margin-left: 1.6rem;
+        span.angle-bracket {
+            font-size: 1.12rem;
+        }
+    }
+    div.example {
         pre.lisp-preformatted {
             padding-left: 0.4rem;
             span.unspecified, span.lisp-note {
@@ -381,7 +391,8 @@ p:not(.nav-panel p) {
     width: 39rem;
 }
 
-div.top-level-extent, div.chapter-level-extent, div.appendix-level-extent, div.unnumbered-level-extent {
+div.top-level-extent, div.chapter-level-extent, div.appendix-level-extent,
+ div.unnumbered-level-extent {
     a.footnote {text-decoration: none}
     a.footnote:hover, a.footnote:focus, a.footnote:active {
         text-decoration: underline;
@@ -395,6 +406,9 @@ div.top-level-extent, div.chapter-level-extent, div.appendix-level-extent, div.u
             span.angle-bracket {
                 font-size: 1.12rem;
             }
+            sub, sup {
+                font-size: 0.7rem;
+            }
         }
     }
 }
@@ -403,12 +417,16 @@ span.angle-bracket, sub, sup {
     line-height: 0;
 }
 
-div.chapter-level-extent, div.unnumbered-level-extent {
+div.chapter-level-extent, div.unnumbered-level-extent, 
+ div.appendix-level-extent {
     dd p:not(.nav-panel p), p:not(.nav-panel p) {
         hyphens: manual;
         text-align: justify;
         span.angle-bracket {
             font-size: 1.12rem;
+        }
+        sub, sup {
+            font-size: 0.7rem;
         }
     }
 }

@@ -1,0 +1,16 @@
+@node Additional material
+@unnumbered Additional material
+
+The Scheme community website at @url{https://scheme.org} contains
+additional resources for learning and programming, job and event
+postings, and Scheme user group information.
+
+A bibliography of Scheme-related research at
+@url{http://library.readscheme.org} links to technical papers and theses
+related to the Scheme language, including both classic papers and recent
+research.
+
+On-line Scheme discussions are held using IRC on the @code{#scheme}
+channel at @url{irc.freenode.net} [now (2024) at
+@url{https://libera.chat}] and on the Usenet discussion group
+@t{comp.lang.scheme}.

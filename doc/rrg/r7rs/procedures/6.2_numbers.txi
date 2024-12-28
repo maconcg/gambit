@@ -787,8 +787,8 @@ values of @inverse{sin}@var{z}, @inverse{cos}@var{z}, and
 @end display
 
 However, @code{(log 0.0)} returns @code{-inf.0} (and @code{(log -0.0)}
-returns @code{@number{-inf.0+}@r{@U{03C0}}@number{i}}) if the
-implementation supports infinities (and @code{-0.0}).
+returns @code{-inf.0+@r{@U{03C0}}i}) if the implementation supports
+infinities (and @code{-0.0}).
 
 The range of @code{(a @rv{y} @rv{x})} is as in the following table. The
 asterisk (*) indicates that the entry applies to implementations that

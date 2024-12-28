@@ -31,10 +31,10 @@
 @author Emmanuel Medernach, Benjamin L. Russel
 @sp 1
 @author Richard Kelsey, William Clinger, and Jonathan Rees
-@author (editors, Revised@sup{5} Report on the Algorithmic Language Scheme)
+@author (editors, @value{Revised5RS})
 @sp 1
 @author Michael Sperber, R. Kent Dybvig, Matthew Flatt, and Anton van Straaten
-@author (editors, Revised@sup{6} Report on the Algorithmic Language Scheme)
+@author (editors, @value{Revised6RS})
 @sp 1
 @author formatted for Texinfo by Macon Gambill
 @sp 1
@@ -75,6 +75,11 @@
 @include procedures/6.14_system-interface.txi
 @include prose/7.1_formal-syntax.txi
 @include prose/7.2_formal-semantics.txi
+@include prose/A_standard-libraries.txi
+@include prose/B_feature-identifiers.txi
+@include prose/_language-changes.txi
+@include prose/_additional-material.txi
+@include prose/_example.txi
 
 @c @node General Index
 @c @unnumbered General Index

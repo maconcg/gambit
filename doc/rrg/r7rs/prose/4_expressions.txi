@@ -8,7 +8,7 @@ Expression types are categorized as @define{primitive} or
 include variables and procedure calls.  Derived expression types are not
 semantically primitive, but can instead be defined as macros.  Suitable
 syntax definitions of some of the derived expressions are given in
-section 7.3.
+@ref{Derived expression types}.
 
 The procedures @code{force}, @code{promise?}, @code{make-promise}, and
 @code{make-parameter} are also described in this chapter because they
@@ -22,10 +22,10 @@ are intimately associated with the @code{delay}, @code{delay-force}, and
 @defblock
 @deftypeline syntax @/ @sv{variable}
 
-An expression consisting of a variable (section 3.1) is a variable
-reference.  The value of the variable reference is the value stored in
-the location to which the variable is bound.  It is an error to
-reference an unbound variable.
+An expression consisting of a variable (@pxref{Variables syntactic
+keywords and regions}) is a variable reference.  The value of the
+variable reference is the value stored in the location to which the
+variable is bound.  It is an error to reference an unbound variable.
 
 @lisp
 (define x 28)
@@ -42,8 +42,8 @@ x @ok{28}
 
 @t{(quote @sv{datum})} evaluates to @angle{datum}.  @angle{Datum} can be
 any external rep@value{shy}re@value{shy}sen@value{shy}tation of a Scheme
-object (see section 3.3).  This notation is used to in@value{shy}clude
-literal constants in Scheme code.
+object (@pxref{External representations}).  This notation is used to
+in@value{shy}clude literal constants in Scheme code.
 
 @lisp
 (quote a)        @ok{a}
@@ -83,9 +83,9 @@ need not be quoted.
 #t          @ok{#t}
 @end lisp
 
-As noted in section 3.4, it is an error to attempt to alter a constant
-(i.e.@: the value of a literal expression) using a mutation procedure
-like @code{set-car!} or @code{string-set!}.
+As noted in @ref{Storage model}, it is an error to attempt to alter a
+constant (i.e.@: the value of a literal expression) using a mutation
+procedure like @code{set-car!} or @code{string-set!}.
 @end defblock
 
 @node Procedure calls
@@ -108,13 +108,13 @@ exported by the standard libraries.  For example, the addition and
 multi@value{shy}pli@value{shy}cation procedures in the above examples
 are the values of the variables @code{+} and @code{*} in the base
 library.  New procedures are created by evaluating @code{lambda}
-expressions (see section 4.1.4).
+expressions (@pxref{Procedures}).
 
 Procedure calls can return any number of values (see @code{values} in
-section 6.10).  Most of the procedures defined in this report return one
-value or, for pro@value{shy}cedures such as @code{apply}, pass on the
-values returned by a call to one of their arguments.  Exceptions are
-noted in the individual descriptions.
+@ref{Control features}).  Most of the procedures defined in this report
+return one value or, for pro@value{shy}cedures such as @code{apply},
+pass on the values returned by a call to one of their arguments.
+Exceptions are noted in the individual descriptions.
 
 @quotation
 @i{Note:} In contrast to other dialects of Lisp, the order of evaluation
@@ -152,7 +152,7 @@ actual argument values will be stored in those locations.  (A
 @define{fresh} location is one that is distinct from every previously
 existing location.)  Next, the expressions in the body of the
 @code{lambda} expression (which, if it contains definitions, represents
-a @code{letrec*} form --- see section 4.2.2) will be evaluated
+a @code{letrec*} form---@pxref{Binding constructs}) will be evaluated
 sequentially in the extended environment.  The results of the last
 expression in the body will be returned as the results of the procedure
 call.
@@ -213,7 +213,8 @@ It is an error for a @angle{variable} to appear more than once in
 
 Each procedure created as the result of evaluating a @code{lambda}
 expression is (conceptually) tagged with a storage location, in order to
-make @code{eqv?} and @code{eq?} work on procedures (see section 6.1).
+make @code{eqv?} and @code{eq?} work on procedures (@pxref{Equivalence
+predicates}).
 @end deftypefn
 
 @node Primitive Conditionals
@@ -225,11 +226,12 @@ make @code{eqv?} and @code{eq?} work on procedures (see section 6.1).
 expressions.
 
 @i{Semantics:} An @code{if} expression is evaluated as follows: first,
-@angle{test} is evaluated.  If it yields a true value (see section 6.3),
-then @angle{consequent} is evaluated and its values are returned.
-Otherwise @angle{alternate} is evaluated and its values are returned.
-If @angle{test} yields a false value and no @angle{alternate} is
-specified, then the result of the expression is unspecified.
+@angle{test} is evaluated.  If it yields a true value
+(@pxref{Booleans}), then @angle{consequent} is evaluated and its values
+are returned.  Otherwise @angle{alternate} is evaluated and its values
+are returned.  If @angle{test} yields a false value and no
+@angle{alternate} is specified, then the result of the expression is
+unspecified.
 
 @lisp
 (if (> 3 2) 'yes 'no) @ok{yes}
@@ -289,10 +291,11 @@ users to specify other directories to search.
 @node Derived expression types
 @section Derived expression types
 
-The constructs in this section are hygienic, as discussed in section
-4.3.  For reference purposes, section 7.3 gives syntax definitions that
-will convert most of the constructs described in this section into the
-primitive constructs described in the previous section.
+The constructs in this section are hygienic, as discussed in
+@ref{Macros}.  For reference purposes, @ref{Derived expression types}
+gives syntax definitions that will convert most of the constructs
+described in this section into the primitive constructs described in the
+previous section.
 
 @node Derived Conditionals
 @subsection Conditionals
@@ -321,8 +324,8 @@ The last @angle{clause} can be an @quotedbl{else clause}, which has the form
 
 @i{Semantics:} A @code{cond} expression is evaluated by evaluating the
 @angle{test} expres@value{shy}sions of successive @angle{clause}s in
-order until one of them eval@value{shy}uates to a true value (see
-section 6.3).  When a @angle{test} evaluates to a true value, the
+order until one of them eval@value{shy}uates to a true value
+(@pxref{Booleans}).  When a @angle{test} evaluates to a true value, the
 re@value{shy}maining @angle{expression}s in its @angle{clause} are
 eval@value{shy}uated in order, and the results of the last
 @angle{expression} in the @angle{clause} are returned as the results of
@@ -392,10 +395,10 @@ or
 @i{Semantics:} A @code{case} expression is evaluated as follows.
 @angle{Key} is evaluated and its result is compared against each
 @angle{datum}.  If the result of evaluating @angle{key} is the same (in
-the sense of @code{eqv?}; see section 6.1) to a @angle{datum}, then the
-expressions in the corresponding @angle{clause} are evaluated in order
-and the results of the last expression in the @angle{clause} are
-returned as the results of the @code{case}
+the sense of @code{eqv?}; @pxref{Equivalence predicates}) to a
+@angle{datum}, then the expressions in the corresponding @angle{clause}
+are evaluated in order and the results of the last expression in the
+@angle{clause} are returned as the results of the @code{case}
 ex@value{shy}pres@value{shy}sion.
 
 If the result of evaluating @angle{key} is different from every
@@ -436,7 +439,7 @@ ex@value{shy}pres@value{shy}sion.
 
 @i{Semantics:} The @angle{test} expressions are evaluated from left to
 right, and if any ex@value{shy}pres@value{shy}sion evaluates to
-@code{#f} (see section 6.3), then @code{#f} is returned.  Any
+@code{#f} (@pxref{Booleans}), then @code{#f} is returned.  Any
 re@value{shy}main@value{shy}ing ex@value{shy}pres@value{shy}sions are
 not evaluated.  If all the expressions evaluate to true values, the
 values of the last expression are returned.  If there are no
@@ -454,7 +457,7 @@ expressions, then @code{#t} is returned.
 
 @i{Semantics:} The @angle{test} expressions are evaluated from left to
 right, and the value of the first expression that evaluates to a true
-value (see section 6.3) is returned.  Any remaining expressions are not
+value (@pxref{Booleans}) is returned.  Any remaining expressions are not
 evaluated.  If all expressions evaluate to @code{#f} or if there are no
 expressions, then @code{#f} is returned.
 
@@ -607,7 +610,7 @@ diff@value{shy}erent identifiers to the returned values.
 
 where each @angle{init} is an expression, and @angle{body} is a sequence
 of zero or more definitions followed by a sequence of one or more
-expressions as described in section 4.1.4.  It is an error for a
+expressions as described in @ref{Procedures}.  It is an error for a
 @angle{variable} to appear more than once in the list of variables being
 bound.
 
@@ -630,7 +633,7 @@ the extended environment, and the values of the last expression of
     (* z x))) @ok{35}
 @end lisp
 
-See also @quotedbl{named @t{let}}, section 4.2.4.
+See also @quotedbl{named @t{let}}, @ref{Iteration}.
 @end deftypefn
 
 @deftypefn syntax @/ let* @sv{bindings} @sv{body}
@@ -641,8 +644,8 @@ See also @quotedbl{named @t{let}}, section 4.2.4.
 ((@sv{@parI{variable}} @sv{@parI{init}}) @value{defdots})@r{,}
 @end example
 
-and @angle{body} is a sequence of zero or more definitions followed by one
-or more expressions as described in section 4.1.4.
+and @angle{body} is a sequence of zero or more definitions followed by
+one or more expressions as described in @ref{Procedures}.
 
 @i{Semantics:} The @code{let*} binding construct is similar to
 @code{let}, but the bindings are performed sequentially from left to
@@ -663,7 +666,7 @@ environment in which the first binding is visible, and so on.  The
 
 and @angle{body} is a sequence of zero or more definitions
 fol@value{shy}lowed by one or more expres@value{shy}sions as described
-in section 4.1.4.  It is an error for a @angle{variable} to
+in @ref{Procedures}.  It is an error for a @angle{variable} to
 ap@value{shy}pear more than once in the list of variables being bound.
 
 @i{Semantics:} The @angle{variable}s are bound to fresh locations
@@ -710,9 +713,9 @@ is satisfied automatically.
 @end example
 
 and @angle{body} is a sequence of zero or more definitions
-fol@value{shy}lowed by one or more expressions as described in section
-4.1.4.  It is an error for a @angle{variable} to appear more than once
-in the list of variables being bound.
+fol@value{shy}lowed by one or more expressions as described in
+@ref{Procedures}.  It is an error for a @angle{variable} to appear more
+than once in the list of variables being bound.
 
 @i{Semantics:} The @angle{variable}s are bound to fresh locations, each
 @angle{variable} is assigned in left-to-right order to the result of
@@ -767,7 +770,7 @@ values:@inlinefmt{html,@*} @code{8/3}, @code{2.28942848510666}
 
 where each @angle{init} is an expression, and @angle{body} is zero or
 more definitions followed by a sequence of one or more expressions as
-described in section 4.1.4.  It is an error for a variable to appear
+described in @ref{Procedures}.  It is an error for a variable to appear
 more than once in the set of @angle{formals}.
 
 Semantics: The @angle{init}s are evaluated in the current environment
@@ -799,7 +802,7 @@ returned by the corresponding @angle{init}.
 @end example
 
 and @angle{body} is a sequence of zero or more definitions followed by
-one or more expressions as described in section 4.1.4.  In each
+one or more expressions as described in @ref{Procedures}.  In each
 @angle{formals}, it is an error if any variable appears more than once.
 
 @i{Semantics:} The @code{let*-values} construct is similar to
@@ -833,9 +836,9 @@ eval@value{shy}uated exactly as if the enclosing @code{begin} construct
 were not present.
 
 @quotation
-@i{Rationale:} This form is commonly used in the output of macros (see
-section 4.3) which need to generate multiple definitions and splice them
-into the context in which they are expanded.
+@i{Rationale:} This form is commonly used in the output of macros
+(@pxref{Macros}) which need to generate multiple definitions and splice
+them into the context in which they are expanded.
 @end quotation
 @end deftypefn
 
@@ -871,7 +874,7 @@ input and output.
 @end ifnotinfo
 
 Note that there is a third form of @code{begin} used as a library
-declaration: see section 5.6.1.
+declaration: @pxref{Library syntax}.
 @end deftypefn
 
 @node Iteration
@@ -904,8 +907,8 @@ expressions are evaluated (in some unspecified order), the
 @angle{variable}s, and then the iteration phase begins.
 
 Each iteration begins by evaluating @angle{test}; if the result is false
-(see section 6.3), then the @angle{command} expressions are evaluated in
-order for effect, the @angle{step} expressions are evaluated in some
+(@pxref{Booleans}), then the @angle{command} expressions are evaluated
+in order for effect, the @angle{step} expressions are evaluated in some
 unspecified order, the @angle{variable}s are bound to fresh locations,
 the results of the @angle{step}s are stored in the bindings of the
 @angle{variable}s, and the next iteration begins.
@@ -1136,9 +1139,9 @@ delay its argument: it is a pro@value{shy}cedure rather than syntax.  If
 The @define{dynamic extent} of a procedure call is the time
 be@value{shy}tween when it is initi@value{shy}ated and when it
 re@value{shy}turns.  In Scheme,
-@nobr{@code{call-with-current-continuation}} (section 6.10) allows
-reentering a dynamic extent after its procedure call has returned.
-Thus, the dynamic extent of a call might not be a single,
+@nobr{@code{call-with-current-continuation}} (@pxref{Control features})
+allows reentering a dynamic extent after its procedure call has
+returned.  Thus, the dynamic extent of a call might not be a single,
 con@value{shy}tinuous time period.
 
 This section introduces @define{parameter objects}, which can be bound
@@ -1238,7 +1241,7 @@ procedure in the call chain explicitly.
 @code{cond}.
 
 @i{Semantics:} The @angle{body} is evaluated with an exception handler
-that binds the raised object (see @code{raise} in section 6.11) to
+that binds the raised object (see @code{raise} in @ref{Exceptions}) to
 @angle{variable} and, within the scope of that binding, evaluates the
 clauses as if they were the clauses of a @code{cond} expression.  That
 implicit @code{cond} expression is evaluated with the continuation and
@@ -1249,7 +1252,7 @@ object within the dynamic environment of the original call to
 @code{raise} or @code{raise-continuable}, except that the current
 exception han@value{shy}dler is that of the @code{guard} expression.
 
-See section 6.11 for a more complete discussion of exceptions.
+@xref{Exceptions} for a more complete discussion of exceptions.
 
 @lisp
 (guard (condition
@@ -1482,7 +1485,8 @@ pro@value{shy}vided to prevent unintended conflicts:
 If a macro transformer inserts a binding for an identifier (variable or
 keyword), the identifier will in effect be renamed throughout its scope
 to avoid conflicts with other identifiers.  Note that a global variable
-definition may or may not introduce a binding; see section 5.3.
+definition may or may not introduce a binding; @pxref{Variable
+definitions}.
 
 @item
 If a macro transformer inserts a free reference to an identifier, the
@@ -1510,8 +1514,8 @@ The @code{let-syntax} and @code{letrec-syntax} binding constructs are
 analogous to @code{let} and @code{letrec}, but they bind syntactic
 key@value{shy}words to macro transformers instead of binding variables
 to locations that contain values.  Syntactic key@value{shy}words can
-also be bound globally or locally with @code{define-syntax}; see section
-5.4.
+also be bound globally or locally with @code{define-syntax};
+@pxref{Syntax definitions}.
 
 @deftypefn syntax @/ let-syntax @sv{bindings} @sv{body}
 
@@ -1790,9 +1794,9 @@ expand into code containing ellipses.
 (sequence 1 2 3 4)              @ok{4}
 @end lisp
 
-As an example, if @code{let} and @code{cond} are defined as in section
-7.3 then they are hygienic (as required) and the following is not an
-error.
+As an example, if @code{let} and @code{cond} are defined as in
+@ref{Derived expression types} then they are hygienic (as required) and
+the following is not an error.
 
 @lisp
 (let ((=> #f))
@@ -1825,16 +1829,16 @@ which would result in an invalid procedure call.
 
 @deftypefn syntax @/ syntax-error @sv{message} @sv{args} @value{defdots}
 
-@code{syntax-error} behaves similarly to @code{error} (6.11)@: except
-that implemen@value{shy}tations with an expansion pass separate from
-evaluation should signal an error as soon as @nobr{@code{syntax-error}}
-is expanded.  This can be used as a @nobr{@code{syntax-rules}}
-@angle{template} for a @angle{pattern} that is an invalid use of the
-macro, which can provide more descriptive error messages.
-@angle{message} is a string literal, and @angle{args} arbitrary
-expressions providing additional information.  Applications cannot count
-on being able to catch syntax errors with excep@value{shy}tion handlers
-or guards.
+@code{syntax-error} behaves similarly to @code{error}
+(@pxref{Exceptions}) except that implemen@value{shy}tations with an
+expansion pass separate from evaluation should signal an error as soon
+as @nobr{@code{syntax-error}} is expanded.  This can be used as a
+@nobr{@code{syntax-rules}} @angle{template} for a @angle{pattern} that
+is an invalid use of the macro, which can provide more descriptive error
+messages.  @angle{message} is a string literal, and @angle{args}
+arbitrary expressions providing additional information.  Applications
+cannot count on being able to catch syntax errors with
+excep@value{shy}tion handlers or guards.
 
 @lisp
 (define-syntax simple-let
