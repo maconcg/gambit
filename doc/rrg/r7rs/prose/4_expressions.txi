@@ -39,10 +39,10 @@ x @ok{28}
 @deftypeline syntax @/ @syntax{@U{0027}}@sv{datum}
 @deftypeline syntax @/ @sv{constant}
 
-@nt{(quote @sv{datum})} evaluates to @angle{datum}.  @angle{Datum} can
-be any external representation of a Scheme object (@pxref{External
-representations}).  This notation is used to include literal constants
-in Scheme code.
+@samp{(quote @sv{datum})} evaluates to @samp{@sv{datum}}.
+@samp{@sv{Datum}} can be any external representation of a Scheme object
+(@pxref{External representations}).  This notation is used to include
+literal constants in Scheme code.
 
 @lisp
 (quote a)        @ok{a}

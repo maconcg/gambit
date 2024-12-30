@@ -145,7 +145,7 @@ Block comments are indicated with properly nested
 For a description of the notations used for numbers, @pxref{Numbers}.
 
 @table @asis{}
-@item @samp{.}@t{ }@samp{+}@t{ }@samp{-}
+@item @samp{.}@t{@ @ }@samp{+}@t{@ @ }@samp{-}
 These are used in numbers, and can also occur anywhere in an identifier.
 A delimited plus or minus sign by itself is also an identifier.  A
 delimited period (not occurring within a number or identifier) is used
@@ -153,7 +153,7 @@ in the notation for pairs (@pxref{Pairs and lists}), and to indicate a
 rest-parameter in a formal parameter list (@pxref{Procedures}).  Note
 that a sequence of two or more periods @emph{is} an identifier.
 
-@item @samp{@U{0028}}@t{ }@samp{@U{0029}}
+@item @samp{@U{0028}}@t{@ @ }@samp{@U{0029}}
 Parentheses are used for grouping and to notate lists (@pxref{Pairs and
 lists}).
 
@@ -165,7 +165,7 @@ The apostrophe (single quote) character is used to indicate literal data
 The grave accent (backquote) character is used to indicate partly
 constant data (@pxref{Quasiquotation}).
 
-@item @samp{@comma{}}@t{ }@samp{@comma{}@atchar{}}
+@item @samp{@comma{}}@t{@ @ }@samp{@comma{}@atchar{}}
 The character comma and the sequence comma at-sign are used in
 conjunction with quasiquotation (@pxref{Quasiquotation}).
 
@@ -178,7 +178,7 @@ Backslash is used in the syntax for character constants
 (@pxref{Characters}) and as an escape character within string constants
 (@pxref{Strings}) and identifiers (@pxref{Lexical structure}).
 
-@item @samp{@U{005B}}@t{ }@samp{@U{005D}}@t{ }@samp{@lbracechar{}}@t{ }@samp{@rbracechar{}}
+@item @samp{@U{005B}}@t{@ @ }@samp{@U{005D}}@t{@ @ }@samp{@lbracechar{}}@t{@ @ }@samp{@rbracechar{}}
 Left and right square and curly brackets (braces) are reserved for
 possible future extensions to the language.
 
@@ -186,7 +186,7 @@ possible future extensions to the language.
 The number sign is used for a variety of purposes depending on the
 character that immediately follows it:
 
-@item @samp{@hashchar{}t}@t{ }@samp{@hashchar{}f}
+@item @samp{@hashchar{}t}@t{@ @ }@samp{@hashchar{}f}
 These are the boolean constants (@pxref{Booleans}), along with the
 alternatives @samp{#true} @samp{#false}.
 
@@ -201,11 +201,11 @@ are terminated by @samp{@U{0029}}.
 This introduces a bytevector constant (@pxref{Vectors}).  Bytevector
 constants are terminated by @samp{@U{0029}}.
 
-@item @samp{@hashchar{}e}@t{ }@samp{@hashchar{}i}@t{ }@samp{@hashchar{}b}@t{ }@samp{@hashchar{}o}@t{ }@samp{@hashchar{}d}@t{ }@samp{@hashchar{}x}
+@item @samp{@hashchar{}e}@t{@ @ }@samp{@hashchar{}i}@t{@ @ }@samp{@hashchar{}b}@t{@ @ }@samp{@hashchar{}o}@t{@ @ }@samp{@hashchar{}d}@t{@ @ }@samp{@hashchar{}x}
 These are used in the notation for numbers (@pxref{Syntax of numerical
 constants}).
 
-@item @samp{@hashchar{}@sv{n}=}@t{ }@samp{@hashchar{}@sv{n}@hashchar{}}
+@item @samp{@hashchar{}@sv{n}=}@t{@ @ }@samp{@hashchar{}@sv{n}@hashchar{}}
 These are used for labeling and referencing other literal data
 (@pxref{Datum labels}).
 @end table

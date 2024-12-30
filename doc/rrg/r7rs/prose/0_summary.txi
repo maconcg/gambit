@@ -1,6 +1,6 @@
 @c Copyright (c) 2024 by Macon Gambill, All Rights Reserved.
 @node Summary
-@nodedescription A summary of the report.
+@nodedescription Summary of the report's contents.
 @unnumbered Summary
 
 The report gives a defining description of the programming language

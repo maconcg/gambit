@@ -11,39 +11,39 @@ following procedures to a non-Unicode character is
 implementation-dependent.
 
 Characters are written using the notation
-@t{@nobr{#@backslashchar{}}@sv{character}} or
-@t{@nobr{#@backslashchar{}}@sv{character name}} or
-@t{@nobr{#@backslashchar{}}x@sv{hex scalar value}}.
+@samp{@nobr{#@backslashchar{}}@sv{character}} or
+@samp{@nobr{#@backslashchar{}}@sv{character name}} or
+@samp{@nobr{#@backslashchar{}}x@sv{hex scalar value}}.
 
 The following character names must be supported by all implementations
 with the given values.  Implementations may add other names provided
-they cannot be interpreted as hex scalar values preceded by @code{x}.
+they cannot be interpreted as hex scalar values preceded by @samp{x}.
 
 @indentedblock
 @ifnothtml
 @multitable {xxbackspace} {; the preferred way to write a space}
-@item @ht{#@backslashchar{}alarm} @tab ; U+0007
-@item @ht{#@backslashchar{}backspace} @tab ; U+0008
-@item @ht{#@backslashchar{}delete} @tab ; U+007F
-@item @ht{#@backslashchar{}escape} @tab ; U+001B
-@item @ht{#@backslashchar{}newline} @tab ; the linefeed character, U+000A
-@item @ht{#@backslashchar{}null} @tab ; the null character, U+0000
-@item @ht{#@backslashchar{}return} @tab ; the return character, U+000D
-@item @ht{#@backslashchar{}space} @tab ; the preferred way to write a space
-@item @ht{#@backslashchar{}tab} @tab ; the tab character, U+0009
+@item @hs{#@backslashchar{}alarm} @tab ; U+0007
+@item @hs{#@backslashchar{}backspace} @tab ; U+0008
+@item @hs{#@backslashchar{}delete} @tab ; U+007F
+@item @hs{#@backslashchar{}escape} @tab ; U+001B
+@item @hs{#@backslashchar{}newline} @tab ; the linefeed character, U+000A
+@item @hs{#@backslashchar{}null} @tab ; the null character, U+0000
+@item @hs{#@backslashchar{}return} @tab ; the return character, U+000D
+@item @hs{#@backslashchar{}space} @tab ; the preferred way to write a space
+@item @hs{#@backslashchar{}tab} @tab ; the tab character, U+0009
 @end multitable
 @end ifnothtml
 @ifhtml
 @multitable @columnfractions .2 .8
-@item @ht{#@backslashchar{}alarm} @tab ; U+0007
-@item @ht{#@backslashchar{}backspace} @tab ; U+0008
-@item @ht{#@backslashchar{}delete} @tab ; U+007F
-@item @ht{#@backslashchar{}escape} @tab ; U+001B
-@item @ht{#@backslashchar{}newline} @tab ; the linefeed character, U+000A
-@item @ht{#@backslashchar{}null} @tab ; the null character, U+0000
-@item @ht{#@backslashchar{}return} @tab ; the return character, U+000D
-@item @ht{#@backslashchar{}space} @tab ; the preferred way to write a space
-@item @ht{#@backslashchar{}tab} @tab ; the tab character, U+0009
+@item @hs{#@backslashchar{}alarm} @tab ; U+0007
+@item @hs{#@backslashchar{}backspace} @tab ; U+0008
+@item @hs{#@backslashchar{}delete} @tab ; U+007F
+@item @hs{#@backslashchar{}escape} @tab ; U+001B
+@item @hs{#@backslashchar{}newline} @tab ; the linefeed character, U+000A
+@item @hs{#@backslashchar{}null} @tab ; the null character, U+0000
+@item @hs{#@backslashchar{}return} @tab ; the return character, U+000D
+@item @hs{#@backslashchar{}space} @tab ; the preferred way to write a space
+@item @hs{#@backslashchar{}tab} @tab ; the tab character, U+0009
 @end multitable
 @end ifhtml
 @end indentedblock
@@ -53,37 +53,37 @@ Here are some additional examples:
 @indentedblock
 @ifnothtml
 @multitable {xxx3bb} {xi (if character and name are supported)x}
-@item @ht{#@backslashchar{}a} @tab ; lower case letter
-@item @ht{#@backslashchar{}A} @tab ; upper case letter
-@item @ht{#@backslashchar{}@U{0028}} @tab ; left parenthesis
-@item @ht{#@backslashchar{} } @tab ; the space character
-@item @ht{#@backslashchar{}x03BB} @tab ; @U{03BB} (if character is supported)
-@item @ht{#@backslashchar{}}@t{@charbody{iota}}
+@item @hs{#@backslashchar{}a} @tab ; lower case letter
+@item @hs{#@backslashchar{}A} @tab ; upper case letter
+@item @hs{#@backslashchar{}@U{0028}} @tab ; left parenthesis
+@item @hs{#@backslashchar{} } @tab ; the space character
+@item @hs{#@backslashchar{}x03BB} @tab ; @U{03BB} (if character is supported)
+@item @hs{#@backslashchar{}iota}
 @tab ; @U{03B9} (if character and name are supported)
 @end multitable
 @end ifnothtml
 @ifhtml
 @multitable @columnfractions .15 .85
-@item @ht{#@backslashchar{}a} @tab ; lower case letter
-@item @ht{#@backslashchar{}A} @tab ; upper case letter
-@item @ht{#@backslashchar{}@U{0028}} @tab ; left parenthesis
-@item @ht{#@backslashchar{} } @tab ; the space character
-@item @ht{#@backslashchar{}x03BB} @tab ; @U{03BB} (if character is supported)
-@item @ht{#@backslashchar{}}@t{@charbody{iota}}
+@item @hs{#@backslashchar{}a} @tab ; lower case letter
+@item @hs{#@backslashchar{}A} @tab ; upper case letter
+@item @hs{#@backslashchar{}@U{0028}} @tab ; left parenthesis
+@item @hs{#@backslashchar{} } @tab ; the space character
+@item @hs{#@backslashchar{}x03BB} @tab ; @U{03BB} (if character is supported)
+@item @hs{#@backslashchar{}iota}
 @tab ; @U{03B9} (if character and name are supported)
 @end multitable
 @end ifhtml
 @end indentedblock
 
-Case is significant in @nt{#\@sv{character}}, and in @nc{#\@sv{character
-name}}, but not in @nt{#\x@sv{hex scalar value}}.  If @angle{character}
-in @nt{#\@sv{character}} is alphabetic, then any character immediately
-following @angle{character} cannot be one that can appear in an
-identifier.  This rule resolves the ambiguous case where, for example,
-the sequence of characters @samp{#\space} could be taken to be either a
-representation of the space character or a representation of the
-character @code{#\s} followed by a representation of the symbol
-@code{pace}.
+Case is significant in @samp{#\@sv{character}}, and in
+@samp{#\@sv{character name}}, but not in @samp{#\x@sv{hex scalar
+value}}.  If @angle{character} in @samp{#\@sv{character}} is alphabetic,
+then any character immediately following @angle{character} cannot be one
+that can appear in an identifier.  This rule resolves the ambiguous case
+where, for example, the sequence of characters @samp{#\space} could be
+taken to be either a representation of the space character or a
+representation of the character @code{#\s} followed by a representation
+of the symbol @code{pace}.
 
 Characters written in the @samp{#\} notation are self-evaluating.  That
 is, they do not have to be quoted in programs.

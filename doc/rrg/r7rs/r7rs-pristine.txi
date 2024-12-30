@@ -9,19 +9,19 @@
 @include bibliography.txi
 @include copying/copying.txi
 
-@settitle Revised^7 Report on the Algorithmic Language Scheme
+@settitle @value{Revised7RS}
 @clear txicodevaristt
 @syncodeindex fn cp
 @syncodeindex vr cp
 
 @dircategory The Algorithmic Language Scheme
 @direntry
-* R7RS: (r7rs)@value{Revised7RS}.
+* R7RS: (r7rs)Revised@sup{7} Report on the Algorithmic Language Scheme.
 @end direntry
 
 @titlepage
-@title Revised^7 Report on the Algorithmic Language Scheme
-@subtitle with errata corrections as of December 19, 2022
+@title @value{Revised7RS}
+@subtitle Texinfo adapation (with corrected errata)
 
 @author Alex Shinn, John Cowan, and Arthur A. Gleckler (editors)
 @sp 1
@@ -45,7 +45,7 @@
 @end titlepage
 
 @node Top
-@top R7RS
+@top @value{Revised7RS}
 
 @insertcopying
 

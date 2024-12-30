@@ -1,79 +1,79 @@
-@set refSICP Harold Abelson and Gerald Jay Sussman with Julie Sussman.  @i{Structure and Interpretation of Computer Programs, second edition}.  @value{MITinitial} Press, Cambridge, 1996.
+@set refSICP Harold Abelson and Gerald Jay Sussman with Julie Sussman.  @cite{Structure and Interpretation of Computer Programs, second edition}.  @value{MITinitial} Press, Cambridge, 1996.
 
-@set refSyntacticClosures Alan Bawden and Jonathan Rees.  @i{Syntactic closures}.  In @i{Proceedings of the 1988 @acronym{ACM,Association for Computing Machinery} Symposium on Lisp and Functional Programming}, pages 86--95.
+@set refSyntacticClosures Alan Bawden and Jonathan Rees.  @cite{Syntactic closures}.  In @i{Proceedings of the 1988 @acronym{ACM} Symposium on Lisp and Functional Programming}, pages 86--95.
 
-@set refRFC2119 S.@tie{}Bradner.  @i{Key words for use in @acronym{RFC}s to Indicate Requirement Levels}.  @t{@url{https://www.ietf.org/rfc/rfc2119.txt}}, 1997.
+@set refRFC2119 S.@tie{}Bradner.  @cite{Key words for use in @acronym{RFC}s to Indicate Requirement Levels}.  @t{@url{https://www.ietf.org/rfc/rfc2119.txt}}, 1997.
 
-@set refPrintFPQuicklyAccurately Robert G.@tie{}Burger and R.@tie{}Kent Dybvig.  @i{Printing floating-point numbers quickly and accurately}.  In @i{Proceedings of the @acronym{ACM} @acronym{SIGPLAN,Special Interest Group on Programming Languages} '96 Conference on Programming Language Design and Implementation}, pages 108--116.
+@set refPrintFPQuicklyAccurately Robert G.@tie{}Burger and R.@tie{}Kent Dybvig.  @cite{Printing floating-point numbers quickly and accurately}.  In @i{Proceedings of the @acronym{ACM} @acronym{SIGPLAN} '96 Conference on Programming Language Design and Implementation}, pages 108--116.
 
-@set refReadFPAccurately William Clinger.  @i{How to read floating point numbers accurately}.  In @i{Proceedings of the @acronym{ACM} @acronym{SIGPLAN} '90 Conference on Programming Language Design and Implementation}, pages 92--101.  Proceedings published as @i{@acronym{SIGPLAN} Notices} 25(6), June 1990.
+@set refReadFPAccurately William Clinger.  @cite{How to read floating point numbers accurately}.  In @i{Proceedings of the @acronym{ACM} @acronym{SIGPLAN} '90 Conference on Programming Language Design and Implementation}, pages 92--101.  Proceedings published as @i{@acronym{SIGPLAN} Notices} 25(6), June 1990.
 
-@set refProperTailRecursion William Clinger.  @i{Proper Tail Recursion and Space Efficiency}.  In @i{Proceedings of the 1998 @acronym{ACM} Conference on Programming Language Design and Implementation}, June 1998.
+@set refProperTailRecursion William Clinger.  @cite{Proper Tail Recursion and Space Efficiency}.  In @i{Proceedings of the 1998 @acronym{ACM} Conference on Programming Language Design and Implementation}, June 1998.
 
-@set refSRFI6 William Clinger.  @i{@acronym{SRFI} 6: Basic String Ports}.  @t{@url{https://srfi.schemers.org/srfi-6/}}, 1999.
+@set refSRFI6 William Clinger.  @cite{@acronym{SRFI} 6: Basic String Ports}.  @t{@url{https://srfi.schemers.org/srfi-6/}}, 1999.
 
-@set refR2RS William Clinger, editor.  @i{The Revised Revised Report on Scheme or An UnCommon Lisp}.  @i{@acronym{MIT} Artificial Intelligence Memo 848}, August 1985.  Also published as @i{Computer Science Department Technical Report 174}, Indiana University, June 1985.
+@set refR2RS William Clinger, editor.  @cite{The Revised Revised Report on Scheme or An UnCommon Lisp}.  @i{@acronym{MIT} Artificial Intelligence Memo 848}, August 1985.  Also published as @i{Computer Science Department Technical Report 174}, Indiana University, June 1985.
 
-@set refMacrosThatWork William Clinger and Jonathan Rees.  @i{Macros that work}.  In @i{Proceedings of the 1991 @acronym{ACM} Conference on Principles of Programming Languages}, pages 155--162.
+@set refMacrosThatWork William Clinger and Jonathan Rees.  @cite{Macros that work}.  In @i{Proceedings of the 1991 @acronym{ACM} Conference on Principles of Programming Languages}, pages 155--162.
 
-@set refR4RS William Clinger and Jonathan Rees, editors.  @i{@value{Revised4RS}}.  In @i{@acronym{ACM} Lisp Pointers}  4(3), pages 1--55, 1991.
+@set refR4RS William Clinger and Jonathan Rees, editors.  @value{Revised4RS}.  In @i{@acronym{ACM} Lisp Pointers}  4(3), pages 1--55, 1991.
 
 @set refUnicodeAnnex44 Mark Davis.  Unicode Standard Annex @hashchar{}44, @i{Unicode Character Database}.  @t{@url{https://unicode.org/reports/tr44/}}, 2010.
 
-@set refSyntacticAbstraction R.@tie{}Kent Dybvig, Robert Hieb, and Carl Bruggeman.  @i{Syntactic abstraction in Scheme}.  @i{Lisp and Symbolic Computation} 5(4):295--326, 1993.
+@set refSyntacticAbstraction R.@tie{}Kent Dybvig, Robert Hieb, and Carl Bruggeman.  @cite{Syntactic abstraction in Scheme}.  @i{Lisp and Symbolic Computation} 5(4):295--326, 1993.
 
-@set refSRFI4 Marc Feeley.  @i{@acronym{SRFI} 4: Homogeneous Numeric Vector Datatypes}.  @t{@url{https://srfi.schemers.org/srfi-4/}}, 1999.
+@set refSRFI4 Marc Feeley.  @cite{@acronym{SRFI} 4: Homogeneous Numeric Vector Datatypes}.  @t{@url{https://srfi.schemers.org/srfi-4/}}, 1999.
 
-@set refScheme311Ref Carol Fessenden, William Clinger, Daniel P.@tie{}Friedman, and Christopher Haynes.  @i{Scheme 311 version 4 reference manual}.  @i{Indiana University Computer Science Technical Report 137}, February 1983.  Superseded by @i{Scheme 84 Interim Reference Manual}.
+@set refScheme311Ref Carol Fessenden, William Clinger, Daniel P.@tie{}Friedman, and Christopher Haynes.  @cite{Scheme 311 version 4 reference manual}.  @i{Indiana University Computer Science Technical Report 137}, February 1983.  Superseded by @i{Scheme 84 Interim Reference Manual}.
 
-@set refScheme84Interim D.@tie{}Friedman, C.@tie{}Haynes, E.@tie{}Kohlbecker, and M.@tie{}Wand.  @i{Scheme 84 Interim Reference Manual}.  @i{Indiana University Computer Science Technical Report 153}, January 1985.
+@set refScheme84Interim D.@tie{}Friedman, C.@tie{}Haynes, E.@tie{}Kohlbecker, and M.@tie{}Wand.  @cite{Scheme 84 Interim Reference Manual}.  @i{Indiana University Computer Science Technical Report 153}, January 1985.
 
-@set refMathematicalGames Martin Gardner.  @i{Mathematical Games: The fantastic combinations of John Conway's new solitaire game @quotedbl{life}}.  In @i{Scientific American}, 223:120--123, October 1970.
+@set refMathematicalGames Martin Gardner.  @cite{Mathematical Games: The fantastic combinations of John Conway's new solitaire game @quotedbl{life}}.  In @i{Scientific American}, 223:120--123, October 1970.
 
-@set refIEEE754 @i{@acronym{IEEE} Standard 754-2008}.  @i{@acronym{IEEE} Standard for Floating-Point Arithmetic}.  @acronym{IEEE}, New York, 2008.
+@set refIEEE754 @cite{@acronym{IEEE} Standard 754-2008}.  @i{@acronym{IEEE} Standard for Floating-Point Arithmetic}.  @acronym{IEEE}, New York, 2008.
 
-@set refIEEE1178 @i{@acronym{IEEE} Standard 1178-1990}.  @i{@acronym{IEEE} Standard for the Scheme Programming Language}.  @acronym{IEEE}, New York, 1991.
+@set refIEEE1178 @cite{@acronym{IEEE} Standard 1178-1990}.  @i{@acronym{IEEE} Standard for the Scheme Programming Language}.  @acronym{IEEE}, New York, 1991.
 
-@set refSRFI9 Richard Kelsey.  @i{@acronym{SRFI} 9: Defining Record Types}.  @t{@url{https://srfi.schemers.org/srfi-9/}}, 1999.
+@set refSRFI9 Richard Kelsey.  @cite{@acronym{SRFI} 9: Defining Record Types}.  @t{@url{https://srfi.schemers.org/srfi-9/}}, 1999.
 
-@set refR5RS Richard Kelsey, William Clinger, and Jonathan Rees, editors.  @i{@value{Revised5RS}}.  @i{Higher-Order and Symbolic Computation}, Vol.@tie{}11, No.@tie{}1, August 1998.
+@set refR5RS Richard Kelsey, William Clinger, and Jonathan Rees, editors.  @value{Revised5RS}.  @i{Higher-Order and Symbolic Computation}, Vol.@tie{}11, No.@tie{}1, August 1998.
 
-@set refSyntacticExtensions Eugene E.@tie{}Kohlbecker Jr@.  @i{Syntactic Extensions in the Programming Language Lisp}.  Ph.D.@tie{}thesis, Indiana University, August 1986.
+@set refSyntacticExtensions Eugene E.@tie{}Kohlbecker Jr@.  @cite{Syntactic Extensions in the Programming Language Lisp}.  Ph.D.@tie{}thesis, Indiana University, August 1986.
 
-@set refhygienicMacroExpansion Eugene E.@tie{}Kohlbecker Jr., Daniel P.@tie{}Friedman, Matthias Felleisen, and Bruce Duba.  @i{Hygienic macro expansion}.  In @i{Proceedings of the 1986 @acronym{ACM} Conference on Lisp and Functional Programming}, pages 151--161.
+@set refhygienicMacroExpansion Eugene E.@tie{}Kohlbecker Jr., Daniel P.@tie{}Friedman, Matthias Felleisen, and Bruce Duba.  @cite{Hygienic macro expansion}.  In @i{Proceedings of the 1986 @acronym{ACM} Conference on Lisp and Functional Programming}, pages 151--161.
 
-@set refRecursiveFunctions John McCarthy.  @i{Recursive Functions of Symbolic Expressions and Their Computation by Machine, Part I}.  @i{Communications of the @acronym{ACM}} 3(4):184--195, April 1960.
+@set refRecursiveFunctions John McCarthy.  @cite{Recursive Functions of Symbolic Expressions and Their Computation by Machine, Part I}.  @i{Communications of the @acronym{ACM}} 3(4):184--195, April 1960.
 
-@set refMITSchemeManual @acronym{MIT} Department of Electrical Engineering and Computer Science.  @i{Scheme manual, seventh edition}. September 1984.
+@set refMITSchemeManual @acronym{MIT} Department of Electrical Engineering and Computer Science.  @cite{Scheme manual, seventh edition}. September 1984.
 
-@set refRRA60 Peter Naur et al.  @i{Revised Report on the Algorithmic Language @sc{ALGOL} 60}.  @i{Communications of the @acronym{ACM}} 6(1):1--17, January 1963.
+@set refRRA60 Peter Naur et al.  @cite{Revised Report on the Algorithmic Language @sc{ALGOL} 60}.  @i{Communications of the @acronym{ACM}} 6(1):1--17, January 1963.
 
-@set refPrincipalValues Paul Penfield, Jr.  Principal values and branch cuts in complex APL.  In APL '81 Conference Proceedings, pages 248--256. @acronym{ACM} @acronym{SIGAPL,Special Interest Group on @acronym{APL}}, San Francisco,September 1981 . Proceedings published as @i{APL Quote Quad} 12(1), @acronym{ACM}, September 1981.
+@set refPrincipalValues Paul Penfield, Jr@.  @cite{Principal values and branch cuts in complex APL}.  In APL '81 Conference Proceedings, pages 248--256. @acronym{ACM} @acronym{SIGAPL,Special Interest Group on @acronym{APL}}, San Francisco,September 1981 . Proceedings published as @i{APL Quote Quad} 12(1), @acronym{ACM}, September 1981.
 
-@set refTDialect Jonathan A.@tie{}Rees and Norman@tie{}I.@tie{}Adams@tie{}IV.  @i{T: A dialect of Lisp or, lambda: The ultimate software tool}.  In @i{Conference Record of the 1982 @acronym{ACM} Symposium on Lisp and Functional Programming}, pages 114--122.
+@set refTDialect Jonathan A.@tie{}Rees and Norman@tie{}I.@tie{}Adams@tie{}IV.  @cite{T: A Dialect of Lisp or, @sc{LAMBDA}: The Ultimate Software Tool}.  In @i{Conference Record of the 1982 @acronym{ACM} Symposium on Lisp and Functional Programming}, pages 114--122.
 
-@set refTManual Jonathan A.@tie{}Rees, Norman@tie{}I.@tie{}Adams@tie{}IV, and James@tie{}R.@tie{}Meehan.  @i{The T Manual, fourth edition}.  Yale University Computer Science Department, January 1984.
+@set refTManual Jonathan A.@tie{}Rees, Norman@tie{}I.@tie{}Adams@tie{}IV, and James@tie{}R.@tie{}Meehan.  @cite{The T Manual, fourth edition}.  Yale University Computer Science Department, January 1984.
 
-@set refR3RS Jonathan Rees and William Clinger, editors.  @i{@value{Revised3RS}}.  In @i{@acronym{ACM} @acronym{SIGPLAN} Notices} 21(12), pages 37--79, December 1986.
+@set refR3RS Jonathan Rees and William Clinger, editors.  @value{Revised3RS}.  In @i{@acronym{ACM,Association for Computing Machinery} @acronym{SIGPLAN,Special Interest Group on Programming Languages} Notices} 21(12), pages 37--79, December 1986.
 
-@set refSRFI1 Olin Shivers.  @i{@acronym{SRFI} 1: List Library}.  @t{@url{https://srfi.schemers.org/srfi-1/}}, 1999.
+@set refSRFI1 Olin Shivers.  @cite{@acronym{SRFI} 1: List Library}.  @t{@url{https://srfi.schemers.org/srfi-1/}}, 1999.
 
-@set refR1RS Guy Lewis Steele Jr.@tie{}and Gerald Jay Sussman.  @i{The Revised Report on @sc{SCHEME}: A Dialect of @sc{LISP}}.  @i{@acronym{MIT} Artificial Intelligence Memo 452}, January 1978.
+@set refR1RS Guy Lewis Steele Jr.@tie{}and Gerald Jay Sussman.  @cite{The Revised Report on @sc{SCHEME}: A Dialect of @sc{LISP}}.  @i{@acronym{MIT} Artificial Intelligence Memo 452}, January 1978.
 
-@set refRabbit Guy Lewis Steele Jr@.  @i{@sc{RABBIT}: a compiler for @sc{SCHEME}}.  @i{@acronym{MIT} Artificial Intelligence Laboratory Technical Report 474}, May 1978.
+@set refRabbit Guy Lewis Steele Jr@.  @cite{@sc{RABBIT}: a compiler for @sc{SCHEME}}.  @i{@acronym{MIT} Artificial Intelligence Laboratory Technical Report 474}, May 1978.
 
-@set refR6RS Michael Sperber, R.@tie{}Kent Dybvig, Mathew Flatt, and Anton van Straaten, editors. @i{@value{Revised6RS}}.  Cambridge University Press, 2010.
+@set refR6RS Michael Sperber, R.@tie{}Kent Dybvig, Mathew Flatt, and Anton van Straaten, editors. @value{Revised6RS}.  Cambridge University Press, 2010.
 
-@set refCommonLispTheLanguage Guy Lewis Steele Jr@.  @i{Common @sc{LISP}: The Language, second edition}.  Digital Press, Burlington MA, 1990.
+@set refCommonLispTheLanguage Guy Lewis Steele Jr@.  @cite{Common @sc{LISP}: The Language, second edition}.  Digital Press, Burlington MA, 1990.
 
-@set refSchemeAnInterpreter Gerald Jay Sussman and Guy Lewis Steele Jr@.  @i{@sc{SCHEME}: an interpreter for extended lambda calculus}.  @i{@acronym{MIT} Artificial Intelligence Memo 349}, December 1975.
+@set refSchemeAnInterpreter Gerald Jay Sussman and Guy Lewis Steele Jr@.  @cite{@sc{SCHEME}: an interpreter for extended lambda calculus}.  @i{@acronym{MIT} Artificial Intelligence Memo 349}, December 1975.
 
-@set refScottStrachey Joseph E.@tie{}Stoy.  @i{Denotational Semantics: The Scott-Strachey Approach to Programming Language Theory}.  @acronym{MIT} Press, Cambridge, 1977.
+@set refScottStrachey Joseph E.@tie{}Stoy.  @cite{Denotational Semantics: The Scott-Strachey Approach to Programming Language Theory}.  @acronym{MIT} Press, Cambridge, 1977.
 
-@set refTISchemeRef Texas Instruments, Inc.  @i{@acronym{TI,Texas Instruments} Scheme Language Reference Manual}.  Preliminary version 1.0, November 1985.
+@set refTISchemeRef Texas Instruments, Inc.  @cite{@acronym{TI} Scheme Language Reference Manual}.  Preliminary version 1.0, November 1985.
 
-@set refSRFI45 Andre van Tonder.  @i{@acronym{SRFI} 45: Primitives for Expressing Iterative Lazy Algorithms}.  @t{@url{https://srfi.schemers.org/srfi-45/}}, 2002.
+@set refSRFI45 Andre van Tonder.  @cite{@acronym{SRFI} 45: Primitives for Expressing Iterative Lazy Algorithms}.  @t{@url{https://srfi.schemers.org/srfi-45/}}, 2002.
 
-@set refHowToAddThreads Martin Gasbichler, Eric Knauel, Michael Sperber and Richard Kelsey.  @i{How to Add Threads to a Sequential Language Without Getting Tangled Up}.  @i{Proceedings of the Fourth Workshop on Scheme and Functional Programming}, November 2003.
+@set refHowToAddThreads Martin Gasbichler, Eric Knauel, Michael Sperber and Richard Kelsey.  @cite{How to Add Threads to a Sequential Language Without Getting Tangled Up}.  @i{Proceedings of the Fourth Workshop on Scheme and Functional Programming}, November 2003.
 
-@set refRotationService International Earth Rotation Service.  @i{Historical table of @acronym{TAI}-@acronym{UTC} offsets}.  @t{@url{https://maia.usno.navy.mil/ser7/tai-utc.dat}}
+@set refRotationService International Earth Rotation Service.  @cite{Historical table of @acronym{TAI}-@acronym{UTC} offsets}.  @t{@url{https://maia.usno.navy.mil/ser7/tai-utc.dat}}

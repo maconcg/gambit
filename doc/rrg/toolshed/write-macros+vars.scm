@@ -179,14 +179,14 @@
            (write-string
             (string-append "@set SRFI" number "initial "
                            "@acronym{@acronym{SRFI} " number
-                           ",@i{" title "}}\n"))))
+                           ",@cite{" title "}}\n"))))
         (write-SRFIitem
          (lambda (number title author year)
            (write-string
             (string-append "@set SRFI" number "item "
                            "@url{https://srfi.schemers.org/srfi-" number
                            "/,@acronym{@acronym{SRFI} " number
-                           ",@i{" title "}}}@*"
+                           ",@cite{" title "}}}@*"
                            author "@comma{} " year "\n"))))
         (write-truishsigma
          (lambda ()
@@ -218,11 +218,11 @@
          (lambda (n superscript)
            (write-string
             (string-append "@set Revised" n
-                           "RS @inlinefmtifelse{plaintext,Revised^" n
+                           "RS @cite{@inlinefmtifelse{plaintext,Revised^" n
                            ",@inlinefmtifelse{info,Revised" superscript
                            ",Revised@sup{" (string-downcase n)
                            "}}} "
-                           "Report on the Algorithmic Language Scheme\n"))))
+                           "Report on the Algorithmic Language Scheme}\n"))))
         (write-RFCinitial
          (lambda ()
            (write-string
@@ -238,8 +238,8 @@
              "@inlinefmtifelse{info,@acronym{R" superscript
              "RS,@value{Revised" n "RS}},"
              "@inlinefmtifelse{html,@acronym{R@sup{" (string-downcase n)
-             "}RS,Revised" superscript
-             " Report on the Algorithmic Langugage Scheme},"
+             "}RS,@cite{Revised" superscript
+             " Report on the Algorithmic Language Scheme}},"
              "@acronym{R@sup{" (string-downcase n)
              "}RS}}}}\n"))))
         (write-RnRS
@@ -278,13 +278,15 @@
       (write-acronym-initial
        "MIT" "Massachusetts Institute of Technology")
       (write-acronym-initial
-       "RRRS" "@i{Revised Revised Report on Scheme}")
+       "RRRS" "@cite{Revised Revised Report on Scheme}")
       (write-SRFIinitial
        "45" "Primitives for Expressing Iterative Lazy Algorithms")
       (write-acronym-initial
        "SI" "International System of Units")
       (write-acronym-initial
        "TAI" "International Atomic Time")
+      (write-acronym-initial
+       "TI" "Texas Instruments")
       (write-acronym-initial
        "UAX" "Unicode Standard Annex")
       (write-acronym-initial

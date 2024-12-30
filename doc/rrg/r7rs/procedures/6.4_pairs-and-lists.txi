@@ -198,9 +198,9 @@ These twenty-four procedures are further compositions of @code{car} and
 @code{cdr} on the same principles.  For example, @code{caddr} could be
 defined by
 
-@example grammar
-(define caddr (lambda (x) (car (cdr (cdr x)))))@r{.}
-@end example
+@lisp
+(define caddr (lambda (x) (car (cdr (cdr x)))))
+@end lisp
 
 Arbitrary compositions up to four deep are provided.
 @end deffn

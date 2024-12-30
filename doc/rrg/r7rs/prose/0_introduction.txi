@@ -1,8 +1,7 @@
 @c Copyright (c) 2024 by Macon Gambill, All Rights Reserved.
 @node Introduction
-@nodedescription Introduction to Scheme.
+@nodedescription History@comma{} philosophy@comma{} and acknowledgements.
 @unnumbered Introduction
-
 Programming languages should be designed not by piling feature on top of
 feature, but by removing the weaknesses and restrictions that make
 additional features appear necessary.  Scheme demonstrates that a very
@@ -34,7 +33,6 @@ manner.
 @node Background
 @nodedescription Background and history.
 @section Background
-
 The first description of Scheme was written in
 1975@footnote{@value{refSchemeAnInterpreter}}.  A revised
 report@footnote{@value{refR1RS}} appeared in 1978, which described the
@@ -128,10 +126,11 @@ Philbin, Kent Pitman, John Ramsdell, Guillermo Rozas, Mike Shaff,
 Jonathan Shapiro, Guy Steele, Julie Sussman, Perry Wagle, Mitchel Wand,
 Daniel Weise, Henry Wu, and Ozan Yigit@.  We thank Carol Fessenden,
 Daniel Friedman, and Christopher Haynes for permission to use text from
-the Scheme 311 version 4 reference manual@.  We thank Texas Instruments,
-Inc.@: for permission to use text from the @cite{@acronym{TI} Scheme
-Language Reference Manual}@footnote{@value{refTISchemeRef}}.  We gladly
-acknowledge the influence of manuals for @acronym{MIT}
+the @cite{Scheme 311 version 4 reference
+manual}@footnote{@value{refScheme311Ref}}@.  We thank Texas Instruments,
+Inc.@: for permission to use text from the @cite{@value{TIinitial}
+Scheme Language Reference Manual}@footnote{@value{refTISchemeRef}}.  We
+gladly acknowledge the influence of manuals for @acronym{MIT}
 Scheme@footnote{@value{refMITSchemeManual}},
 T@footnote{@value{refTManual}}, Scheme
 84@footnote{@value{refScheme84Interim}}, Common
