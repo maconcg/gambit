@@ -73,6 +73,8 @@ These predicates define the types @i{boolean}, @i{bytevector},
 @i{pair}, @i{port}, @i{procedure}, @i{string}, @i{symbol}, @i{vector},
 and all record types.
 
+@cindex @quotedbl{true} @sortas{true}
+@cindex @quotedbl{false} @sortas{false}
 Although there is a separate boolean type, any Scheme value can be used
 as a boolean value for the purpose of a conditional test.  As explained
 in section 6.3 (@ref{Booleans}), all values count as true in such a test
@@ -245,10 +247,11 @@ true of all the bodies of @nc{case-lambda} expressions.
 @item
 If one of the following expressions is in a tail context, then the
 subexpressions shown as @angle{tail expression} are in a tail context.
-These were derived from rules in the grammar given in chapter 7 by
-replacing some occurrences of @angle{body} with @angle{tail expression},
-and some occurrences of @angle{sequence} with @angle{tail sequence}.
-Only those rules that contain tail contexts are shown here.
+These were derived from rules in the grammar given in chapter 7
+(@ref{Formal syntax and semantics}) by replacing some occurrences of
+@angle{body} with @angle{tail expression}, and some occurrences of
+@angle{sequence} with @angle{tail sequence}.  Only those rules that
+contain tail contexts are shown here.
 
 @example grammar
 (if @sv{expression} @sv{tail expression} @sv{tail expression})

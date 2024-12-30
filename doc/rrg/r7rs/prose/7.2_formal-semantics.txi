@@ -544,7 +544,9 @@ be used in place of @dfn{unspecified}.
 @t{  }@i{twoarg} (𝜆@parI{𝜖}@parII{𝜖}𝜔𝜅 . @i{applicate} @parI{𝜖}⟨⟩(𝜆𝜖* . @i{applicate} @parII{𝜖} 𝜖*𝜔))
 @end display
 
-@node Formal derived expression types
+@node Definitions of derived expression types
+@cindex derived expressions @subentry definitions
+@cindex derived expressions @subentry formal
 @section Derived expression types
 This section gives syntax definitions for the derived expression types
 in terms of the primitive expression types (literal, variable, call,
@@ -909,7 +911,8 @@ with the following promise accessors:
 The following implementation of @code{make-parameter} and
 @code{parameterize} is suitable for an implementation with no threads.
 Parameter objects are implemented here as procedures, using two
-arbitrary unique objects @code{<param-set!>} and @code{<param-convert>}:
+arbitrary unique objects @nc{@U{003C}param-set!@U{003E}} and
+@nc{@U{003C}param-convert@U{003E}}:
 
 @lisp
 (define (make-parameter init . o)

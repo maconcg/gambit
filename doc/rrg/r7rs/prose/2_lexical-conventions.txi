@@ -9,7 +9,8 @@ Scheme, @pxref{Formal syntax}.
 
 @node Identifiers
 @section Identifiers
-An identifier is any sequence of letters, digits, and @quotedbl{extended
+@cindex extended identifier characters
+An identifier is any sequence of letters, digits, and @define{extended
 identifier characters} provided that it does not have a prefix which is
 a valid number.  However, the @samp{.}  token (a single period) used in
 the list syntax is not an identifier.
@@ -18,8 +19,25 @@ All implementations of Scheme must support the following extended
 identifier characters:
 
 @indentedblock
-@multitable @columnfractions 1
-@item @t{! $ % @ampchar{} * + - . / : < = > ? @atchar{} ^ _ ~}
+@multitable @columnfractions .03 .03 .03 .03 .03 .03 .03 .03 .03 .03 .03 .03 .03 .03 .03 .03 .03 .03 .46
+@item @t{!} @tab
+@t{$} @tab
+@t{%} @tab
+@t{@ampchar{}} @tab
+@t{*} @tab
+@t{+} @tab
+@t{-} @tab
+@t{.} @tab
+@t{/} @tab
+@t{:} @tab
+@t{<} @tab
+@t{=} @tab
+@t{>} @tab
+@t{?} @tab
+@t{@atchar{}} @tab
+@t{^} @tab
+@t{_} @tab
+@t{~} @tab
 @end multitable
 @end indentedblock
 
@@ -144,8 +162,8 @@ Block comments are indicated with properly nested
 @section Other notations
 For a description of the notations used for numbers, @pxref{Numbers}.
 
-@table @asis{}
-@item @samp{.}@t{@ @ }@samp{+}@t{@ @ }@samp{-}
+@table @t
+@item . + -
 These are used in numbers, and can also occur anywhere in an identifier.
 A delimited plus or minus sign by itself is also an identifier.  A
 delimited period (not occurring within a number or identifier) is used
@@ -153,59 +171,59 @@ in the notation for pairs (@pxref{Pairs and lists}), and to indicate a
 rest-parameter in a formal parameter list (@pxref{Procedures}).  Note
 that a sequence of two or more periods @emph{is} an identifier.
 
-@item @samp{@U{0028}}@t{@ @ }@samp{@U{0029}}
+@item @U{0028} @U{0029}
 Parentheses are used for grouping and to notate lists (@pxref{Pairs and
 lists}).
 
-@item @samp{'}
+@item '
 The apostrophe (single quote) character is used to indicate literal data
 (@pxref{Literal expressions}).
 
-@item @samp{`}
+@item `
 The grave accent (backquote) character is used to indicate partly
 constant data (@pxref{Quasiquotation}).
 
-@item @samp{@comma{}}@t{@ @ }@samp{@comma{}@atchar{}}
+@item @comma{} @comma{}@atchar{}
 The character comma and the sequence comma at-sign are used in
 conjunction with quasiquotation (@pxref{Quasiquotation}).
 
-@item @samp{"}
+@item "
 The quotation mark character is used to delimit strings
 (@pxref{Strings}).
 
-@item @samp{@backslashchar{}}
+@item @backslashchar{}
 Backslash is used in the syntax for character constants
 (@pxref{Characters}) and as an escape character within string constants
 (@pxref{Strings}) and identifiers (@pxref{Lexical structure}).
 
-@item @samp{@U{005B}}@t{@ @ }@samp{@U{005D}}@t{@ @ }@samp{@lbracechar{}}@t{@ @ }@samp{@rbracechar{}}
+@item @U{005B} @U{005D} @lbracechar{} @rbracechar{}
 Left and right square and curly brackets (braces) are reserved for
 possible future extensions to the language.
 
-@item @samp{@hashchar{}}
+@item @hashchar{}
 The number sign is used for a variety of purposes depending on the
 character that immediately follows it:
 
-@item @samp{@hashchar{}t}@t{@ @ }@samp{@hashchar{}f}
+@item @hashchar{}t @hashchar{}f
 These are the boolean constants (@pxref{Booleans}), along with the
 alternatives @samp{#true} @samp{#false}.
 
-@item @samp{@hashchar{}@backslashchar{}}
+@item @hashchar{}@backslashchar{}
 This introduces a character constant (@pxref{Characters}).
 
-@item @samp{@hashchar{}@U{0028}}
+@item @hashchar{}@U{0028}
 This introduces a vector constant (@pxref{Vectors}).  Vector constants
 are terminated by @samp{@U{0029}}.
 
-@item @samp{@hashchar{}u8@U{0028}}
+@item @hashchar{}u8@U{0028}
 This introduces a bytevector constant (@pxref{Vectors}).  Bytevector
 constants are terminated by @samp{@U{0029}}.
 
-@item @samp{@hashchar{}e}@t{@ @ }@samp{@hashchar{}i}@t{@ @ }@samp{@hashchar{}b}@t{@ @ }@samp{@hashchar{}o}@t{@ @ }@samp{@hashchar{}d}@t{@ @ }@samp{@hashchar{}x}
+@item @hashchar{}e @hashchar{}i @hashchar{}b @hashchar{}o @hashchar{}d @hashchar{}x
 These are used in the notation for numbers (@pxref{Syntax of numerical
 constants}).
 
-@item @samp{@hashchar{}@sv{n}=}@t{@ @ }@samp{@hashchar{}@sv{n}@hashchar{}}
+@item @hashchar{}@sv{n}= @hashchar{}@sv{n}@hashchar{}
 These are used for labeling and referencing other literal data
 (@pxref{Datum labels}).
 @end table
@@ -219,10 +237,10 @@ These are used for labeling and referencing other literal data
 @deftypeline {lexical syntax} @/ @
 @datumref{@hashchar{}}@sv{n}@datumref{@hashchar{}}
 
-The lexical syntax @samp{@prosedatumlabel{n}@angle{datum}} reads the
-same as @samp{@angle{datum}}, but also results in @samp{@angle{datum}}
-being labeled by @samp{@angle{n}}.  It is an error if @samp{@angle{n}}
-is not a sequence of digits.
+The lexical syntax @samp{@prosedatumlabel{n}@sv{datum}} reads the same
+as @samp{@sv{datum}}, but also results in @samp{@sv{datum}} being
+labeled by @samp{@sv{n}}.  It is an error if @samp{@sv{n}} is not a
+sequence of digits.
 
 @cindex datum reference
 @cindex circular structure

@@ -6,21 +6,20 @@ A Scheme program consists of one or more import declarations followed by
 a sequence of expressions and definitions.  Import declarations specify
 the libraries on which a program or library depends; a subset of the
 identifiers exported by the libraries are made available to the program.
-Expressions are described in chapter 4.  Definitions are either variable
-definitions, syntax definitions, or record-type definitions, all of
-which are explained in this chapter.  They are valid in some, but not
-all, contexts where expressions are allowed, specifically at the
-outermost level of a @angle{program} and at the beginning of a
-@angle{body}.
+Expressions are described in chapter 4 (@ref{Expressions}).  Definitions
+are either variable definitions, syntax definitions, or record-type
+definitions, all of which are explained in this chapter.  They are valid
+in some, but not all, contexts where expressions are allowed,
+specifically at the outermost level of a @angle{program} and at the
+beginning of a @angle{body}.
 
-At the outermost level of a program, @nt{(begin @sv{expression or
+At the outermost level of a program, @ns{(begin @sv{expression or
 @parI{definition}} @value{defdots})} is equivalent to the sequence of
-expressions and definitions in the @nc{begin}.  Similarly, in a
-@angle{body}, @nt{(begin @sv{@parI{definition}} @value{defdots})} is
-equivalent to the sequence @sv{@parI{definition}}
-@value{defdots}@inlinefmtifelse{html,@U{2009},@tie{}}@.  Macros can
-expand into such @nc{begin} forms.  For the formal definition,
-@pxref{Sequencing}.
+expressions and definitions in the @code{begin}.  Similarly, in a
+@angle{body}, @ns{(begin @sv{@parI{definition}} @value{defdots})} is
+equivalent to the sequence @ns{@sv{@parI{definition}} @value{defdots}}.
+Macros can expand into such @code{begin} forms.  For the formal
+definition, @pxref{Sequencing}.
 
 Import declarations and definitions cause bindings to be created in the
 global environment or modify the value of existing global bindings.  The
@@ -38,6 +37,7 @@ libraries in files should document the mapping from the name of a
 library to its location in the file system.
 
 @node Import declarations
+@vindex import
 @section Import declarations
 An import declaration takes the following form:
 
@@ -70,39 +70,40 @@ one of the following forms:
 
 In the first form, all of the identifiers in the named library's export
 clauses are imported with the same names (or the exported names if
-exported with @nc{rename}).  The additional @angle{import set} forms
+exported with @code{rename}).  The additional @angle{import set} forms
 modify this set as follows:
 
 @itemize @bullet
 @item
-@nc{only} produces a subset of the given @angle{import set} including
+@code{only} produces a subset of the given @angle{import set} including
 only the listed identifiers (after any renaming).  It is an error if any
 of the listed identifiers are not found in the original set.
 
 @item
-@nc{except} produces a subset of the given @angle{import set}, excluding
+@code{except} produces a subset of the given @angle{import set}, excluding
 the listed identifiers (after any renaming).  It is an error if any of
 the listed identifiers are not found in the original set.
 
 @item
-@nc{rename} modifies the given @angle{import set}, replacing each
+@code{rename} modifies the given @angle{import set}, replacing each
 instance of @angle{@parI{identifier}} with @angle{@parII{identifier}}.
 It is an error if any of the listed @angle{@parI{identifier}}s are not
 found in the original set.
 
 @item
-@nc{prefix} automatically renames all identifiers in the given
+@code{prefix} automatically renames all identifiers in the given
 @angle{import set}, prefixing each with the specified
 @angle{identifier}.
 @end itemize
 
 In a program or library declaration, it is an error to import the same
 identifier more than once with different bindings, or to redefine or
-mutate an imported binding with a definition or with @nc{set!}, or to
+mutate an imported binding with a definition or with @code{set!}, or to
 refer to an identifier before it is imported.  However, a @acronym{REPL}
 should permit these actions.
 
 @node Variable definitions
+@vindex define
 @section Variable definitions
 A variable definition binds one or more identifiers and specifies an
 initial value for each of them.  The simplest kind of variable
@@ -117,7 +118,7 @@ definition takes one of the following forms:
 @sv{formals}@compound{@U{0029}} @sv{body}@compound{@U{0029}}}@*@*
 @angle{Formals} are either a sequence of zero or more variables, or a
 sequence of one or more variables followed by a space-delimited period
-and another variable (as in a @nc{lambda} expression).  This form is
+and another variable (as in a @code{lambda} expression).  This form is
 equivalent to
 
 @example grammar
@@ -153,7 +154,7 @@ if @angle{variable} is bound to a non-syntax value.  However, if
 @angle{variable} is not bound, or is a syntactic keyword, then the
 definition will bind @angle{variable} to a new location before
 performing the assignment, whereas it would be an error to perform a
-@nc{set!} on an unbound variable.
+@code{set!} on an unbound variable.
 
 @lisp
 (define add3
@@ -166,15 +167,16 @@ performing the assignment, whereas it would be an error to perform a
 @node Internal definitions
 @subsection Internal definitions
 Definitions can occur at the beginning of a @angle{body} (that is, the
-body of a @nc{lambda}, @nc{let}, @nc{let*}, @nc{letrec}, @nc{letrec*},
-@nc{let-values}, @nc{let*-values}, @nc{let-syntax}, @nc{letrec-syntax},
-@nc{parameterize}, @nc{guard}, or @nc{case-lambda}).  Note that such a
-body might not be apparent until after expansion of other syntax.  Such
-definitions are known as @define{internal definitions} as opposed to the
-global definitions described above.  The variables defined by internal
-definitions are local to the @angle{body}.  That is, @angle{variable} is
-bound rather than assigned, and the region of the binding is the entire
-@angle{body}.  For example,
+body of a @code{lambda}, @code{let}, @code{let*}, @code{letrec},
+@code{letrec*}, @nc{let-values}, @nc{let*-values}, @nc{let-syntax},
+@nc{letrec-syntax}, @code{parameterize}, @code{guard}, or
+@nc{case-lambda}).  Note that such a body might not be apparent until
+after expansion of other syntax.  Such definitions are known as
+@define{internal definitions} as opposed to the global definitions
+described above.  The variables defined by internal definitions are
+local to the @angle{body}.  That is, @angle{variable} is bound rather
+than assigned, and the region of the binding is the entire @angle{body}.
+For example,
 
 @lisp
 (let ((x 5))
@@ -184,8 +186,8 @@ bound rather than assigned, and the region of the binding is the entire
 @end lisp
 
 An expanded @angle{body} containing internal definitions can always be
-converted into a completely equivalent @nc{letrec*} expression.  For
-example, the @nc{let} expression in the above example is equivalent to
+converted into a completely equivalent @code{letrec*} expression.  For
+example, the @code{let} expression in the above example is equivalent to
 
 @lisp
 (let ((x 5))
@@ -194,8 +196,8 @@ example, the @nc{let} expression in the above example is equivalent to
     (foo (+ x 3))))
 @end lisp
 
-Just as for the equivalent @nc{letrec*} expression, it is an error if it
-is not possible to evaluate each @angle{expression} of every internal
+Just as for the equivalent @code{letrec*} expression, it is an error if
+it is not possible to evaluate each @angle{expression} of every internal
 definition in a @angle{body} without assigning or referring to the value
 of the corresponding @angle{variable} or the @angle{variable} of any of
 the definitions that follow it in @angle{body}.
@@ -203,15 +205,15 @@ the definitions that follow it in @angle{body}.
 It is an error to define the same identifier more than once in the same
 @angle{body}.
 
-Wherever an internal definition can occur, @nt{(begin
+Wherever an internal definition can occur, @ns{(begin
 @sv{@parI{definition}} @value{defdots})} is equivalent to the sequence
-of definitions that form the body of the @nc{begin}.
+of definitions that form the body of the @code{begin}.
 
 @node Multiple-value definitions
 @subsection Multiple-value definitions
 Another kind of definition is provided by @nc{define-values}, which
 creates multiple definitions from a single expression returning multiple
-values.  It is allowed wherever @nc{define} is allowed.
+values.  It is allowed wherever @code{define} is allowed.
 
 @deftypefn syntax @/ define-values @sv{formals} @sv{expression}
 
@@ -220,8 +222,8 @@ It is an error if a variable appears more than once in the set of
 
 @i{Semantics:} @angle{Expression} is evaluated, and the @angle{formals}
 are bound to the return values in the same way that the @angle{formals}
-in a @nc{lambda} expression are matched to the arguments in a procedure
-call.
+in a @code{lambda} expression are matched to the arguments in a
+procedure call.
 
 @lisp
 (define-values (x y) (exact-integer-sqrt 17))
@@ -236,6 +238,7 @@ call.
 @end deftypefn
 
 @node Syntax definitions
+@vindex define-syntax
 @section Syntax definitions
 Syntax definitions have this form:
 
@@ -300,7 +303,6 @@ the following are errors:
 @end lisp
 
 @node Record-type definitions
-@cindex define-record-type
 @cindex record type definitions
 @section Record-type definitions
 @define{Record-type definitions} are used to introduce new data types,
@@ -357,7 +359,7 @@ to identify the record type for use by further language extensions.
 
 @item
 @angle{constructor name} is bound to a procedure that takes as many
-arguments as there are @angle{field name}s in the @nt{(@sv{constructor
+arguments as there are @angle{field name}s in the @ns{(@sv{constructor
 name} @value{defdots})} subexpression and returns a new record of type
 @angle{named}.  Fields whose names are listed with @angle{constructor
 name} have the corresponding argument as their initial value.  The
@@ -366,9 +368,9 @@ a field name to appear in @angle{constructor} but not as a @angle{field
 name}.
 
 @item
-@angle{pred} is bound to a predicate that returns @nc{#t} when given a
+@angle{pred} is bound to a predicate that returns @code{#t} when given a
 value returned by the procedure bound to @angle{constructor name} and
-@nc{#f} for everything else.
+@code{#f} for everything else.
 
 @item
 Each @angle{accessor name} is bound to a procedure that takes a record
@@ -394,9 +396,9 @@ For instance, the following record-type definition
   (y kdr))
 @end lisp
 
-defines @nc{kons} to be a constructor, @nc{kar} and @nc{kdr} to be
-accessors, @nc{set-kar!} to be a modifier, and @nc{pare?} to be a
-predicate for instances of @nc{<pare>}.
+defines @code{kons} to be a constructor, @code{kar} and @code{kdr} to be
+accessors, @nc{set-kar!} to be a modifier, and @code{pare?} to be a
+predicate for instances of @code{<pare>}.
 
 @lisp
 (pare? (kons 1 2))             @ok{#t}
@@ -417,6 +419,7 @@ with explicitly defined interfaces to the rest of the program.  This
 section defines the notation and semantics for libraries.
 
 @node Library syntax
+@vindex define-library
 @subsection Library syntax
 A library definition takes the following form:
 
@@ -428,16 +431,38 @@ A library definition takes the following form:
 @angle{library name} is a list whose members are identifiers and exact
 non-negative integers.  It is used to identify the library uniquely when
 importing from other programs or libraries.  Libraries whose first
-identifier is @nc{scheme} are reserved for use by this report and future
-versions of this report.  Libraries whose first identifier is @nc{srfi}
+identifier is @code{scheme} are reserved for use by this report and future
+versions of this report.  Libraries whose first identifier is @code{srfi}
 are reserved for libraries implementing Scheme Requests for
 Implementation.  It is inadvisable, but not an error, for identifiers in
-library names to contain any of the characters @code{@U{007C}}
-@code{@backslashchar{}} @code{@U{003F}} @code{@U{002A}} @code{@U{003C}}
-@code{@U{0022}} @code{@U{003A}} @code{@U{003E}} @code{@U{002B}}
-@code{@U{005B}} @code{@U{005D}} @code{@U{002F}} or control characters
-after escapes are expanded.
+library names to contain any of the characters
 
+@indentedblock
+@multitable @columnfractions .03 .03 .03 .03 .03 .03 .03 .03 .03 .03 .03 .03 .64
+@item @t{@U{007C}} @tab
+@t{@backslashchar{}} @tab
+@t{@U{003F}} @tab
+@t{@U{002A}} @tab
+@t{@U{003C}} @tab
+@t{@U{0022}} @tab
+@t{@U{003A}} @tab
+@t{@U{003E}} @tab
+@t{@U{002B}} @tab
+@t{@U{005B}} @tab
+@t{@U{005D}} @tab
+@t{@U{002F}} @tab
+@end multitable
+@end indentedblock
+
+or control characters after escapes are expanded.
+
+@vindex export
+@vindex import
+@vindex begin
+@vindex include
+@vindex include-ci
+@vindex include-library-declarations
+@vindex cond-expand
 A @angle{library declaration} is any of:
 
 @itemize @bullet
@@ -464,7 +489,8 @@ A @angle{library declaration} is any of:
 @t{@compound{@U{0028}}@aux{cond-expand} @sv{@parI{ce-clause}} @sv{@parII{ce-clause}} @value{defdots}@compound{@U{0029}}}
 @end itemize
 
-An @nc{export} declaration specifies a list of identifiers which can be
+@vindex rename
+An @code{export} declaration specifies a list of identifiers which can be
 made visible to other libraries or programs.  An @angle{export spec}
 takes one of the following forms:
 
@@ -479,21 +505,21 @@ takes one of the following forms:
 In an @angle{export spec}, an @angle{identifier} names a single binding
 defined within or imported into the library, where the external name for
 the export is the same as the name of the binding within the library.  A
-@nc{rename} spec exports the binding defined within or imported into the
-library and named by @angle{@parI{identifier}} in each
+@code{rename} spec exports the binding defined within or imported into
+the library and named by @angle{@parI{identifier}} in each
 @t{(@sv{@parI{identifier}} @sv{@parII{identifier}})} pairing, using
 @angle{@parII{identifier}} as the external name.
 
-An @nc{import} declaration provides a way to import the identifiers
+An @code{import} declaration provides a way to import the identifiers
 exported by another library.  It has the same syntax and semantics as an
 import declaration used in a program or at the @acronym{REPL}
 (@pxref{Import declarations}).
 
-The @nc{begin}, @nc{include}, and @nc{include-ci} declarations are used
-to specify the body of the library.  They have the same syntax and
+The @code{begin}, @code{include}, and @nc{include-ci} declarations are
+used to specify the body of the library.  They have the same syntax and
 semantics as the corresponding expression types.  This form of
-@nc{begin} is analogous to, but not the same as, the two types of
-@nc{begin} defined in section 4.2.3 (@ref{Sequencing}).
+@code{begin} is analogous to, but not the same as, the two types of
+@code{begin} defined in section 4.2.3 (@ref{Sequencing}).
 
 The @nc{include-library-declarations} declaration is similar to include
 except that the contents of the file are spliced directly into the
@@ -504,18 +530,18 @@ library interface.
 The @nc{cond-expand} declaration has the same syntax and semantics as
 the @nc{cond-expand} expression type, except that it expands to
 spliced-in library declarations rather than expressions enclosed in
-@nc{begin}.
+@code{begin}.
 
 One possible implementation of libraries is as follows: After all
 @nc{cond-expand} library declarations are expanded, a new environment is
 constructed for the library consisting of all imported bindings.  The
-expressions from all @nc{begin}, @nc{include} and p@nc{include-ci}
+expressions from all @code{begin}, @code{include} and p@nc{include-ci}
 library declarations are expanded in that environment in the order in
 which they occur in the library.  Alternatively, @nc{cond-expand} and
-@nc{import} declarations may be processed in left to right order
+@code{import} declarations may be processed in left to right order
 interspersed with the processing of other declarations, with the
 environment growing as imported bindings are added to it by each
-@nc{import} declaration.
+@code{import} declaration.
 
 When a library is loaded, its expressions are executed in textual order.
 If a library's definitions are referenced in the expanded form of a
@@ -524,17 +550,17 @@ expanded program or library body is evaluated.  This rule applies
 transitively.  If a library is imported by more than one program or
 library, it may possibly be loaded additional times.
 
-Similarly, during the expansion of a library @nc{(foo)}, if any syntax
-keywords imported from another library @nc{(bar)} are needed to expand
-the library, then the library @nc{(bar)} must be expanded and its syntax
-definitions evaluated before the expansion of @nc{(foo)}.
+Similarly, during the expansion of a library @code{(foo)}, if any syntax
+keywords imported from another library @code{(bar)} are needed to expand
+the library, then the library @code{(bar)} must be expanded and its
+syntax definitions evaluated before the expansion of @code{(foo)}.
 
 Regardless of the number of times that a library is loaded, each program
 or library that imports bindings from a library must do so from a single
 loading of that library, regardless of the number of import declarations
-in which it appears.  That is, @nc{(import (only (foo) a))} followed by
-@nc{(import (only (foo) b))} has the same effect as @nc{(import (only
-(foo) a b))}.
+in which it appears.  That is, @code{(@nobr{import} (only (foo) a))}
+followed by @code{(@nobr{import} (only (foo) b))} has the same effect as
+@code{(@nobr{import} (only (foo) a b))}.
 
 @node Library example
 @subsection Library example
@@ -635,7 +661,7 @@ library.
 @end lisp
 
 @node The REPL
-@section The REPL
+@section The @acronym{REPL}
 Implementations may provide an interactive session called a
 @acronym{REPL,Read-Eval-Print Loop}, where import declarations,
 expressions and definitions can be entered and evaluated one at a time.
@@ -643,7 +669,7 @@ For convenience and ease of use, the global Scheme environment in a
 @acronym{REPL} must not be empty, but must start out with at least the
 bindings provided by the base library.  This library includes the core
 syntax of Scheme and generally useful procedures that manipulate data.
-For example, the variable @nc{abs} is bound to a procedure of one
+For example, the variable @code{abs} is bound to a procedure of one
 argument that computes the absolute value of a number, and the variable
 @code{+} is bound to a procedure that computes sums.  The full list of
 @nc{(scheme base)} bindings can be found in Appendix A (@ref{Standard

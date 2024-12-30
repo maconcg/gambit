@@ -90,10 +90,10 @@ system in the same manner as @nc{exit}.
 Many operating systems provide each running process with an
 @define{environment} consisting of @define{environment variables}.
 (This environment is not to be confused with the Scheme environments
-that can be passed to @nc{eval}: @pxref{Environments and evaluation}.)
+that can be passed to @code{eval}: @pxref{Environments and evaluation}.)
 Both the name and value of an environment variable are strings.  The
 procedure @nc{get-environment-variable} returns the value of the
-environment variable @var{name}, or @nc{#f} if the named environment
+environment variable @var{name}, or @code{#f} if the named environment
 variable is not found.  It may use locale information to encode the name
 and decode the value of the environment variable.  It is an error if
 @nc{get-environment-variable} can't decode the value.  It is also an
@@ -108,10 +108,10 @@ error to mutate the resulting string.
 @deffn {process-context library procedure} get-environment-variables
 
 Returns the names and values of all the environment variables as an
-alist, where the car of each entry is the name of an environment
+@abbr{alist}, where the car of each entry is the name of an environment
 variable and the cdr is its value, both as strings.  The order of the
 list is unspecified.  It is an error to mutate any of these strings or
-the alist itself.
+the @abbr{alist} itself.
 
 @lisp
 (get-environment-variables)
@@ -138,11 +138,11 @@ offsets}@footnote{@value{refRotationService}}.
 @deffn {time library procedure} current-jiffy
 
 Returns the number of @define{jiffies} as an exact integer that have
-elapsed since an arbitrary, implementation-defined epoch.  A jiffy is an
-implementation-defined fraction of a second which is defined by the
-return value of the @nc{jiffies-per-second} procedure.  The starting
-epoch is guaranteed to be constant during a run of the program, but may
-vary between runs.
+elapsed since an arbitrary, implementation-defined epoch.  A
+@define{jiffy} is an implementation-defined fraction of a second which
+is defined by the return value of the @nc{jiffies-per-second} procedure.
+The starting epoch is guaranteed to be constant during a run of the
+program, but may vary between runs.
 
 @quotation
 @i{Rationale:} Jiffies are allowed to be implementation-dependent so
@@ -176,7 +176,7 @@ constant.
 
 Returns a list of the feature identifiers which @nc{cond-expand} treats
 as true. It is an error to modify this list.  Here is an example of what
-@nc{features} might return:
+@code{features} might return:
 
 @lisp
 (features)

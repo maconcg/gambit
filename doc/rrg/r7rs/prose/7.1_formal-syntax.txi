@@ -7,15 +7,16 @@ This section provides a formal syntax for Scheme written in an extended
 
 All spaces in the grammar are for legibility.  Case is not significant
 except in the definitions of @angle{letter}, @angle{character name} and
-@angle{mnemonic escape}; for example, @nc{@hashchar{}x1A} and
-@nc{@hashchar{}X1a} are equivalent, but @nc{foo} and @nc{Foo} and
-@nc{@hashchar{}@backslashchar{}space} and
-@nc{@hashchar{}@backslashchar{}Space} are distinct.  @angle{empty}
+@angle{mnemonic escape}; for example, @samp{@hashchar{}x1A} and
+@samp{@hashchar{}X1a} are equivalent, but @samp{foo} and @samp{Foo} and
+@samp{@hashchar{}@backslashchar{}space} and
+@samp{@hashchar{}@backslashchar{}Space} are distinct.  @angle{empty}
 stands for the empty string.
 
 The following extensions to @acronym{BNF} are used to make the
-description more concise: @angle{thing}* means zero or more occurrences
-of @angle{thing}; and @angle{thing}+ means at least one @angle{thing}.
+description more concise: @samp{@sv{thing}@r{*}} means zero or more
+occurrences of @angle{thing}; and @samp{@sv{thing}@r{+}} means at least
+one @angle{thing}.
 
 @node Lexical structure
 @subsection Lexical structure
@@ -34,8 +35,8 @@ characters, and booleans.  Identifiers that begin with a vertical line
 are terminated by another vertical line.
 
 The following four characters from the @acronym{ASCII} repertoire are
-reserved for future extensions to the language: @code{@U{005B}}
-@code{@U{005D}} @code{@lbracechar{}} @code{@rbracechar{}}
+reserved for future extensions to the language: @samp{@U{005B}}@t{ }
+@samp{@U{005D}}@t{ }@samp{@lbracechar{}}@t{ }@samp{@rbracechar{}}
 
 In addition to the identifier characters of the @acronym{ASCII}
 repertoire specified below, Scheme implementations may permit any
@@ -49,8 +50,9 @@ error for the first character to have a general category of Nd, Mc, or
 Me.  It is also an error to use a non-Unicode character in symbols or
 identifiers.
 
+@cindex identifier escape
 All Scheme implementations must permit the escape sequence
-@nc{@backslashchar{}x@sv{hexdigits};} to appear in Scheme identifiers
+@samp{@backslashchar{}x@sv{hex digits};} to appear in Scheme identifiers
 that are enclosed in vertical lines.  If the character with the given
 Unicode scalar value is supported by the implementation, identifiers
 containing such a sequence are equivalent to identifiers containing the
@@ -83,12 +85,15 @@ corresponding character.
 Note that it is ungrammatical to follow a @angle{directive} with
 anything but a @angle{delimiter} or the end of file.
 
+@cindex atmosphere
+@cindex intertoken space
 @example grammar
 @sv{atmosphere} @value{longarrow} @sv{whitespace} | @sv{comment} | @sv{directive}
 @sv{intertoken space} @value{longarrow} @sv{atmosphere}*
 @end example
 
-Note that @code{+i}, @code{-i} and @angle{infnan} below are exceptions
+@cindex peculiar identifier
+Note that @samp{+i}, @samp{-i} and @angle{infnan} below are exceptions
 to the @angle{peculiar identifier} rule; they are parsed as numbers, not
 identifiers.
 

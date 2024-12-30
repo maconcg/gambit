@@ -42,7 +42,7 @@
 
 @set refhygienicMacroExpansion Eugene E.@tie{}Kohlbecker Jr., Daniel P.@tie{}Friedman, Matthias Felleisen, and Bruce Duba.  @cite{Hygienic macro expansion}.  In @i{Proceedings of the 1986 @acronym{ACM} Conference on Lisp and Functional Programming}, pages 151--161.
 
-@set refRecursiveFunctions John McCarthy.  @cite{Recursive Functions of Symbolic Expressions and Their Computation by Machine, Part I}.  @i{Communications of the @acronym{ACM}} 3(4):184--195, April 1960.
+@set refRecursiveFunctions John McCarthy.  @cite{Recursive Functions of Symbolic Expressions and Their Computation by Machine, Part I}.  @i{Communications of the @acronym{ACM,Association for Computing Machinery}} 3(4):184--195, April 1960.
 
 @set refMITSchemeManual @acronym{MIT} Department of Electrical Engineering and Computer Science.  @cite{Scheme manual, seventh edition}. September 1984.
 
@@ -54,7 +54,7 @@
 
 @set refTManual Jonathan A.@tie{}Rees, Norman@tie{}I.@tie{}Adams@tie{}IV, and James@tie{}R.@tie{}Meehan.  @cite{The T Manual, fourth edition}.  Yale University Computer Science Department, January 1984.
 
-@set refR3RS Jonathan Rees and William Clinger, editors.  @value{Revised3RS}.  In @i{@acronym{ACM,Association for Computing Machinery} @acronym{SIGPLAN,Special Interest Group on Programming Languages} Notices} 21(12), pages 37--79, December 1986.
+@set refR3RS Jonathan Rees and William Clinger, editors.  @value{Revised3RS}.  In @i{@acronym{ACM} @acronym{SIGPLAN,Special Interest Group on Programming Languages} Notices} 21(12), pages 37--79, December 1986.
 
 @set refSRFI1 Olin Shivers.  @cite{@acronym{SRFI} 1: List Library}.  @t{@url{https://srfi.schemers.org/srfi-1/}}, 1999.
 

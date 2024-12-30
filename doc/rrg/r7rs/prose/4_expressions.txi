@@ -17,6 +17,7 @@ intimately associated with the @nc{delay}, @nc{delay-force}, and
 @node Primitive expression types
 @section Primitive expression types
 @node Variable references
+@cindex variable reference
 @subsection Variable references
 @defblock
 @deftypeline syntax @/ @sv{variable}
@@ -33,16 +34,19 @@ x @ok{28}
 @end defblock
 
 @node Literal expressions
+@cindex literal expression
 @subsection Literal expressions
+@vindex quote
+@vindex '
 @defblock
 @deftypeline syntax @/ @syntax{quote} @sv{datum}
 @deftypeline syntax @/ @syntax{@U{0027}}@sv{datum}
 @deftypeline syntax @/ @sv{constant}
 
-@samp{(quote @sv{datum})} evaluates to @samp{@sv{datum}}.
-@samp{@sv{Datum}} can be any external representation of a Scheme object
-(@pxref{External representations}).  This notation is used to include
-literal constants in Scheme code.
+@samp{(quote @sv{datum})} evaluates to @angle{datum}.  @angle{Datum} can
+be any external representation of a Scheme object (@pxref{External
+representations}).  This notation is used to include literal constants
+in Scheme code.
 
 @lisp
 (quote a)        @ok{a}
@@ -87,6 +91,7 @@ mutation procedure like @nc{set-car!} or @nc{string-set!}.
 @end defblock
 
 @node Procedure calls
+@cindex procedure call
 @subsection Procedure calls
 @defblock
 @deftypeline syntax @/ @t{(@sv{operator} @sv{@parI{operand}} @value{defdots})}
@@ -124,12 +129,15 @@ expressions is constrained to be consistent with some sequential order
 of evaluation.  The order of evaluation may be chosen differently for
 each procedure call.
 
+@cindex empty list @subentry evaluation
 @i{Note:} In many dialects of Lisp, the empty list, @nc{()}, is a
 legitimate expression evaluating to itself.  In Scheme, it is an error.
 @end quotation
 @end defblock
 
 @node Procedures
+@cindex procedure call
+@cindex combination @seeentry{procedure call}
 @subsection Procedures
 @deftypefn syntax @/ lambda @sv{formals} @sv{body}
 
@@ -174,18 +182,18 @@ call.
 
 @itemize @bullet
 @item
-@nt{(@sv{@parI{variable}} @value{defdots})}: The procedure takes a fixed
+@ns{(@sv{@parI{variable}} @value{defdots})}: The procedure takes a fixed
 number of arguments; when the procedure is called, the arguments will be
 stored in fresh locations that are bound to the corresponding variables.
 
 @item
-@nt{@sv{variable}}: The procedure takes any number of arguments; when
+@ns{@sv{variable}}: The procedure takes any number of arguments; when
 the procedure is called, the sequence of actual arguments is converted
 into a newly allocated list, and the list is stored in a fresh location
 that is bound to @angle{variable}.
 
 @item
-@nt{(@sv{@parI{variable}} @value{defdots} @sv{@parn{variable}}
+@ns{(@sv{@parI{variable}} @value{defdots} @sv{@parn{variable}}
 . @sv{@parnplusone{variable}})}: If a space-delimited period precedes
 the last variable, then the procedure takes @var{n} or more arguments,
 where @var{n} is the number of formal arguments before the period (it is
@@ -242,6 +250,7 @@ unspecified.
 @end deftypefn
 
 @node Assignments
+@cindex assignment
 @subsection Assignments
 @deftypefn syntax @/ set! @sv{variable} @sv{expression}
 
@@ -282,12 +291,14 @@ users to specify other directories to search.
 @end deftypefn
 
 @node Derived expression types
+@cindex derived expressions
 @section Derived expression types
 The constructs in this section are hygienic, as discussed in section 4.3
-(@ref{Macros}).  For reference purposes, section 7.2 (@ref{Derived
-expression types}) gives syntax definitions that will convert most of
-the constructs described in this section into the primitive constructs
-described in the previous section.
+(@ref{Macros}).  For reference purposes, section 7.3 (@ref{Definitions
+of derived expression types}) gives syntax definitions that will convert
+most of the constructs described in this section into the primitive
+constructs described in the previous section (@ref{Primitive expression
+types}).
 
 @node Derived Conditionals
 @subsection Conditionals
@@ -633,7 +644,7 @@ one or more expressions as described in section 4.1.4
 
 @i{Semantics:} The @nc{let*} binding construct is similar to @nc{let},
 but the bindings are performed sequentially from left to right, and the
-region of a binding indicated by @nt{(@sv{variable} @sv{init})} is that
+region of a binding indicated by @ns{(@sv{variable} @sv{init})} is that
 part of the @nc{let*} expression to the right of the binding.  Thus the
 second binding is done in an environment in which the first binding is
 visible, and so on.  The @angle{variable}s need not be distinct.
@@ -906,8 +917,8 @@ The region of the binding of a @angle{variable} consists of the entire
 variables.
 
 A @angle{step} can be omitted, in which case the effect is the same as
-if @nt{(@sv{variable} @sv{init} @sv{variable})} had been written instead
-of @nt{(@sv{variable} @sv{init})}.
+if @ns{(@sv{variable} @sv{init} @sv{variable})} had been written instead
+of @ns{(@sv{variable} @sv{init})}.
 
 @lisp
 (do ((vec (make-vector 5))
@@ -958,25 +969,27 @@ variables and whose body is @angle{body}.  Thus the execution of
 
 @i{Semantics:} The @nc{delay} construct is used together with the
 procedure @nc{force} to implement lazy evaluation or call by need.
-@nt{(delay @sv{expression})} returns an object called a @define{promise}
-which at some point in the future can be asked (by the @nc{force}
+@ns{(delay @sv{expression})} returns an object called a @define{promise}
+which at some point in the future can be asked (by the @code{force}
 procedure) to evaluate @angle{expression}, and deliver the resulting
 value.  The effect of @angle{expression} returning multiple values is
 unspecified.
 @end deftypefn
 
+@c @pindex (scheme lazy) @sortas{scheme lazy} @subentry delay-force
 @deftypefn {lazy library syntax} @/ delay-force @sv{expression}
 
-@i{Semantics:} The expression @nt{(delay-force @r{@var{expression}})} is
-conceptually similar to @nt{(delay (force @r{@var{expression}}))}, with
-the difference that forcing the result of @nc{delay-force} will in
-effect result in a tail call to @nt{(force @r{@var{expression}})}, while
-forcing the result of @nt{(delay (force @r{@var{expression}}))} might
-not.  Thus iterative lazy algorithms that might result in a long series
-of chains of @nc{delay} and @nc{force} can be rewritten using
-@nc{delay-force} to prevent consuming unbounded space during evaluation.
+@i{Semantics:} The expression @nt{(delay-force @rv{expression})} is
+conceptually similar to @nt{(delay (force @rv{expression}))}, with the
+difference that forcing the result of @nc{delay-force} will in effect
+result in a tail call to @nt{(force @rv{expression})}, while forcing the
+result of @nt{(delay (force @rv{expression}))} might not.  Thus
+iterative lazy algorithms that might result in a long series of chains
+of @code{delay} and @code{force} can be rewritten using @nc{delay-force}
+to prevent consuming unbounded space during evaluation.
 @end deftypefn
 
+@c @pindex (scheme lazy) @sortas{scheme lazy} @subentry force
 @deffn {lazy library procedure} force promise
 
 The @nc{force} procedure forces the value of a @i{promise} created by
@@ -1015,8 +1028,8 @@ returned unchanged.
 The following example is a mechanical transformation of a lazy
 stream-filtering algorithm into Scheme.  Each call to a constructor is
 wrapped in @nc{delay}, and each argument passed to a deconstructor is
-wrapped in @nc{force}.  The use of @nt{(delay-force @value{defdots})}@:
-instead of @nt{(delay (force @value{defdots}))} around the body of the
+wrapped in @nc{force}.  The use of @ns{(delay-force @value{defdots})}@:
+instead of @ns{(delay (force @value{defdots}))} around the body of the
 procedure ensures that an ever-growing sequence of pending promises does
 not exhaust available storage, because @nc{force} will in effect force
 such sequences iteratively.
@@ -1036,7 +1049,7 @@ such sequences iteratively.
 @end lisp
 
 The following examples are not intended to illustrate good programming
-style, as @nc{delay}, @nc{force}, and @nc{delay-force} are mainly
+style, as @code{delay}, @code{force}, and @nc{delay-force} are mainly
 intended for programs written in the functional style.  However, they do
 illustrate the property that only one value is computed for a promise,
 no matter how many times it is forced.
@@ -1056,7 +1069,7 @@ p                  @lispnote{a promise, still}
        (force p))  @ok{6}
 @end lisp
 
-Various extensions to this semantics of @nc{delay}, @nc{force}, and
+Various extensions to this semantics of @code{delay}, @code{force}, and
 @nc{delay-force} are supported in some implementations:
 
 @itemize @bullet
@@ -1106,9 +1119,9 @@ disjoint from other Scheme types such as procedures.
 @deffn {lazy library procedure} make-promise obj
 
 The @nc{make-promise} procedure returns a promise which, when forced,
-will return @var{obj}.  It is similar to @nc{delay}, but does not delay
-its argument: it is a procedure rather than syntax.  If @var{obj} is
-already a promise, it is returned.
+will return @var{obj}.  It is similar to @code{delay}, but does not
+delay its argument: it is a procedure rather than syntax.  If @var{obj}
+is already a promise, it is returned.
 @end deffn
 
 @node Dynamic bindings
@@ -1131,10 +1144,9 @@ environment}.
 Returns a newly allocated parameter object, which is a procedure that
 accepts zero arguments and returns the value associated with the
 parameter object.  Initially, this value is the value of
-@nt{(@r{@var{converter}} @r{@var{init}})}, or @var{init} if the
-conversion procedure @var{converter} is not specified.  The associated
-value can be temporarily changed using @nc{parameterize}, which is
-described below.
+@nc{(@rv{converter} @rv{init})}, or @var{init} if the conversion
+procedure @var{converter} is not specified.  The associated value can be
+temporarily changed using @nc{parameterize}, which is described below.
 
 The effect of passing arguments to a parameter object is
 implementation-dependent.
@@ -1165,9 +1177,9 @@ returned as the results of the entire @nc{parameterize} expression.
 
 @quotation
 @i{Note:} If the conversion procedure is not idempotent, the results of
-@code{(@nobr{parameterize} ((x (x))) ...)}, which appears to bind the
-parameter @code{x} to its current value, might not be what the user
-expects.
+@samp{(@nobr{parameterize} ((x (x))) @value{defdots})}, which appears to
+bind the parameter @code{x} to its current value, might not be what the
+user expects.
 @end quotation
 
 If an implementation supports multiple threads of execution, then
@@ -1249,6 +1261,12 @@ that of the @nc{guard} expression.
 
 @node Quasiquotation
 @subsection Quasiquotation
+@vindex quasiquote
+@vindex `
+@vindex unquote
+@vindex @comma{}
+@vindex unquote-splicing
+@vindex @comma{}@atchar{}
 @defblock
 @deftypeline syntax @/ @syntax{quasiquote} @sv{qq template}
 @deftypeline syntax @/ @syntax{@U{0060}}@sv{datum}
@@ -1381,7 +1399,7 @@ template} otherwise than as described above.
 @subsection Case-lambda
 @deftypefn {case-lambda library syntax} @/ case-lambda @sv{clause} @value{defdots}
 
-@i{Syntax:} Each @angle{clause} is of the form @nt{(@sv{formals}
+@i{Syntax:} Each @angle{clause} is of the form @ns{(@sv{formals}
 @sv{body})}, where @angle{formals} and @angle{body} have the same syntax
 as in a @nc{lambda} expression.
 
@@ -1421,11 +1439,14 @@ Scheme programs can define and use new derived expression types, called
 (@sv{keyword} @sv{datum} @value{defdots})
 @end example
 
+@cindex syntactic keyword
 where @angle{keyword} is an identifier that uniquely determines the
 expression type.  This identifier is called the @define{syntactic
 keyword}, or simply @define{keyword}, of the macro.  The number of the
 @angle{datum}s, and their syntax, depends on the expression type.
 
+@cindex macro transformer
+@cindex transformer
 Each instance of a macro is called a @define{use} of the macro.  The set
 of rules that specifies how a use of a macro is transcribed into a more
 primitive expression is called the @define{transformer} of the macro.
@@ -1461,6 +1482,8 @@ was specified, regardless of any local bindings that surround the use of
 the macro.
 @end itemize
 
+@cindex hygienic macro
+@cindex referentially transparent macro
 In consequence, all macros defined using the pattern language are
 @quotedbl{hygienic} and @quotedbl{referentially transparent} and thus
 preserve Scheme's lexical
@@ -1605,7 +1628,7 @@ the following
 where an @angle{element} is a @angle{template} optionally followed by an
 @angle{ellipsis}.  An @angle{ellipsis} is the identifier specified in
 the second form of @nc{syntax-rules}, or the default identifier
-@nc{...}@: (three consecutive periods) otherwise.
+@ns{...}@: (three consecutive periods) otherwise.
 
 @i{Semantics:} An instance of @nc{syntax-rules} produces a new macro
 transformer by specifying a sequence of hygienic rewrite rules.  A use
@@ -1616,7 +1639,7 @@ When a match is found, the macro use is transcribed hygienically
 according to the template.
 
 An identifier appearing within a @angle{pattern} can be an underscore
-(@nc{_}), a literal identifier listed in the list of @angle{pattern
+(@samp{_}), a literal identifier listed in the list of @angle{pattern
 literal}s, or the @angle{ellipsis}.  All other identifiers appearing
 within a @angle{pattern} are @define{pattern variables}.
 
@@ -1634,7 +1657,7 @@ underscore appears in the @angle{pattern literal}s list, then that takes
 precedence and underscores in the @angle{pattern} match as literals.
 Multiple underscores can appear in a @angle{pattern}.
 
-Identifiers that appear in @nt{(@sv{pattern literal} @value{defdots})}
+Identifiers that appear in @ns{(@sv{pattern literal} @value{defdots})}
 are interpreted as literal identifiers to be matched against
 corresponding elements of the input.  An element in the input matches a
 literal identifier if and only if it is an identifier and either both
@@ -1651,7 +1674,7 @@ and only if:
 
 @itemize @bullet
 @item
-@var{P} is an underscore (@code{_}).
+@var{P} is an underscore (@samp{_}).
 
 @item
 @var{P} is a non-literal identifier; or
@@ -1661,19 +1684,19 @@ and only if:
 same binding; or
 
 @item
-@var{P} is a list @nt{(@r{@varI{P}} @value{defdots} @r{@varn{P}})} and
+@var{P} is a list @ns{(@r{@varI{P}} @value{defdots} @r{@varn{P}})} and
 @var{E} is a list of @iifinfo{n} elements that match @varI{P} through
 @varn{P}, respectively; or
 
 @item
-@var{P} is an improper list @nt{(@r{@varI{P}} @r{@varII{P}}
+@var{P} is an improper list @ns{(@r{@varI{P}} @r{@varII{P}}
 @value{defdots} @r{@varn{P}} . @r{@varnplusone{P}})} and @var{E} is a
 list or improper list of @var{n} or more elements that match @varI{P}
 through @varn{P}, respectively, and whose @iifinfo{n}th tail matches
 @varnplusone{P}; or
 
 @item
-@var{P} is of the form @nt{(@r{@varI{P}} @value{defdots} @r{@vark{P}}
+@var{P} is of the form @ns{(@r{@varI{P}} @value{defdots} @r{@vark{P}}
 @r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}} @value{defdots}
 @r{@varn{P}})} where @var{E} is a proper list of @iifinfo{n} elements,
 the first @iifinfo{k} of which match @varI{P} through @vark{P},
@@ -1682,22 +1705,22 @@ match @vare{P}, whose remaining @nobr{@iifinfo{n} @minus{} @iifinfo{m}}
 elements match @varmplusone{P} through @varn{P}; or
 
 @item
-@var{P} is of the form @nt{(@r{@varI{P}} @value{defdots} @r{@vark{P}}
+@var{P} is of the form @ns{(@r{@varI{P}} @value{defdots} @r{@vark{P}}
 @r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}} @value{defdots}
 @r{@varn{P}} . @r{@varx{P}})} where @var{E} is a list or improper list
 of @iifinfo{n} elements, the first @iifinfo{k} of which match @varI{P}
 through @vark{P}, whose next @nobr{@iifinfo{m} @minus{} @iifinfo{k}}
 elements each match @vare{P}, whose remaining @iifinfo{n} @minus{}
 @iifinfo{m} elements match @varmplusone{P} through @varn{P}, and whose
-@iifinfo{n}th and final @nt{cdr} matches @varx{P}; or
+@iifinfo{n}th and final cdr matches @varx{P}; or
 
 @item
-@var{P} is a vector of the form @nt{@hashchar{}(@r{@varI{P}}
+@var{P} is a vector of the form @ns{@hashchar{}(@r{@varI{P}}
 @value{defdots} @r{@varn{P}})} and @var{E} is a vector of @iifinfo{n}
 elements that match @varI{P} through @varn{P}; or
 
 @item
-@var{P} is of the form @nt{@hashchar{}(@r{@varI{P}} @value{defdots}
+@var{P} is of the form @ns{@hashchar{}(@r{@varI{P}} @value{defdots}
 @r{@vark{P}} @r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}}
 @value{defdots} @r{@varn{P}})} where @var{E} is a vector of @iifinfo{n}
 elements the first @iifinfo{k} of which match @varI{P} through @vark{P},
@@ -1731,11 +1754,11 @@ instance of @nc{syntax-rules} appears.  If a literal identifier is
 inserted as a bound identifier then it is in effect renamed to prevent
 inadvertent captures of free identifiers.
 
-A template of the form @nt{(@sv{ellipsis} @sv{template})} is identical
+A template of the form @ns{(@sv{ellipsis} @sv{template})} is identical
 to @angle{template}, except that ellipses within the template have no
 special meaning.  That is, any ellipses contained within
 @angle{template} are treated as ordinary identifiers.  In particular,
-the template @nt{(@sv{ellipsis} @sv{ellipsis})} produces a single
+the template @ns{(@sv{ellipsis} @sv{ellipsis})} produces a single
 @angle{ellipsis}.  This allows syntactic abstractions to expand into
 code containing ellipses.
 
@@ -1752,18 +1775,18 @@ code containing ellipses.
 (sequence 1 2 3 4)              @ok{4}
 @end lisp
 
-As an example, if @nc{let} and @nc{cond} are defined as in section 7.3
-(@ref{Derived expression types}), then they are hygienic (as required)
-and the following is not an error.
+As an example, if @code{let} and @code{cond} are defined as in section
+7.3 (@ref{Derived expression types}), then they are hygienic (as
+required) and the following is not an error.
 
 @lisp
 (let ((=> #f))
   (cond (#t @noadorn{=>} 'ok))            @ok{ok}
 @end lisp
 
-The macro transformer for @nc{cond} recognizes @nc{=>} as a local
+The macro transformer for @code{cond} recognizes @samp{=>} as a local
 variable, and hence an expression, and not as the base identifier
-@nc{=>}, which the macro transformer treats as a syntactic keyword.
+@code{=>}, which the macro transformer treats as a syntactic keyword.
 Thus the example expands into
 
 @lisp

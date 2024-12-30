@@ -187,8 +187,27 @@ follows:
 @end lisp
 @end deffn
 
-@c This formatting isn't great.
 @ifhtml
+@vindex cadar
+@vindex caddr
+@vindex cdaar
+@vindex cdadr
+@vindex cddar
+@vindex cdddr
+@vindex caaaar
+@vindex caaadr
+@vindex caadar
+@vindex caaddr
+@vindex cadaar
+@vindex cadadr
+@vindex caddar
+@vindex cadddr
+@vindex cdaaar
+@vindex cdaadr
+@vindex cdadar
+@vindex cdaddr
+@vindex cddaar
+@vindex cddadr
 @deffn {cxr library procedure} caaar @var{pair}
 @deffnx {cxr library procedure} caadr @var{pair}
 @deffnx {cxr library procedure} cdddar @var{pair}
@@ -198,38 +217,38 @@ These twenty-four procedures are further compositions of @code{car} and
 @code{cdr} on the same principles.  For example, @code{caddr} could be
 defined by
 
-@lisp
-(define caddr (lambda (x) (car (cdr (cdr x)))))
-@end lisp
+@example grammar
+(define @deflikebind{caddr} (lambda (@letlikebind{x}) (car (cdr (cdr x)))))@r{.}
+@end example
 
 Arbitrary compositions up to four deep are provided.
 @end deffn
 @end ifhtml
 @ifnothtml
-@deffn scheme/cxr caaar pair
-@deffnx scheme/cxr caadr pair
-@deffnx scheme/cxr cadar pair
-@deffnx scheme/cxr caddr pair
-@deffnx scheme/cxr cdaar pair
-@deffnx scheme/cxr cdadr pair
-@deffnx scheme/cxr cddar pair
-@deffnx scheme/cxr cdddr pair
-@deffnx scheme/cxr caaaar pair
-@deffnx scheme/cxr caaadr pair
-@deffnx scheme/cxr caadar pair
-@deffnx scheme/cxr caaddr pair
-@deffnx scheme/cxr cadaar pair
-@deffnx scheme/cxr cadadr pair
-@deffnx scheme/cxr caddar pair
-@deffnx scheme/cxr cadddr pair
-@deffnx scheme/cxr cdaaar pair
-@deffnx scheme/cxr cdaadr pair
-@deffnx scheme/cxr cdadar pair
-@deffnx scheme/cxr cdaddr pair
-@deffnx scheme/cxr cddaar pair
-@deffnx scheme/cxr cddadr pair
-@deffnx scheme/cxr cdddar pair
-@deffnx scheme/cxr cddddr pair
+@deffn scheme/cxr caaar @var{pair}
+@deffnx scheme/cxr caadr @var{pair}
+@deffnx scheme/cxr cadar @var{pair}
+@deffnx scheme/cxr caddr @var{pair}
+@deffnx scheme/cxr cdaar @var{pair}
+@deffnx scheme/cxr cdadr @var{pair}
+@deffnx scheme/cxr cddar @var{pair}
+@deffnx scheme/cxr cdddr @var{pair}
+@deffnx scheme/cxr caaaar @var{pair}
+@deffnx scheme/cxr caaadr @var{pair}
+@deffnx scheme/cxr caadar @var{pair}
+@deffnx scheme/cxr caaddr @var{pair}
+@deffnx scheme/cxr cadaar @var{pair}
+@deffnx scheme/cxr cadadr @var{pair}
+@deffnx scheme/cxr caddar @var{pair}
+@deffnx scheme/cxr cadddr @var{pair}
+@deffnx scheme/cxr cdaaar @var{pair}
+@deffnx scheme/cxr cdaadr @var{pair}
+@deffnx scheme/cxr cdadar @var{pair}
+@deffnx scheme/cxr cdaddr @var{pair}
+@deffnx scheme/cxr cddaar @var{pair}
+@deffnx scheme/cxr cddadr @var{pair}
+@deffnx scheme/cxr cdddar @var{pair}
+@deffnx scheme/cxr cddddr @var{pair}
 
 These twenty-four procedures are further compositions of @code{car} and
 @code{cdr} on the same principles.  For example, @code{caddr} could be
@@ -377,7 +396,7 @@ The @nc{list-set!} procedure stores @var{obj} in element @var{k} of
 @end lisp
 @end deffn
 
-@deffn  procedure memq obj list
+@deffn procedure memq obj list
 @deffnx procedure memv obj list
 @deffnx procedure member obj list
 @deffnx procedure member obj list compare
@@ -406,21 +425,23 @@ if given, and @code{equal?} otherwise.
 @end lisp
 @end deffn
 
-@deffn  procedure assq obj alist
+@deffn procedure assq obj alist
 @deffnx procedure assv obj alist
 @deffnx procedure assoc obj alist
 @deffnx procedure assoc obj alist compare
 
-It is an error if @var{alist} (for @quotedbl{association list}) is not a
-list of pairs.
+@cindex association list
+@cindex alist @seeentry{association list}
+It is an error if @var{@abbr{alist,association list}} is not a list of
+pairs.
 
-These procedures find the first pair in @var{alist} whose car field is
-@var{obj}, and returns that pair.  If no pair in @var{alist} has
-@var{obj} as its car, then @code{#f} (not the empty list) is returned.
-The @code{assq} procedure uses @code{eq?} to compare @var{obj} with the
-car fields of the pairs in @var{alist}, while @code{assv} uses
-@code{eqv?} and @code{assoc} uses @var{compare} if given and
-@code{equal?} otherwise.
+These procedures find the first pair in @var{@abbr{alist}} whose car
+field is @var{obj}, and returns that pair.  If no pair in
+@var{@abbr{alist}} has @var{obj} as its car, then @code{#f} (not the
+empty list) is returned.  The @code{assq} procedure uses @code{eq?} to
+compare @var{obj} with the car fields of the pairs in
+@var{@abbr{alist}}, while @code{assv} uses @code{eqv?} and @code{assoc}
+uses @var{compare} if given and @code{equal?} otherwise.
 
 @lisp
 (define e '((a 1) (b 2) (c 3)))

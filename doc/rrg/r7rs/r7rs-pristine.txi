@@ -85,9 +85,9 @@
 @unnumbered Alphabetic Index of Definitions of Concepts@comma{} Keywords@comma{} and Procedures
 @printindex cp
 
-@node Index of Standard Libraries
-@unnumbered Index of Standard Libraries
-@printindex pg
+@c @node Index of Standard Libraries
+@c @unnumbered Index of Standard Libraries
+@c @printindex pg
 
 @ifnothtml
 @ifnotplaintext

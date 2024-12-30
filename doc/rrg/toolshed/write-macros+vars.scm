@@ -278,6 +278,8 @@
       (write-acronym-initial
        "MIT" "Massachusetts Institute of Technology")
       (write-acronym-initial
+       "POSIX" "Portable Operating System Interface")
+      (write-acronym-initial
        "RRRS" "@cite{Revised Revised Report on Scheme}")
       (write-SRFIinitial
        "45" "Primitives for Expressing Iterative Lazy Algorithms")

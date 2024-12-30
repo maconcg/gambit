@@ -18,7 +18,7 @@ given exact inputs.
 Exact complex numbers are provided.
 
 @item @t{ieee-float}
-Inexact numbers are @acronym{IEEE} 754 binary floating point values.
+Inexact numbers are @acronym{IEEE 754} binary floating point values.
 
 @item @t{full-unicode}
 All Unicode characters present in Unicode version 6.0 are supported as
@@ -29,8 +29,7 @@ Scheme characters.
 is nonzero.
 
 @item @t{posix}
-This implementation is running on a @acronym{POSIX,Portable Operating
-System Interface} system.
+This implementation is running on a @value{POSIXinitial} system.
 
 @item @t{windows}
 This implementation is running on Windows.

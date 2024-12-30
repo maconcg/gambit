@@ -289,7 +289,6 @@ for lazy evaluation.
 @end indentedblock
 
 @node Load Library
-@pindex (scheme load) @sortas{scheme load}
 @appendixsec Load Library
 The @code{(scheme load)} library exports procedures for loading Scheme
 expressions from files.
@@ -380,7 +379,7 @@ either.
 @indentedblock
 @multitable @columnfractions .45 .55
 @item @t{*} @tab @t{+}
-@item @t{-} @tab @t{@dots{}}
+@item @t{-} @tab @t{...}
 @item @t{/} @tab @t{<}
 @item @t{<=} @tab @t{=}
 @item @t{=>} @tab @t{>}

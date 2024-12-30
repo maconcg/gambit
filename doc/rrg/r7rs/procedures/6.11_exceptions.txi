@@ -6,6 +6,7 @@ procedures.  For the concept of Scheme exceptions, @pxref{Error
 situations and unspecified behavior}.  @xref{Exception handling} for the
 @code{guard} syntax.
 
+@cindex exception handlers
 @define{Exception handlers} are one-argument procedures that determine
 the action the program takes when an exceptional situation is signaled.
 The system implicitly maintains a current exception handler in the
@@ -89,6 +90,7 @@ the same dynamic environment as the handler.  The relationship between
 unspecified.
 @end deffn
 
+@cindex continuable exception
 @deffn procedure raise-continuable obj
 
 Raises an exception by invoking the current exception handler on

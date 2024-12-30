@@ -1,6 +1,6 @@
 @node Booleans
-@cindex true value
-@cindex false value
+@cindex @quotedbl{a true value} @sortas{true value}
+@cindex @quotedbl{a false value} @sortas{true value}
 @section Booleans
 The standard boolean objects for true and false are written as @samp{#t}
 and @samp{#f}.  Alternatively, they can be written @samp{#true} and
@@ -17,7 +17,7 @@ Of all the Scheme values, only @code{#f} counts as false in conditional
 expressions.  All other Scheme values, including @code{#t}, count as
 true.
 
-@cindex empty list
+@cindex the empty list @sortas{empty list}
 @quotation
 @i{Note:} Unlike some other dialects of Lisp, Scheme distinguishes
 @code{#f} and the empty list empty list from each other and from the

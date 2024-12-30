@@ -12,41 +12,41 @@ complete.
 @item
 Case sensitivity is now the default in symbols and character names.
 This means that code written under the assumption that symbols could be
-written @nc{FOO} or @nc{Foo} in some contexts and @nc{foo} in other
-contexts can either be changed, be marked with the new
+written @samp{FOO} or @samp{Foo} in some contexts and @samp{foo} in
+other contexts can either be changed, be marked with the new
 @nc{@hashchar{}!fold-case} directive, or be included in a library using
 the @nc{include-ci} library declaration.  All standard identifiers are
 entirely in lower case.
 
 @item
-The @nc{syntax-rules} construct now recognizes @code{_} (underscore)
-as a wildcard, which means it cannot be used as a syntax variable.  It
-can still be used as a literal.
+The @nc{syntax-rules} construct now recognizes @samp{_} (underscore) as
+a wildcard, which means it cannot be used as a syntax variable.  It can
+still be used as a literal.
 
 @item
 The @value{R5RS} procedures @nc{exact->inexact} and @nc{inexact->exact}
-have been renamed to their @value{R6RS} names, @nc{inexact} and
-@nc{exact}, respectively, as these names are shorter and more correct.
+have been renamed to their @value{R6RS} names, @code{inexact} and
+@code{exact}, respectively, as these names are shorter and more correct.
 The former names are still available in the @value{R5RS} library.
 
 @item
-The guarantee that string comparison (with @nc{string<?} and the related
-predicates) is a lexicographical extension of character comparison (with
-@nc{char<?} and the related predicates) has been removed.
+The guarantee that string comparison (with @code{string<?} and the
+related predicates) is a lexicographical extension of character
+comparison (with @code{char<?} and the related predicates) has been
+removed.
 
 @item
-Support for the @hashchar{} character in numeric literals is no longer
-required.
+Support for the @samp{@hashchar{}} character in numeric literals is no
+longer required.
 
 @item
-Support for the letters @code{s}, @code{f}, @code{d}, and @code{l} as
+Support for the letters @samp{s}, @samp{f}, @samp{d}, and @samp{l} as
 exponent markers is no longer required.
 
 @item
 Implementations of @nc{string->number} are no longer permitted to return
-@nc{@hashchar{}f} when the argument contains an explicit radix prefix,
-and must be compatible with @nc{read} and the syntax of numbers in
-programs.
+@code{#f} when the argument contains an explicit radix prefix, and must
+be compatible with @code{read} and the syntax of numbers in programs.
 
 @item
 The procedures @nc{transcript-on} and @nc{transcript-off} have been
@@ -77,18 +77,18 @@ conditional on the features of the implementation on which it is to be
 used.  There is an @value{R5RS} compatibility library.
 
 @item
-The expressions types @nc{include}, @nc{include-ci}, and
+The expressions types @code{include}, @nc{include-ci}, and
 @nc{cond-expand} have been added to the base library; they have the same
 semantics as the corresponding library declarations.
 
 @item
-Exceptions can now be signaled explicitly with @nc{raise},
-@nc{raise-continuable} or @nc{error}, and can be handled with
-@nc{with-exception-handler} and the @nc{guard} syntax.  Any object can
+Exceptions can now be signaled explicitly with @code{raise},
+@nc{raise-continuable} or @code{error}, and can be handled with
+@nc{with-exception-handler} and the @code{guard} syntax.  Any object can
 specify an error condition; the implementation-defined conditions
-signaled by @nc{error} have a predicate to detect them and accessor
-functions to retrieve the arguments passed to @nc{error}.  Conditions
-signaled by @nc{read} and by file-related procedures also have
+signaled by @code{error} have a predicate to detect them and accessor
+functions to retrieve the arguments passed to @code{error}.  Conditions
+signaled by @code{read} and by file-related procedures also have
 predicates to detect them.
 
 @item
@@ -98,7 +98,7 @@ with the @nc{define-record-type} of @acronym{SRFI
 
 @item
 Parameter objects can be created with @nc{make-parameter}, and
-dynamically rebound with @nc{parameterize}.  The procedures
+dynamically rebound with @code{parameterize}.  The procedures
 @nc{current-input-port} and @nc{current-output-port} are now parameter
 objects, as is the newly introduced @nc{current-error-port}.
 
@@ -141,10 +141,10 @@ There are now @acronym{I/O} procedures specific to strings and
 bytevectors.
 
 @item
-The @nc{write} procedure now generates datum labels when applied to
+The @code{write} procedure now generates datum labels when applied to
 circular objects.  The new procedure @nc{write-simple} never generates
 labels; @nc{write-shared} generates labels for all shared and circular
-structure.  The @nc{display} procedure must not loop on circular
+structure.  The @code{display} procedure must not loop on circular
 objects.
 
 @item
@@ -156,7 +156,7 @@ Syntax definitions are now allowed wherever variable definitions are.
 
 @item
 The @nc{syntax-rules} construct now allows the ellipsis symbol to be
-specified explicitly instead of the default @nc{...}, allows template
+specified explicitly instead of the default @samp{...}, allows template
 escapes with an ellipsis-prefixed list, and allows tail patterns to
 follow an ellipsis pattern.
 
@@ -165,8 +165,8 @@ The @nc{syntax-error} syntax has been added as a way to signal immediate
 and more informative errors when a macro is expanded.
 
 @item
-The @nc{letrec*} binding construct has been added, and internal
-@nc{define} is specified in terms of it.
+The @code{letrec*} binding construct has been added, and internal
+@code{define} is specified in terms of it.
 
 @item
 Support for capturing multiple values has been enhanced with
@@ -176,8 +176,8 @@ passing zero or more than one value to the continuations of all
 non-final expressions of the sequence.
 
 @item
-The @nc{case} conditional now supports @nc{=>} syntax analogous to
-@nc{cond} not only in regular clauses but in the @nc{else} clause as
+The @code{case} conditional now supports @code{=>} syntax analogous to
+@code{cond} not only in regular clauses but in the @code{else} clause as
 well.
 
 @item
@@ -185,43 +185,43 @@ To support dispatching on the number of arguments passed to a procedure,
 @nc{case-lambda} has been added in its own library.
 
 @item
-The convenience conditionals @nc{when} and @nc{unless} have been added.
+The convenience conditionals @code{when} and @code{unless} have been added.
 
 @item
-The behavior of @nc{eqv?} on inexact numbers now conforms to the
+The behavior of @code{eqv?} on inexact numbers now conforms to the
 @value{R6RS} definition.
 
 @item
-When applied to procedures, @nc{eq?} and @nc{eqv?} are permitted to
+When applied to procedures, @code{eq?} and @code{eqv?} are permitted to
 return different answers.
 
 @item
-The @value{R6RS} procedures @nc{boolean=?} and @nc{symbol=?} have been
-added.
+The @value{R6RS} procedures @code{boolean=?} and @code{symbol=?} have
+been added.
 
 @item
 Positive infinity, negative infinity, NaN, and negative inexact zero
 have been added to the numeric tower as inexact values with the written
-representations @nc{+inf.0}, @nc{-inf.0}, @nc{+nan.0}, and @nc{-0.0}
+representations @ns{+inf.0}, @ns{-inf.0}, @ns{+nan.0}, and @ns{-0.0}
 respectively.  Support for them is not required.  The representation
-@nc{-nan.0} is synonymous with @nc{+nan.0}.
+@ns{-nan.0} is synonymous with @ns{+nan.0}.
 
 @item
-The @nc{log} procedure now accepts a second argument specifying the
+The @code{log} procedure now accepts a second argument specifying the
 logarithm base.
 
 @item
-The procedures @nc{map} and @nc{for-each} are now required to terminate
+The procedures @code{map} and @nc{for-each} are now required to terminate
 on the shortest argument list.
 
 @item
-The procedures @nc{member} and @nc{assoc} now take an optional third
+The procedures @code{member} and @code{assoc} now take an optional third
 argument specifying the equality predicate to be used.
 
 @item
-The numeric procedures @nc{finite?}, @nc{infinite?}, @nc{nan?},
-@nc{exact-integer?}, @nc{square}, and @nc{exact-integer-sqrt} have been
-added.
+The numeric procedures @code{finite?}, @code{infinite?}, @code{nan?},
+@nc{exact-integer?}, @code{square}, and @nc{exact-integer-sqrt} have
+been added.
 
 @item
 The @code{-} and @code{/} procedures and the character and string
@@ -229,8 +229,8 @@ comparison predicates are now required to support more than two
 arguments.
 
 @item
-The forms @nc{#true} and @nc{#false} are now supported as well as
-@nc{#t} and @nc{#f}.
+The forms @samp{#true} and @samp{#false} are now supported as well as
+@samp{#t} and @samp{#f}.
 
 @item
 The procedures @nc{make-list}, @nc{list-copy}, @nc{list-set!},
@@ -257,13 +257,13 @@ Unicode scalar values.  The new @nc{digit-value} procedure has been
 added to obtain the numerical value of a numeric character.
 
 @item
-There are now two additional comment syntaxes: @nc{@hashchar{};} to skip
-the next datum, and @nc{@hashchar{}| @value{defdots} |@hashchar{}} for
-nestable block comments.
+There are now two additional comment syntaxes: @samp{@hashchar{};} to
+skip the next datum, and @ns{@hashchar{}| @value{defdots} |@hashchar{}}
+for nestable block comments.
 
 @item
-Data prefixed with datum labels @nc{@hashchar{}@sv{n}=} can be
-referenced with @nc{@hashchar{}@sv{n}@hashchar{}}, allowing for reading
+Data prefixed with datum labels @ns{@hashchar{}@sv{n}=} can be
+referenced with @ns{@hashchar{}@sv{n}@hashchar{}}, allowing for reading
 and writing of data with shared structure.
 
 @item
@@ -287,7 +287,7 @@ A less irregular set of integer division operators is provided with new
 and clearer names.
 
 @item
-The @nc{load} procedure now accepts a second argument specifying the
+The @code{load} procedure now accepts a second argument specifying the
 environment to load into.
 
 @item
@@ -336,6 +336,7 @@ optional in @value{R5RS}, either expressly or by implication, have been
 removed from the base library.  Only the base library itself is an
 absolute requirement.
 
+@cindex identifier syntax
 @item
 No form of identifier syntax is provided.
 
@@ -362,8 +363,9 @@ support for @acronym{IEEE} infinities, NaN, and @minus{}0.0 was adopted
 from @value{R6RS}.  Most clarifications on numeric results were also
 adopted, but the @value{R6RS} procedures @nc{real-valued?},
 @nc{rational-valued?}, and @nc{integer-valued}? were not.  The
-@value{R6RS} division operators @nc{div}, @nc{mod}, @nc{div-and-mod},
-@nc{div0}, @nc{mod0} and @nc{div0-and-mod0} are not provided.
+@value{R6RS} division operators @code{div}, @code{mod},
+@nc{div-and-mod}, @code{div0}, @code{mod0} and @nc{div0-and-mod0} are
+not provided.
 
 @item
 When a result is unspecified, it is still required to be a single value.
@@ -371,17 +373,18 @@ However, non-final expressions in a body can return any number of
 values.
 
 @item
-The semantics of @nc{map} and @nc{for-each} have been changed to use the
-@acronym{SRFI 1}@footnote{@value{refSRFI1}} early termination behavior.
-Likewise, @nc{assoc} and @nc{member} take an optional @nc{equal?}
-argument as in @acronym{SRFI 1}, instead of the separate @nc{assp} and
-@nc{memp} procedures of @value{R6RS}.
+The semantics of @code{map} and @nc{for-each} have been changed to use
+the @acronym{SRFI 1}@footnote{@value{refSRFI1}} early termination
+behavior.  Likewise, @code{assoc} and @code{member} take an optional
+@code{equal?}  argument as in @acronym{SRFI 1}, instead of the separate
+@code{assp} and @code{memp} procedures of @value{R6RS}.
 
 @item
-The @value{R6RS} @nc{quasiquote} clarifications have been adopted, with
-the exception of multiple-argument @nc{unquote} and
+The @value{R6RS} @code{quasiquote} clarifications have been adopted,
+with the exception of multiple-argument @code{unquote} and
 @nc{unquote-splicing}.
 
+@cindex mantissa widths
 @item
 The @value{R6RS} method of specifying mantissa widths was not adopted.
 
@@ -391,13 +394,13 @@ String ports are compatible with @acronym{SRFI
 
 @item
 @value{R6RS}-style bytevectors are included, but only the unsigned byte
-(@nc{u8}) procedures have been provided.  The lexical syntax uses
-@nc{#u8} for compatibility with @acronym{SRFI
+(@samp{u8}) procedures have been provided.  The lexical syntax uses
+@samp{#u8} for compatibility with @acronym{SRFI
 4}@footnote{@value{refSRFI4}}, rather than the @value{R6RS}
-@nc{@hashchar{}vu8} style.
+@samp{@hashchar{}vu8} style.
 
 @item
-The utility macros @nc{when} and @nc{unless} are provided, but their
+The utility macros @code{when} and @code{unless} are provided, but their
 result is left unspecified.
 
 @item

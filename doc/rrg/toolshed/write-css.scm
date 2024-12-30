@@ -266,7 +266,7 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
  dl.first-deftypevr, dl.first-defblock {
     line-height: 1.3;
     sub, sup {
-       font-size: 0.7rem;
+       font-size: 0.7em;
     }
     dt {
         font-size: 1.06rem;
@@ -420,7 +420,7 @@ div.top-level-extent, div.chapter-level-extent, div.appendix-level-extent,
                 font-size: 1.12rem;
             }
             sub, sup {
-                font-size: 0.7rem;
+                font-size: 0.7em;
             }
         }
     }
@@ -439,7 +439,7 @@ div.chapter-level-extent, div.unnumbered-level-extent,
             font-size: 1.12rem;
         }
         sub, sup {
-            font-size: 0.7rem;
+            font-size: 0.7em;
         }
     }
 }

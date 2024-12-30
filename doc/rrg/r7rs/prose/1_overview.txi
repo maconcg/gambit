@@ -89,7 +89,6 @@ easily be treated uniformly by other Scheme programs.  For example, the
 
 @cindex lexical decomposition
 @cindex syntactic decomposition
-@cindex parse as data
 @cindex parsing as data
 The @code{read} procedure performs syntactic as well as lexical
 decomposition of the data it reads.  The @code{read} procedure parses
@@ -199,17 +198,17 @@ the expression must evaluate to some object without signaling an error,
 but the value depends on the implementation; this report explicitly does
 not say what value is returned.
 
-@cindex RFC 2199
-@cindex @quotedbl{must} @sortas{must} @seeentry{RFC 2199}
-@cindex @quotedbl{must not} @sortas{must not} @seeentry{RFC 2199}
-@cindex @quotedbl{shall} @sortas{shall} @seeentry{RFC 2199}
-@cindex @quotedbl{shall not} @sortas{shall not} @seeentry{RFC 2199}
-@cindex @quotedbl{should} @sortas{should} @seeentry{RFC 2199}
-@cindex @quotedbl{should not} @sortas{should not} @seeentry{RFC 2199}
-@cindex @quotedbl{may} @sortas{may} @seeentry{RFC 2199}
-@cindex @quotedbl{required} @sortas{required} @seeentry{RFC 2199}
-@cindex @quotedbl{recommended} @sortas{recommended} @seeentry{RFC 2199}
-@cindex @quotedbl{optional} @sortas{optional} @seeentry{RFC 2199}
+@cindex @acronym{RFC} 2199
+@cindex @quotedbl{must} @seeentry{RFC 2199} @sortas{must}
+@cindex @quotedbl{must not} @seeentry{RFC 2199} @sortas{must not}
+@cindex @quotedbl{shall} @seeentry{RFC 2199} @sortas{shall}
+@cindex @quotedbl{shall not} @seeentry{RFC 2199} @sortas{shall not}
+@cindex @quotedbl{should} @seeentry{RFC 2199} @sortas{should}
+@cindex @quotedbl{should not} @seeentry{RFC 2199} @sortas{should not}
+@cindex @quotedbl{may} @seeentry{RFC 2199} @sortas{may}
+@cindex @quotedbl{required} @seeentry{RFC 2199} @sortas{required}
+@cindex @quotedbl{recommended} @seeentry{RFC 2199} @sortas{recommended}
+@cindex @quotedbl{optional} @seeentry{RFC 2199} @sortas{optional}
 Finally, the words and phrases @quotedbl{must}, @quotedbl{must not},
 @quotedbl{shall}, @quotedbl{shall not}, @quotedbl{should},
 @quotedbl{should not}, @quotedbl{may}, @quotedbl{required},
@@ -240,15 +239,16 @@ for identifiers in the base library, or
 where @var{name} is the short name of a library as defined in Appendix A
 (@ref{Standard Libraries}).
 
-@cindex Syntactic variables
+@cindex angle brackets
+@cindex syntactic variables
 If @var{category} is @quotedbl{syntax}, the the entry describes an
 expression type, and the template gives the syntax of the expression
-type.  Components of expressions are designated by syntactic variables,
-which are written using angle brackets, for example @angle{expression}
-and @angle{variable}.  Syntactic variables are intended to denote
-segments of program text; for example, @angle{expression} stands for any
-string of characters which is a syntactically valid expression.  The
-notation
+type.  Components of expressions are designated by @define{syntactic
+variables}, which are written using angle brackets, for example
+@angle{expression} and @angle{variable}.  Syntactic variables are
+intended to denote segments of program text; for example,
+@angle{expression} stands for any string of characters which is a
+syntactically valid expression.  The notation
 
 @display
 @angle{@parI{thing}} @value{defdots}
@@ -386,7 +386,7 @@ evaluates to an unspecified value.
 @end ifinfo
 @node Naming conventions
 @subsection Naming conventions
-@cindex ?
+@vindex ?
 @cindex predicates @subentry naming conventions
 By convention, @samp{?} is the final character of the names of
 procedures that always return a boolean value.  Such procedures are
@@ -394,14 +394,14 @@ called @define{predicates}.  Predicates are generally understood to be
 side-effect free, except that they may raise an exception when passed
 the wrong type of argument.
 
-@cindex !
+@vindex !
 @cindex mutation procedures @subentry naming conventions
 Similarly, @samp{!} is the final character of the names of procedures
 that store values into previously allocated locations (@pxref{Storage
 model}).  Such procedures are called @define{mutation procedures}.  The
 value returned by a mutation procedure is unspecified.
 
-@cindex ->
+@vindex ->
 @cindex coercion procedures
 @cindex coercion procedures @subentry naming conventions
 By convention, @samp{->} appears within the names of procedures that

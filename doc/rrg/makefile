@@ -399,9 +399,15 @@ r7rs/prose/a/7.1_formal-syntax.txi: r7rs/prose/7.1_formal-syntax.txi
 r7rs/prose/a/7.2_formal-semantics.txi: r7rs/prose/7.2_formal-semantics.txi
 	readonly txi=7.2_formal-semantics.txi && ${annotate-r7rs-prose-file}
 
-r7rs/prose/a/A_standard-libraries.txi: r7rs/prose/A_standard-libraries.txi
-	readonly txi=A_standard-libraries.txi &&\
-		${annotate-r7rs-prose-file}
+r7rs/prose/a/A_standard-libraries.txi: r7rs/prose/A_standard-libraries.txi \
+ toolshed/linkify-appendix-A.scm
+	readonly txi=A_standard-libraries.txi && readonly tmp=$$(mktemp) &&\
+		trap "rm $$tmp" ERR EXIT &&\
+		test -d r7rs/prose/a/ || mkdir -p r7rs/prose/a/;\
+		cd toolshed &&\
+		${GSI} -f annotate-txi.scm ../r7rs/prose/"$$txi" > $$tmp &&\
+		${GSI} -f linkify-appendix-A.scm $$tmp\
+			> ../r7rs/prose/a/"$$txi"
 
 r7rs/prose/a/B_feature-identifiers.txi: r7rs/prose/B_feature-identifiers.txi
 	readonly txi=B_feature-identifiers.txi &&\
