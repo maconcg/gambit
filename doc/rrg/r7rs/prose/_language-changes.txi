@@ -1,9 +1,7 @@
 @node Language changes
 @unnumbered Language changes
-
 @node Incompatibilities with R5RS
 @section Incompatibilities with @value{R5RS}
-
 This section enumerates the incompatibilities between this report and
 the @quotedbl{@value{Revised5} report}@footnote{@value{refR5RS}}.
 
@@ -11,56 +9,53 @@ This list is not authoritative, but is believed to be correct and
 complete.
 
 @itemize @bullet
-
 @item
 Case sensitivity is now the default in symbols and character names.
 This means that code written under the assumption that symbols could be
-written @code{FOO} or @code{Foo} in some contexts and @code{foo} in
-other contexts can either be changed, be marked with the new
-@code{#!fold-case} directive, or be included in a library using the
-@code{include-ci} library declaration.  All standard identifiers are
+written @nc{FOO} or @nc{Foo} in some contexts and @nc{foo} in other
+contexts can either be changed, be marked with the new
+@nc{@hashchar{}!fold-case} directive, or be included in a library using
+the @nc{include-ci} library declaration.  All standard identifiers are
 entirely in lower case.
 
 @item
-The @code{syntax-rules} construct now recognizes @code{_} (underscore)
+The @nc{syntax-rules} construct now recognizes @code{_} (underscore)
 as a wildcard, which means it cannot be used as a syntax variable.  It
 can still be used as a literal.
 
 @item
-The @value{R5RS} procedures @code{exact->inexact} and
-@code{inexact->exact} have been renamed to their @value{R6RS} names,
-@code{inexact} and @code{exact}, respectively, as these names are
-shorter and more correct.  The former names are still available in the
-@value{R5RS} library.
+The @value{R5RS} procedures @nc{exact->inexact} and @nc{inexact->exact}
+have been renamed to their @value{R6RS} names, @nc{inexact} and
+@nc{exact}, respectively, as these names are shorter and more correct.
+The former names are still available in the @value{R5RS} library.
 
 @item
-The guarantee that string comparison (with @code{string<?} and the
-related predicates) is a lexicographical extension of character
-comparison (with @code{char<?} and the related predicates) has been
-re@value{shy}moved.
+The guarantee that string comparison (with @nc{string<?} and the related
+predicates) is a lexicographical extension of character comparison (with
+@nc{char<?} and the related predicates) has been removed.
 
 @item
-Support for the # character in numeric literals is no longer required.
+Support for the @hashchar{} character in numeric literals is no longer
+required.
 
 @item
 Support for the letters @code{s}, @code{f}, @code{d}, and @code{l} as
 exponent markers is no longer required.
 
 @item
-Implementations of @code{string->number} are no longer permitted to
-return @code{#f} when the argument contains an explicit radix prefix,
-and must be compatible with @code{read} and the syntax of numbers in
+Implementations of @nc{string->number} are no longer permitted to return
+@nc{@hashchar{}f} when the argument contains an explicit radix prefix,
+and must be compatible with @nc{read} and the syntax of numbers in
 programs.
 
 @item
-The procedures @code{transcript-on} and @code{transcript-off} have been
+The procedures @nc{transcript-on} and @nc{transcript-off} have been
 removed.
 
 @end itemize
 
 @node Other language changes since R5RS
 @section Other language changes since @value{R5RS}
-
 This section enumerates the additional differences between this report
 and the @quotedbl{@value{Revised5} report}@footnote{@value{refR5RS}}.
 
@@ -76,67 +71,65 @@ cleaned up.
 Libraries have been added as a new program structure to improve
 encapsulation and sharing of code.  Some existing and new identifiers
 have been factored out into separate libraries.  Libraries can be
-imported into other libraries or main programs, with controlled
-exposure and renaming of identifiers.  The contents of a library can be
-made conditional on the features of the implementation on which it is
-to be used.  There is an @value{R5RS} compatibility library.
+imported into other libraries or main programs, with controlled exposure
+and renaming of identifiers.  The contents of a library can be made
+conditional on the features of the implementation on which it is to be
+used.  There is an @value{R5RS} compatibility library.
 
 @item
-The expressions types @code{include}, @code{include-ci}, and
-@code{cond-expand} have been added to the base library; they have the
-same semantics as the corresponding library declarations.
+The expressions types @nc{include}, @nc{include-ci}, and
+@nc{cond-expand} have been added to the base library; they have the same
+semantics as the corresponding library declarations.
 
 @item
-Exceptions can now be signaled explicitly with @code{raise},
-@code{raise-continuable} or @code{error}, and can be handled with
-@code{with-exception-handler} and the @code{guard} syntax.  Any object
-can specify an error condition; the implementation-defined conditions
-signaled by @code{error} have a predicate to detect them and accessor
-functions to retrieve the arguments passed to @code{error}.  Conditions
-signaled by @code{read} and by file-related procedures also have
+Exceptions can now be signaled explicitly with @nc{raise},
+@nc{raise-continuable} or @nc{error}, and can be handled with
+@nc{with-exception-handler} and the @nc{guard} syntax.  Any object can
+specify an error condition; the implementation-defined conditions
+signaled by @nc{error} have a predicate to detect them and accessor
+functions to retrieve the arguments passed to @nc{error}.  Conditions
+signaled by @nc{read} and by file-related procedures also have
 predicates to detect them.
 
 @item
 New disjoint types supporting access to multiple fields can be generated
-with the @code{define-record-type} of @acronym{SRFI}
-9@footnote{@value{refSRFI9}}.
+with the @nc{define-record-type} of @acronym{SRFI
+9}@footnote{@value{refSRFI9}}.
 
 @item
-Parameter objects can be created with @code{make-parameter}, and
-dy@value{shy}nam@value{shy}ically rebound with @code{parameterize}.  The
-procedures @code{current-input-port} and @code{current-output-port} are
-now parameter objects, as is the newly introduced
-@code{current-error-port}.
+Parameter objects can be created with @nc{make-parameter}, and
+dynamically rebound with @nc{parameterize}.  The procedures
+@nc{current-input-port} and @nc{current-output-port} are now parameter
+objects, as is the newly introduced @nc{current-error-port}.
 
 @item
-Support for promises has been enhanced based on @acronym{SRFI}
-45@footnote{@value{refSRFI45}}.
+Support for promises has been enhanced based on @acronym{SRFI
+45}@footnote{@value{refSRFI45}}.
 
 @item
 Bytevectors, vectors of exact integers in the range from 0 to 255
 inclusive, have been added as a new disjoint type.  A subset of the
 vector procedures is provided.  Bytevectors can be converted to and from
 strings in accordance with the @acronym{UTF-8} character encoding.
-Byte@value{shy}vectors have a datum representation and evaluate to
-themselves.
+Bytevectors have a datum representation and evaluate to themselves.
 
 @item
 Vector constants evaluate to themselves.
 
 @item
-The procedure @code{read-line} is provided to make line-oriented
-textual input simpler.
+The procedure @nc{read-line} is provided to make line-oriented textual
+input simpler.
 
 @item
-The procedure @code{flush-output-port} is provided to allow minimal
-con@value{shy}trol of output port buffering.
+The procedure @nc{flush-output-port} is provided to allow minimal
+control of output port buffering.
 
 @item
 Ports can now be designated as textual or binary ports, with new
 procedures for reading and writing binary data.  The new predicates
-@code{input-port-open?} and @code{output-port-open?} return whether a
-port is open or closed.  The new procedure @code{close-port} now closes
-a port; if the port has both input and output sides, both are closed.
+@nc{input-port-open?} and @nc{output-port-open?} return whether a port
+is open or closed.  The new procedure @nc{close-port} now closes a port;
+if the port has both input and output sides, both are closed.
 
 @item
 String ports have been added as a way to read and write characters to
@@ -144,93 +137,91 @@ and from strings, and bytevector ports to read and write bytes to and
 from bytevectors.
 
 @item
-There are now I/O procedures specific to strings and bytevectors.
+There are now @acronym{I/O} procedures specific to strings and
+bytevectors.
 
 @item
-The @code{write} procedure now generates datum labels when applied to
-circular objects.  The new procedure @code{write-simple} never generates
-labels; @code{write-shared} generates labels for all shared and circular
-struc@value{shy}ture.  The @code{display} procedure must not loop on
-circular objects.
+The @nc{write} procedure now generates datum labels when applied to
+circular objects.  The new procedure @nc{write-simple} never generates
+labels; @nc{write-shared} generates labels for all shared and circular
+structure.  The @nc{display} procedure must not loop on circular
+objects.
 
 @item
-The @value{R6RS} procedure @code{eof-object} has been added.  Eof-objects
+The @value{R6RS} procedure @nc{eof-object} has been added.  Eof-objects
 are now required to be a disjoint type.
 
 @item
 Syntax definitions are now allowed wherever variable definitions are.
 
 @item
-The @code{syntax-rules} construct now allows the ellipsis symbol to be
-spec@value{shy}ified explicitly instead of the default @code{...},
-allows template escapes with an ellipsis-prefixed list, and allows tail
-patterns to follow an ellip@value{shy}sis pattern.
+The @nc{syntax-rules} construct now allows the ellipsis symbol to be
+specified explicitly instead of the default @nc{...}, allows template
+escapes with an ellipsis-prefixed list, and allows tail patterns to
+follow an ellipsis pattern.
 
 @item
-The @code{syntax-error} syntax has been added as a way to signal
-im@value{shy}med@value{shy}iate and more informative errors when a macro
-is expanded.
+The @nc{syntax-error} syntax has been added as a way to signal immediate
+and more informative errors when a macro is expanded.
 
 @item
-The @code{letrec*} binding construct has been added, and internal
-@code{define} is specified in terms of it.
+The @nc{letrec*} binding construct has been added, and internal
+@nc{define} is specified in terms of it.
 
 @item
 Support for capturing multiple values has been enhanced with
-@code{define-values}, @code{let-values}, and @code{let*-values}.
-Standard expression types which contain a sequence of expressions now
-permit passing zero or more than one value to the continuations of all
-non-final ex@value{shy}pres@value{shy}sions of the sequence.
+@nc{define-values}, @nc{let-values}, and @nc{let*-values}.  Standard
+expression types which contain a sequence of expressions now permit
+passing zero or more than one value to the continuations of all
+non-final expressions of the sequence.
 
 @item
-The @code{case} conditional now supports @code{=>} syntax analogous to
-@code{cond} not only in regular clauses but in the @code{else} clause
-as well.
+The @nc{case} conditional now supports @nc{=>} syntax analogous to
+@nc{cond} not only in regular clauses but in the @nc{else} clause as
+well.
 
 @item
-To support dispatching on the number of arguments passed to a
-procedure, @code{case-lambda} has been added in its own library.
+To support dispatching on the number of arguments passed to a procedure,
+@nc{case-lambda} has been added in its own library.
 
 @item
-The convenience conditionals @code{when} and @code{unless} have been
-added.
+The convenience conditionals @nc{when} and @nc{unless} have been added.
 
 @item
-The behavior of @code{eqv?} on inexact numbers now conforms to the
+The behavior of @nc{eqv?} on inexact numbers now conforms to the
 @value{R6RS} definition.
 
 @item
-When applied to procedures, @code{eq?} and @code{eqv?} are permitted to
+When applied to procedures, @nc{eq?} and @nc{eqv?} are permitted to
 return different answers.
 
 @item
-The @value{R6RS} procedures @code{boolean=?} and @code{symbol=?} have been
+The @value{R6RS} procedures @nc{boolean=?} and @nc{symbol=?} have been
 added.
 
 @item
 Positive infinity, negative infinity, NaN, and negative inexact zero
 have been added to the numeric tower as inexact values with the written
-representations @code{+inf.0}, @code{-inf.0}, @code{+nan.0}, and
-@code{-0.0} respectively.  Sup@value{shy}port for them is not required.
-The representation @code{-nan.0} is syno@value{shy}nymous with
-@code{+nan.0}.
+representations @nc{+inf.0}, @nc{-inf.0}, @nc{+nan.0}, and @nc{-0.0}
+respectively.  Support for them is not required.  The representation
+@nc{-nan.0} is synonymous with @nc{+nan.0}.
 
 @item
-The @code{log} procedure now accepts a second argument specifying
-the logarithm base.
+The @nc{log} procedure now accepts a second argument specifying the
+logarithm base.
 
 @item
-The procedures @code{map} and @code{for-each} are now required to
-terminate on the shortest argument list.
+The procedures @nc{map} and @nc{for-each} are now required to terminate
+on the shortest argument list.
 
 @item
-The procedures @code{member} and @code{assoc} now take an optional third
+The procedures @nc{member} and @nc{assoc} now take an optional third
 argument specifying the equality predicate to be used.
 
 @item
-The numeric procedures @code{finite?}, @code{infinite?}, @code{nan?},
-@code{exact-integer?}, @code{square}, and @code{exact-integer-sqrt} have
-been added.
+The numeric procedures @nc{finite?}, @nc{infinite?}, @nc{nan?},
+@nc{exact-integer?}, @nc{square}, and @nc{exact-integer-sqrt} have been
+added.
 
 @item
 The @code{-} and @code{/} procedures and the character and string
@@ -238,73 +229,70 @@ comparison predicates are now required to support more than two
 arguments.
 
 @item
-The forms @code{#true} and @code{#false} are now supported as well as
-@code{#t} and @code{#f}.
+The forms @nc{#true} and @nc{#false} are now supported as well as
+@nc{#t} and @nc{#f}.
 
 @item
-The procedures @code{make-list}, @code{list-copy}, @code{list-set!},
-@code{string-map}, @code{string-for-each}, @code{string->vector},
-@code{vector-append}, @code{vector-copy}, @code{vector-map},
-@code{vector-for-each}, @code{vector->string}, @code{vector-copy!}, and
-@code{string-copy!} have been added to round out the sequence
-operations.
+The procedures @nc{make-list}, @nc{list-copy}, @nc{list-set!},
+@nc{string-map}, @nc{string-for-each}, @nc{string->vector},
+@nc{vector-append}, @nc{vector-copy}, @nc{vector-map},
+@nc{vector-for-each}, @nc{vector->string}, @nc{vector-copy!}, and
+@nc{string-copy!} have been added to round out the sequence operations.
 
 @item
-Some string and vector procedures support processing of part of a
-string or vector using optional @var{start} and @var{end} arguments.
+Some string and vector procedures support processing of part of a string
+or vector using optional @var{start} and @var{end} arguments.
 
 @item
 Some list procedures are now defined on circular lists.
 
 @item
-Implementations may provide any subset of the full Unicode
-rep@value{shy}er@value{shy}toire that includes @acronym{ASCII}, but
-implementations must support any such subset in a way consistent with
-Unicode.  Various character and string procedures have been extended
-accordingly, and case conversion pro@value{shy}ce@value{shy}dures added
-for strings.  String comparison is no longer required to be consistent
-with character comparison, which is based solely on Uni@value{shy}code
-scalar values.  The new @code{digit-value} procedure has been added to
-obtain the numerical value of a numeric character.
+Implementations may provide any subset of the full Unicode repertoire
+that includes @acronym{ASCII}, but implementations must support any such
+subset in a way consistent with Unicode.  Various character and string
+procedures have been extended accordingly, and case conversion
+procedures added for strings.  String comparison is no longer required
+to be consistent with character comparison, which is based solely on
+Unicode scalar values.  The new @nc{digit-value} procedure has been
+added to obtain the numerical value of a numeric character.
 
 @item
-There are now two additional comment syntaxes: @code{#;} to skip the
-next datum, and @code{#| @value{defdots} |#} for nestable block
-comments.
+There are now two additional comment syntaxes: @nc{@hashchar{};} to skip
+the next datum, and @nc{@hashchar{}| @value{defdots} |@hashchar{}} for
+nestable block comments.
 
 @item
-Data prefixed with datum labels @code{@hashchar{}@sv{n}=} can be
-referenced with @code{@hashchar{}@sv{n}@hashchar{}}, allowing for
-reading and writing of data with shared structure.
+Data prefixed with datum labels @nc{@hashchar{}@sv{n}=} can be
+referenced with @nc{@hashchar{}@sv{n}@hashchar{}}, allowing for reading
+and writing of data with shared structure.
 
 @item
-Strings and symbols now allow mnemonic and numeric escape
-se@value{shy}quences, and the list of named characters has been
-extended.
+Strings and symbols now allow mnemonic and numeric escape sequences, and
+the list of named characters has been extended.
 
 @item
-The procedures @code{file-exists?} and @code{delete-file} are available
-in the @code{(scheme file)} library.
+The procedures @nc{file-exists?} and @nc{delete-file} are available in
+the @nc{(scheme file)} library.
 
 @item
 An interface to the system environment, command line, and process exit
-status is available in the @code{(scheme process-context)} library.
+status is available in the @nc{(scheme process-context)} library.
 
 @item
 Procedures for accessing time-related values are available in the
-@code{(scheme time)} library.
+@nc{(scheme time)} library.
 
 @item
-A less irregular set of integer division operators is provided
-with new and clearer names.
+A less irregular set of integer division operators is provided with new
+and clearer names.
 
 @item
-The @code{load} procedure now accepts a second argument specifying the
+The @nc{load} procedure now accepts a second argument specifying the
 environment to load into.
 
 @item
-The @code{call-with-current-continuation} procedure now has the
-syn@value{shy}onym @code{call/cc}.
+The @nc{call-with-current-continuation} procedure now has the synonym
+@nc{call/cc}.
 
 @item
 The semantics of read-eval-print loops are now partly prescribed,
@@ -312,12 +300,11 @@ requiring the redefinition of procedures, but not syntax keywords, to
 have retroactive effect.
 
 @item
-The formal semantics now handles @code{dynamic-wind}.
+The formal semantics now handles @nc{dynamic-wind}.
 @end itemize
 
 @node Incompatibilities with R6RS
 @section Incompatibilities with @value{R6RS}
-
 This section enumerates the incompatibilities between @value{R7RS} and
 the @quotedbl{@value{Revised6} report}@footnote{@value{refR6RS}} and its
 accompanying Standard Libraries document.
@@ -327,21 +314,20 @@ This list is not authoritative, and is possibly incomplete.
 @itemize @bullet
 
 @item
-@value{R7RS} libraries begin with the keyword @code{define-library}
-rather than @code{library} in order to make them syntactically
-distinguishable from @value{R6RS} libraries.  In @value{R7RS} terms, the
-body of an @value{R6RS} library consists of a single export declaration
-followed by a single import declaration, followed by commands and
-definitions.  In @value{R7RS}, commands and definitions are not
-permitted directly within the body: they have to be be wrapped in a
-@code{begin} library declaration.
+@value{R7RS} libraries begin with the keyword @nc{define-library} rather
+than @nc{library} in order to make them syntactically distinguishable
+from @value{R6RS} libraries.  In @value{R7RS} terms, the body of an
+@value{R6RS} library consists of a single export declaration followed by
+a single import declaration, followed by commands and definitions.  In
+@value{R7RS}, commands and definitions are not permitted directly within
+the body: they have to be be wrapped in a @nc{begin} library
+declaration.
 
 @item
-There is no direct @value{R6RS} equivalent of the @code{include},
-@code{include-ci}, @code{include-library-declarations}, or
-@code{cond-expand} library decla@value{shy}ra@value{shy}tions.  On the
-other hand, the @value{R7RS} library syntax does not support phase or
-version specifications.
+There is no direct @value{R6RS} equivalent of the @nc{include},
+@nc{include-ci}, @nc{include-library-declarations}, or @nc{cond-expand}
+library declarations.  On the other hand, the @value{R7RS} library
+syntax does not support phase or version specifications.
 
 @item
 The grouping of standardized identifiers into libraries is different
@@ -355,8 +341,8 @@ No form of identifier syntax is provided.
 
 @item
 Internal syntax definitions are allowed, but uses of a syntax form
-can@value{shy}not appear before its definition; the
-@code{even}/@code{odd} example given in @value{R6RS} is not allowed.
+cannot appear before its definition; the @nobr{@t{even}/@t{odd}} example
+given in @value{R6RS} is not allowed.
 
 @item
 The @value{R6RS} exception system was incorporated as-is, but the
@@ -367,19 +353,17 @@ of signaling open.
 
 @item
 Full Unicode support is not required.  Normalization is not provided.
-Character com@value{shy}par@value{shy}isons are defined by Unicode, but
-string com@value{shy}par@value{shy}isons are implementation-dependent.
-Non-Unicode characters are permitted.
+Character comparisons are defined by Unicode, but string comparisons are
+implementation-dependent.  Non-Unicode characters are permitted.
 
 @item
 The full numeric tower is optional as in @value{R5RS}, but optional
 support for @acronym{IEEE} infinities, NaN, and @minus{}0.0 was adopted
 from @value{R6RS}.  Most clarifications on numeric results were also
-adopted, but the @value{R6RS} procedures @code{real-valued?},
-@code{rational-valued?}, and @code{integer-valued}? were not.  The
-@value{R6RS} division operators @code{div}, @code{mod},
-@code{div-and-mod}, @code{div0}, @code{mod0} and @code{div0-and-mod0}
-are not provided.
+adopted, but the @value{R6RS} procedures @nc{real-valued?},
+@nc{rational-valued?}, and @nc{integer-valued}? were not.  The
+@value{R6RS} division operators @nc{div}, @nc{mod}, @nc{div-and-mod},
+@nc{div0}, @nc{mod0} and @nc{div0-and-mod0} are not provided.
 
 @item
 When a result is unspecified, it is still required to be a single value.
@@ -387,33 +371,33 @@ However, non-final expressions in a body can return any number of
 values.
 
 @item
-The semantics of @code{map} and @code{for-each} have been changed to use
-the @acronym{SRFI} 1@footnote{@value{refSRFI1}} early termination
-behavior.  Likewise, @code{assoc} and @code{member} take an optional
-@code{equal?} argument as in @acronym{SRFI} 1, instead of the separate
-@code{assp} and @code{memp} procedures of @value{R6RS}.
+The semantics of @nc{map} and @nc{for-each} have been changed to use the
+@acronym{SRFI 1}@footnote{@value{refSRFI1}} early termination behavior.
+Likewise, @nc{assoc} and @nc{member} take an optional @nc{equal?}
+argument as in @acronym{SRFI 1}, instead of the separate @nc{assp} and
+@nc{memp} procedures of @value{R6RS}.
 
 @item
-The @value{R6RS} @code{quasiquote} clarifications have been adopted,
-with the ex@value{shy}cep@value{shy}tion of multiple-argument
-@code{unquote} and @code{unquote-splicing}.
+The @value{R6RS} @nc{quasiquote} clarifications have been adopted, with
+the exception of multiple-argument @nc{unquote} and
+@nc{unquote-splicing}.
 
 @item
 The @value{R6RS} method of specifying mantissa widths was not adopted.
 
 @item
-String ports are compatible with @acronym{SRFI}
-6@footnote{@value{refSRFI6}} rather than @value{R6RS}.
+String ports are compatible with @acronym{SRFI
+6}@footnote{@value{refSRFI6}} rather than @value{R6RS}.
 
 @item
 @value{R6RS}-style bytevectors are included, but only the unsigned byte
-(@code{u8}) procedures have been provided.  The lexical syntax uses
-@code{#u8} for com@value{shy}pat@value{shy}ibility with @acronym{SRFI}
-4@footnote{@value{refSRFI4}}, rather than the @value{R6RS}
-@code{@hashchar{}vu8} style.
+(@nc{u8}) procedures have been provided.  The lexical syntax uses
+@nc{#u8} for compatibility with @acronym{SRFI
+4}@footnote{@value{refSRFI4}}, rather than the @value{R6RS}
+@nc{@hashchar{}vu8} style.
 
 @item
-The utility macros @code{when} and @code{unless} are provided, but their
+The utility macros @nc{when} and @nc{unless} are provided, but their
 result is left unspecified.
 
 @item

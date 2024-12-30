@@ -1,10 +1,8 @@
 @node Input and output
 @section Input and output
 @node Ports
+@cindex ports
 @subsection Ports
-
-@cindex port
-
 Ports represent input and output devices.  To Scheme, an input port is a
 Scheme object that can deliver data upon command, while an output port
 is a Scheme object that can accept data.  Whether the input and output
@@ -15,37 +13,36 @@ implementations are required to support @define{textual ports} and
 @define{binary ports}, but may also provide other port types.
 
 A textual port supports reading or writing of individual characters from
-or to a backing store containing characters using @code{read-char} and
-@code{write-char} below, and it supports operations defined in terms of
+or to a backing store containing characters using @nc{read-char} and
+@nc{write-char} below, and it supports operations defined in terms of
 characters, such as @code{read} and @code{write}.
 
 A binary port supports reading or writing of individual bytes from or to
-a backing store containing bytes using @nobr{@code{read-u8}} and
-@nobr{@code{write-u8}} below, as well as operations defined in terms of
-bytes.  Whether the textual and binary port types are disjoint is
-implementation-dependent.
+a backing store containing bytes using @nc{read-u8} and @nc{write-u8}
+below, as well as operations defined in terms of bytes.  Whether the
+textual and binary port types are disjoint is implementation-dependent.
 
 Ports can be used to access files, devices, and similar things on the
-host sys@value{shy}tem on which the Scheme program is running.
+host system on which the Scheme program is running.
 
 @deffn procedure call-with-port port proc
 
 It is an error if @var{proc} does not accept one argument.
 
-The @code{call-with-port} procedure calls @var{proc} with @var{port}
-as an argument.  If @var{proc} returns, then the port is closed
-automatically and the values yielded by the @var{proc} are returned.
-If @var{proc} does not return, then the port must not be closed
-automatically unless it is possible to prove that the port will never
-again be used for a read or write operation.
+The @nc{call-with-port} procedure calls @var{proc} with @var{port} as an
+argument.  If @var{proc} returns, then the port is closed automatically
+and the values yielded by the @var{proc} are returned.  If @var{proc}
+does not return, then the port must not be closed automatically unless
+it is possible to prove that the port will never again be used for a
+read or write operation.
 
 @quotation
-@i{Rationale:} Because Scheme's escape procedures have unlimited
-ex@value{shy}tent, it is possible to escape from the current
-continuation but later to resume it.  If implementations were permitted
-to close the port on any escape from the current continuation, then it
-would be impossible to write portable code using both
-@code{call-with-current-continuation} and @code{call-with-port}.
+@i{Rationale:} Because Scheme's escape procedures have unlimited extent,
+it is possible to escape from the current continuation but later to
+resume it.  If implementations were permitted to close the port on any
+escape from the current continuation, then it would be impossible to
+write portable code using both @nc{call-with-current-continuation} and
+@nc{call-with-port}.
 @end quotation
 @end deffn
 
@@ -55,9 +52,9 @@ would be impossible to write portable code using both
 It is an error if @var{proc} does not accept one argument.
 
 These procedures obtain a textual port obtained by opening the named
-file for input or output as if by @nobr{@code{open-input-file}} or
-@nobr{@code{open-output-file}}.  The port and @var{proc} are then passed
-to a procedure equivalent to @code{call-with-port}.
+file for input or output as if by @nc{open-input-file} or
+@nc{open-output-file}.  The port and @var{proc} are then passed to a
+procedure equivalent to @nc{call-with-port}.
 @end deffn
 
 @deffn procedure input-port? obj
@@ -91,18 +88,17 @@ The initial bindings for these are implementation-defined textual ports.
 @deffn {file library procedure} with-input-from-file string thunk
 @deffnx {file library procedure} with-output-to-file string thunk
 
-The file is opened for input or output as if by
-@nobr{@code{open-input-file}} or @nobr{@code{open-output-file}}, and the
-new port is made to be the value returned by @code{current-input-port}
-or @code{current-output-port} (as used by @code{(read)}, @code{(write
-@rv{obj})}, and so forth).  The @var{thunk} is then called with no
-arguments.  When the @var{thunk} returns, the port is closed and the
-previous default is restored.  It is an error if @var{thunk} does not
-accept zero arguments.  Both procedures return the values yielded by
-@var{thunk}.  If an escape procedure is used to escape from the
-continuation of these procedures, they behave exactly as if the current
-input or output port had been bound dynamically with
-@code{parameterize}.
+The file is opened for input or output as if by @nc{open-input-file} or
+@nc{open-output-file}, and the new port is made to be the value returned
+by @nc{current-input-port} or @nc{current-output-port} (as used by
+@code{(read)}, @nc{(write @rv{obj})}, and so forth).  The @var{thunk} is
+then called with no arguments.  When the @var{thunk} returns, the port
+is closed and the previous default is restored.  It is an error if
+@var{thunk} does not accept zero arguments.  Both procedures return the
+values yielded by @var{thunk}.  If an escape procedure is used to escape
+from the continuation of these procedures, they behave exactly as if the
+current input or output port had been bound dynamically with
+@nc{parameterize}.
 @end deffn
 
 @deffn {file library procedure} open-input-file string
@@ -111,18 +107,17 @@ input or output port had been bound dynamically with
 Takes a @var{string} for an existing file and returns a textual input
 port or binary input port that is capable of delivering data from the
 file.  If the file does not exist or cannot be opened, an error that
-satisfies @code{file-error?} is signaled.
+satisfies @nc{file-error?} is signaled.
 @end deffn
 
 @deffn {file library procedure} open-output-file string
 @deffnx {file library procedure} open-binary-output-file string
 
 Takes a @var{string} naming an output file to be created and returns a
-textual out@value{shy}put port or binary output port that is capable of
-writing data to a new file by that name.  If a file with the given name
-already exists, the effect is un@value{shy}spec@value{shy}ified.  If the
-file cannot be opened, an error that satisfies @code{file-error?} is
-signaled.
+textual output port or binary output port that is capable of writing
+data to a new file by that name.  If a file with the given name already
+exists, the effect is unspecified.  If the file cannot be opened, an
+error that satisfies @nc{file-error?} is signaled.
 @end deffn
 
 @deffn procedure close-port port
@@ -132,12 +127,10 @@ signaled.
 Closes the resource associated with @var{port}, rendering the @var{port}
 incapable of delivering or accepting data.  It is an error to apply the
 last two procedures to a port which is not an input or output port,
-respectively.  Scheme im@value{shy}ple@value{shy}men@value{shy}tations
-may provide ports which are simultaneously input and output ports, such
-as sockets; the @nobr{@code{close-input-port}} and
-@nobr{@code{close-output-port}} pro@value{shy}cedures can then be used
-to close the input and output sides of the port
-inde@value{shy}pen@value{shy}dently.
+respectively.  Scheme implementations may provide ports which are
+simultaneously input and output ports, such as sockets; the
+@nc{close-input-port} and @nc{close-output-port} procedures can then be
+used to close the input and output sides of the port independently.
 
 These routines have no effect if the @var{port} has already been closed.
 @end deffn
@@ -152,13 +145,13 @@ unspecified.
 @deffn procedure open-output-string
 
 Returns a textual output port that will accumulate characters for
-retrieval by @nobr{@code{get-output-string}}.
+retrieval by @nc{get-output-string}.
 @end deffn
 
 @deffn procedure get-output-string port
 
 It is an error if @var{port} was not created with
-@code{open-output-string}.
+@nc{open-output-string}.
 
 Returns a string consisting of the characters that have been output to
 the port so far in the order they were output.  If the result string is
@@ -187,13 +180,13 @@ bytes from the @var{bytevector}.
 @deffn procedure open-output-bytevector
 
 Returns a binary output port that will accumulate bytes for retrieval by
-@code{get-output-bytevector}.
+@nc{get-output-bytevector}.
 @end deffn
 
 @deffn procedure get-output-bytevector port
 
 It is an error if @var{port} was not created with
-@code{open-output-bytevector}.
+@nc{open-output-bytevector}.
 
 Returns a bytevector consisting of the bytes that have been output to
 the @var{port} so far in the order they were output.
@@ -203,8 +196,8 @@ the @var{port} so far in the order they were output.
 @subsection Input
 
 If @var{port} is omitted from any input procedure, it defaults to the
-value returned by @code{(current-input-port)}.  It is an error to
-attempt an input operation on a closed port.
+value returned by @nc{(current-input-port)}.  It is an error to attempt
+an input operation on a closed port.
 
 @deffn {read library procedure} read
 @deffnx {read library procedure} read port
@@ -224,9 +217,9 @@ If an end of file is encountered in the input before any characters are
 found that can begin an object, then an end-of-file object is returned.
 The port remains open, and further attempts to read will also return an
 end-of-file object.  If an end of file is encountered after the
-beginning of an object's ex@value{shy}ternal representation, but the
-external representation is incomplete and therefore not parsable, an
-error that satisfies @code{read-error?} is signaled.
+beginning of an object's external representation, but the external
+representation is incomplete and therefore not parsable, an error that
+satisfies @nc{read-error?} is signaled.
 @end deffn
 
 @deffn procedure read-char
@@ -234,25 +227,25 @@ error that satisfies @code{read-error?} is signaled.
 
 Returns the next character available from the textual input @var{port},
 updating the @var{port} to point to the following character.  If no more
-characters are avail@value{shy}able, an end-of-file object is returned.
+characters are available, an end-of-file object is returned.
 @end deffn
 
 @deffn procedure peek-char
 @deffnx procedure peek-char port
 
 Returns the next character available from the textual input @var{port},
-but with@value{shy}out updating the @var{port} to point to the following
-character.  If no more char@value{shy}ac@value{shy}ters are available,
+but without updating the @var{port} to point to the following
+character.  If no more characters are available,
 an end-of-file object is returned.
 
 @quotation
-@i{Note:} The value returned by a call to @code{peek-char} is the same
-as the value that would have been returned by a call to @code{read-char}
-with the same @var{port}.  The only difference is that the very next
-call to @code{read-char} or @code{peek-char} on that @var{port} will
-return the value returned by the preceding call to @code{peek-char}.  In
-particular, a call to @code{peek-char} on an interactive port will hang
-waiting for input whenever a call to @code{read-char} would have hung.
+@i{Note:} The value returned by a call to @nc{peek-char} is the same as
+the value that would have been returned by a call to @nc{read-char} with
+the same @var{port}.  The only difference is that the very next call to
+@nc{read-char} or @nc{peek-char} on that @var{port} will return the
+value returned by the preceding call to @nc{peek-char}.  In particular,
+a call to @nc{peek-char} on an interactive port will hang waiting for
+input whenever a call to @nc{read-char} would have hung.
 @end quotation
 @end deffn
 
@@ -261,14 +254,14 @@ waiting for input whenever a call to @code{read-char} would have hung.
 Returns the next line of text available from the textual input
 @var{port}, updating the @var{port} to point to the following character.
 If an end of line is read, a string containing all of the text up to
-(but not including) the end of line is re@value{shy}turned, and the port
+(but not including) the end of line is returned, and the port
 is updated to point just past the end of line.  If an end of file is
 encountered before any end of line is read, but some characters have
 been read, a string containing those characters is returned.  If an end
 of file is encountered before any characters are read, an end-of-file
 object is returned.  For the purpose of this procedure, an end of line
-consists of either a linefeed character, a car@value{shy}riage return
-character, or a sequence of a car@value{shy}riage return character
+consists of either a linefeed character, a carriage return
+character, or a sequence of a carriage return character
 followed by a linefeed character.  Implementations may also recognize
 other end of line characters or sequences.
 @end deffn
@@ -290,18 +283,18 @@ Returns an end-of-file object, not necessarily unique.
 @deffnx procedure char-ready? port
 
 Returns @code{#t} if a character is ready on the textual input
-@var{port} and returns @code{#f} otherwise.  If @code{char-ready}
-returns @code{#t} then the next @code{read-char} operation on the given
+@var{port} and returns @code{#f} otherwise.  If @nc{char-ready}
+returns @code{#t} then the next @nc{read-char} operation on the given
 @var{port} is guaranteed not to hang.  If the @var{port} is at end of
-file then @code{char-ready?} returns @code{#t}.
+file then @nc{char-ready?} returns @code{#t}.
 
 @quotation
-@i{Rationale:} The @code{char-ready?} procedure exists to make it
+@i{Rationale:} The @nc{char-ready?} procedure exists to make it
 possible for a program to accept characters from interactive ports
 without getting stuck waiting for input.  Any input editors associated
 with such ports must ensure that characters whose existence has been
-asserted by @code{char-ready?} cannot be removed from the input.  If
-@code{char-ready?} were to return @code{#f} at end of file, a port at
+asserted by @nc{char-ready?} cannot be removed from the input.  If
+@nc{char-ready?} were to return @code{#f} at end of file, a port at
 end of file would be indistinguishable from an interactive port that has
 no ready characters.
 @end quotation
@@ -329,7 +322,7 @@ are available, an end-of-file object is returned.
 @deffnx procedure peek-u8 port
 
 Returns the next byte available from the binary input @var{port}, but
-without up@value{shy}dating the @var{port} to point to the following
+without updating the @var{port} to point to the following
 byte.  If no more bytes are available, an end-of-file object is
 returned.
 @end deffn
@@ -338,10 +331,10 @@ returned.
 @deffnx procedure u8-ready? port
 
 Returns @code{#t} if a byte is ready on the binary input @var{port} and
-returns @code{#f} other@value{shy}wise.  If @code{u8-ready?} returns
-@code{#t} then the next @code{read-u8} operation on the given @var{port}
+returns @code{#f} otherwise.  If @nc{u8-ready?} returns
+@code{#t} then the next @nc{read-u8} operation on the given @var{port}
 is guaranteed not to hang.  If the @var{port} is at end of file then
-@code{u8-ready?}  returns @code{#t}.
+@nc{u8-ready?}  returns @code{#t}.
 @end deffn
 
 @deffn procedure read-bytevector k
@@ -361,7 +354,7 @@ returned.
 
 Reads the next @var{end} @minus{} @var{start} bytes, or as many as are
 available before the end of file, from the binary input @var{port} into
-@var{bytevector} in left-to-right order be@value{shy}ginning at the
+@var{bytevector} in left-to-right order beginning at the
 @var{start} position.  If @var{end} is not supplied, reads until the end
 of @var{bytevector} has been reached.  If @var{start} is not supplied,
 reads beginning at position 0.  Returns the number of bytes read.  If no
@@ -372,8 +365,8 @@ bytes are available, an end-of-file object is returned.
 @subsection Output
 
 If @var{port} is omitted from any output procedure, it defaults to the
-value re@value{shy}turned by @code{(current-output-port)}.  It is an
-error to attempt an output operation on a closed port.
+value returned by @nc{(current-output-port)}.  It is an error to
+attempt an output operation on a closed port.
 
 @deffn {write library procedure} write obj
 @deffnx {write library procedure} write obj port
@@ -383,7 +376,8 @@ Writes a representation of @var{obj} to the given textual output
 enclosed in quotation marks, and within those strings backslash and
 quotation mark characters are escaped by backslashes.  Symbols that
 contain non-@acronym{ASCII} characters are escaped with vertical lines.
-Character objects are written using the @code{#\} notation.
+Character objects are written using the @nc{@hashchar{}@backslashchar{}}
+notation.
 
 If @var{obj} contains cycles which would cause an infinite loop using
 the normal written representation, then at least the objects that form
@@ -400,7 +394,7 @@ The @code{write} procedure returns an unspecified value.
 @deffn {write library procedure} write-shared obj
 @deffnx {write library procedure} write-shared obj port
 
-The @code{write-shared} procedure is the same as @code{write}, except
+The @nc{write-shared} procedure is the same as @code{write}, except
 that shared structure must be represented using datum labels for all
 pairs and vectors that appear more than once in the output.
 @end deffn
@@ -408,9 +402,9 @@ pairs and vectors that appear more than once in the output.
 @deffn {write library procedure} write-simple obj
 @deffnx {write library procedure} write-simple obj port
 
-The @code{write-simple} procedure is the same as @code{write}, except
+The @nc{write-simple} procedure is the same as @code{write}, except
 that shared structure is never represented using datum labels.  This can
-cause @code{write-simple} not to terminate if @var{obj} contains
+cause @nc{write-simple} not to terminate if @var{obj} contains
 circular structure.
 @end deffn
 
@@ -419,9 +413,9 @@ circular structure.
 
 Writes a representation of @var{obj} to the given textual output
 @var{port}.  Strings that appear in the written representation are
-output as if by @code{write-string} instead of by @code{write}.  Symbols
+output as if by @nc{write-string} instead of by @code{write}.  Symbols
 are not escaped.  Character objects appear in the representation as if
-written by @code{write-char} instead of by @code{write}.
+written by @nc{write-char} instead of by @code{write}.
 
 The @code{display} representation of other objects is unspecified.
 However, @code{display} must not loop forever on self-referencing pairs,

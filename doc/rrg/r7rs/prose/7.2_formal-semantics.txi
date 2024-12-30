@@ -1,6 +1,5 @@
 @node Formal semantics
 @section Formal semantics
-
 This section provides a formal denotational semantics for the primitive
 expressions of Scheme and selected built-in procedures.  The concepts
 and notation used here are described in @cite{Denotational Semantics:
@@ -51,7 +50,7 @@ the following axiom: if
 @i{false}}.
 
 The definition of 𝒦 is omitted because an accurate definition of 𝒦 would
-com@value{shy}plicate the semantics without being very interesting.
+complicate the semantics without being very interesting.
 
 If P is a program in which all variables are defined before being
 referenced or assigned, then the meaning of P is
@@ -63,8 +62,8 @@ referenced or assigned, then the meaning of P is
 where I* is the sequence of variables defined in P, P′ is the sequence
 of expressions obtained by replacing every definition in P by an
 assignment, @angle{undefined} is an expression that evaluates to
-undefined, and @i{Ɛ} is the se@value{shy}man@value{shy}tic function that
-assigns meaning to expressions.
+undefined, and @i{Ɛ} is the semantic function that assigns meaning to
+expressions.
 
 @node Abstract syntax
 @subsection Abstract syntax
@@ -547,7 +546,6 @@ be used in place of @dfn{unspecified}.
 
 @node Formal derived expression types
 @section Derived expression types
-
 This section gives syntax definitions for the derived expression types
 in terms of the primitive expression types (literal, variable, call,
 @code{lambda}, @code{if}, and @code{set!}), except for
@@ -671,10 +669,10 @@ Binding constructs:
 The following @code{letrec} macro uses the symbol @code{<undefined>} in
 place of an expression which returns something that when stored in a
 location makes it an error to try to obtain the value stored in the
-location.  (No such ex@value{shy}pres@value{shy}sion is defined in
-Scheme.)  A trick is used to generate the temporary names needed to
-avoid specifying the order in which the values are evaluated.  This
-could also be accomplished by using an auxiliary macro.
+location.  (No such expression is defined in Scheme.)  A trick is used
+to generate the temporary names needed to avoid specifying the order in
+which the values are evaluated.  This could also be accomplished by
+using an auxiliary macro.
 
 @lisp
 (define-syntax letrec
@@ -807,7 +805,7 @@ could also be accomplished by using an auxiliary macro.
 
 The following alternative expansion for @code{begin} does not make use
 of the ability to write more than one expression in the body of a lambda
-ex@value{shy}pres@value{shy}sion.  In any case, note that these rules
+expression.  In any case, note that these rules
 apply only if the body of the @code{begin} contains no definitions.
 
 @lisp
@@ -824,11 +822,11 @@ apply only if the body of the @code{begin} contains no definitions.
 
 The following syntax definition of do uses a trick to expand the
 variable clauses.  As with @code{letrec} above, an auxiliary macro would
-also work.  The ex@value{shy}pres@value{shy}sion @code{(if #f #f)} is
-used to obtain an unspecific value.
+also work.  The expression @code{(if #f #f)} is used to obtain an
+unspecific value.
 
 Here is a possible implementation of @code{delay}, @code{force} and
-@code{delay-force}. We define the expression
+@code{delay-force}.  We define the expression
 
 @example grammar
 (delay-force @sv{expression})
@@ -880,9 +878,9 @@ where @code{make-promise} is defined as follows:
 
 Finally, we define @code{force} to call the procedure expressions in
 promises iteratively using a trampoline technique following
-@acronym{SRFI} 45@footnote{@value{refSRFI45}} until a non-lazy result
-(i.e.@: a value created by @code{delay} instead of @code{delay-force})
-is returned, as follows:
+@value{SRFI45initial}@footnote{@value{refSRFI45}} until a non-lazy
+result (i.e.@: a value created by @code{delay} instead of
+@code{delay-force}) is returned, as follows:
 
 @lisp
 (define (force promise)
@@ -931,7 +929,7 @@ arbitrary unique objects @code{<param-set!>} and @code{<param-convert>}:
 @end lisp
 
 Then @code{parameterize} uses @code{dynamic-wind} to dynamically rebind
-the assoc@value{shy}i@value{shy}ated value:
+the associated value:
 
 @lisp
 (define-syntax parameterize
@@ -1026,9 +1024,8 @@ macro, here called @code{guard-aux}.
 @end lisp
 
 This definition of @code{cond-expand} does not interact with the
-@code{features} pro@value{shy}ce@value{shy}dure.  It requires that each
-feature identifier provided by the implementation be explicitly
-mentioned.
+@code{features} procedure.  It requires that each feature identifier
+provided by the implementation be explicitly mentioned.
 
 @lisp
 (define-syntax cond-expand

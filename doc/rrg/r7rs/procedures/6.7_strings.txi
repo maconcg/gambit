@@ -2,32 +2,33 @@
 @section Strings
 @cindex escape sequence
 Strings are sequences of characters.  Strings are written as sequences
-of characters enclosed within quotation marks (@code{"}).  Within a
-string literal, vari@value{shy}ous escape sequences represent characters
-other than themselves.  Escape sequences always start with a backslash
-(@code{@backslashchar{}}):
+of characters enclosed within quotation marks (@samp{"}).  Within a
+string literal, various escape sequences represent characters other than
+themselves.  Escape sequences always start with a backslash
+(@samp{@backslashchar{}}):
 
 @itemize @bullet
 @item
-@t{@stringesc{@backslashchar{}a}} : alarm, U+0007
+@samp{@stringesc{@backslashchar{}a}} : alarm, U+0007
 @item
-@t{@stringesc{@backslashchar{}b}} : backspace, U+0008
+@samp{@stringesc{@backslashchar{}b}} : backspace, U+0008
 @item
-@t{@stringesc{@backslashchar{}t}} : character tabulation, U+0009
+@samp{@stringesc{@backslashchar{}t}} : character tabulation, U+0009
 @item
-@t{@stringesc{@backslashchar{}n}} : linefeed, U+000A
+@samp{@stringesc{@backslashchar{}n}} : linefeed, U+000A
 @item
-@t{@stringesc{@backslashchar{}r}} : return, U+000D
+@samp{@stringesc{@backslashchar{}r}} : return, U+000D
 @item
-@t{@stringesc{@backslashchar{}"}} : double quote, U+0022
+@samp{@stringesc{@backslashchar{}"}} : double quote, U+0022
 @item
-@t{@stringesc{@backslashchar{}@backslashchar{}}} : backslash, U+005C
+@samp{@stringesc{@backslashchar{}@backslashchar{}}} : backslash, U+005C
 @item
-@t{@stringesc{@backslashchar{}|}} : vertical line, U+007C
+@samp{@stringesc{@backslashchar{}|}} : vertical line, U+007C
 @item
-@t{@stringesc{@backslashchar{}}}@angle{intraline whitespace}*@angle{line ending}@*@angle{intraline whitespace}* : nothing
+@samp{@stringesc{@backslashchar{}}@sv{intraline whitespace}@r{*}@sv{line
+ending}@*@sv{intraline whitespace}@r{*}} : nothing
 @item
-@t{@stringesc{@backslashchar{}x}@sv{hex scalar value}@stringesc{;}} : specified character (note the terminating semi-colon).
+@samp{@stringesc{@backslashchar{}x}@sv{hex scalar value}@stringesc{;}} : specified character (note the terminating semi-colon).
 @end itemize
 
 The result is unspecified if any other character in a string occurs
@@ -35,10 +36,10 @@ after a backslash.
 
 Except for a line ending, any character outside of an escape sequence
 stands for itself in the string literal.  A line ending which is
-preceded by @code{@backslashchar{}@sv{intraline whitespace}} expands to
+preceded by @samp{@backslashchar{}@sv{intraline whitespace}} expands to
 nothing (along with any trailing intraline whitespace), and can be used
 to indent strings for improved legibility.  Any other line ending has
-the same effect as inserting a @code{@backslashchar{}n} character into
+the same effect as inserting a @samp{@backslashchar{}n} character into
 the string.
 
 Examples:
@@ -52,7 +53,6 @@ Examples:
 @end lisp
 
 @cindex valid indexes
-
 The @define{length} of a string is the number of characters that it
 contains.  This number is an exact, non-negative integer that is fixed
 when the string is created.  The @define{valid indexes} of a string are
@@ -65,41 +65,41 @@ between upper and lower case.  The names of the versions that ignore
 case end with @nobr{@samp{-ci}} (for @quotedbl{case insensitive}).
 
 Implementations may forbid certain characters from appearing in strings.
-However, with the exception of @code{@hashchar{}@backslashchar{}null},
-@acronym{ASCII} characters must not be for@value{shy}bidden.  For
-example, an implementation might support the entire Unicode repertoire,
-but only allow characters U+0001 to U+00FF (the Latin-1 repertoire
-without @code{@hashchar{}@backslashchar{}null}) in strings.
+However, with the exception of @nc{@hashchar{}@backslashchar{}null},
+@acronym{ASCII} characters must not be forbidden.  For example, an
+implementation might support the entire Unicode repertoire, but only
+allow characters @nobr{U+0001} to @nobr{U+00FF} (the @nobr{Latin-1}
+repertoire without @nc{@hashchar{}@backslashchar{}null}) in strings.
 
-It is an error to pass such a forbidden character to @code{make-string},
-@code{string}, @code{string-set!}, or @code{string-fill!}, as part of
-the list passed to @code{list->string}, or as part of the vector passed
-to @code{vector->string} (@pxref{Vectors}), or in @acronym{UTF-8,Unicode
-Transformation Format -- 8-bit} en@value{shy}coded form within a
-bytevector passed to @code{utf8->string} (@pxref{Bytevectors}).  It is
-also an error for a pro@value{shy}ce@value{shy}dure passed to
-@code{string-map} (@pxref{Control features}) to return a forbidden
-character, or for @code{read-string} (@pxref{Input}) to attempt to read
+It is an error to pass such a forbidden character to @nc{make-string},
+@nc{string}, @nc{string-set!}, or @nc{string-fill!}, as part of the list
+passed to @nc{list->string}, or as part of the vector passed to
+@nc{vector->string} (@pxref{Vectors}), or in
+@acronym{UTF-8,Unicode Transformation Format -- 8-bit}
+encoded form within a bytevector passed to @nc{utf8->string}
+(@pxref{Bytevectors}).  It is also an error for a procedure passed to
+@nc{string-map} (@pxref{Control features}) to return a forbidden
+character, or for @nc{read-string} (@pxref{Input}) to attempt to read
 one.
 
 @deffn procedure string? obj
 
-Returns @code{#t} if @var{obj} is a string, otherwise returns @code{#f}.
+Returns @nc{#t} if @var{obj} is a string, otherwise returns @nc{#f}.
 @end deffn
 
 @deffn procedure make-string k
 @deffnx procedure make-string k char
 
-The @code{make-string} procedure returns a newly allocated string of
+The @nc{make-string} procedure returns a newly allocated string of
 length @var{k}.  If @var{char} is given, then all the characters of the
-string are initialized to @var{char}, other@value{shy}wise the contents
-of the string are unspecified.
+string are initialized to @var{char}, otherwise the contents of the
+string are unspecified.
 @end deffn
 
 @deffn procedure string char @value{defdots}
 
 Returns a newly allocated string composed of the arguments.  It is
-analogous to @code{list}.
+analogous to @nc{list}.
 
 @end deffn
 
@@ -112,8 +112,8 @@ Returns the number of characters in the given @var{string}.
 
 It is an error if @var{k} is not a valid index of @var{string}.
 
-The @code{string-ref} procedure returns character @var{k} of
-@var{string} using zero-origin in@value{shy}dexing.
+The @nc{string-ref} procedure returns character @var{k} of @var{string}
+using zero-origin indexing.
 
 There is no requirement for this procedure to execute in constant time.
 @end deffn
@@ -122,7 +122,7 @@ There is no requirement for this procedure to execute in constant time.
 
 It is an error if @var{k} is not a valid index of @var{string}.
 
-The @code{string-set!} procedure stores @var{char} in element @var{k} of
+The @nc{string-set!} procedure stores @var{char} in element @var{k} of
 @var{string}.  There is no requirement for this procedure to execute in
 constant time.
 
@@ -140,19 +140,19 @@ constant time.
 @deffn procedure string=? @
 @parI{string} @parII{string} @parIII{string} @value{defdots}
 
-Returns @code{#t} if all the strings are the same length and contain
+Returns @nc{#t} if all the strings are the same length and contain
 exactly the same characters in the same positions, otherwise returns
-@code{#f}.
+@nc{#f}.
 @end deffn
 
 @deffn {char library procedure} string-ci=? @
 @parI{string} @parII{string} @parIII{string} @value{defdots}
 
-Returns @code{#t} if, after case-folding, all the strings are the same
-length and con@value{shy}tain the same characters in the same positions,
-otherwise returns @code{#f}.  Specifically, these procedures behave as
-if @code{string-foldcase} were applied to their arguments before
-comparing them.
+Returns @nc{#t} if, after case-folding, all the strings are the same
+length and contain the same characters in the same positions, otherwise
+returns @nc{#f}.  Specifically, these procedures behave as if
+@nc{string-foldcase} were applied to their arguments before comparing
+them.
 @end deffn
 
 @deffn procedure string<? @
@@ -172,33 +172,31 @@ comparing them.
 @deffnx {char library procedure} string-ci>=? @
 @parI{string} @parII{string} @parIII{string} @value{defdots}
 
-These procedures return @code{#t} if their arguments are (respectively):
-mono@value{shy}ton@value{shy}ically increasing, monotonically
-decreasing, monotonically non-decreasing, or monotonically
-non-increasing.
+These procedures return @nc{#t} if their arguments are (respectively):
+monotonically increasing, monotonically decreasing, monotonically
+non-decreasing, or monotonically non-increasing.
 
 These predicates are required to be transitive.
 
 These procedures compare strings in an implementation-defined way.  One
 approach is to make them the lexicographic extensions to strings of the
-cor@value{shy}responding orderings on characters.  In that case,
-@code{string<?}  would be the lexicographic ordering on strings induced
-by the ordering @code{char<?} on char@value{shy}acters, and if the two
-strings differ in length but are the same up to the length of the
-shorter string, the shorter string would be considered to be
-lexicographically less than the longer string.  However, it is also
-permitted to use the natural ordering imposed by the implementation's
-internal rep@value{shy}re@value{shy}sentation of strings, or a more
-complex locale-specific ordering.
+corresponding orderings on characters.  In that case, @nc{string<?}
+would be the lexicographic ordering on strings induced by the ordering
+@nc{char<?} on characters, and if the two strings differ in length but
+are the same up to the length of the shorter string, the shorter string
+would be considered to be lexicographically less than the longer string.
+However, it is also permitted to use the natural ordering imposed by the
+implementation's internal representation of strings, or a more complex
+locale-specific ordering.
 
 In all cases, a pair of strings must satisfy exactly one of
-@code{string<?}, @code{string=?}, and @code{string>?}, and must satisfy
-@code{string<=?} if and only if they do not satisfy @code{string>?}  and
-@code{string>=?} if and only if they do not satisfy @code{string<?}.
+@nc{string<?}, @nc{string=?}, and @nc{string>?}, and must satisfy
+@nc{string<=?} if and only if they do not satisfy @nc{string>?}  and
+@nc{string>=?} if and only if they do not satisfy @nc{string<?}.
 
-The @samp{-ci} procedures behave as if they applied
-@code{string-foldcase} to their arguments before invoking the
-corresponding procedures without @samp{-ci}.
+The @samp{-ci} procedures behave as if they applied @nc{string-foldcase}
+to their arguments before invoking the corresponding procedures without
+@samp{-ci}.
 @end deffn
 
 @deffn {char library procedure} string-upcase string
@@ -207,27 +205,27 @@ corresponding procedures without @samp{-ci}.
 
 These procedures apply the Unicode full string uppercasing, lowercasing,
 and case-folding algorithms to their arguments and return the result.
-In cer@value{shy}tain cases, the result differs in length from the
-argument.  If the result is equal to the argument in the sense of
-@code{string=?}, the argument may be re@value{shy}turned.  Note that
-language-sensitive mappings and foldings are not used.
+In certain cases, the result differs in length from the argument.  If
+the result is equal to the argument in the sense of @nc{string=?}, the
+argument may be returned.  Note that language-sensitive mappings and
+foldings are not used.
 
 The Unicode Standard prescribes special treatment of the Greek letter
 @value{capitalsigma}, whose normal lower-case form is @value{smallsigma}
 but which becomes @value{finalsigma} at the end of a word.  See
 @acronym{UAX} @hashchar{}44@footnote{@value{refUnicodeAnnex44}} (part of
 the Unicode Standard) for details.  However, implementations of
-@code{string-downcase} are not required to provide this
-be@value{shy}havior, and may choose to change @value{capitalsigma} to
-@value{smallsigma} in all cases.
+@nc{string-downcase} are not required to provide this behavior, and may
+choose to change @value{capitalsigma} to @value{smallsigma} in all
+cases.
 @end deffn
 
 @deffn procedure substring string start end
 
-The @code{substring} procedure returns a newly allocated string formed
+The @nc{substring} procedure returns a newly allocated string formed
 from the characters of @var{string} beginning with index @var{start} and
 ending with index @var{end}.  This is equivalent to calling
-@code{string-copy} with the same arguments, but is provided for backward
+@nc{string-copy} with the same arguments, but is provided for backward
 compatibility and stylistic flexibility.
 @end deffn
 
@@ -244,12 +242,12 @@ of the characters in the given strings.
 
 It is an error if any element of @var{list} is not a character.
 
-The @code{string->list} procedure returns a newly allocated list of the
-char@value{shy}ac@value{shy}ters of @var{string} between @var{start} and
-@var{end}.  @code{list->string} returns a newly allo@value{shy}cated
-string formed from the elements in the list @var{list}.  In both
-procedures, order is preserved.  @code{string->list} and
-@code{list->string} are inverses so far as @code{equal?} is concerned.
+The @nc{string->list} procedure returns a newly allocated list of the
+characters of @var{string} between @var{start} and @var{end}.
+@nc{list->string} returns a newly allocated string formed from the
+elements in the list @var{list}.  In both procedures, order is
+preserved.  @nc{string->list} and @nc{list->string} are inverses so far
+as @nc{equal?} is concerned.
 @end deffn
 
 @deffn procedure string-copy string
@@ -265,16 +263,16 @@ between @var{start} and @var{end}.
 @deffnx procedure string-copy! to at from start end
 
 It is an error if @var{at} is less than zero or greater than the length
-of @var{to}.  It is also an error if @code{(- (string-length @rv{to})
-@rv{at})} is less than @code{(- @rv{end} @rv{start})}.
+of @var{to}.  It is also an error if @nc{(- (string-length @rv{to})
+@rv{at})} is less than @nc{(- @rv{end} @rv{start})}.
 
 Copies the characters of string @var{from} between @var{start} and
 @var{end} to string @var{to}, starting at @var{at}.  The order in which
-characters are copied is unspecified, ex@value{shy}cept that if the
-source and destination overlap, copying takes place as if the source is
-first copied into a temporary string and then into the destination.
-This can be achieved without allocating storage by making sure to copy
-in the correct direction in such circumstances.
+characters are copied is unspecified, except that if the source and
+destination overlap, copying takes place as if the source is first
+copied into a temporary string and then into the destination.  This can
+be achieved without allocating storage by making sure to copy in the
+correct direction in such circumstances.
 
 @lisp
 (define a "12345")
@@ -290,6 +288,6 @@ b                             @ok{"a12de"}
 
 It is an error if @var{fill} is not a character.
 
-The @code{string-fill!} procedure stores @var{fill} in the elements of
+The @nc{string-fill!} procedure stores @var{fill} in the elements of
 @var{string} between @var{start} and @var{end}.
 @end deffn

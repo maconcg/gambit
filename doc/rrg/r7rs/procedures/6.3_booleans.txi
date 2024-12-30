@@ -1,17 +1,17 @@
 @node Booleans
-@cindex true
-@cindex false
+@cindex true value
+@cindex false value
 @section Booleans
-The standard boolean objects for true and false are written as @code{#t}
-and @code{#f}.  Alternatively, they can be written @code{#true} and
-@code{#false}, respectively.  What really matters, though, are the
-objects that the Scheme conditional ex@value{shy}pres@value{shy}sions
-(@code{if}, @code{cond}, @code{and}, @code{or}, @code{when},
-@code{unless}, @code{do}) treat as true or false.  The phrase
-@quotedbl{a true value} (or sometimes just @quotedbl{true}) means any
-object treated as true by the conditional expressions, and the phrase
-@quotedbl{a false value} (or @quotedbl{false}) means any object treated
-as false by the conditional expressions.
+The standard boolean objects for true and false are written as @samp{#t}
+and @samp{#f}.  Alternatively, they can be written @samp{#true} and
+@samp{#false}, respectively.  What really matters, though, are the
+objects that the Scheme conditional expressions (@code{if}, @code{cond},
+@code{and}, @code{or}, @code{when}, @code{unless}, @code{do}) treat as
+true or false.  The phrase @quotedbl{a true value} (or sometimes just
+@quotedbl{true}) means any object treated as true by the conditional
+expressions, and the phrase @quotedbl{a false value} (or
+@quotedbl{false}) means any object treated as false by the conditional
+expressions.
 
 Of all the Scheme values, only @code{#f} counts as false in conditional
 expressions.  All other Scheme values, including @code{#t}, count as
@@ -64,6 +64,6 @@ The @code{boolean?} predicate returns @code{#t} if @var{obj} is either
 @deffn procedure boolean=? @
 @parI{boolean} @parII{boolean} @parIII{boolean} @value{defdots}
 
-Returns @code{#t} if all the arguments are
-@code{#t} or all are @code{#f}.
+Returns @code{#t} if all the arguments are @code{#t} or all are
+@code{#f}.
 @end deffn

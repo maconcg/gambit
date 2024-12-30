@@ -72,6 +72,7 @@
   (write-defabbrev-macro)
   (write-defparen-macro)
   (write-hc-macro)
+  (write-hs-macro)
   (write-ht-macro)
   (write-iifinfo-macro)
   (write-todo-macro)
@@ -79,6 +80,9 @@
   (write-quotecode-macro)
   (write-angle-macro)
   (write-nobr-macro)
+  (write-nc-macro)
+  (write-ns-macro)
+  (write-nt-macro)
   (write-rv-macro)
   (write-sv-macro)
   (write-prosedatumlabel-macro)
@@ -87,7 +91,13 @@
   (write-vars))
 
 (define write-vars
-  (let ((write-cdspace
+  (let ((write-acronym-initial
+         (lambda (acronym meaning)
+           (write-string
+            (string-append
+             "@set " acronym "initial "
+             "@acronym{" acronym "," meaning "}\n"))))
+        (write-cdspace
          (lambda ()
            (write-string
             (string-append "@set cdspace "
@@ -136,6 +146,20 @@
                            "@inlinefmtifelse{tex,"
                            "@math{\\\\varsigma},"
                            "@U{03C2}}\n"))))
+        (write-IEEE-754-initial
+         (lambda ()
+           (write-string
+            (string-append
+             "@set " "IEEE754initial "
+             "@acronym{IEEE 754,"
+             "@acronym{IEEE} Standard for Floating-Point Arithmetic}\n"))))
+        (write-IEEE-754-2008-initial
+         (lambda ()
+           (write-string
+            (string-append
+             "@set " "IEEE7542008initial "
+             "@acronym{IEEE 754-2008,"
+             "@acronym{IEEE 754}@comma{} 2008 revision}\n"))))
         (write-longarrow
          (lambda ()
            (write-string
@@ -150,6 +174,20 @@
                            "@i{new}"
                            "@inlinefmtifelse{html,@U{2009},}𝜎"
                            "\n"))))
+        (write-SRFIinitial
+         (lambda (number title)
+           (write-string
+            (string-append "@set SRFI" number "initial "
+                           "@acronym{@acronym{SRFI} " number
+                           ",@i{" title "}}\n"))))
+        (write-SRFIitem
+         (lambda (number title author year)
+           (write-string
+            (string-append "@set SRFI" number "item "
+                           "@url{https://srfi.schemers.org/srfi-" number
+                           "/,@acronym{@acronym{SRFI} " number
+                           ",@i{" title "}}}@*"
+                           author "@comma{} " year "\n"))))
         (write-truishsigma
          (lambda ()
            (write-string
@@ -166,7 +204,8 @@
                            "\n"))))
         (write-r2rs
          (lambda ()
-           (write-string "@set R2RS @acronym{RRRS}\n")))
+           (write-string
+            (string-append "@set R2RS @acronym{RRRS}\n"))))
         (write-Revisedn
          (lambda (n superscript)
            (write-string
@@ -184,6 +223,20 @@
                            ",Revised@sup{" (string-downcase n)
                            "}}} "
                            "Report on the Algorithmic Language Scheme\n"))))
+        (write-RnRSinitial
+         (lambda (n superscript)
+           (write-string
+            (string-append
+             "@set R" n
+             "RSinitial @inlinefmtifelse{plaintext,@acronym{R" n
+             "RS,@value{Revised" n "RS}},"
+             "@inlinefmtifelse{info,@acronym{R" superscript
+             "RS,@value{Revised" n "RS}},"
+             "@inlinefmtifelse{html,@acronym{R@sup{" (string-downcase n)
+             "}RS,Revised" superscript
+             " Report on the Algorithmic Langugage Scheme},"
+             "@acronym{R@sup{" (string-downcase n)
+             "}RS}}}}\n"))))
         (write-RnRS
          (lambda (n superscript)
            (write-string
@@ -211,12 +264,65 @@
                            "@ @ @ @ @ @ @ "
                            "@inlineraw{html,</span>},,}}}\n")))))
     (lambda ()
+      (write-acronym-initial
+       "ASCII" "American Standard Code for Information Interchange")
+      (write-acronym-initial
+       "BNF" "Backus-Naur Form")
+      (write-acronym-initial
+       "IEEE" "Institute of Electrical and Electronics Engineers")
+      (write-acronym-initial
+       "MIT" "Massachusetts Institute of Technology")
+      (write-acronym-initial
+       "RRRS" "@i{Revised Revised Report on Scheme}")
+      (write-SRFIinitial
+       "45" "Primitives for Expressing Iterative Lazy Algorithms")
+      (write-acronym-initial
+       "SI" "International System of Units")
+      (write-acronym-initial
+       "TAI" "International Atomic Time")
+      (write-acronym-initial
+       "UAX" "Unicode Standard Annex")
+      (write-acronym-initial
+       "UTC" "Coordinated Universal Time")
+      (for-each (lambda (args) (apply write-SRFIitem args))
+                '(("0" "Feature-based conditional expansion construct"
+                   "Marc Feeley" "1999")
+                  ("1" "List Library"
+                   "Olin Shivers" "1999")
+                  ("4" "Homogeneous Numeric Vector Datatypes"
+                   "Marc Feeley" "1999")
+                  ("6" "Basic Strings Ports"
+                   "William Clinger" "1999")
+                  ("9" "Defining Record Types"
+                   "Richard Kelsey" "1999")
+                  ("11" "Syntax for receiving multiple values"
+                   "Lars T Hansen" "2000")
+                  ("13" "String Libraries"
+                   "Olin Shivers" "2000")
+                  ("16" "Syntax for procedures of variable arity"
+                   "Lars T Hansen" "2000")
+                  ("30" "Nested Multi-line comments"
+                   "Martin Gasbichler" "2002")
+                  ("34" "Exception Handling for Programs"
+                   "Richard Kelsey and Michael Sperber" "2002")
+                  ("39" "Parameter Objects"
+                   "Marc Feeley" "2003")
+                  ("43" "Vector library"
+                   "Taylor Campbell" "2004")
+                  ("46" "Basic @t{Syntax-rules} Extensions"
+                   "Taylor Campbell" "2005")
+                  ("62" "S-expression comments"
+                   "Taylor Campbell" "2005")
+                  ("87" "@t{=>} in @t{case} clauses"
+                   "Chongkai Zhu" "2006")))
       (write-cdspace)
       (write-defdots)
       (write-dnspace)
       (write-greekcapitalsigma)
       (write-greeksmallsigma)
       (write-greekfinalsigma)
+      (write-IEEE-754-initial)
+      (write-IEEE-754-2008-initial)
       (write-longarrow)
       (write-newsigma)
       (write-truishsigma)
@@ -229,6 +335,12 @@
       (write-RevisednRS "6" "@U{2076}")
       (write-RevisednRS "7" "@U{2077}")
       (write-r2rs)
+      (write-RnRSinitial "3" "@U{00B3}")
+      (write-RnRSinitial "4" "@U{2074}")
+      (write-RnRSinitial "5" "@U{2075}")
+      (write-RnRSinitial "6" "@U{2076}")
+      (write-RnRSinitial "7" "@U{2077}")
+      (write-RnRSinitial "N" "@U{207f}")
       (write-RnRS "3" "@U{00B3}")
       (write-RnRS "4" "@U{2074}")
       (write-RnRS "5" "@U{2075}")
@@ -459,10 +571,22 @@
                   "\n@end macro\n")))
 
 (define (write-hc-macro)
-  (write-string "@macro hc {xx}\n@code{\\xx\\}\n@end macro\n"))
+  (write-string "@macro hc {xx}\n@code{@nobr{\\xx\\}}\n@end macro\n"))
+
+(define (write-hs-macro)
+  (write-string "@macro hs {xx}\n@samp{@nobr{\\xx\\}}\n@end macro\n"))
 
 (define (write-ht-macro)
-  (write-string "@macro ht {xx}\n@t{\\xx\\}\n@end macro\n"))
+  (write-string "@macro ht {xx}\n@t{@nobr{\\xx\\}}\n@end macro\n"))
+
+(define (write-nc-macro)
+  (write-string "@macro nc {xx}\n@code{@nobr{\\xx\\}}\n@end macro\n"))
+
+(define (write-ns-macro)
+  (write-string "@macro ns {xx}\n@samp{@nobr{\\xx\\}}\n@end macro\n"))
+
+(define (write-nt-macro)
+  (write-string "@macro nt {xx}\n@t{@nobr{\\xx\\}}\n@end macro\n"))
 
 (define (write-defabbrev-macro)
   (write-string (string-append "@macro defabbrev {a}\n"
@@ -553,20 +677,41 @@ EOF
 EOF
 ))
 
-(define (write-prosedatumlabel-macro)
-(write-string #<<EOF
-@macro prosedatumlabel {n}
-@inlinefmtifelse{html,@inlineraw{html,<span class="nobr">@t{@hashchar{}@sv{n}=}</span>},@t{@hashchar{}@sv{n}=}}
-@end macro
 
-EOF
-))
+(define (write-prosedatumlabel-macro)
+  (write-string (string-append "@macro prosedatumlabel {xx}\n"
+                               "@inlinefmtifelse{html,"
+                               "@inlineraw{html,"
+                               "<span class=\"nobr\">"
+                               "@hashchar{}@sv{\\xx\\}="
+                               "</span>},"
+                               "@hashchar{}@sv{\\xx\\}="
+                               "}\n@end macro\n")))
 
 (define (write-prosedatumref-macro)
-(write-string #<<EOF
-@macro prosedatumref {n}
-@inlinefmtifelse{html,@inlineraw{html,<span class="nobr">@t{@hashchar{}@sv{n}@hashchar{}}</span>},@t{@hashchar{}@sv{n}@hashchar{}}}
-@end macro
+  (write-string (string-append "@macro prosedatumref {xx}\n"
+                               "@inlinefmtifelse{html,"
+                               "@inlineraw{html,"
+                               "<span class=\"nobr\">"
+                               "@hashchar{}@sv{\\xx\\}@hashchar{}"
+                               "</span>},"
+                               "@hashchar{}@sv{\\xx\\}@hashchar{}"
+                               "}\n@end macro\n")))
 
-EOF
-))
+;; (define (write-prosedatumlabel-macro)
+;; (write-string #<<EOF
+;; @macro prosedatumlabel {n}
+;; @inlinefmtifelse{html,@inlineraw{html,<span class="nobr">@t{@hashchar{}@sv{n}=}</span>},@t{@hashchar{}@sv{n}=}}
+;; @end macro
+
+;; EOF
+;; ))
+
+;; (define (write-prosedatumref-macro)
+;; (write-string #<<EOF
+;; @macro prosedatumref {n}
+;; @inlinefmtifelse{html,@inlineraw{html,<span class="nobr">@t{@hashchar{}@sv{n}@hashchar{}}</span>},@t{@hashchar{}@sv{n}@hashchar{}}}
+;; @end macro
+
+;; EOF
+;; ))

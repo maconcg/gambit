@@ -7,11 +7,10 @@
 @section Semantics
 This section gives an overview of Scheme's semantics.  A detailed
 informal semantics is the subject of chapters 3 through 6.  For
-reference purposes, section 7.2 (@pxref{Formal semantics}) provides a
+reference purposes, section 7.2 (@ref{Formal semantics}) provides a
 formal semantics of Scheme.
 
 @cindex scope
-@cindex scoping
 @cindex static scope
 @cindex lexical scope
 Scheme is a statically scoped programming language.  Each use of a
@@ -20,7 +19,6 @@ variable.
 
 @cindex types
 @cindex dynamic types @seeentry{types}
-@cindex latent types @seeentry{types}
 Scheme is a dynamically typed language.  Types are associated with
 values (also called objects) rather than with variables.  Statically
 typed languages, by contrast, associate types with variables and
@@ -32,30 +30,29 @@ expressions as well as with values.
 @cindex proper tail recursion @subentry implementation requirement
 @cindex syntactic recursion
 All objects created in the course of a Scheme computation, including
-pro@value{shy}ce@value{shy}dures and continuations, have unlimited
-extent.  No Scheme object is ever destroyed.  The reason that
-implementations of Scheme do not (usually!)@: run out of storage is that
-they are permitted to reclaim the storage occupied by an object if they
-can prove that the object cannot possibly matter to any future
-computation.  Implementations of Scheme are required to be properly
-tail-recursive.  This allows the execution of an iterative computation
-in con@value{shy}stant space, even if the iterative computation is
-described by a syntactically recursive procedure.  Thus with a properly
-tail-recursive im@value{shy}ple@value{shy}mentation, iteration can be
-expressed using the ordinary procedure-call mechanics, so that special
-iteration constructs are useful only as syntactic sugar.  @xref{Proper
-tail recursion}.
+procedures and continuations, have unlimited extent.  No Scheme object
+is ever destroyed.  The reason that implementations of Scheme do not
+(usually!)@: run out of storage is that they are permitted to reclaim
+the storage occupied by an object if they can prove that the object
+cannot possibly matter to any future computation.  Implementations of
+Scheme are required to be properly tail-recursive.  This allows the
+execution of an iterative computation in constant space, even if the
+iterative computation is described by a syntactically recursive
+procedure.  Thus with a properly tail-recursive implementation,
+iteration can be expressed using the ordinary procedure-call mechanics,
+so that special iteration constructs are useful only as syntactic sugar.
+@xref{Proper tail recursion}.
 
 @cindex procedures @subentry as objects
 @cindex continuations @subentry first-class status
 Scheme procedures are objects in their own right.  Procedures can be
 created dynamically, stored in data structures, returned as results of
-pro@value{shy}cedures, and so on.  One distinguishing feature of Scheme
-is that con@value{shy}tinuations, which in most other languages only
-operate behind the scenes, also have @quotedbl{first-class} status.
-Continuations are useful for implementing a wide variety of advanced
-control constructs, including non-local exits, back@value{shy}tracking,
-and coroutines.  @xref{Control features}.
+procedures, and so on.  One distinguishing feature of Scheme is that
+continuations, which in most other languages only operate behind the
+scenes, also have @quotedbl{first-class} status.  Continuations are
+useful for implementing a wide variety of advanced control constructs,
+including non-local exits, backtracking, and coroutines.  @xref{Control
+features}.
 
 @cindex argument evaluation
 @cindex argument passing
@@ -66,18 +63,17 @@ and coroutines.  @xref{Control features}.
 @cindex exact arithmetic
 @cindex inexact arithmetic
 Arguments to Scheme procedures are always passed by value, which means
-that the actual argument expressions are evaluated before the
-pro@value{shy}cedure gains control, regardless of whether the procedure
-needs the result of the evaluation.  Scheme's model of arithmetic is
-designed to remain as indepen@value{shy}dent as possible of the
-particular ways in which numbers are represented within a computer.  In
-Scheme, every integer is a rational number, every rational is a real,
-and every real is a complex number.  Thus the distinction between
-integer and real arithmetic, so important to many pro@value{shy}gramming
-languages, does not appear in Scheme.  In its place is a
-dis@value{shy}tinction between exact arithmetic, which corresponds to
-the math@value{shy}ematical ideal, and inexact arithmetic on
-approximations.  Exact arithmetic is not limited to integers.
+that the actual argument expressions are evaluated before the procedure
+gains control, regardless of whether the procedure needs the result of
+the evaluation.  Scheme's model of arithmetic is designed to remain as
+independent as possible of the particular ways in which numbers are
+represented within a computer.  In Scheme, every integer is a rational
+number, every rational is a real, and every real is a complex number.
+Thus the distinction between integer and real arithmetic, so important
+to many programming languages, does not appear in Scheme.  In its place
+is a distinction between exact arithmetic, which corresponds to the
+mathematical ideal, and inexact arithmetic on approximations.  Exact
+arithmetic is not limited to integers.
 
 @node Syntax
 @section Syntax
@@ -85,12 +81,11 @@ approximations.  Exact arithmetic is not limited to integers.
 @cindex Polish notation
 @cindex programs as data
 Scheme, like most dialects of Lisp, employs a fully parenthesized prefix
-no@value{shy}ta@value{shy}tion for programs and other data; the grammar
-of Scheme generates a sub@value{shy}language of the language used for
-data.  An important consequence of this simple, uniform representation
-is that Scheme programs and data can easily be treated uniformly by
-other Scheme programs.  For example, the @code{eval} procedure evaluates
-a Scheme program expressed as data.
+notation for programs and other data; the grammar of Scheme generates a
+sublanguage of the language used for data.  An important consequence of
+this simple, uniform representation is that Scheme programs and data can
+easily be treated uniformly by other Scheme programs.  For example, the
+@code{eval} procedure evaluates a Scheme program expressed as data.
 
 @cindex lexical decomposition
 @cindex syntactic decomposition
@@ -100,7 +95,7 @@ The @code{read} procedure performs syntactic as well as lexical
 decomposition of the data it reads.  The @code{read} procedure parses
 its input as data (@pxref{External representations}), not as program.
 
-The formal syntax of Scheme is described in section 7.1 (@pxref{Formal
+The formal syntax of Scheme is described in section 7.1 (@ref{Formal
 syntax}).
 
 @node Notation and terminology
@@ -110,14 +105,14 @@ syntax}).
 @cindex base library
 @cindex libraries
 Every identifier defined in this report appears in one or more of
-several @define{libraries}.  Identifiers defined in the @emph{base
-library} are not marked specially in the body of the report.  This
-library includes the core syntax of Scheme and generally useful
+several @nobr{@define{libraries}}.  Identifiers defined in the
+@emph{base library} are not marked specially in the body of the report.
+This library includes the core syntax of Scheme and generally useful
 procedures that manipulate data.  For example, the variable @code{abs}
 is bound to a procedure of one argument that computes the absolute value
 of a number, and the variable @code{+} is bound to a procedure that
 computes sums.  The full list of all the standard libraries and the
-identifiers they export is given in Appendix A (@pxref{Standard
+identifiers they export is given in Appendix A (@ref{Standard
 Libraries}).
 
 All implementations of Scheme:
@@ -140,45 +135,42 @@ the extensions are not in conflict with the language reported here.
 
 @item
 Must support portable code by providing a mode of operation in which the
-lexical syntax does not conflict with the lexical syntax described in this
-report.
+lexical syntax does not conflict with the lexical syntax described in
+this report.
 @end itemize
 
 @node Error situations and unspecified behavior
 @subsection Error situations and unspecified behavior
 @cindex error signaling
 @cindex error situation
-@cindex @sortas{an error is signaled} @quotedbl{an error is signaled}
+@cindex @quotedbl{an error is signaled} @sortas{an error is signaled}
 @cindex signaling an error
 @cindex non-continuable exception
 When speaking of an error situation, this report uses the phrase
 @quotedbl{an error is signaled} to indicate that implementations must
 detect and report the error.  An error is signaled by raising a
 non-continuable exception, as if by the procedure @code{raise} as
-described in section 6.11 (@pxref{Exceptions}).  The object raised is
-im@value{shy}ple@value{shy}men@value{shy}tation-dependent and need not
-be distinct from objects previously used for the same purpose.  In
-addition to errors signaled in situations de@value{shy}scribed in this
-report, programmers can signal their own errors and handle signaled
-errors.
+described in section 6.11 (@ref{Exceptions}).  The object raised is
+implementation-dependent and need not be distinct from objects
+previously used for the same purpose.  In addition to errors signaled in
+situations described in this report, programmers can signal their own
+errors and handle signaled errors.
 
-@cindex @sortas{an error that satisfies} @quotedbl{an error that satisfies @var{predicate}}
+@cindex @quotedbl{an error that satisfies @var{predicate}} @sortas{an error that satisfies}
 The phrase @quotedbl{an error that satisfies @var{predicate} is
 signaled} means that an error is signaled as above.  Furthermore, if the
 object that is signaled is passed to the specified predicate (such as
-@code{file-error?} or @code{read-error?}), the predicate returns
-@code{#t}.
+@nc{file-error?} or @nc{read-error?}), the predicate returns @code{#t}.
 
-@cindex @sortas{an error} @quotedbl{an error}
+@cindex @quotedbl{an error} @sortas{an error}
 If such wording does not appear in the discussion of an error, then
 implementations are not required to detect or report the error, though
 they are encouraged to do so.  Such a situation is sometimes, but not
 always, referred to with the phrase @quotedbl{an error}.  In such a
-situation, an im@value{shy}ple@value{shy}men@value{shy}tation may or may
-not signal an error; if it does signal an error, the object that is
-signaled may or may not satisfy the predicates @code{error-object?},
-@code{file-error?}, or @code{read-error?}.  Alternatively,
-implementations may provide non-portable extensions.
+situation, an implementation may or may not signal an error; if it does
+signal an error, the object that is signaled may or may not satisfy the
+predicates @nc{error-object?}, @nc{file-error?}, or @nc{read-error?}.
+Alternatively, implementations may provide non-portable extensions.
 
 For example, it is an error for a procedure to be passed an argument of
 a type that the procedure is not explicitly specified to handle, even
@@ -186,57 +178,55 @@ though such domain errors are seldom mentioned in this report.
 Implementations may signal an error, extend a procedure’s domain of
 definition to include such arguments, or fail catastrophically.
 
-@cindex @sortas{may report a violation} @quotedbl{may report a violation of an implementation restriction}
+@cindex @quotedbl{may report a violation of an implementation restriction} @sortas{may report a violation of an implementation restriction}
 @cindex implementation restrictions
 This report uses the phrase @quotedbl{may report a violation of an
 implementation restriction} to indicate circumstances under which an
-implementation is per@value{shy}mitted to report that it is unable to
-continue execution of a correct pro@value{shy}gram because of some
-restriction imposed by the implementation.
-Imp@value{shy}lemen@value{shy}tation restrictions are discouraged, but
-implementations are en@value{shy}couraged to report violations of
-implementation restrictions.
+implementation is permitted to report that it is unable to continue
+execution of a correct program because of some restriction imposed by
+the implementation.  Implemen@value{shy}ta@value{shy}tion restrictions
+are discouraged, but implementations are encouraged to report violations
+of implementation restrictions.
 
 For example, an implementation may report a violation of an
-implemen@value{shy}ta@value{shy}tion restriction if it does not have
-enough storage to run a program, or if an arithmetic operation would
-produce an exact number that is too large for the implementation to
-represent.
+implementation restriction if it does not have enough storage to run a
+program, or if an arithmetic operation would produce an exact number
+that is too large for the implementation to represent.
 
 @cindex unspecified values
 If the value of an expression is said to be @quotedbl{unspecified}, then
 the expression must evaluate to some object without signaling an error,
-but the value de@value{shy}pends on the implementation; this report
-explicitly does not say what value is returned.
+but the value depends on the implementation; this report explicitly does
+not say what value is returned.
 
-@cindex @acronym{RFC} 2199
-@cindex @sortas{must} @quotedbl{must}
-@cindex @sortas{must not} @quotedbl{must not}
-@cindex @sortas{shall} @quotedbl{shall}
-@cindex @sortas{shall not} @quotedbl{shall not}
-@cindex @sortas{should} @quotedbl{should}
-@cindex @sortas{should not} @quotedbl{should not}
-@cindex @sortas{may} @quotedbl{may}
-@cindex @sortas{required} @quotedbl{required}
-@cindex @sortas{recommended} @quotedbl{recommended}
-@cindex @sortas{optional} @quotedbl{optional}
+@cindex RFC 2199
+@cindex @quotedbl{must} @sortas{must} @seeentry{RFC 2199}
+@cindex @quotedbl{must not} @sortas{must not} @seeentry{RFC 2199}
+@cindex @quotedbl{shall} @sortas{shall} @seeentry{RFC 2199}
+@cindex @quotedbl{shall not} @sortas{shall not} @seeentry{RFC 2199}
+@cindex @quotedbl{should} @sortas{should} @seeentry{RFC 2199}
+@cindex @quotedbl{should not} @sortas{should not} @seeentry{RFC 2199}
+@cindex @quotedbl{may} @sortas{may} @seeentry{RFC 2199}
+@cindex @quotedbl{required} @sortas{required} @seeentry{RFC 2199}
+@cindex @quotedbl{recommended} @sortas{recommended} @seeentry{RFC 2199}
+@cindex @quotedbl{optional} @sortas{optional} @seeentry{RFC 2199}
 Finally, the words and phrases @quotedbl{must}, @quotedbl{must not},
 @quotedbl{shall}, @quotedbl{shall not}, @quotedbl{should},
 @quotedbl{should not}, @quotedbl{may}, @quotedbl{required},
 @quotedbl{recommended}, and @quotedbl{optional}, although not
 capitalized in this report, are to be interpreted as described in
-@acronym{RFC,Request for Comments} 2119@footnote{@value{refRFC2119}}.
-They are used only with reference to implementer or
-imple@value{shy}men@value{shy}tation behavior, not with reference to
-programmer or program behavior.
+@acronym{RFC 2119,Key words for use in @acronym{RFCs,Requests for
+Comments} to Indicate Requirement Levels}@footnote{@value{refRFC2119}}.
+They are used only with reference to implementer or implementation
+behavior, not with reference to programmer or program behavior.
 
 @node Entry format
 @subsection Entry format
-Chapters 4 (@pxref{Expressions}) and 6 (@pxref{Standard procedures}) are
-organized into entries.  Each entry describes one lan@value{shy}guage
-feature or a group of related features, where a feature is either a
-syn@value{shy}tactic construct or a procedure.  An entry begins with one
-or more header lines of the form
+Chapters 4 (@ref{Expressions}) and 6 (@ref{Standard procedures}) are
+organized into entries.  Each entry describes one language feature or a
+group of related features, where a feature is either a syntactic
+construct or a procedure.  An entry begins with one or more header lines
+of the form
 
 @defblock
 @deftypeline @i{category} @/ @i{template}
@@ -249,17 +239,17 @@ for identifiers in the base library, or
 @end defblock
 
 where @var{name} is the short name of a library as defined in Appendix A
-(@pxref{Standard Libraries}).
+(@ref{Standard Libraries}).
 
 @cindex Syntactic variables
 If @var{category} is @quotedbl{syntax}, the the entry describes an
 expression type, and the template gives the syntax of the expression
-type.  Components of ex@value{shy}pres@value{shy}sions are designated by
-syntactic variables, which are written using angle brackets, for example
-@angle{expression} and @angle{variable}.  Syntactic variables are
-in@value{shy}tended to denote segments of program text; for example,
-@angle{expression} stands for any string of characters which is a
-syntactically valid expression.  The notation
+type.  Components of expressions are designated by syntactic variables,
+which are written using angle brackets, for example @angle{expression}
+and @angle{variable}.  Syntactic variables are intended to denote
+segments of program text; for example, @angle{expression} stands for any
+string of characters which is a syntactically valid expression.  The
+notation
 
 @display
 @angle{@parI{thing}} @value{defdots}
@@ -281,16 +271,16 @@ or variable is an error.
 
 If @var{category} is @quotedbl{procedure}, then the entry describes a
 procedure, and the header line gives a template for a call to the
-procedure@inlinefmtifelse{info,., Argument names in the template are
+procedure@inlinefmtifelse{info,.,. Argument names in the template are
 @i{italicized}.}  Thus the header line
 
 @defblock
 @defline procedure vector-ref vector k
 @end defblock
 
-indicates that the procedure bound to the @nobr{@code{vector-ref}}
-variable takes two arguments, a vector @nobr{@var{vector}} and an exact
-non-negative integer @var{k} (see below).
+indicates that the procedure bound to the @nc{vector-ref} variable takes
+two arguments, a vector @var{vector} and an exact non-negative integer
+@var{k} (see below).
 
 The header lines
 
@@ -299,17 +289,17 @@ The header lines
 @defline procedure make-vector k fill
 @end defblock
 
-indicate that the @nobr{@code{make-vector}} procedure must be defined to
-take either one or two arguments.
+indicate that the @nc{make-vector} procedure must be defined to take
+either one or two arguments.
 
 It is an error for a procedure to be presented with an argument that it
 is not specified to handle.  For succinctness, we follow the convention
 that if an argument name is also the name of a type listed in section
-3.2 (@pxref{Disjointness of types}), then it is an error if that
-argument is not of the named type.  For example, the header line for
-@nobr{@code{vector-ref}} given above dictates that the first argument to
-@nobr{@code{vector-ref}} is a vector.  The following naming conventions
-also imply type restrictions:
+3.2 (@ref{Disjointness of types}), then it is an error if that argument
+is not of the named type.  For example, the header line for
+@nc{vector-ref} given above dictates that the first argument to
+@nc{vector-ref} is a vector.  The following naming conventions also
+imply type restrictions:
 
 @cindex parameter naming conventions
 @indentedblock
@@ -359,10 +349,10 @@ vector, or bytevector.
 
 @item
 The index @var{start} is always inclusive and the index @var{end} is
-always ex@value{shy}clu@value{shy}sive.  As an example, consider a
-string.  If @var{start} and @var{end} are the same, an empty substring
-is referred to, and if @var{start} is zero and @var{end} is the length
-of @var{string}, then the entire string is referred to.
+always exclusive.  As an example, consider a string.  If @var{start} and
+@var{end} are the same, an empty substring is referred to, and if
+@var{start} is zero and @var{end} is the length of @var{string}, then
+the entire string is referred to.
 @end itemize
 
 @node Evaluation examples
@@ -376,10 +366,10 @@ The symbol @quotedbl{@t{@result{}}} in program examples is read
 
 means that the expression @code{(* 5 8)} evaluates to the object
 @code{40}.  Or, more precisely: the expression given by the sequence of
-characters @quotecode{(* 5 8)} evaluates, in an environment containing
-the base library, to an object that can be represented externally by the
-sequence of characters @quotedbl{@t{40}}.  @xref{Evaluation examples}
-for a discussion of external representations of objects.
+characters @samp{(* 5 8)} evaluates, in an environment containing the
+base library, to an object that can be represented externally by the
+sequence of characters @samp{40}.  @xref{Evaluation examples} for a
+discussion of external representations of objects.
 
 @ifinfo
 The symbol @quotedbl{@t{@print{}}} in program examples is read
@@ -390,40 +380,39 @@ The symbol @quotedbl{@t{@print{}}} in program examples is read
                   @unspecified{unspecified}
 @end lisp
 
-means that the expression @code{(display (* 5 8))} prints the sequence
-of characters @quotedbl{@t{40}} to the current output port and evaluates
-to an unspecified value.
+means that the expression @code{(@nobr{display} (* 5 8))} prints the
+sequence of characters @samp{40} to the current output port and
+evaluates to an unspecified value.
 
 @end ifinfo
 @node Naming conventions
 @subsection Naming conventions
-@cindex @sortas{?} @code{?}
+@cindex ?
 @cindex predicates @subentry naming conventions
-By convention, @code{?} is the final character of the names of
+By convention, @samp{?} is the final character of the names of
 procedures that always return a boolean value.  Such procedures are
-called @define{predicates}.  Pred@value{shy}icates are generally
-understood to be side-effect free, except that they may raise an
-exception when passed the wrong type of argument.
+called @define{predicates}.  Predicates are generally understood to be
+side-effect free, except that they may raise an exception when passed
+the wrong type of argument.
 
-@cindex @sortas{!} @code{!}
+@cindex !
 @cindex mutation procedures @subentry naming conventions
-Similarly, @code{!} is the final character of the names of procedures
+Similarly, @samp{!} is the final character of the names of procedures
 that store values into previously allocated locations (@pxref{Storage
 model}).  Such procedures are called @define{mutation procedures}.  The
-value returned by a muta@value{shy}tion pro@value{shy}ce@value{shy}dure
-is unspecified.
+value returned by a mutation procedure is unspecified.
 
-@cindex @sortas{->} @code{->}
+@cindex ->
 @cindex coercion procedures
 @cindex coercion procedures @subentry naming conventions
-By convention, @quotecode{->} appears within the names of procedures
-that take an object of one type and return an analogous object of
-another type.  For ex@value{shy}ample, @code{list->vector} takes a list
-and returns a vector whose elements are the same as those of the list.
+By convention, @samp{->} appears within the names of procedures that
+take an object of one type and return an analogous object of another
+type.  For example, @nc{list->vector} takes a list and returns a vector
+whose elements are the same as those of the list.
 
 @cindex command
 A @define{command} is a procedure that does not return useful values to
-its con@value{shy}tinuation.
+its continuation.
 
 @cindex thunk
 A @define{thunk} is a procedure that does not accept arguments.

@@ -1,12 +1,11 @@
 @node Pairs and lists
 @section Pairs and lists
-
 A @define{pair} (sometimes called a @define{dotted pair}) is a record
 structure with two fields called the car and cdr fields (for historical
 reasons).  Pairs are created by the procedure @code{cons}.  The car and
 cdr fields are accessed by the procedures @code{car} and @code{cdr}.
-The car and cdr fields are assigned by the procedures @code{set-car!}
-and @code{set-cdr!}.
+The car and cdr fields are assigned by the procedures @nc{set-car!}  and
+@nc{set-cdr!}.
 
 @cindex list @subentry definition
 Pairs are used primarily to represent lists.  A @define{list} can be
@@ -25,13 +24,11 @@ If @var{list} is in @var{X}, then any pair whose cdr field contains
 
 The objects in the car fields of successive pairs of a list are the
 elements of the list.  For example, a two-element list is a pair whose
-car is the first ele@value{shy}ment and whose cdr is a pair whose car is
-the second element and whose cdr is the empty list.  The length of a
-list is the number of elements, which is the same as the number of
-pairs.
+car is the first element and whose cdr is a pair whose car is the second
+element and whose cdr is the empty list.  The length of a list is the
+number of elements, which is the same as the number of pairs.
 
 @cindex empty list
-
 The empty list is a special object of its own type.  It is not a pair,
 it has no elements, and its length is zero.
 
@@ -41,17 +38,15 @@ and are terminated by the empty list.
 @end quotation
 
 The most general notation (external representation) for Scheme pairs is
-the @quotedbl{dotted} notation @code{(@r{@varI{c}} . @r{@varII{c}})}
-where @varI{c} where is the value of the car field and @varII{c} is the
-value of the cdr field.  For example @code{(4 . 5)} is a pair whose car
-is 4 and whose cdr is 5.  Note that @code{(4 . 5)} is the external
-representation of a pair, not an expression that evaluates to a pair.
-
-@cindex empty list
+the @quotedbl{dotted} notation @ns{(@r{@varI{c}} . @r{@varII{c}})} where
+@varI{c} where is the value of the car field and @varII{c} is the value
+of the cdr field.  For example @nc{(4 . 5)} is a pair whose car is 4 and
+whose cdr is 5.  Note that @ns{(4 . 5)} is the external representation
+of a pair, not an expression that evaluates to a pair.
 
 A more streamlined notation can be used for lists: the elements of the
 list are simply enclosed in parentheses and separated by spaces.  The
-empty list is written @code{()}.  For example,
+empty list is written @samp{()}.  For example,
 
 @lisp
 (a b c d e)
@@ -65,8 +60,7 @@ are equivalent notations for a list of symbols.
 
 A chain of pairs not ending in the empty list is called an
 @define{improper list}.  Note that an improper list is not a list.  The
-list and dotted notations can be com@value{shy}bined to represent
-improper lists:
+list and dotted notations can be combined to represent improper lists:
 
 @lisp
 (a b c . d)
@@ -79,7 +73,7 @@ is equivalent to
 @end lisp
 
 Whether a given pair is a list depends upon what is stored in the cdr
-field.  When the @code{set-cdr!} procedure is used, an object can be a
+field.  When the @nc{set-cdr!} procedure is used, an object can be a
 list one moment and not the next:
 
 @lisp
@@ -97,16 +91,15 @@ y              @ok{(a . 4)}
 @end lisp
 
 Within literal expressions and representations of objects read by the
-@code{read} procedure, the forms @code{'@sv{datum}}, @code{`@sv{datum}},
-@code{,@sv{datum}}, @code{,@atchar{}@sv{datum}}, denote two-element
+@code{read} procedure, the forms @ns{'@sv{datum}}, @ns{`@sv{datum}},
+@ns{,@sv{datum}}, and @ns{,@atchar{}@sv{datum}}, denote two-element
 lists whose first elements are the symbols @code{quote},
-@code{quasiquote}, @code{unquote}, and @code{unquote-splicing},
-respectively.  The second element in each case is @angle{datum}.  This
-convention is supported so that arbitrary Scheme pro@value{shy}grams can
-be represented as lists.  That is, according to Scheme's
-gram@value{shy}mar, every @angle{expression} is also a @angle{datum}.
-Among other things, this permits the use of the @code{read} procedure to
-parse Scheme programs.
+@nc{quasiquote}, @nc{unquote}, and @nc{unquote-splicing}, respectively.
+The second element in each case is @angle{datum}.  This convention is
+supported so that arbitrary Scheme programs can be represented as lists.
+That is, according to Scheme's grammar, every @angle{expression} is also
+a @angle{datum}.  Among other things, this permits the use of the
+@code{read} procedure to parse Scheme programs.
 
 @deffn procedure pair? obj
 
@@ -137,8 +130,6 @@ Returns a newly allocated pair whose car is @varI{obj} and whose cdr is
 @end deffn
 
 @deffn procedure car pair
-
-@cindex empty list
 
 Returns the contents of the car field of @var{pair}.  Note that it is an
 error to take the car of the empty list.
@@ -180,7 +171,7 @@ Stores @var{obj} in the car field of @var{pair}.
 Stores @var{obj} in the cdr field of @var{pair}.
 @end deffn
 
-@deffn  procedure caar pair
+@deffn procedure caar pair
 @deffnx procedure cadr pair
 @deffnx procedure cdar pair
 @deffnx procedure cddr pair
@@ -198,7 +189,7 @@ follows:
 
 @c This formatting isn't great.
 @ifhtml
-@deffn  {cxr library procedure} caaar @var{pair}
+@deffn {cxr library procedure} caaar @var{pair}
 @deffnx {cxr library procedure} caadr @var{pair}
 @deffnx {cxr library procedure} cdddar @var{pair}
 @deffnx {cxr library procedure} cddddr @var{pair}
@@ -253,8 +244,6 @@ Arbitrary compositions up to four deep are provided.
 @end ifnothtml
 
 @deffn procedure null? obj
-
-@cindex empty list
 
 Returns @code{#t} if @var{obj} is the empty list, otherwise returns
 @code{#f}.
@@ -314,10 +303,10 @@ Returns the length of @var{list}.
 The last argument, if there is one, can be of any type.
 
 Returns a list consisting of the elements of the first @var{list}
-followed by the ele@value{shy}ments of the other @var{lists}.  If there
-are no arguments, the empty list is re@value{shy}turned.  If there is
-exactly one argument, it is re@value{shy}turned.  Otherwise the
-re@value{shy}sul@value{shy}ting list is always newly allocated, except
+followed by the elements of the other @var{lists}.  If there
+are no arguments, the empty list is returned.  If there is
+exactly one argument, it is returned.  Otherwise the
+resulting list is always newly allocated, except
 that it shares structure with the last argument.  An improper list
 results if the last argument is not a proper list.
 
@@ -347,7 +336,7 @@ in reverse order.
 It is an error if @var{list} has fewer than @var{k} elements.
 
 Returns the sublist of @var{list} obtained by omitting the first @var{k}
-elements.  The @code{list-tail} procedure could be defined by
+elements.  The @nc{list-tail} procedure could be defined by
 
 @lisp
 (define list-tail
@@ -361,10 +350,10 @@ elements.  The @code{list-tail} procedure could be defined by
 @deffn procedure list-ref list k
 
 The @var{list} argument can be circular, but it is an error if
-@var{list} has @var{k} or fewer ele@value{shy}ments.
+@var{list} has @var{k} or fewer elements.
 
 Returns the @var{k}th element of @var{list}.  (This is the same as the
-car of @code{(list-tail @rv{list} @rv{k})}.)
+car of @nc{(list-tail @rv{list} @rv{k})}.)
 
 @lisp
 (list-ref '(a b c d) 2)                   @ok{c}
@@ -376,7 +365,7 @@ car of @code{(list-tail @rv{list} @rv{k})}.)
 
 It is an error if @var{k} is not a valid index of @var{list}.
 
-The @code{list-set!} procedure stores @var{obj} in element @var{k} of
+The @nc{list-set!} procedure stores @var{obj} in element @var{k} of
 @var{list}.
 
 @lisp
@@ -394,13 +383,13 @@ The @code{list-set!} procedure stores @var{obj} in element @var{k} of
 @deffnx procedure member obj list compare
 
 These procedures return the first sublist of @var{list} whose car is
-@var{obj}, where the sub@value{shy}lists of @var{list} are the non-empty
-lists returned by @code{(list-tail @rv{list} @rv{k})} for @var{k} less
-than the length of @var{list}.  If @var{obj} does not occur in
-@var{list}, then @code{#f} (not the empty list) is returned.  The
-@code{memq} procedure uses @code{eq?} to compare @var{obj} with the
-elements of @var{list}, while @code{memv} uses @code{eqv?} and
-@code{member} uses @var{compare}, if given, and @code{equal?} otherwise.
+@var{obj}, where the sublists of @var{list} are the non-empty lists
+returned by @nc{(list-tail @rv{list} @rv{k})} for @var{k} less than the
+length of @var{list}.  If @var{obj} does not occur in @var{list}, then
+@code{#f} (not the empty list) is returned.  The @code{memq} procedure
+uses @code{eq?} to compare @var{obj} with the elements of @var{list},
+while @code{memv} uses @code{eqv?} and @code{member} uses @var{compare},
+if given, and @code{equal?} otherwise.
 
 @lisp
 (memq 'a '(a b c))          @ok{(a b c)}
@@ -426,12 +415,12 @@ It is an error if @var{alist} (for @quotedbl{association list}) is not a
 list of pairs.
 
 These procedures find the first pair in @var{alist} whose car field is
-@var{obj}, and re@value{shy}turns that pair.  If no pair in @var{alist}
-has @var{obj} as its car, then @code{#f} (not the empty list) is
-returned.  The @code{assq} procedure uses @code{eq?} to compare
-@var{obj} with the car fields of the pairs in @var{alist}, while
-@code{assv} uses @code{eqv?} and @code{assoc} uses @var{compare} if
-given and @code{equal?} otherwise.
+@var{obj}, and returns that pair.  If no pair in @var{alist} has
+@var{obj} as its car, then @code{#f} (not the empty list) is returned.
+The @code{assq} procedure uses @code{eq?} to compare @var{obj} with the
+car fields of the pairs in @var{alist}, while @code{assv} uses
+@code{eqv?} and @code{assoc} uses @var{compare} if given and
+@code{equal?} otherwise.
 
 @lisp
 (define e '((a 1) (b 2) (c 3)))

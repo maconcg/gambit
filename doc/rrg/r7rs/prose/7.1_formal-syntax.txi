@@ -2,15 +2,16 @@
 @chapter Formal syntax and semantics
 @node Formal syntax
 @section Formal syntax
-
 This section provides a formal syntax for Scheme written in an extended
-@acronym{BNF,Backus-Naur Form}.
+@value{BNFinitial}.
 
 All spaces in the grammar are for legibility.  Case is not significant
 except in the definitions of @angle{letter}, @angle{character name} and
-@angle{mnemonic escape}; for example, @code{#x1A} and @code{#X1a} are
-equivalent, but @code{foo} and @code{Foo} and @code{#\space} and
-@code{#\Space} are distinct.  @angle{empty} stands for the empty string.
+@angle{mnemonic escape}; for example, @nc{@hashchar{}x1A} and
+@nc{@hashchar{}X1a} are equivalent, but @nc{foo} and @nc{Foo} and
+@nc{@hashchar{}@backslashchar{}space} and
+@nc{@hashchar{}@backslashchar{}Space} are distinct.  @angle{empty}
+stands for the empty string.
 
 The following extensions to @acronym{BNF} are used to make the
 description more concise: @angle{thing}* means zero or more occurrences
@@ -18,9 +19,7 @@ of @angle{thing}; and @angle{thing}+ means at least one @angle{thing}.
 
 @node Lexical structure
 @subsection Lexical structure
-
 @cindex token
-
 This section describes how individual tokens (identifiers, numbers,
 etc.)@: are formed from sequences of characters.  The following sections
 describe how expressions and programs are formed from sequences of
@@ -43,17 +42,18 @@ repertoire specified below, Scheme implementations may permit any
 additional repertoire of Unicode characters to be employed in
 identifiers, provided that each such character has a Unicode general
 category of Lu, Ll, Lt, Lm, Lo, Mn, Mc, Me, Nd, Nl, No, Pd, Pc, Po, Sc,
-Sm, Sk, So, or Co, or is U+200C or U+200D (the zero-width non-joiner and
-joiner, respectively, which are needed for correct spelling in Persian,
-Hindi, and other languages).  However, it is an error for the first
-character to have a general category of Nd, Mc, or Me.  It is also an
-error to use a non-Unicode character in symbols or identifiers.
+Sm, Sk, So, or Co, or is @nobr{U+200C} or @nobr{U+200D} (the zero-width
+non-joiner and joiner, respectively, which are needed for correct
+spelling in Persian, Hindi, and other languages).  However, it is an
+error for the first character to have a general category of Nd, Mc, or
+Me.  It is also an error to use a non-Unicode character in symbols or
+identifiers.
 
 All Scheme implementations must permit the escape sequence
-@nobr{@code{\x@sv{hexdigits};}} to appear in Scheme identifiers that are
-enclosed in vertical lines.  If the character with the given Unicode
-scalar value is supported by the implementation, identifiers containing
-such a sequence are equivalent to identifiers containing the
+@nc{@backslashchar{}x@sv{hexdigits};} to appear in Scheme identifiers
+that are enclosed in vertical lines.  If the character with the given
+Unicode scalar value is supported by the implementation, identifiers
+containing such a sequence are equivalent to identifiers containing the
 corresponding character.
 
 @cindex identifier
@@ -149,7 +149,6 @@ successfully parses.  Note that any string that parses as an
 
 @node Expressions formal
 @subsection Expressions
-
 The definitions in this and the following subsections assume that all
 the syntax keywords defined in this report have been properly imported
 from their libraries, and that none of them have been redefined or
@@ -273,11 +272,10 @@ shadowed.
 
 @node Quasiquotations
 @subsection Quasiquotations
-
 The following grammar for quasiquote expressions is not context-free.
 It is presented as a recipe for generating an infinite number of
 production rules.  Imagine a copy of the following rules for @var{D} =
-1, 2, 3, @value{defdots}, where @var{D} is the nest@value{shy}ing depth.
+1, 2, 3, @value{defdots}, where @var{D} is the nesting depth.
 
 @example grammar
 @sv{quasiquotation} @value{longarrow} @sv{quasiquotation 1}
@@ -309,11 +307,10 @@ precedence.
 
 @node Transformers
 @subsection Transformers
-
 @quotation
 @i{Note:} Though this grammar does not say so, a top-level
-@nobr{@code{syntax-rules}} pattern must be a list pattern, not a vector
-pattern or an identifier pattern.
+@nc{syntax-rules} pattern must be a list pattern, not a vector pattern
+or an identifier pattern.
 @end quotation
 
 @example grammar
@@ -350,7 +347,6 @@ pattern or an identifier pattern.
 
 @node Programs and definitions
 @subsection Programs and definitions
-
 @example grammar
 @sv{program} @value{longarrow}
    @sv{import declaration}+

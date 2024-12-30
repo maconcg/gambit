@@ -11,8 +11,8 @@
 
 @settitle Revised^7 Report on the Algorithmic Language Scheme
 @clear txicodevaristt
-@synindex vr cp
-@syncodeindex pg cp
+@syncodeindex fn cp
+@syncodeindex vr cp
 
 @dircategory The Algorithmic Language Scheme
 @direntry
@@ -82,9 +82,12 @@
 @include prose/_example.txi
 
 @node Alphabetic Index
-@unnumbered Alphabetic Index of Definitions of Concepts, Keywords, and Procedures
-@syncodeindex fn cp
+@unnumbered Alphabetic Index of Definitions of Concepts@comma{} Keywords@comma{} and Procedures
 @printindex cp
+
+@node Index of Standard Libraries
+@unnumbered Index of Standard Libraries
+@printindex pg
 
 @ifnothtml
 @ifnotplaintext

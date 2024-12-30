@@ -1,21 +1,19 @@
 @node Bytevectors
 @section Bytevectors
 @define{Bytevectors} represent blocks of binary data.  They are
-fixed-length se@value{shy}quen@value{shy}ces of bytes, where a
-@define{byte} is an exact integer in the range from 0 to 255
-in@value{shy}clu@value{shy}sive.  A bytevector is typically more
-space-efficient than a vector con@value{shy}tain@value{shy}ing the same
-values.
+fixed-length sequences of bytes, where a @define{byte} is an exact
+integer in the range from 0 to 255 inclusive.  A bytevector is typically
+more space-efficient than a vector containing the same values.
 
 @cindex valid indexes
-
+@cindex valid indices @seeentry{valid indexes}
 The @define{length} of a bytevector is the number of elements that it
 contains.  This number is a non-negative integer that is fixed when the
 bytevector is created.  The @define{valid indexes} of a bytevector are
-the exact non-negative in@value{shy}tegers less than the length of the
-bytevector, starting at index zero as with vectors.
+the exact non-negative integers less than the length of the bytevector,
+starting at index zero as with vectors.
 
-Bytevectors are written using the notation @code{@hashchar{}u8(@rv{byte}
+Bytevectors are written using the notation @samp{@hashchar{}u8(@rv{byte}
 @value{defdots})}.  For example, a bytevector of length 3 containing the
 byte 0 in element 0, the byte 10 in element 1, and the byte 5 in element
 2 can be written as follows:
@@ -29,7 +27,7 @@ quoted in programs.
 
 @deffn procedure bytevector? obj
 
-Returns @code{#t} if @var{obj} is a bytevector.  Otherwise, @code{#f} is
+Returns @nc{#t} if @var{obj} is a bytevector.  Otherwise, @nc{#f} is
 returned.
 @end deffn
 
@@ -90,7 +88,7 @@ Stores @var{byte} as the @var{k}th byte of @var{bytevector}.
 @deffnx procedure bytevector-copy bytevector start end
 
 Returns a newly allocated bytevector containing the bytes in
-@var{bytevector} be@value{shy}tween @var{start} and @var{end}.
+@var{bytevector} between @var{start} and @var{end}.
 
 @lisp
 (define a #u8(1 2 3 4 5))
@@ -103,17 +101,16 @@ Returns a newly allocated bytevector containing the bytes in
 @deffnx procedure bytevector-copy! to at from start end
 
 It is an error if @var{at} is less than zero or greater than the length
-of @var{to}.  It is also an error if @code{(- (bytevector-length @rv{t})
-at)} is less than @code{(- @rv{end} @rv{start})}.
+of @var{to}.  It is also an error if @nc{(- (bytevector-length @rv{to})
+@rv{at})} is less than @nc{(- @rv{end} @rv{start})}.
 
 Copies the bytes of bytevector @var{from} between @var{start} and
 @var{end} to bytevector @var{to}, starting at @var{at}.  The order in
 which bytes are copied is unspecified, except that if the source and
 destination overlap, copying takes place as if the source is first
-copied into a temporary bytevector and then into the
-des@value{shy}ti@value{shy}na@value{shy}tion.  This can be achieved
-without allocating storage by making sure to copy in the correct
-direction in such circumstances.
+copied into a temporary bytevector and then into the destination.  This
+can be achieved without allocating storage by making sure to copy in the
+correct direction in such circumstances.
 
 @lisp
 (define a (bytevector 1 2 3 4 5))
@@ -150,12 +147,11 @@ It is an error for @var{bytevector} to contain invalid @acronym{UTF-8}
 byte sequences.
 
 These procedures translate between strings and bytevectors that encode
-those strings using the @acronym{UTF-8} encoding.  The
-@code{utf8->string} procedure de@value{shy}codes the bytes of a
-bytevector between @var{start} and @var{end} and returns the
-cor@value{shy}responding string; the @code{string->utf8} procedure
-encodes the characters of a string between @var{start} and @var{end} and
-returns the corresponding bytevector.
+those strings using the @acronym{UTF-8} encoding.  The @nc{utf8->string}
+procedure decodes the bytes of a bytevector between @nc{start} and
+@nc{end} and returns the corresponding string; the @nc{string->utf8}
+procedure encodes the characters of a string between @var{start} and
+@var{end} and returns the corresponding bytevector.
 
 @lisp
 (utf8->string #u8(#x41))      @ok{"A"}

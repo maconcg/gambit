@@ -9,46 +9,46 @@ Scheme, @pxref{Formal syntax}.
 
 @node Identifiers
 @section Identifiers
-
 An identifier is any sequence of letters, digits, and @quotedbl{extended
-identifier char@value{shy}ac@value{shy}ters} provided that it does not
-have a prefix which is a valid number.  How@value{shy}ever, the @code{.}
-token (a single period) used in the list syntax is not an identifier.
+identifier characters} provided that it does not have a prefix which is
+a valid number.  However, the @samp{.}  token (a single period) used in
+the list syntax is not an identifier.
 
 All implementations of Scheme must support the following extended
-iden@value{shy}tifier characters:
+identifier characters:
 
-@example
-! $ % & * + - . / : < = > ? @atchar{} ^ _ ~
-@end example
+@indentedblock
+@multitable @columnfractions 1
+@item @t{! $ % @ampchar{} * + - . / : < = > ? @atchar{} ^ _ ~}
+@end multitable
+@end indentedblock
 
 Alternatively, an identifier can be represented by a sequence of zero or
-more characters enclosed within vertical lines (@code{|}), analogous to
-string lit@value{shy}er@value{shy}als.  Any character, including
-whitespace characters, but excluding the back@value{shy}slash and
-vertical line characters, can appear verbatim in such an
-iden@value{shy}tifier.  In addition, characters can be specified using
-either an @angle{inline hex escape} or the same escapes available in
-strings.
+more characters enclosed within vertical lines (@samp{|}), analogous to
+string literals.  Any character, including whitespace characters, but
+excluding the backslash and vertical line characters, can appear
+verbatim in such an identifier.  In addition, characters can be
+specified using either an @angle{inline hex escape} or the same escapes
+available in strings.
 
 For example, the identifier @hc{|H\x65;llo|} is the same identifier as
-@code{Hello}, and in an implementation that supports the appropriate
+@nc{Hello}, and in an implementation that supports the appropriate
 Unicode character the identifier @hc{|\x3BB;|} is the same as the
 identifier @code{@U{03BB}}.  What is more, @hc{|\t\t|} and
-@hc{|\x9;\x9;|} are the same. Note that @code{||} is a valid identifier
+@hc{|\x9;\x9;|} are the same.  Note that @hc{||} is a valid identifier
 that is different from any other identifier.
 
 Here are some examples of identifiers:
 
 @indentedblock
-@multitable @columnfractions .6 .4
+@multitable @columnfractions .62 .38
 @item @t{...} @tab @t{+}
 @item @t{+soup+} @tab @t{<=?}
 @item @t{.>string} @tab @t{a34kTMNs}
 @item @t{lambda} @tab @t{list->vector}
 @item @t{q} @tab @t{V17a}
 @item @t{|two words|} @tab @t{|two@identesc{@backslashchar{}x20;}words|}
-@item @t{the-word-recursion-has-many-meanings}
+@item @nt{the-word-recursion-has-many-meanings}
 @end multitable
 @end indentedblock
 
@@ -63,8 +63,8 @@ Any identifier can be used as a variable or as a syntactic keyword
 
 @item
 When an identifier appears as a literal or within a literal
-(@pxref{Literal expressions}), it is being used to denote a @emph{symbol}
-(@pxref{Symbols}).
+(@pxref{Literal expressions}), it is being used to denote a
+@emph{symbol} (@pxref{Symbols}).
 @end itemize
 
 @cindex case sensitivity
@@ -73,28 +73,30 @@ report@footnote{@value{refR5RS}}, the syntax distinguishes between upper
 and lower case in identifiers and in characters specified using their
 names.  However, it does not distinguish between upper and lower case in
 numbers, nor in @angle{inline hex escapes} used in the syntax of
-iden@value{shy}tifiers, characters, or strings.  None of the identifiers
-defined in this report contain upper-case characters, even when they
-appear to do so as a result of the English-language convention of
-capitalizing the first word of a sentence.
+identifiers, characters, or strings.  None of the identifiers defined in
+this report contain upper-case characters, even when they appear to do
+so as a result of the English-language convention of capitalizing the
+first word of a sentence.
 
 @cindex directives
 @cindex atmosphere @subentry directives @seeentry{directives}
 The following directives give explicit control over case folding.
 
-@example
-#!fold-case
-#!no-fold-case
-@end example
+@indentedblock
+@multitable @columnfractions 1
+@item @t{@hashchar{}!fold-case}
+@item @t{@hashchar{}!no-fold-case}
+@end multitable
+@end indentedblock
 
 These directives can appear anywhere comments are permitted
 (@pxref{Whitespace and comments}) but must be followed by a delimiter.
 They are treated as comments, except that they affect the reading of
-subsequent data from the same port.  The @code{#!fold-case} directive
-causes subsequent identifiers and character names to be case-folded as
-if by @code{string-foldcase} (@pxref{Strings}). It has no effect on
-character literals.  The @code{#!no-fold-case} directive causes a
-re@value{shy}turn to the default, non-folding behavior.
+subsequent data from the same port.  The @nc{@hashchar{}!fold-case}
+directive causes subsequent identifiers and character names to be
+case-folded as if by @nc{string-foldcase} (@pxref{Strings}).  It has no
+effect on character literals.  The @nc{@hashchar{}!no-fold-case}
+directive causes a return to the default, non-folding behavior.
 
 @node Whitespace and comments
 @cindex comments
@@ -103,29 +105,27 @@ re@value{shy}turn to the default, non-folding behavior.
 @cindex atmosphere @subentry whitespace @seeentry{whitespace}
 @section Whitespace and comments
 @define{Whitespace} characters include the space, tab, and newline
-characters.  (Im@value{shy}plemen@value{shy}tations may provide
-additional whitespace characters such as page break.)  Whitespace is
-used for improved readability and as necessary to separate tokens from
-each other, a token being an indivisible lexical unit such as an
-identifier or number, but is otherwise insignificant.  Whitespace can
-occur between any two tokens, but not within a token.  Whitespace
-occurring inside a string or inside a symbol delimited by vertical lines
-is significant.
+characters.  (Implementations may provide additional whitespace
+characters such as page break.)  Whitespace is used for improved
+readability and as necessary to separate tokens from each other, a token
+being an indivisible lexical unit such as an identifier or number, but
+is otherwise insignificant.  Whitespace can occur between any two
+tokens, but not within a token.  Whitespace occurring inside a string or
+inside a symbol delimited by vertical lines is significant.
 
 The lexical syntax includes several comment forms.  Comments are treated
 exactly like whitespace.
 
-A semicolon (@code{;}) indicates the start of a line comment.  The
-comment con@value{shy}tinues to the end of the line on which the
-semicolon appears.  Another way to indicate a comment is to prefix a
-@angle{datum} (@pxref{External representations}) with
-@code{@hashchar{};} and optional @angle{whitespace}.  The comment
-consists of the comment prefix @code{@hashchar{};}, the space, and the
-@angle{datum} together.  This notation is useful for
-@quotedbl{commenting out} sections of code.
+A semicolon (@samp{;}) indicates the start of a line comment.  The
+comment continues to the end of the line on which the semicolon appears.
+Another way to indicate a comment is to prefix a @angle{datum}
+(@pxref{External representations}) with @samp{@hashchar{};} and optional
+@angle{whitespace}.  The comment consists of the comment prefix
+@samp{@hashchar{};}, the space, and the @angle{datum} together.  This
+notation is useful for @quotedbl{commenting out} sections of code.
 
 Block comments are indicated with properly nested
-@code{@hashchar{}@U{007C}} and @code{@U{007C}@hashchar{}} pairs.
+@samp{@hashchar{}@U{007C}} and @samp{@U{007C}@hashchar{}} pairs.
 
 @lisp
 #|
@@ -144,8 +144,8 @@ Block comments are indicated with properly nested
 @section Other notations
 For a description of the notations used for numbers, @pxref{Numbers}.
 
-@table @t
-@item . + -
+@table @asis{}
+@item @samp{.}@t{ }@samp{+}@t{ }@samp{-}
 These are used in numbers, and can also occur anywhere in an identifier.
 A delimited plus or minus sign by itself is also an identifier.  A
 delimited period (not occurring within a number or identifier) is used
@@ -153,59 +153,59 @@ in the notation for pairs (@pxref{Pairs and lists}), and to indicate a
 rest-parameter in a formal parameter list (@pxref{Procedures}).  Note
 that a sequence of two or more periods @emph{is} an identifier.
 
-@item ( )
+@item @samp{@U{0028}}@t{ }@samp{@U{0029}}
 Parentheses are used for grouping and to notate lists (@pxref{Pairs and
 lists}).
 
-@item '
+@item @samp{'}
 The apostrophe (single quote) character is used to indicate literal data
 (@pxref{Literal expressions}).
 
-@item `
+@item @samp{`}
 The grave accent (backquote) character is used to indicate partly
 constant data (@pxref{Quasiquotation}).
 
-@item @comma{} @comma{}@atchar{}
+@item @samp{@comma{}}@t{ }@samp{@comma{}@atchar{}}
 The character comma and the sequence comma at-sign are used in
 conjunction with quasiquotation (@pxref{Quasiquotation}).
 
-@item "
+@item @samp{"}
 The quotation mark character is used to delimit strings
 (@pxref{Strings}).
 
-@item @backslashchar{}
+@item @samp{@backslashchar{}}
 Backslash is used in the syntax for character constants
 (@pxref{Characters}) and as an escape character within string constants
 (@pxref{Strings}) and identifiers (@pxref{Lexical structure}).
 
-@item [ ] @lbracechar{} @rbracechar{}
+@item @samp{@U{005B}}@t{ }@samp{@U{005D}}@t{ }@samp{@lbracechar{}}@t{ }@samp{@rbracechar{}}
 Left and right square and curly brackets (braces) are reserved for
 possible future extensions to the language.
 
-@item @hashchar{}
+@item @samp{@hashchar{}}
 The number sign is used for a variety of purposes depending on the
 character that immediately follows it:
 
-@item @hashchar{}t @hashchar{}f
+@item @samp{@hashchar{}t}@t{ }@samp{@hashchar{}f}
 These are the boolean constants (@pxref{Booleans}), along with the
-alternatives @code{@hashchar{}true} @code{@hashchar{}false}.
+alternatives @samp{#true} @samp{#false}.
 
-@item @hashchar{}@backslashchar{}
+@item @samp{@hashchar{}@backslashchar{}}
 This introduces a character constant (@pxref{Characters}).
 
-@item @hashchar{}@U{0028}
+@item @samp{@hashchar{}@U{0028}}
 This introduces a vector constant (@pxref{Vectors}).  Vector constants
-are termi@value{shy}nated by @code{)}.
+are terminated by @samp{@U{0029}}.
 
-@item @hashchar{}u8@U{0028}
+@item @samp{@hashchar{}u8@U{0028}}
 This introduces a bytevector constant (@pxref{Vectors}).  Bytevector
-constants are termi@value{shy}nated by @code{)}.
+constants are terminated by @samp{@U{0029}}.
 
-@item @hashchar{}e @hashchar{}i @hashchar{}b @hashchar{}o @hashchar{}d @hashchar{}x
+@item @samp{@hashchar{}e}@t{ }@samp{@hashchar{}i}@t{ }@samp{@hashchar{}b}@t{ }@samp{@hashchar{}o}@t{ }@samp{@hashchar{}d}@t{ }@samp{@hashchar{}x}
 These are used in the notation for numbers (@pxref{Syntax of numerical
 constants}).
 
-@item @hashchar{}@sv{n}= @hashchar{}@sv{n}@hashchar{}
+@item @samp{@hashchar{}@sv{n}=}@t{ }@samp{@hashchar{}@sv{n}@hashchar{}}
 These are used for labeling and referencing other literal data
 (@pxref{Datum labels}).
 @end table
@@ -214,21 +214,24 @@ These are used for labeling and referencing other literal data
 @cindex datum label
 @section Datum labels
 @defblock
-@deftypeline {lexical syntax} @/ @prosedatumlabel{n}@sv{datum}
-@deftypeline {lexical syntax} @/ @prosedatumref{n}
+@deftypeline {lexical syntax} @/ @
+@datumlabel{@hashchar{}}@sv{n}@datumlabel{=}@sv{datum}
+@deftypeline {lexical syntax} @/ @
+@datumref{@hashchar{}}@sv{n}@datumref{@hashchar{}}
 
-The lexical syntax @prosedatumlabel{n}@angle{datum} reads the same as
-@angle{datum}, but also results in @angle{datum} being labeled by
-@angle{n}.  It is an error if @angle{n} is not a sequence of digits.
+The lexical syntax @samp{@prosedatumlabel{n}@angle{datum}} reads the
+same as @samp{@angle{datum}}, but also results in @samp{@angle{datum}}
+being labeled by @samp{@angle{n}}.  It is an error if @samp{@angle{n}}
+is not a sequence of digits.
 
 @cindex datum reference
 @cindex circular structure
 @cindex shared structure
-The lexical syntax @prosedatumref{n} serves as a reference to some
-object labeled by @prosedatumlabel{n}; the result is the same object as
-the @prosedatumlabel{n} (@pxref{Equivalence predicates}).  Together,
-these syntaxes permit the notation of structures with shared or circular
-sub@value{shy}structure.
+The lexical syntax @samp{@prosedatumref{n}} serves as a reference to
+some object labeled by @samp{@prosedatumlabel{n}}; the result is the
+same object as the @samp{@prosedatumlabel{n}} (@pxref{Equivalence
+predicates}).  Together, these syntaxes permit the notation of
+structures with shared or circular substructure.
 
 @lisp
 (let ((x (list 'a 'b 'c)))
@@ -238,16 +241,17 @@ sub@value{shy}structure.
 
 The scope of a datum label is the portion of the outermost datum in
 which it appears that is to the right of the label.  Consequently, a
-reference @prosedatumref{n} can occur only after a label
-@prosedatumlabel{n}; it is an error to attempt a forward reference.  In
-addition, it is an error if the reference appears as the labeled object
-itself (as in @prosedatumlabel{n}@prosedatumref{n}, because the object
-labeled by @prosedatumlabel{n} is not well defined in this case.
+reference @samp{@prosedatumref{n}} can occur only after a label
+@samp{@prosedatumlabel{n}}; it is an error to attempt a forward
+reference.  In addition, it is an error if the reference appears as the
+labeled object itself (as in @ns{@prosedatumlabel{n}
+@prosedatumref{n}}), because the object labeled by
+@samp{@prosedatumlabel{n}} is not well defined in this case.
 
 @cindex datum reference @subentry circular datum reference
 It is an error for a @angle{program} or @angle{library} to include
-circular references ex@value{shy}cept in literals.  In particular, it is
-an error for @code{quasiquote} (@pxref{Quasiquotation}) to contain them.
+circular references except in literals.  In particular, it is an error
+for @nc{quasiquote} (@pxref{Quasiquotation}) to contain them.
 
 @lisp
 #1=(begin (display #\x) #1#) @lispnote{error}

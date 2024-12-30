@@ -1,7 +1,7 @@
 @node Example
 @unnumbered Example
 
-The procedure @code{integrate-system} integrates the system
+The procedure @nc{integrate-system} integrates the system
 
 @display
 @vark{𝑦′} = @vark{𝑓}(@parI{𝑦}@comma{} @parII{𝑦}@comma{} @value{defdots} @varn{𝑦})@comma{} 𝑘 = 1@comma{} @value{defdots}@comma{} 𝑛
@@ -9,13 +9,13 @@ The procedure @code{integrate-system} integrates the system
 
 of differential equations with the method of Runge-Kutta.
 
-The parameter @code{system-derivative} is a function that takes a system
+The parameter @nc{system-derivative} is a function that takes a system
 state (a vector of values for the state variables @nobr{@parI{𝑦′},
-@value{defdots}, @varn{𝑦′}}).  The parameter @nobr{@code{initial-state}}
-provides an initial system state, and @code{h} is an initial guess for
-the length of the integration step.
+@value{defdots}, @varn{𝑦′}}).  The parameter @nc{initial-state} provides
+an initial system state, and @code{h} is an initial guess for the length
+of the integration step.
 
-The value returned by @code{integrate-system} is an infinite stream of
+The value returned by @nc{integrate-system} is an infinite stream of
 system states.
 
 @lisp
@@ -30,9 +30,9 @@ system states.
       states)))
 @end lisp
 
-The procedure @code{runge-kutta-4} takes a function, @code{f}, that
-produces a system derivative from a system state. It produces a
-function that takes a system state and produces a new system state.
+The procedure @nc{runge-kutta-4} takes a function, @code{f}, that
+produces a system derivative from a system state. It produces a function
+that takes a system state and produces a new system state.
 
 @lisp
 (define (runge-kutta-4 f h)
@@ -77,9 +77,9 @@ function that takes a system state and produces a new system state.
   (elementwise (lambda (x) (* x s))))
 @end lisp
 
-The @code{map-streams} procedure is analogous to @code{map}: it applies
-its first argument (a procedure) to all the elements of its second
-argument (a stream).
+The @nc{map-streams} procedure is analogous to @nc{map}: it applies its
+first argument (a procedure) to all the elements of its second argument
+(a stream).
 
 @lisp
 (define (map-streams f s)
@@ -97,7 +97,7 @@ of the stream.
   (force (cdr stream)))
 @end lisp
 
-The following illustrates the use of @code{integrate-system} in
+The following illustrates the use of @nc{integrate-system} in
 integrating the system
 
 @example
@@ -105,7 +105,7 @@ integrating the system
 𝐶 ――――@inlinefmt{info,――}  =  @minus{}𝑖@sub{𝐿} @minus{} ――――@inlinefmt{info,―}
    @inlinefmt{info,@ }𝑑𝑡             @inlinefmt{info,@ @ @ @ @ }𝑅
 @end example
-
+@*
 @example
      @inlinefmtifelse{info,,@ }  𝑑𝑖@sub{𝐿}
      𝐿 ――――@inlinefmt{info,――}  =  𝑣@sub{𝐶}

@@ -7,9 +7,8 @@
 The @code{eqv?} procedure defines a useful equivalence relation on
 objects.  Briefly, it returns @code{#t} if @varI{obj} and @varII{obj}
 are normally regarded as the same object.  This relation is left
-slightly open to interpretation, but the following partial
-spec@value{shy}ification of @code{eqv?} holds for all implementations of
-Scheme.
+slightly open to interpretation, but the following partial specification
+of @code{eqv?} holds for all implementations of Scheme.
 
 @lisp
 (eqv? 'a 'a)                 @ok{#t}
@@ -42,16 +41,16 @@ such cases is that the value returned by @code{eqv?} must be a boolean.
 (eqv? +nan.0 +nan.0)  @unspecified{unspecified}
 @end lisp
 
-Note that @code{(eqv? 0.0 -0.0)} will return @code{#f} if negative zero
-is distinguished, and @code{#t} if negative zero is not distinguished.
+Note that @nc{(eqv? 0.0 -0.0)} will return @code{#f} if negative zero is
+distinguished, and @code{#t} if negative zero is not distinguished.
 
 The next set of examples shows the use of @code{eqv?} with procedures
-that have local state.  The @nobr{@code{gen-counter}} procedure must
-return a distinct procedure every time, since each procedure has its own
-internal counter.  The @nobr{@code{gen-loser}} procedure, however,
-returns operationally equivalent procedures each time, since the local
-state does not affect the value or side effects of the procedures.
-However, @code{eqv?}  may or may not detect this equivalence.
+that have local state.  The @nc{gen-counter} procedure must return a
+distinct procedure every time, since each procedure has its own internal
+counter.  The @nc{gen-loser} procedure, however, returns operationally
+equivalent procedures each time, since the local state does not affect
+the value or side effects of the procedures.  However, @code{eqv?}  may
+or may not detect this equivalence.
 
 @lisp
 (define gen-counter
@@ -87,10 +86,9 @@ However, @code{eqv?}  may or may not detect this equivalence.
 @end lisp
 
 Since it is an error to modify constant objects (those returned by
-literal ex@value{shy}pres@value{shy}sions), implementations may share
-structure between constants where appropriate.  Thus the value of
-@code{eqv?} on constants is sometimes
-implemen@value{shy}tation-dependent.
+literal expressions), implementations may share structure between
+constants where appropriate.  Thus the value of @code{eqv?} on constants
+is sometimes implementation-dependent.
 
 @lisp
 (eqv? '(a) '(a))         @unspecified{unspecified}
@@ -101,17 +99,17 @@ implemen@value{shy}tation-dependent.
 @end lisp
 
 The above definition of @code{eqv?} allows implementations latitude in
-their treat@value{shy}ment of procedures and literals: implementations
-may either detect or fail to detect that two procedures or two literals
-are equivalent to each other, and can decide whether or not to merge
+their treatment of procedures and literals: implementations may either
+detect or fail to detect that two procedures or two literals are
+equivalent to each other, and can decide whether or not to merge
 representations of equivalent objects by using the same pointer or bit
 pattern to represent both.
 
 @quotation
 @i{Note:} If inexact numbers are represented as @acronym{IEEE} binary
 floating-point numbers, then an implementation of @code{eqv?} that
-simply com@value{shy}pares equal-sized inexact numbers for bitwise
-equality is correct by the above definition.
+simply compares equal-sized inexact numbers for bitwise equality is
+correct by the above definition.
 @end quotation
 @end deffn
 
@@ -119,18 +117,18 @@ equality is correct by the above definition.
 
 The @code{eq?} procedure is similar to @code{eqv?} except that in some
 cases it is capable of discerning distinctions finer than those
-detectable by @code{eqv?}.  It must al@value{shy}ways return @code{#f}
-when @code{eqv?} also would, but may return @code{#f} in some cases
-where @code{eqv?} would return @code{#t}.
+detectable by @code{eqv?}.  It must always return @code{#f} when
+@code{eqv?} also would, but may return @code{#f} in some cases where
+@code{eqv?} would return @code{#t}.
 
 On symbols, booleans, the empty list, pairs, and records, and also on
 non-empty strings, vectors, and bytevectors, @code{eq?} and @code{eqv?}
 are guaranteed to have the same behavior.  On procedures, @code{eq?}
-must return true if the ar@value{shy}gu@value{shy}ments' location tags
-are equal.  On numbers and characters, @code{eq?}'s behavior is
-implementation-dependent, but it will always return either true or
-false.  On empty strings, empty vectors, and empty bytevectors,
-@code{eq?} may also be@value{shy}have differently from @code{eqv?}.
+must return true if the arguments' location tags are equal.  On numbers
+and characters, @code{eq?}'s behavior is implementation-dependent, but
+it will always return either true or false.  On empty strings, empty
+vectors, and empty bytevectors, @code{eq?} may also behave differently
+from @code{eqv?}.
 
 @lisp
 (eq? 'a 'a)               @ok{#t}
@@ -156,7 +154,7 @@ false.  On empty strings, empty vectors, and empty bytevectors,
 It will usually be possible to implement @code{eq?} much more
 efficiently than @code{eqv?}, for example, as a simple pointer
 comparison instead of as some more complicated operation.  One reason is
-that it is not al@value{shy}ways possible to compute @code{eqv?} of two
+that it is not always possible to compute @code{eqv?} of two
 numbers in constant time, whereas @code{eq?} implemented as pointer
 comparison will always finish in constant time.
 @end quotation
@@ -165,15 +163,15 @@ comparison will always finish in constant time.
 @deffn procedure equal? @parI{obj} @parII{obj}
 
 The @code{equal?} procedure, when applied to pairs, vectors, strings and
-byte@value{shy}vectors, recursively compares them, returning @code{#t}
-when the unfoldings of its arguments into (possibly infinite) trees are
-equal (in the sense of @code{equal?}) as ordered trees, and @code{#f}
-otherwise.  It returns the same as @code{eqv?} when applied to booleans,
-symbols, numbers, characters, ports, procedures, and the
-emp@value{shy}ty list.  If two objects are @code{eqv?}, they must be
-@code{equal?} as well.  In all other cases, @code{equal?} may return
-either @code{#t} or @code{#f}.  Even if its arguments are circular data
-structures, @code{equal?} must always terminate.
+bytevectors, recursively compares them, returning @code{#t} when the
+unfoldings of its arguments into (possibly infinite) trees are equal (in
+the sense of @code{equal?}) as ordered trees, and @code{#f} otherwise.
+It returns the same as @code{eqv?} when applied to booleans, symbols,
+numbers, characters, ports, procedures, and the empty list.  If two
+objects are @code{eqv?}, they must be @code{equal?} as well.  In all
+other cases, @code{equal?} may return either @code{#t} or @code{#f}.
+Even if its arguments are circular data structures, @code{equal?} must
+always terminate.
 
 @lisp
 (equal? 'a 'a)               @ok{#t}

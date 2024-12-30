@@ -53,7 +53,7 @@ uninterned symbols.
 
 Returns the name of @var{symbol} as a string, but without adding
 escapes.  It is an error to apply mutation procedures like
-@code{string-set!} to strings returned by this procedure.
+@nc{string-set!} to strings returned by this procedure.
 
 @lisp
 (symbol->string 'flying-fish) @ok{"flying-fish"}
@@ -67,9 +67,9 @@ escapes.  It is an error to apply mutation procedures like
 @deffn procedure string->symbol string
 
 Returns the symbol whose name is @var{string}.  This procedure can
-create sym@value{shy}bols with names containing special characters that
-would require escaping when written, but does not interpret escapes in
-its input.
+create symbols with names containing special characters that would
+require escaping when written, but does not interpret escapes in its
+input.
 
 @lisp
 (string->symbol "mISSISSIppi")      @ok{mISSISSIppi}

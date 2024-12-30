@@ -2,21 +2,20 @@
 @nodedescription Built-in procedures.
 @chapter Standard procedures
 This chapter describes Scheme's built-in procedures.  The procedures
-@code{force}, @code{promise?}, and @code{make-promise} are intimately
-associated with the expression types @code{delay} and
-@code{delay-force}, and are described with them in section 4.2.5
-(@pxref{Delayed evaluation}).  In the same way, the procedure
-@code{make-parameter} is intimately associated with the expression type
-@code{parameterize}, and is described with it in section 4.2.6
-(@pxref{Dynamic bindings}).
+@nc{force}, @nc{promise?}, and @nc{make-promise} are intimately
+associated with the expression types @nc{delay} and @nc{delay-force},
+and are described with them in section 4.2.5 (@ref{Delayed evaluation}).
+In the same way, the procedure @nc{make-parameter} is intimately
+associated with the expression type @nc{parameterize}, and is described
+with it in section 4.2.6 (@ref{Dynamic bindings}).
 
 A program can use a global variable definition to bind any variable.  It
 may subsequently alter any such binding by an @define{assignment}
 (@pxref{Assignments}).  These operations do not modify the behavior of
 any procedure defined in this report or imported from a library
 (@pxref{Libraries}).  Altering any global binding that has not been
-introduced by a definition has an unspecified ef@value{shy}fect on the
-behavior of the procedures defined in this chapter.
+introduced by a definition has an unspecified effect on the behavior of
+the procedures defined in this chapter.
 
 @cindex fresh locations
 @cindex conceptual locations @subentry freshness @seeentry{fresh locations}

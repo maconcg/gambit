@@ -17,7 +17,7 @@ Documentation License''.}}}
 @end quotation
 
 The following statement appears in the report's introduction section and
-applies to the report's text:
+applies to the text of the report:
 
 @quotation
 We intend this report to belong to the entire Scheme community, and so

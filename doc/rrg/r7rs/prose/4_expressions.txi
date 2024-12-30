@@ -2,18 +2,17 @@
 @node Expressions
 @nodedescription Descriptions of Scheme expressions.
 @chapter Expressions
-
 Expression types are categorized as @define{primitive} or
-@define{derived}.  Primitive ex@value{shy}pres@value{shy}sion types
-include variables and procedure calls.  Derived expression types are not
-semantically primitive, but can instead be defined as macros.  Suitable
-syntax definitions of some of the derived expressions are given in
-section 4.2 (@pxref{Derived expression types}).
+@define{derived}.  Primitive expression types include variables and
+procedure calls.  Derived expression types are not semantically
+primitive, but can instead be defined as macros.  Suitable syntax
+definitions of some of the derived expressions are given in section 4.2
+(@ref{Derived expression types}).
 
-The procedures @code{force}, @code{promise?}, @code{make-promise}, and
-@code{make-parameter} are also described in this chapter because they
-are intimately associated with the @code{delay}, @code{delay-force}, and
-@code{parameterize} expression types.
+The procedures @nc{force}, @nc{promise?}, @nc{make-promise}, and
+@nc{make-parameter} are also described in this chapter because they are
+intimately associated with the @nc{delay}, @nc{delay-force}, and
+@nc{parameterize} expression types.
 
 @node Primitive expression types
 @section Primitive expression types
@@ -37,13 +36,13 @@ x @ok{28}
 @subsection Literal expressions
 @defblock
 @deftypeline syntax @/ @syntax{quote} @sv{datum}
-@deftypeline syntax @/ @defabbrev{@U{0027}}@sv{datum}
+@deftypeline syntax @/ @syntax{@U{0027}}@sv{datum}
 @deftypeline syntax @/ @sv{constant}
 
-@t{(quote @sv{datum})} evaluates to @angle{datum}.  @angle{Datum} can be
-any external rep@value{shy}re@value{shy}sen@value{shy}tation of a Scheme
-object (@pxref{External representations}).  This notation is used to
-in@value{shy}clude literal constants in Scheme code.
+@nt{(quote @sv{datum})} evaluates to @angle{datum}.  @angle{Datum} can
+be any external representation of a Scheme object (@pxref{External
+representations}).  This notation is used to include literal constants
+in Scheme code.
 
 @lisp
 (quote a)        @ok{a}
@@ -51,8 +50,8 @@ in@value{shy}clude literal constants in Scheme code.
 (quote (+ 1 2))  @ok{(+ 1 2)}
 @end lisp
 
-@t{(quote @sv{datum})} can be abbreviated as @t{'@sv{datum}}.  The two
-notations are equiv@value{shy}alent in all respects.
+@samp{(quote @sv{datum})} can be abbreviated as @samp{'@sv{datum}}.  The
+two notations are equivalent in all respects.
 
 @lisp
 'a         @ok{a}
@@ -63,10 +62,9 @@ notations are equiv@value{shy}alent in all respects.
 ''a        @ok{(quote a)}
 @end lisp
 
-Numerical constants, string constants, character con@value{shy}stants,
-vector con@value{shy}stants, bytevector con@value{shy}stants, and
-boolean con@value{shy}stants evaluate to them@value{shy}selves; they
-need not be quoted.
+Numerical constants, string constants, character constants, vector
+constants, bytevector constants, and boolean constants evaluate to
+themselves; they need not be quoted.
 
 @lisp
 '145932     @ok{145932}
@@ -83,9 +81,9 @@ need not be quoted.
 #t          @ok{#t}
 @end lisp
 
-As noted in section 3.4 (@pxref{Storage model}), it is an error to
-attempt to alter a constant (i.e.@: the value of a literal expression)
-using a mutation procedure like @code{set-car!} or @code{string-set!}.
+As noted in section 3.4 (@ref{Storage model}), it is an error to attempt
+to alter a constant (i.e.@: the value of a literal expression) using a
+mutation procedure like @nc{set-car!} or @nc{string-set!}.
 @end defblock
 
 @node Procedure calls
@@ -95,8 +93,8 @@ using a mutation procedure like @code{set-car!} or @code{string-set!}.
 A procedure call is written by enclosing in parentheses an expression
 for the procedure to be called followed by expressions for the arguments
 to be passed to it.  The operator and operand expressions are evaluated
-(in an un@value{shy}specified order) and the resulting procedure is
-passed the resulting ar@value{shy}gu@value{shy}ments.
+(in an unspecified order) and the resulting procedure is passed the
+resulting arguments.
 
 @lisp
 (+ 3 4)           @ok{7}
@@ -105,32 +103,29 @@ passed the resulting ar@value{shy}gu@value{shy}ments.
 
 The procedures in this document are available as the values of variables
 exported by the standard libraries.  For example, the addition and
-multi@value{shy}pli@value{shy}cation procedures in the above examples
-are the values of the variables @code{+} and @code{*} in the base
-library.  New procedures are created by evaluating @code{lambda}
-expressions (@pxref{Procedures}).
+multiplication procedures in the above examples are the values of the
+variables @code{+} and @code{*} in the base library.  New procedures are
+created by evaluating @nc{lambda} expressions (@pxref{Procedures}).
 
 Procedure calls can return any number of values (@pxref{Control
-features} for a description of @code{values}).  Most of the procedures
-defined in this report return one value or, for pro@value{shy}cedures
-such as @code{apply}, pass on the values returned by a call to one of
-their arguments.  Exceptions are noted in the individual descriptions.
+features} for a description of @nc{values}).  Most of the procedures
+defined in this report return one value or, for procedures such as
+@nc{apply}, pass on the values returned by a call to one of their
+arguments.  Exceptions are noted in the individual descriptions.
 
 @quotation
 @i{Note:} In contrast to other dialects of Lisp, the order of evaluation
-is unspecified, and the operator expression and the operand
-ex@value{shy}pres@value{shy}sions are always evaluated with the same
-eval@value{shy}uation rules.
+is unspecified, and the operator expression and the operand expressions
+are always evaluated with the same evaluation rules.
 
 @i{Note:} Although the order of evaluation is otherwise unspecified, the
 effect of any concurrent evaluation of the operator and operand
-ex@value{shy}pres@value{shy}sions is constrained to be consistent with
-some sequential order of evaluation.  The order of evaluation may be
-chosen dif@value{shy}fer@value{shy}ently for each procedure call.
+expressions is constrained to be consistent with some sequential order
+of evaluation.  The order of evaluation may be chosen differently for
+each procedure call.
 
-@i{Note:} In many dialects of Lisp, the empty list, @code{()}, is a
-legitimate ex@value{shy}pres@value{shy}sion evaluating to itself.  In
-Scheme, it is an error.
+@i{Note:} In many dialects of Lisp, the empty list, @nc{()}, is a
+legitimate expression evaluating to itself.  In Scheme, it is an error.
 @end quotation
 @end defblock
 
@@ -140,22 +135,22 @@ Scheme, it is an error.
 
 @i{Syntax:} @angle{Formals} is a formal arguments list as described
 below, and @angle{body} is a sequence of zero or more definitions
-followed by one or more ex@value{shy}pres@value{shy}sions.
+followed by one or more expressions.
 
-@i{Semantics:} A @code{lambda} expression evaluates to a procedure.  The
-environment in effect when the @code{lambda} expression was evaluated is
+@i{Semantics:} A @nc{lambda} expression evaluates to a procedure.  The
+environment in effect when the @nc{lambda} expression was evaluated is
 remembered as part of the procedure.  When the procedure is later called
-with some actual arguments, the environment in which the @code{lambda}
+with some actual arguments, the environment in which the @nc{lambda}
 expression was evaluated will be extended by binding the variables in
 the formal argument list to fresh locations, and the corresponding
 actual argument values will be stored in those locations.  (A
 @define{fresh} location is one that is distinct from every previously
 existing location.)  Next, the expressions in the body of the
-@code{lambda} expression (which, if it contains definitions, represents
-a @code{letrec*} form --- @pxref{Binding constructs}) will be evaluated
-sequentially in the ex@value{shy}tended environment.  The results of the
-last expression in the body will be returned as the results of the
-procedure call.
+@nc{lambda} expression (which, if it contains definitions, represents a
+@nc{letrec*} form --- @pxref{Binding constructs}) will be evaluated
+sequentially in the extended environment.  The results of the last
+expression in the body will be returned as the results of the procedure
+call.
 
 @lisp
 (lambda (x) (+ x x))     @lispnote{a procedure}
@@ -179,27 +174,25 @@ procedure call.
 
 @itemize @bullet
 @item
-@t{(@sv{@parI{variable}} @value{defdots})}: The procedure takes a fixed
+@nt{(@sv{@parI{variable}} @value{defdots})}: The procedure takes a fixed
 number of arguments; when the procedure is called, the arguments will be
-stored in fresh lo@value{shy}cations that are bound to the corresponding
-variables.
+stored in fresh locations that are bound to the corresponding variables.
 
 @item
-@t{@sv{variable}}: The procedure takes any number of arguments; when the
-procedure is called, the sequence of actual arguments is converted into
-a newly allocated list, and the list is stored in a fresh location that
-is bound to @angle{variable}.
+@nt{@sv{variable}}: The procedure takes any number of arguments; when
+the procedure is called, the sequence of actual arguments is converted
+into a newly allocated list, and the list is stored in a fresh location
+that is bound to @angle{variable}.
 
 @item
-@t{(@sv{@parI{variable}} @value{defdots} @sv{@parn{variable}}
-. @sv{@parnplusone{variable}})}: If a space-delimited per@value{shy}iod
-pre@value{shy}cedes the last variable, then the procedure takes @var{n}
-or more arguments, where @var{n} is the number of formal arguments
-before the period (it is an error if there is not at least one).  The
-value stored in the binding of the last variable will be a newly
-allocated list of the actual arguments left over after all the other
-actual arguments have been matched up against the other formal
-arguments.
+@nt{(@sv{@parI{variable}} @value{defdots} @sv{@parn{variable}}
+. @sv{@parnplusone{variable}})}: If a space-delimited period precedes
+the last variable, then the procedure takes @var{n} or more arguments,
+where @var{n} is the number of formal arguments before the period (it is
+an error if there is not at least one).  The value stored in the binding
+of the last variable will be a newly allocated list of the actual
+arguments left over after all the other actual arguments have been
+matched up against the other formal arguments.
 @end itemize
 
 It is an error for a @angle{variable} to appear more than once in
@@ -211,9 +204,9 @@ It is an error for a @angle{variable} to appear more than once in
  3 4 5 6)              @ok{(5 6)}
 @end lisp
 
-Each procedure created as the result of evaluating a @code{lambda}
+Each procedure created as the result of evaluating a @nc{lambda}
 expression is (conceptually) tagged with a storage location, in order to
-make @code{eqv?} and @code{eq?} work on procedures (@pxref{Equivalence
+make @nc{eqv?} and @nc{eq?} work on procedures (@pxref{Equivalence
 predicates}).
 @end deftypefn
 
@@ -225,7 +218,7 @@ predicates}).
 @i{Syntax:} @angle{Test}, @angle{consequent}, and @angle{alternate} are
 expressions.
 
-@i{Semantics:} An @code{if} expression is evaluated as follows: first,
+@i{Semantics:} An @nc{if} expression is evaluated as follows: first,
 @angle{test} is evaluated.  If it yields a true value
 (@pxref{Booleans}), then @angle{consequent} is evaluated and its values
 are returned.  Otherwise @angle{alternate} is evaluated and its values
@@ -255,8 +248,8 @@ unspecified.
 @i{Semantics:} @angle{Expression} is evaluated, and the resulting value
 is stored in the location to which @angle{variable} is bound.  It is an
 error if @angle{variable} is not bound either in some region enclosing
-the @code{set!}@: expression or else globally.  The re@value{shy}sult of
-the @code{set!}@: expression is unspecified.
+the @nc{set!}@: expression or else globally.  The result of the
+@nc{set!}@: expression is unspecified.
 
 @lisp
 (define x 2)
@@ -271,15 +264,15 @@ the @code{set!}@: expression is unspecified.
 @deftypefn syntax @/ include @sv{@parI{string}} @sv{@parII{string}} @value{defdots}
 @deftypefnx syntax @/ include-ci @sv{@parI{string}} @sv{@parII{string}} @value{defdots}
 
-@i{Semantics:} Both @code{include} and @code{include-ci} take one or
-more filenames ex@value{shy}pres@value{shy}sed as string literals, apply
-an implementation-specific algorithm to find corresponding files, read
-the contents of the files in the specified order as if by repeated
-applications of @code{read}, and effectively replace the @code{include}
-or @code{include-ci} expression with a @code{begin} expression
-containing what was read from the files.  The difference between the two
-is that @code{include-ci} reads each file as if it began with the
-@code{#!fold-case} directive, while @code{include} does not.
+@i{Semantics:} Both @nc{include} and @nc{include-ci} take one or more
+filenames expressed as string literals, apply an implementation-specific
+algorithm to find corresponding files, read the contents of the files in
+the specified order as if by repeated applications of @nc{read}, and
+effectively replace the @nc{include} or @nc{include-ci} expression with
+a @nc{begin} expression containing what was read from the files.  The
+difference between the two is that @nc{include-ci} reads each file as if
+it began with the @nc{#!fold-case} directive, while @nc{include} does
+not.
 
 @quotation
 @i{Note:} Implementations are encouraged to search for files in the
@@ -290,19 +283,17 @@ users to specify other directories to search.
 
 @node Derived expression types
 @section Derived expression types
-
 The constructs in this section are hygienic, as discussed in section 4.3
-(@pxref{Macros}).  For reference purposes, section 7.2 (@pxref{Derived
+(@ref{Macros}).  For reference purposes, section 7.2 (@ref{Derived
 expression types}) gives syntax definitions that will convert most of
 the constructs described in this section into the primitive constructs
 described in the previous section.
 
 @node Derived Conditionals
 @subsection Conditionals
-
 @deftypefn syntax @/ cond @sv{@parI{clause}} @sv{@parII{clause}} @value{defdots}
-@deftypefnx {auxiliary syntax} @/ @aux{else}
-@deftypefnx {auxiliary syntax} @/ @aux{=>}
+@deftypefnx {auxiliary syntax} @/ else
+@deftypefnx {auxiliary syntax} @/ =>
 
 @i{Syntax:} @angle{Clause}s take one of two forms, either
 
@@ -322,27 +313,26 @@ The last @angle{clause} can be an @quotedbl{else clause}, which has the form
 (else @sv{@parI{expression}} @sv{@parII{expression}} @value{defdots})@r{.}
 @end example
 
-@i{Semantics:} A @code{cond} expression is evaluated by evaluating the
-@angle{test} expres@value{shy}sions of successive @angle{clause}s in
-order until one of them eval@value{shy}uates to a true value
-(@pxref{Booleans}).  When a @angle{test} evaluates to a true value, the
-re@value{shy}maining @angle{expression}s in its @angle{clause} are
-eval@value{shy}uated in order, and the results of the last
-@angle{expression} in the @angle{clause} are returned as the results of
-the entire @code{cond} expression.
+@i{Semantics:} A @nc{cond} expression is evaluated by evaluating the
+@angle{test} expressions of successive @angle{clause}s in order until
+one of them evaluates to a true value (@pxref{Booleans}).  When a
+@angle{test} evaluates to a true value, the remaining
+@angle{expression}s in its @angle{clause} are evaluated in order, and
+the results of the last @angle{expression} in the @angle{clause} are
+returned as the results of the entire @nc{cond} expression.
 
 If the selected @angle{clause} contains only the @angle{test} and no
 @angle{expression}s, then the value of the @angle{test} is returned as
-the result.  If the selected @angle{clause} uses the @code{=>} alternate
+the result.  If the selected @angle{clause} uses the @nc{=>} alternate
 form, then the @angle{expression} is evaluated.  It is an error if its
 value is not a procedure that accepts one argument.  This procedure is
 then called on the value of the @angle{test} and the values returned by
-this procedure are returned by the @code{cond} expression.
+this procedure are returned by the @nc{cond} expression.
 
-If all @angle{test}s evaluate to @code{#f}, and there is no else clause,
+If all @angle{test}s evaluate to @nc{#f}, and there is no else clause,
 then the result of the conditional expression is unspecified; if there
 is an else clause, then its @angle{expression}s are evaluated in order,
-and the values of the last one are re@value{shy}turned.
+and the values of the last one are returned.
 
 @lisp
 (cond ((> 3 2) 'greater)
@@ -372,8 +362,7 @@ the form
 
 where each @angle{datum} is an external representation of some object.
 It is an error if any of the @angle{datum}s are the same anywhere in the
-expression.  Alt@value{shy}er@value{shy}natively, a @angle{clause} can
-be of the form
+expression.  Alternatively, a @angle{clause} can be of the form
 
 @example grammar
 ((@sv{@parI{datum}} @value{defdots}) @aux{=>} @sv{expression})
@@ -392,28 +381,25 @@ or
 (else @aux{=>} @sv{expression})@r{.}
 @end example
 
-@i{Semantics:} A @code{case} expression is evaluated as follows.
+@i{Semantics:} A @nc{case} expression is evaluated as follows.
 @angle{Key} is evaluated and its result is compared against each
 @angle{datum}.  If the result of evaluating @angle{key} is the same (in
-the sense of @code{eqv?}; @pxref{Equivalence predicates}) to a
+the sense of @nc{eqv?}; @pxref{Equivalence predicates}) to a
 @angle{datum}, then the expressions in the corresponding @angle{clause}
 are evaluated in order and the results of the last expression in the
-@angle{clause} are returned as the results of the @code{case}
-ex@value{shy}pres@value{shy}sion.
+@angle{clause} are returned as the results of the @nc{case} expression.
 
 If the result of evaluating @angle{key} is different from every
 @angle{datum}, then if there is an else clause, its expressions are
-evaluated and the results of the last are the results of the @code{case}
-expression; otherwise the result of the @code{case}
-ex@value{shy}pres@value{shy}sion is unspecified.
+evaluated and the results of the last are the results of the @nc{case}
+expression; otherwise the result of the @nc{case} expression is
+unspecified.
 
-If the selected @angle{clause} or else clause uses the @code{=>}
-alternate form, then the @angle{expression} is eval@value{shy}uated.  It
-is an error if its value is not a pro@value{shy}cedure
-accept@value{shy}ing one argument.  This pro@value{shy}cedure is then
+If the selected @angle{clause} or else clause uses the @nc{=>} alternate
+form, then the @angle{expression} is evaluated.  It is an error if its
+value is not a procedure accepting one argument.  This procedure is then
 called on the value of the @angle{key} and the values returned by this
-procedure are returned by the @code{case}
-ex@value{shy}pres@value{shy}sion.
+procedure are returned by the @nc{case} expression.
 
 @lisp
 (case (* 2 3)
@@ -438,12 +424,11 @@ ex@value{shy}pres@value{shy}sion.
 @deftypefn syntax @/ and @sv{@parI{test}} @value{defdots}
 
 @i{Semantics:} The @angle{test} expressions are evaluated from left to
-right, and if any ex@value{shy}pres@value{shy}sion evaluates to
-@code{#f} (@pxref{Booleans}), then @code{#f} is returned.  Any
-re@value{shy}main@value{shy}ing ex@value{shy}pres@value{shy}sions are
-not evaluated.  If all the expressions evaluate to true values, the
-values of the last expression are returned.  If there are no
-expressions, then @code{#t} is returned.
+right, and if any expression evaluates to @nc{#f} (@pxref{Booleans}),
+then @nc{#f} is returned.  Any remaining expressions are not evaluated.
+If all the expressions evaluate to true values, the values of the last
+expression are returned.  If there are no expressions, then @nc{#t} is
+returned.
 
 @lisp
 (and (= 2 2) (> 2 1)) @ok{#t}
@@ -458,8 +443,8 @@ expressions, then @code{#t} is returned.
 @i{Semantics:} The @angle{test} expressions are evaluated from left to
 right, and the value of the first expression that evaluates to a true
 value (@pxref{Booleans}) is returned.  Any remaining expressions are not
-evaluated.  If all expressions evaluate to @code{#f} or if there are no
-expressions, then @code{#f} is returned.
+evaluated.  If all expressions evaluate to @nc{#f} or if there are no
+expressions, then @nc{#f} is returned.
 
 @lisp
 (or (= 2 2) (> 2 1))   @ok{#t}
@@ -476,8 +461,8 @@ expressions, then @code{#f} is returned.
 @i{Syntax:} The @angle{test} is an expression.
 
 @i{Semantics:} The test is evaluated, and if it evaluates to a true
-value, the ex@value{shy}pres@value{shy}sions are evaluated in order.
-The result of the @code{when} expression is unspecified.
+value, the expressions are evaluated in order.  The result of the
+@nc{when} expression is unspecified.
 
 @ifinfo
 @lisp
@@ -502,8 +487,8 @@ The result of the @code{when} expression is unspecified.
 
 @i{Syntax:} The @angle{test} is an expression.
 
-@i{Semantics:} The test is evaluated, and if it evaluates to @code{#f},
-the expressions are evaluated in order.  The result of the @code{unless}
+@i{Semantics:} The test is evaluated, and if it evaluates to @nc{#f},
+the expressions are evaluated in order.  The result of the @nc{unless}
 expression is unspecified.
 
 @ifinfo
@@ -526,9 +511,9 @@ expression is unspecified.
 @deftypefn syntax @/ cond-expand @
 @sv{@parI{ce-clause}} @sv{@parII{ce-clause}} @value{defdots}
 
-@i{Syntax:} The @code{cond-expand} expression type provides a way to
-statically ex@value{shy}pand different expressions depending on the
-implementation.  A @angle{ce-clause} takes the following form:
+@i{Syntax:} The @nc{cond-expand} expression type provides a way to
+statically expand different expressions depending on the implementation.
+A @angle{ce-clause} takes the following form:
 
 @example grammar
 (@sv{feature requirement} @sv{expression} @value{defdots})
@@ -546,59 +531,57 @@ A @angle{feature requirement} takes one of the following forms:
 @t{@sv{feature identifier}}
 
 @item
-@t{@compound{@U{0028}}@aux{library} @sv{library name}@compound{@U{0029}}}
+@nt{@compound{@U{0028}}@aux{library} @sv{library name}@compound{@U{0029}}}
 
 @item
-@t{@compound{@U{0028}}@aux{and} @sv{feature requirement} @value{defdots}@compound{@U{0029}}}
+@nt{@compound{@U{0028}}@aux{and} @sv{feature requirement} @value{defdots}@compound{@U{0029}}}
 
 @item
-@t{@compound{@U{0028}}@aux{or} @sv{feature requirement} @value{defdots}@compound{@U{0029}}}
+@nt{@compound{@U{0028}}@aux{or} @sv{feature requirement} @value{defdots}@compound{@U{0029}}}
 
 @item
-@t{@compound{@U{0028}}@aux{not} @sv{feature requirement}@compound{@U{0029}}}
+@nt{@compound{@U{0028}}@aux{not} @sv{feature requirement}@compound{@U{0029}}}
 @end itemize
 
 @i{Semantics:} Each implementation maintains a list of feature
 identifiers which are present, as well as a list of libraries which can
 be imported.  The value of a @angle{feature requirement} is determined
-by replacing each @angle{feature identifier} and @t{(library @sv{library
-name})} on the implementation's lists with @code{#t}, and all other
-feature identifiers and library names with @code{#f}, then
-eval@value{shy}uating the re@value{shy}sult@value{shy}ing
-expres@value{shy}sion as a Scheme boolean expression under the normal
-inter@value{shy}pretation of @code{and}, @code{or}, and @code{not}.
+by replacing each @angle{feature identifier} and @nt{(library
+@sv{library name})} on the implementation's lists with @nc{#t}, and all
+other feature identifiers and library names with @nc{#f}, then
+evaluating the resulting expression as a Scheme boolean expression under
+the normal interpretation of @nc{and}, @nc{or}, and @nc{not}.
 
-A @code{cond-expand} is then expanded by evaluating the @angle{feature
+A @nc{cond-expand} is then expanded by evaluating the @angle{feature
 requirement}s of successive @angle{ce-clause}s in order until one of
-them returns @code{#t}.  When a true clause is found, the corresponding
-@angle{expression}s are expanded to a @code{begin}, and the remaining
+them returns @nc{#t}.  When a true clause is found, the corresponding
+@angle{expression}s are expanded to a @nc{begin}, and the remaining
 clauses are ignored.  If none of the @angle{feature requirement}s
-evaluate to @code{#t}, then if there is an else clause, its
+evaluate to @nc{#t}, then if there is an else clause, its
 @angle{expression}s are included.  Otherwise, the behavior of the
-@code{cond-expand} is unspecified.  Unlike @code{cond},
-@code{cond-expand} does not depend on the value of any variables.
+@nc{cond-expand} is unspecified.  Unlike @nc{cond}, @nc{cond-expand}
+does not depend on the value of any variables.
 
 The exact features provided are implementation-defined, but for
-portability a core set of features is given in appendix B.
+portability a core set of features is given in Appendix B (@ref{Standard
+Feature Identifiers}).
 @end deftypefn
 
 @node Binding constructs
 @subsection Binding constructs
-The binding constructs @code{let}, @code{let*}, @code{letrec},
-@code{letrec*}, @nobr{@code{let-values}}, and @code{let*-values} give
-Scheme a block structure, like Algol 60.  The syntax of the first four
-constructs is identical, but they differ in the regions they establish
-for their variable bindings.  In a @code{let} expression, the initial
-values are computed before any of the variables become bound; in a
-@code{let*} expression, the bind@value{shy}ings and evaluations are
-performed sequen@value{shy}tially; while in @code{letrec} and
-@code{letrec*} expressions, all the bindings are in effect while their
-initial values are being computed, thus allowing mutually recursive
-definitions.  The @nobr{@code{let-values}} and @nobr{@code{let*-values}}
-con@value{shy}structs are analogous to @code{let} and @code{let*}
-re@value{shy}spect@value{shy}ively, but are designed to handle
-multiple-valued expres@value{shy}sions, bind@value{shy}ing
-diff@value{shy}erent identifiers to the returned values.
+The binding constructs @nc{let}, @nc{let*}, @nc{letrec}, @nc{letrec*},
+@nc{let-values}, and @nc{let*-values} give Scheme a block structure,
+like Algol 60.  The syntax of the first four constructs is identical,
+but they differ in the regions they establish for their variable
+bindings.  In a @nc{let} expression, the initial values are computed
+before any of the variables become bound; in a @nc{let*} expression, the
+bindings and evaluations are performed sequentially; while in
+@nc{letrec} and @nc{letrec*} expressions, all the bindings are in effect
+while their initial values are being computed, thus allowing mutually
+recursive definitions.  The @nc{let-values} and @nc{let*-values}
+constructs are analogous to @nc{let} and @nc{let*} respectively, but are
+designed to handle multiple-valued expressions, binding different
+identifiers to the returned values.
 
 @deftypefn syntax @/ let @sv{bindings} @sv{body}
 
@@ -610,8 +593,8 @@ diff@value{shy}erent identifiers to the returned values.
 
 where each @angle{init} is an expression, and @angle{body} is a sequence
 of zero or more definitions followed by a sequence of one or more
-expressions as described in section 4.1.4 (@pxref{Procedures}).  It is
-an error for a @angle{variable} to appear more than once in the list of
+expressions as described in section 4.1.4 (@ref{Procedures}).  It is an
+error for a @angle{variable} to appear more than once in the list of
 variables being bound.
 
 @i{Semantics:} The @angle{init}s are evaluated in the current
@@ -633,7 +616,7 @@ the extended environment, and the values of the last expression of
     (* z x))) @ok{35}
 @end lisp
 
-@xref{Iteration} for a description of @quotedbl{named @t{let}}.
+@xref{Iteration} for a description of @quotedbl{named @nt{let}}.
 @end deftypefn
 
 @deftypefn syntax @/ let* @sv{bindings} @sv{body}
@@ -646,15 +629,14 @@ the extended environment, and the values of the last expression of
 
 and @angle{body} is a sequence of zero or more definitions followed by
 one or more expressions as described in section 4.1.4
-(@pxref{Procedures}).
+(@ref{Procedures}).
 
-@i{Semantics:} The @code{let*} binding construct is similar to
-@code{let}, but the bindings are performed sequentially from left to
-right, and the region of a binding in@value{shy}dicated by
-@t{(@sv{variable} @sv{init})} is that part of the @code{let*} expression
-to the right of the binding.  Thus the second binding is done in an
-environment in which the first binding is visible, and so on.  The
-@angle{variable}s need not be distinct.
+@i{Semantics:} The @nc{let*} binding construct is similar to @nc{let},
+but the bindings are performed sequentially from left to right, and the
+region of a binding indicated by @nt{(@sv{variable} @sv{init})} is that
+part of the @nc{let*} expression to the right of the binding.  Thus the
+second binding is done in an environment in which the first binding is
+visible, and so on.  The @angle{variable}s need not be distinct.
 @end deftypefn
 
 @deftypefn syntax @/ letrec @sv{bindings} @sv{body}
@@ -665,22 +647,19 @@ environment in which the first binding is visible, and so on.  The
 ((@sv{@parI{variable}} @sv{@parI{init}}) @value{defdots})@r{,}
 @end example
 
-and @angle{body} is a sequence of zero or more definitions
-fol@value{shy}lowed by one or more expres@value{shy}sions as described
-in section 4.1.4 (@pxref{Procedures}).  It is an error for a
-@angle{variable} to ap@value{shy}pear more than once in the list of
-variables being bound.
+and @angle{body} is a sequence of zero or more definitions followed by
+one or more expressions as described in section 4.1.4
+(@ref{Procedures}).  It is an error for a @angle{variable} to appear
+more than once in the list of variables being bound.
 
 @i{Semantics:} The @angle{variable}s are bound to fresh locations
-holding un@value{shy}spec@value{shy}ified values, the @angle{init}s are
-eval@value{shy}uated in the resulting environment (in some
-un@value{shy}spec@value{shy}ified order), each @angle{variable} is
-assigned to the result of the corre@value{shy}spond@value{shy}ing
-@angle{init}, the @angle{body} is eval@value{shy}uated in the resulting
-environment, and the values of the last expres@value{shy}sion in
-@angle{body} are returned.  Each binding of a @angle{variable} has the
-entire @code{letrec} expres@value{shy}sion as its region, making it
-possible to define mutually recursive procedures.
+holding unspecified values, the @angle{init}s are evaluated in the
+resulting environment (in some unspecified order), each @angle{variable}
+is assigned to the result of the corresponding @angle{init}, the
+@angle{body} is evaluated in the resulting environment, and the values
+of the last expression in @angle{body} are returned.  Each binding of a
+@angle{variable} has the entire @nc{letrec} expression as its region,
+making it possible to define mutually recursive procedures.
 
 @lisp
 (letrec ((even?
@@ -696,14 +675,14 @@ possible to define mutually recursive procedures.
   (even? 88)) @ok{#t}
 @end lisp
 
-One restriction on @code{letrec} is very important: if it is not
-possible to evaluate each @angle{init} without assigning or referring to
-the value of any @angle{variable}, it is an error.  The restriction is
-necessary because @code{letrec} is defined in terms of a procedure call
-where a @code{lambda} expression binds the @angle{variable}s to the
-values of the @angle{init}s.  In the most common uses of @code{letrec},
-all the @angle{init}s are @code{lambda} expressions and the restriction
-is satisfied automatically.
+One restriction on @nc{letrec} is very important: if it is not possible
+to evaluate each @angle{init} without assigning or referring to the
+value of any @angle{variable}, it is an error.  The restriction is
+necessary because @nc{letrec} is defined in terms of a procedure call
+where a @nc{lambda} expression binds the @angle{variable}s to the values
+of the @angle{init}s.  In the most common uses of @nc{letrec}, all the
+@angle{init}s are @nc{lambda} expressions and the restriction is
+satisfied automatically.
 @end deftypefn
 
 @deftypefn syntax @/ letrec* @sv{bindings} @sv{body}
@@ -714,10 +693,10 @@ is satisfied automatically.
 ((@sv{@parI{variable}} @sv{@parI{init}}) @value{defdots})@r{,}
 @end example
 
-and @angle{body} is a sequence of zero or more definitions
-fol@value{shy}lowed by one or more expressions as described in section
-4.1.4 (@pxref{Procedures}).  It is an error for a @angle{variable} to
-appear more than once in the list of variables being bound.
+and @angle{body} is a sequence of zero or more definitions followed by
+one or more expressions as described in section 4.1.4
+(@ref{Procedures}).  It is an error for a @angle{variable} to appear
+more than once in the list of variables being bound.
 
 @i{Semantics:} The @angle{variable}s are bound to fresh locations, each
 @angle{variable} is assigned in left-to-right order to the result of
@@ -725,13 +704,13 @@ evaluating the corresponding @angle{init} (interleaving evaluations and
 assignments), the @angle{body} is evaluated in the resulting
 environment, and the values of the last expression in @angle{body} are
 returned.  Despite the left-to-right evaluation and assignment order,
-each binding of a @angle{variable} has the entire @code{letrec*}
+each binding of a @angle{variable} has the entire @nc{letrec*}
 expression as its region, making it possible to define mutually
 recursive procedures.
 
 If it is not possible to evaluate each @angle{init} without assigning or
 referring to the value of the corresponding @angle{variable} or the
-@angle{variable} of any of the bindings that fol@value{shy}low it in
+@angle{variable} of any of the bindings that follow it in
 @angle{bindings}, it is an error.  Another restriction is that it is an
 error to invoke the continuation of an @angle{init} more than once.
 
@@ -757,9 +736,9 @@ error to invoke the continuation of an @angle{init} more than once.
             (mean / /))))
 @end lisp
 
-Evaluating @code{(means '(3 (1 4)))} returns three
-values:@inlinefmt{html,@*} @code{8/3}, @code{2.28942848510666}
-(approximately), and @code{36/19}.
+Evaluating @nc{(means '(3 (1 4)))} returns three
+values:@inlinefmt{html,@*} @nc{8/3}, @nc{2.28942848510666}
+(approximately), and @nc{36/19}.
 @end deftypefn
 
 @deftypefn syntax @/ let-values @sv{mv binding spec} @sv{body}
@@ -772,19 +751,19 @@ values:@inlinefmt{html,@*} @code{8/3}, @code{2.28942848510666}
 
 where each @angle{init} is an expression, and @angle{body} is zero or
 more definitions followed by a sequence of one or more expressions as
-described in section 4.1.4 (@pxref{Procedures}).  It is an error for a
+described in section 4.1.4 (@ref{Procedures}).  It is an error for a
 variable to appear more than once in the set of @angle{formals}.
 
 Semantics: The @angle{init}s are evaluated in the current environment
-(in some unspecified order) as if by invoking @code{call-with-values},
-and the variables occurring in the @angle{formals} are bound to fresh
+(in some unspecified order) as if by invoking @nc{call-with-values}, and
+the variables occurring in the @angle{formals} are bound to fresh
 locations holding the values returned by the @angle{init}s, where the
 @angle{formals} are matched to the return values in the same way that
-the @angle{formals} in a @code{lambda} expression are matched to the
+the @angle{formals} in a @nc{lambda} expression are matched to the
 arguments in a procedure call.  Then, the @angle{body} is evaluated in
-the ex@value{shy}tended environment, and the values of the last
-expression of @angle{body} are re@value{shy}turned.  Each binding of a
-@angle{variable} has @angle{body} as its region.
+the extended environment, and the values of the last expression of
+@angle{body} are returned.  Each binding of a @angle{variable} has
+@angle{body} as its region.
 
 It is an error if the @angle{formals} do not match the number of values
 returned by the corresponding @angle{init}.
@@ -805,11 +784,11 @@ returned by the corresponding @angle{init}.
 
 and @angle{body} is a sequence of zero or more definitions followed by
 one or more expressions as described in section 4.1.4
-(@pxref{Procedures}).  In each @angle{formals}, it is an error if any
+(@ref{Procedures}).  In each @angle{formals}, it is an error if any
 variable appears more than once.
 
-@i{Semantics:} The @code{let*-values} construct is similar to
-@code{let-values}, but the @angle{init}s are evaluated and bindings
+@i{Semantics:} The @nc{let*-values} construct is similar to
+@nc{let-values}, but the @angle{init}s are evaluated and bindings
 created sequentially from left to right, with the region of the bindings
 of each @angle{formals} including the @angle{init}s to its right as well
 as @angle{body}.  Thus the second @angle{init} is evaluated in an
@@ -826,17 +805,17 @@ initialized, and so on.
 
 @node Sequencing
 @subsection Sequencing
-Both of Scheme's sequencing constructs are named @code{begin}, but the
-two have slightly different forms and uses:
+Both of Scheme's sequencing constructs are named @nc{begin}, but the two
+have slightly different forms and uses:
 
 @deftypefn syntax @/ begin @sv{expression or definition} @value{defdots}
 
-This form of @code{begin} can appear as part of a @angle{body}, or at
-the outermost level of a @angle{program}, or at the
-@acronym{REPL,Read-Eval-Print Loop}, or directly nested in a
-@code{begin} that is itself of this form.  It causes the contained
-expressions and definitions to be eval@value{shy}uated exactly as if the
-enclosing @code{begin} construct were not present.
+This form of @nc{begin} can appear as part of a @angle{body}, or at the
+outermost level of a @angle{program}, or at the
+@acronym{REPL,Read-Eval-Print Loop}, or directly nested in a @nc{begin}
+that is itself of this form.  It causes the contained expressions and
+definitions to be evaluated exactly as if the enclosing @nc{begin}
+construct were not present.
 
 @quotation
 @i{Rationale:} This form is commonly used in the output of macros
@@ -848,11 +827,11 @@ them into the context in which they are expanded.
 @deftypefn syntax @/ begin @
 @sv{@parI{expression}} @sv{@parII{expression}} @value{defdots}
 
-This form of @code{begin} can be used as an ordinary expression.  The
+This form of @nc{begin} can be used as an ordinary expression.  The
 @angle{expression}s are evaluated sequentially from left to right, and
 the values of the last @angle{expression} are returned.  This expression
-type is used to sequence side ef@value{shy}fects such as assignments or
-input and output.
+type is used to sequence side effects such as assignments or input and
+output.
 
 @lisp
 (define x 0)
@@ -876,7 +855,7 @@ input and output.
 @end lisp
 @end ifnotinfo
 
-Note that there is a third form of @code{begin} used as a library
+Note that there is a third form of @nc{begin} used as a library
 declaration: @pxref{Library syntax}.
 @end deftypefn
 
@@ -897,13 +876,13 @@ declaration: @pxref{Library syntax}.
 @i{Syntax:} All of @angle{init}, @angle{step}, @angle{test}, and
 @angle{command} are expressions.
 
-@i{Semantics:} A @code{do} expression is an iteration construct.  It
-specifies a set of var@value{shy}iables to be bound, how they are to be
-initialized at the start, and how they are to be updated on each
-iteration.  When a termination condition is met, the loop exits after
-evaluating the @angle{expression}s.
+@i{Semantics:} A @nc{do} expression is an iteration construct.  It
+specifies a set of variables to be bound, how they are to be initialized
+at the start, and how they are to be updated on each iteration.  When a
+termination condition is met, the loop exits after evaluating the
+@angle{expression}s.
 
-A @code{do} expression is evaluated as follows: The @angle{init}
+A @nc{do} expression is evaluated as follows: The @angle{init}
 expressions are evaluated (in some unspecified order), the
 @angle{variable}s are bound to fresh locations, the results of the
 @angle{init} expressions are stored in the bindings of the
@@ -919,16 +898,16 @@ the results of the @angle{step}s are stored in the bindings of the
 If @angle{test} evaluates to a true value, then the @angle{expression}s
 are evaluated from left to right and the values of the last
 @angle{expression} are returned.  If no @angle{expression}s are present,
-then the value of the @code{do} expression is unspecified.
+then the value of the @nc{do} expression is unspecified.
 
 The region of the binding of a @angle{variable} consists of the entire
-@code{do} expression except for the @angle{init}s.  It is an error for a
-@angle{variable} to appear more than once in the list of @code{do}
+@nc{do} expression except for the @angle{init}s.  It is an error for a
+@angle{variable} to appear more than once in the list of @nc{do}
 variables.
 
 A @angle{step} can be omitted, in which case the effect is the same as
-if @t{(@sv{variable} @sv{init} @sv{variable})} had been written instead
-of @t{(@sv{variable} @sv{init})}.
+if @nt{(@sv{variable} @sv{init} @sv{variable})} had been written instead
+of @nt{(@sv{variable} @sv{init})}.
 
 @lisp
 (do ((vec (make-vector 5))
@@ -947,12 +926,11 @@ of @t{(@sv{variable} @sv{init})}.
 
 @deftypefn syntax @/ let @sv{variable} @sv{bindings} @sv{body}
 
-@i{Semantics:} @quotedbl{Named @t{let}} is a variant on the syntax of
-@code{let} which provides a more general looping construct than
-@code{do} and can also be used to express
-re@value{shy}cur@value{shy}sion.  It has the same syntax and semantics
-as ordinary @code{let} except that @angle{variable} is bound within
-@angle{body} to a procedure whose formal arguments are the bound
+@i{Semantics:} @quotedbl{Named @nt{let}} is a variant on the syntax of
+@nc{let} which provides a more general looping construct than @nc{do}
+and can also be used to express recursion.  It has the same syntax and
+semantics as ordinary @nc{let} except that @angle{variable} is bound
+within @angle{body} to a procedure whose formal arguments are the bound
 variables and whose body is @angle{body}.  Thus the execution of
 @angle{body} can be repeated by invoking the procedure named by
 @angle{variable}.
@@ -976,13 +954,12 @@ variables and whose body is @angle{body}.  Thus the execution of
 
 @node Delayed evaluation
 @subsection Delayed evaluation
-
 @deftypefn {lazy library syntax} @/ delay @sv{expression}
 
-@i{Semantics:} The @code{delay} construct is used together with the
-procedure @code{force} to implement lazy evaluation or call by need.
-@t{(delay @sv{expression})} returns an object called a @define{promise}
-which at some point in the future can be asked (by the @code{force}
+@i{Semantics:} The @nc{delay} construct is used together with the
+procedure @nc{force} to implement lazy evaluation or call by need.
+@nt{(delay @sv{expression})} returns an object called a @define{promise}
+which at some point in the future can be asked (by the @nc{force}
 procedure) to evaluate @angle{expression}, and deliver the resulting
 value.  The effect of @angle{expression} returning multiple values is
 unspecified.
@@ -990,30 +967,27 @@ unspecified.
 
 @deftypefn {lazy library syntax} @/ delay-force @sv{expression}
 
-@i{Semantics:} The expression @t{(delay-force @r{@var{expression}})} is
-con@value{shy}cept@value{shy}ually sim@value{shy}ilar to @t{(delay
-(force @r{@var{expression}}))}, with the difference that forcing the
-re@value{shy}sult of @code{delay-force} will in effect result in a tail
-call to @t{(force @r{@var{expression}})}, while forcing the result of
-@t{(delay (force @r{@var{expression}}))} might not.  Thus
-it@value{shy}erative lazy algorithms that might result in a long series
-of chains of @code{delay} and @code{force} can be rewritten using
-@code{delay-force} to prevent consuming un@value{shy}bounded space
-during evaluation.
+@i{Semantics:} The expression @nt{(delay-force @r{@var{expression}})} is
+conceptually similar to @nt{(delay (force @r{@var{expression}}))}, with
+the difference that forcing the result of @nc{delay-force} will in
+effect result in a tail call to @nt{(force @r{@var{expression}})}, while
+forcing the result of @nt{(delay (force @r{@var{expression}}))} might
+not.  Thus iterative lazy algorithms that might result in a long series
+of chains of @nc{delay} and @nc{force} can be rewritten using
+@nc{delay-force} to prevent consuming unbounded space during evaluation.
 @end deftypefn
 
 @deffn {lazy library procedure} force promise
 
-The @code{force} procedure forces the value of a @i{promise} created by
-@code{delay}, @code{delay-force}, or @code{make-promise}.  If no value
-has been computed for the pro@value{shy}mise, then a value is computed
-and returned.  The value of the promise must be cached (or
-@quotedbl{memoized}) so that if it is forced a second time, the
-previ@value{shy}ously computed value is returned.  Consequently, a
-delayed expression is eval@value{shy}uated using the parameter values
-and exception handler of the call to @code{force} which first requested
-its value.  If @var{promise} is not a promise, it may be returned
-unchanged.
+The @nc{force} procedure forces the value of a @i{promise} created by
+@nc{delay}, @nc{delay-force}, or @nc{make-promise}.  If no value has
+been computed for the promise, then a value is computed and returned.
+The value of the promise must be cached (or @quotedbl{memoized}) so that
+if it is forced a second time, the previously computed value is
+returned.  Consequently, a delayed expression is evaluated using the
+parameter values and exception handler of the call to @nc{force} which
+first requested its value.  If @var{promise} is not a promise, it may be
+returned unchanged.
 
 @lisp
 (force (delay (+ 1 2))) @ok{3}
@@ -1040,12 +1014,12 @@ unchanged.
 
 The following example is a mechanical transformation of a lazy
 stream-filtering algorithm into Scheme.  Each call to a constructor is
-wrapped in @code{delay}, and each argument passed to a deconstructor is
-wrapped in @code{force}.  The use of @t{(delay-force @value{defdots})}@:
-instead of @code{(delay (force @value{defdots}))} around the body of the
-procedure ensures that an ever-growing sequence of pending
-pro@value{shy}mises does not exhaust available storage, because
-@code{force} will in effect force such sequences iteratively.
+wrapped in @nc{delay}, and each argument passed to a deconstructor is
+wrapped in @nc{force}.  The use of @nt{(delay-force @value{defdots})}@:
+instead of @nt{(delay (force @value{defdots}))} around the body of the
+procedure ensures that an ever-growing sequence of pending promises does
+not exhaust available storage, because @nc{force} will in effect force
+such sequences iteratively.
 
 @lisp
 (define (stream-filter p? s)
@@ -1062,7 +1036,7 @@ pro@value{shy}mises does not exhaust available storage, because
 @end lisp
 
 The following examples are not intended to illustrate good programming
-style, as @code{delay}, @code{force}, and @code{delay-force} are mainly
+style, as @nc{delay}, @nc{force}, and @nc{delay-force} are mainly
 intended for programs written in the functional style.  However, they do
 illustrate the property that only one value is computed for a promise,
 no matter how many times it is forced.
@@ -1082,18 +1056,18 @@ p                  @lispnote{a promise, still}
        (force p))  @ok{6}
 @end lisp
 
-Various extensions to this semantics of @code{delay}, @code{force}, and
-@code{delay-force} are supported in some implementations:
+Various extensions to this semantics of @nc{delay}, @nc{force}, and
+@nc{delay-force} are supported in some implementations:
 
 @itemize @bullet
 @item
-Calling @code{force} on an object that is not a promise may simply
-return the object.
+Calling @nc{force} on an object that is not a promise may simply return
+the object.
 
 @item
 It may be the case that there is no means by which a promise can be
 operationally distinguished from its forced value.  That is, expressions
-like the following may evaluate to either @code{#t} or to @code{#f},
+like the following may evaluate to either @nc{#t} or to @nc{#f},
 depending on the implementation:
 
 @lisp
@@ -1107,9 +1081,9 @@ depending on the implementation:
 @item
 Implementations may implement @quotedbl{implicit forcing}, where the
 value of a promise is forced by procedures that operate only on
-arguments of a certain type, like @code{cdr} and @code{*}.  However,
-procedures that operate uni@value{shy}formly on their arguments, like
-@code{list}, must not force them.
+arguments of a certain type, like @nc{cdr} and @code{*}.  However,
+procedures that operate uniformly on their arguments, like @nc{list},
+must not force them.
 
 @lisp
 (+ (delay (* 3 7)) 13)       @unspecified{unspecified}
@@ -1124,45 +1098,43 @@ procedures that operate uni@value{shy}formly on their arguments, like
 
 @deffn {lazy library procedure} promise? obj
 
-The @code{promise?} procedure returns @code{#t} if its argument is a
-promise, and @code{#f} other@value{shy}wise.  Note that promises are not
-necessarily disjoint from other Scheme types such as procedures.
+The @nc{promise?} procedure returns @nc{#t} if its argument is a
+promise, and @nc{#f} otherwise.  Note that promises are not necessarily
+disjoint from other Scheme types such as procedures.
 @end deffn
 
 @deffn {lazy library procedure} make-promise obj
 
-The @code{make-promise} procedure returns a promise which, when forced,
-will return @var{obj}.  It is similar to @code{delay}, but does not
-delay its argument: it is a pro@value{shy}cedure rather than syntax.  If
-@var{obj} is already a promise, it is returned.
+The @nc{make-promise} procedure returns a promise which, when forced,
+will return @var{obj}.  It is similar to @nc{delay}, but does not delay
+its argument: it is a procedure rather than syntax.  If @var{obj} is
+already a promise, it is returned.
 @end deffn
 
 @node Dynamic bindings
 @subsection Dynamic bindings
-The @define{dynamic extent} of a procedure call is the time
-be@value{shy}tween when it is initi@value{shy}ated and when it
-re@value{shy}turns.  In Scheme,
-@nobr{@code{call-with-current-continuation}} (@pxref{Control features})
-allows reentering a dynamic extent after its
-pro@value{shy}ce@value{shy}dure call has returned.  Thus, the dynamic
-extent of a call might not be a single, con@value{shy}tinuous time
-period.
+The @define{dynamic extent} of a procedure call is the time between when
+it is initiated and when it returns.  In Scheme,
+@nc{call-with-current-continuation} (@pxref{Control features}) allows
+reentering a dynamic extent after its procedure call has returned.
+Thus, the dynamic extent of a call might not be a single, continuous
+time period.
 
 This section introduces @define{parameter objects}, which can be bound
 to new values for the duration of a dynamic extent.  The set of all
-parameter bind@value{shy}ings at a given time is called the
-@define{dynamic environment}.
+parameter bindings at a given time is called the @define{dynamic
+environment}.
 
 @deffn procedure make-parameter init
 @deffnx procedure make-parameter init converter
 
 Returns a newly allocated parameter object, which is a procedure that
-ac@value{shy}cepts zero arguments and returns the value associated with
-the parameter object.  Initially, this value is the value of
-@t{(@r{@var{converter}} @r{@var{init}})}, or @var{init} if the
-con@value{shy}ver@value{shy}sion procedure @var{converter} is not
-specified.  The associated value can be temporarily changed using
-@code{parameterize}, which is described below.
+accepts zero arguments and returns the value associated with the
+parameter object.  Initially, this value is the value of
+@nt{(@r{@var{converter}} @r{@var{init}})}, or @var{init} if the
+conversion procedure @var{converter} is not specified.  The associated
+value can be temporarily changed using @nc{parameterize}, which is
+described below.
 
 The effect of passing arguments to a parameter object is
 implementation-dependent.
@@ -1176,36 +1148,36 @@ implementation-dependent.
 expressions.
 
 It is an error if the value of any @angle{param} expression is not a
-parameter ob@value{shy}ject.
+parameter object.
 
-@i{Semantics:} A @code{parameterize} expression is used to change the
-values re@value{shy}turned by specified parameter objects during the
-evaluation of the body.
+@i{Semantics:} A @nc{parameterize} expression is used to change the
+values returned by specified parameter objects during the evaluation of
+the body.
 
 The @angle{param} and @angle{value} expressions are evaluated in an
 unspecified order.  The @angle{body} is evaluated in a dynamic
 environment in which calls to the parameters return the results of
-passing the corresponding values to the con@value{shy}version procedure
-specified when the parameters were created.  Then the previous values of
-the parameters are restored without passing them to the conversion
+passing the corresponding values to the conversion procedure specified
+when the parameters were created.  Then the previous values of the
+parameters are restored without passing them to the conversion
 procedure.  The results of the last expression in the @angle{body} are
-returned as the results of the entire @code{parameterize} expression.
+returned as the results of the entire @nc{parameterize} expression.
 
 @quotation
 @i{Note:} If the conversion procedure is not idempotent, the results of
-@code{(parameterize ((x (x))) ...)}, which appears to bind the
-param@value{shy}eter @code{x} to its current value, might not be what
-the user expects.
+@code{(@nobr{parameterize} ((x (x))) ...)}, which appears to bind the
+parameter @code{x} to its current value, might not be what the user
+expects.
 @end quotation
 
 If an implementation supports multiple threads of execution, then
-@code{parameterize} must not change the associated values of any
+@nc{parameterize} must not change the associated values of any
 parameters in any thread other than the current thread and threads
 created inside @angle{body}.
 
 Parameter objects can be used to specify configurable settings for a
-com@value{shy}putation without the need to pass the value to every
-procedure in the call chain explicitly.
+computation without the need to pass the value to every procedure in the
+call chain explicitly.
 
 @lisp
 (define radix
@@ -1242,20 +1214,19 @@ procedure in the call chain explicitly.
 @value{dnspace}@value{dnspace}@value{dnspace}@value{dnspace}@sv{body}}
 
 @i{Syntax:} Each @angle{cond clause} is as in the specification of
-@code{cond}.
+@nc{cond}.
 
 @i{Semantics:} The @angle{body} is evaluated with an exception handler
 that binds the raised object (@pxref{Exceptions} for a description of
-@code{raise}) to @angle{variable} and, within the scope of that binding,
-evaluates the clauses as if they were the clauses of a @code{cond}
-ex@value{shy}pres@value{shy}sion.  That implicit @code{cond} expression
-is evaluated with the continuation and dynamic environment of the
-@code{guard} expression.  If every @angle{cond clause}'s @angle{test}
-evaluates to @code{#f} and there is no else clause, then
-@code{raise-continuable} is invoked on the raised object within the
-dynamic environment of the original call to @code{raise} or
-@code{raise-continuable}, except that the current exception
-han@value{shy}dler is that of the @code{guard} expression.
+@nc{raise}) to @angle{variable} and, within the scope of that binding,
+evaluates the clauses as if they were the clauses of a @nc{cond}
+expression.  That implicit @nc{cond} expression is evaluated with the
+continuation and dynamic environment of the @nc{guard} expression.  If
+every @angle{cond clause}'s @angle{test} evaluates to @nc{#f} and there
+is no else clause, then @nc{raise-continuable} is invoked on the raised
+object within the dynamic environment of the original call to @nc{raise}
+or @nc{raise-continuable}, except that the current exception handler is
+that of the @nc{guard} expression.
 
 @xref{Exceptions} for a more complete discussion of exceptions.
 
@@ -1287,32 +1258,26 @@ han@value{shy}dler is that of the @code{guard} expression.
 @deftypeline {auxiliary syntax} @/ @aux{@comma{}@atchar{}}
 
 @quotedbl{Quasiquote} expressions are useful for constructing a list or
-vector struc@value{shy}ture when some but not all of the desired
-struc@value{shy}ture is known in ad@value{shy}vance.  If no commas
-appear within the @nobr{@angle{qq template}}, the result of
-eval@value{shy}uat@value{shy}ing @nobr{@t{@U{0060}@sv{qq template}}} is
-equiv@value{shy}alent to the result of eval@value{shy}uat@value{shy}ing
-@nobr{@t{@U{0027}@sv{qq template}}}.  If a comma appears within the
-@nobr{@angle{qq template}}, how@value{shy}ever, the
-expres@value{shy}sion fol@value{shy}lowing the comma is
-eval@value{shy}uated (@quotedbl{unquoted}) and its result is inserted
-into the struc@value{shy}ture instead of the comma and the
-expres@value{shy}sion.  If a comma appears fol@value{shy}lowed without
-inter@value{shy}vening whitespace by a com@value{shy}mercial
-@nobr{at-sign} (@t{@atchar{}}), then it is an error if the
-fol@value{shy}lowing expres@value{shy}sion does not eval@value{shy}uate
-to a list; the open@value{shy}ing and closing parentheses of the list
-are then @quotedbl{stripped away} and the ele@value{shy}ments of the
-list are inserted in place of the comma @nobr{at-sign}
-ex@value{shy}pres@value{shy}sion se@value{shy}quence.  A comma
-@nobr{at-sign} normally appears only within a list or vector
-@nobr{@angle{qq template}}.
+vector structure when some but not all of the desired structure is known
+in advance.  If no commas appear within the @nobr{@angle{qq template}},
+the result of evaluating @ns{@U{0060}@sv{qq template}} is equivalent to
+the result of evaluating @ns{@U{0027}@sv{qq template}}.  If a comma
+appears within the @nobr{@angle{qq template}}, however, the expression
+following the comma is evaluated (@quotedbl{unquoted}) and its result is
+inserted into the structure instead of the comma and the expression.  If
+a comma appears followed without intervening whitespace by a commercial
+@nobr{at-sign} (@samp{@atchar{}}), then it is an error if the following
+expression does not evaluate to a list; the opening and closing
+parentheses of the list are then @quotedbl{stripped away} and the
+elements of the list are inserted in place of the comma @nobr{at-sign}
+expression sequence.  A comma @nobr{at-sign} normally appears only
+within a list or vector @nobr{@angle{qq template}}.
 
 @quotation
 @i{Note:} In order to unquote an identifier beginning with
-@t{@atchar{}}, it is neces@value{shy}sary to use either an
-ex@value{shy}plicit @code{unquote} or to put white@value{shy}space after
-the comma, to avoid colliding with the comma @nobr{at-sign} sequence.
+@samp{@atchar{}}, it is necessary to use either an explicit
+@code{unquote} or to put whitespace after the comma, to avoid colliding
+with the comma @nobr{at-sign} sequence.
 @end quotation
 
 @lisp
@@ -1346,10 +1311,9 @@ the comma, to avoid colliding with the comma @nobr{at-sign} sequence.
 @end lisp
 
 Quasiquote expressions can be nested.  Substitutions are made only for
-un@value{shy}quoted com@value{shy}ponents appearing at the same nesting
-level as the outer@value{shy}most quasi@value{shy}quote.  The nesting
-level increases by one inside each successive quasi@value{shy}quotation,
-and decreases by one inside each un@value{shy}quotation.
+unquoted components appearing at the same nesting level as the outermost
+quasiquote.  The nesting level increases by one inside each successive
+quasiquotation, and decreases by one inside each unquotation.
 
 @lisp
 `(a `(b ,(+ 1 2) ,(foo ,(+ 1 3) d) e) f)
@@ -1390,12 +1354,12 @@ However, it is not equivalent to this expression:
 (let ((a 3)) (list (list 1 2) a 4 'five 6))
 @end lisp
 
-The two notations @t{@U{0060}@sv{qq template}} and @t{(quasiquote @sv{qq
-template})} are iden@value{shy}ti@value{shy}cal in all respects.
-@t{@U{002C}@sv{expression}} is identical to @t{(unquote
-@sv{expression})}, and @t{@U{002c}@atchar{}@sv{expression}} is identical
-to @t{(unquote-splicing @sv{expression})}.  The @code{write} procedure
-may output either format.
+The two notations @samp{`@sv{qq template}} and @samp{(quasiquote @sv{qq
+template})} are identical in all respects.
+@samp{@comma{}@sv{expression}} is identical to @samp{(unquote
+@sv{expression})}, and @samp{@comma{}@atchar{}@sv{expression}} is
+identical to @samp{(@nobr{unquote-splicing} @sv{expression})}.  The
+@code{write} procedure may output either format.
 
 @lisp
 (quasiquote (list (unquote (+ 1 2)) 4))
@@ -1408,30 +1372,29 @@ may output either format.
      @unspecifiedtext{i.e.,} (quasiquote (list (unquote (+ 1 2)) 4))
 @end lisp
 
-It is an error if any of the identifiers @code{quasiquote},
-@code{unquote}, or @code{unquote-splicing} appear in positions within a
-@angle{qq template} otherwise than as described above.
+It is an error if any of the identifiers @nc{quasiquote}, @nc{unquote},
+or @nc{unquote-splicing} appear in positions within a @angle{qq
+template} otherwise than as described above.
 @end defblock
 
 @node Case-lambda
 @subsection Case-lambda
 @deftypefn {case-lambda library syntax} @/ case-lambda @sv{clause} @value{defdots}
 
-@i{Syntax:} Each @angle{clause} is of the form @t{(@sv{formals}
-@sv{body})}, where @angle{formals} and @angle{body} have the same
-syntax as in a @code{lambda} expression.
+@i{Syntax:} Each @angle{clause} is of the form @nt{(@sv{formals}
+@sv{body})}, where @angle{formals} and @angle{body} have the same syntax
+as in a @nc{lambda} expression.
 
-@i{Semantics:} A @code{case-lambda} expression evaluates to a procedure
+@i{Semantics:} A @nc{case-lambda} expression evaluates to a procedure
 that accepts a variable number of arguments and is lexically scoped in
-the same manner as a procedure resulting from a @code{lambda}
-expression.  When the procedure is called, the first @angle{clause} for
-which the arguments agree with @angle{formals} is selected, where
-agreement is specified as for the @angle{formals} of a @code{lambda}
-ex@value{shy}pres@value{shy}sion.  The variables of @angle{formals} are
-bound to fresh locations, the values of the arguments are stored in
-those locations, the @angle{body} is eval@value{shy}uated in the
-extended environment, and the results of @angle{body} are returned as
-the results of the procedure call.
+the same manner as a procedure resulting from a @nc{lambda} expression.
+When the procedure is called, the first @angle{clause} for which the
+arguments agree with @angle{formals} is selected, where agreement is
+specified as for the @angle{formals} of a @nc{lambda} expression.  The
+variables of @angle{formals} are bound to fresh locations, the values of
+the arguments are stored in those locations, the @angle{body} is
+evaluated in the extended environment, and the results of @angle{body}
+are returned as the results of the procedure call.
 
 It is an error for the arguments not to agree with the @angle{formals}
 of any @angle{clause}.
@@ -1461,21 +1424,19 @@ Scheme programs can define and use new derived expression types, called
 where @angle{keyword} is an identifier that uniquely determines the
 expression type.  This identifier is called the @define{syntactic
 keyword}, or simply @define{keyword}, of the macro.  The number of the
-@angle{datum}s, and their syntax, depends on the
-ex@value{shy}pres@value{shy}sion type.
+@angle{datum}s, and their syntax, depends on the expression type.
 
 Each instance of a macro is called a @define{use} of the macro.  The set
 of rules that specifies how a use of a macro is transcribed into a more
-primitive ex@value{shy}pres@value{shy}sion is called the
-@define{transformer} of the macro.
+primitive expression is called the @define{transformer} of the macro.
 
 The macro definition facility consists of two parts:
 
 @itemize @bullet
 @item
 A set of expressions used to establish that certain identifiers are
-macro key@value{shy}words, associate them with macro transformers, and
-con@value{shy}trol the scope within which a macro is defined, and
+macro keywords, associate them with macro transformers, and control the
+scope within which a macro is defined, and
 
 @item
 a pattern language for specifying macro transformers.
@@ -1483,7 +1444,7 @@ a pattern language for specifying macro transformers.
 
 The syntactic keyword of a macro can shadow variable bindings, and local
 variable bindings can shadow syntactic bindings.  Two mechanisms are
-pro@value{shy}vided to prevent unintended conflicts:
+provided to prevent unintended conflicts:
 
 @itemize @bullet
 @item
@@ -1502,7 +1463,7 @@ the macro.
 
 In consequence, all macros defined using the pattern language are
 @quotedbl{hygienic} and @quotedbl{referentially transparent} and thus
-preserve Scheme's lexi@value{shy}cal
+preserve Scheme's lexical
 scoping.@footnote{@value{refSyntacticExtensions}}
 @footnote{@value{refhygienicMacroExpansion}}
 @footnote{@value{refhygienicMacroExpansion}}
@@ -1514,13 +1475,11 @@ Implementations may provide macro facilities of other types.
 
 @node Binding constructs for syntactic keywords
 @subsection Binding constructs for syntactic keywords
-
-The @code{let-syntax} and @code{letrec-syntax} binding constructs are
-analogous to @code{let} and @code{letrec}, but they bind syntactic
-key@value{shy}words to macro transformers instead of binding variables
-to locations that contain values.  Syntactic key@value{shy}words can
-also be bound globally or locally with @code{define-syntax};
-@pxref{Syntax definitions}.
+The @nc{let-syntax} and @nc{letrec-syntax} binding constructs are
+analogous to @nc{let} and @nc{letrec}, but they bind syntactic keywords
+to macro transformers instead of binding variables to locations that
+contain values.  Syntactic keywords can also be bound globally or
+locally with @nc{define-syntax}; @pxref{Syntax definitions}.
 
 @deftypefn syntax @/ let-syntax @sv{bindings} @sv{body}
 
@@ -1531,16 +1490,16 @@ also be bound globally or locally with @code{define-syntax};
 @end example
 
 Each @angle{keyword} is an identifier, each @angle{transformer spec} is
-an instance of @code{syntax-rules}, and @angle{body} is a sequence of
-zero or more definitions followed by one or more expressions.  It is an
-error for a @code{keyword} to appear more than once in the list of
-keywords being bound.
+an instance of @nc{syntax-rules}, and @angle{body} is a sequence of zero
+or more definitions followed by one or more expressions.  It is an error
+for a @nc{keyword} to appear more than once in the list of keywords
+being bound.
 
 @i{Semantics:} The @angle{body} is expanded in the syntactic environment
-obtained by extending the syntactic environment of the @code{let-syntax}
+obtained by extending the syntactic environment of the @nc{let-syntax}
 expression with macros whose keywords are the @angle{keyword}s, bound to
-the specified trans@value{shy}formers.  Each binding of a
-@angle{keyword} has @angle{body} as its region.
+the specified transformers.  Each binding of a @angle{keyword} has
+@angle{body} as its region.
 
 @lisp
 (let-syntax ((given-that (syntax-rules ()
@@ -1563,16 +1522,16 @@ the specified trans@value{shy}formers.  Each binding of a
 
 @deftypefn syntax @/ letrec-syntax @sv{bindings} @sv{body}
 
-@i{Syntax:} Same as for @code{let-syntax}.
+@i{Syntax:} Same as for @nc{let-syntax}.
 
 @i{Semantics:} The @angle{body} is expanded in the syntactic environment
 obtained by extending the syntactic environment of the
-@code{letrec-syntax} expression with macros whose keywords are the
-@angle{keyword}s, bound to the specified trans@value{shy}formers.  Each
-binding of a @angle{keyword} has the @angle{transformer spec}s as well
-as the @angle{body} within its region, so the trans@value{shy}formers
-can tran@value{shy}scribe expressions into uses of the macros introduced
-by the @code{letrec-syntax} expression.
+@nc{letrec-syntax} expression with macros whose keywords are the
+@angle{keyword}s, bound to the specified transformers.  Each binding of
+a @angle{keyword} has the @angle{transformer spec}s as well as the
+@angle{body} within its region, so the transformers can transcribe
+expressions into uses of the macros introduced by the @nc{letrec-syntax}
+expression.
 
 @lisp
 (letrec-syntax
@@ -1607,7 +1566,7 @@ A @angle{transformer spec} has one of the following forms:
 (@sv{pattern literal} @value{defdots})@*@
 @value{syntaxindent}@value{cdspace}@value{dnspace}@value{dnspace}@
 @sv{syntax rule} @value{defdots}
-@deftypefnx {auxiliary syntax} @/ @aux{@U{005F}}
+@deftypefnx {auxiliary syntax} @/ _
 @deftypefnx {auxiliary syntax} @/ ...
 
 @i{Syntax:} It is an error if any of the @angle{pattern literal}s, or
@@ -1645,46 +1604,43 @@ the following
 
 where an @angle{element} is a @angle{template} optionally followed by an
 @angle{ellipsis}.  An @angle{ellipsis} is the identifier specified in
-the second form of @code{syntax-rules}, or the default identifier
-@code{...}@: (three consecutive periods) otherwise.
+the second form of @nc{syntax-rules}, or the default identifier
+@nc{...}@: (three consecutive periods) otherwise.
 
-@i{Semantics:} An instance of @code{syntax-rules} produces a new macro
-trans@value{shy}former by specifying a sequence of hygienic rewrite
-rules.  A use of a macro whose key@value{shy}word is associated with a
-trans@value{shy}former specified by @code{syntax-rules} is matched
-against the patterns contained in the @angle{syntax rule}s, beginning
-with the leftmost @angle{syntax rule}.  When a match is found, the macro
-use is tran@value{shy}scribed hygienically according to the template.
+@i{Semantics:} An instance of @nc{syntax-rules} produces a new macro
+transformer by specifying a sequence of hygienic rewrite rules.  A use
+of a macro whose keyword is associated with a transformer specified by
+@nc{syntax-rules} is matched against the patterns contained in the
+@angle{syntax rule}s, beginning with the leftmost @angle{syntax rule}.
+When a match is found, the macro use is transcribed hygienically
+according to the template.
 
 An identifier appearing within a @angle{pattern} can be an underscore
-(@code{_}), a literal identifier listed in the list of @angle{pattern
-literal}s, or the @angle{ellipsis}.  All other iden@value{shy}tifiers
-ap@value{shy}pearing with@value{shy}in a @angle{pattern} are
-@define{pattern variables}.
+(@nc{_}), a literal identifier listed in the list of @angle{pattern
+literal}s, or the @angle{ellipsis}.  All other identifiers appearing
+within a @angle{pattern} are @define{pattern variables}.
 
 The keyword at the beginning of the pattern in a @angle{syntax rule} is
-not in@value{shy}volved in the matching and is considered neither a
-pattern variable nor a lit@value{shy}eral iden@value{shy}tifier.
+not involved in the matching and is considered neither a pattern
+variable nor a literal identifier.
 
 Pattern variables match arbitrary input elements and are used to refer
 to elements of the input in the template.  It is an error for the same
 pattern variable to appear more than once in a @angle{pattern}.
 
 Underscores also match arbitrary input elements but are not pattern
-var@value{shy}iables and so can@value{shy}not be used to refer to those
-elements.  If an under@value{shy}score appears in the @angle{pattern
-literal}s list, then that takes precedence and under@value{shy}scores in
-the @angle{pattern} match as literals.  Multiple under@value{shy}scores
-can appear in a @angle{pattern}.
+variables and so cannot be used to refer to those elements.  If an
+underscore appears in the @angle{pattern literal}s list, then that takes
+precedence and underscores in the @angle{pattern} match as literals.
+Multiple underscores can appear in a @angle{pattern}.
 
-Identifiers that appear in @t{(@sv{pattern literal} @value{defdots})} are
-interpreted as literal iden@value{shy}tifiers to be matched against
-corresponding elements of the input.  An ele@value{shy}ment in the input
-matches a literal identifier if and only if it is an identifier and
-either both its oc@value{shy}cur@value{shy}rence in the macro
-expres@value{shy}sion and its oc@value{shy}cur@value{shy}rence in the
-macro definition have the same lexical binding, or the two identifiers
-are the same and both have no lexical binding.
+Identifiers that appear in @nt{(@sv{pattern literal} @value{defdots})}
+are interpreted as literal identifiers to be matched against
+corresponding elements of the input.  An element in the input matches a
+literal identifier if and only if it is an identifier and either both
+its occurrence in the macro expression and its occurrence in the macro
+definition have the same lexical binding, or the two identifiers are the
+same and both have no lexical binding.
 
 A subpattern followed by @angle{ellipsis} can match zero or more
 elements of the input, unless @angle{ellipsis} appears in the
@@ -1705,56 +1661,53 @@ and only if:
 same binding; or
 
 @item
-@var{P} is a list @t{(@r{@varI{P}} @value{defdots} @r{@varn{P}})} and @var{E}
-is a list of @iifinfo{n} elements that match @varI{P} through @varn{P},
-respectively; or
+@var{P} is a list @nt{(@r{@varI{P}} @value{defdots} @r{@varn{P}})} and
+@var{E} is a list of @iifinfo{n} elements that match @varI{P} through
+@varn{P}, respectively; or
 
 @item
-@var{P} is an improper list @t{(@r{@varI{P}} @r{@varII{P}} @value{defdots}
-@r{@varn{P}} . @r{@varnplusone{P}})} and @var{E} is a list or
-im@value{shy}proper list of @var{n} or more elements that match @varI{P}
-through @varn{P}, re@value{shy}spect@value{shy}ively, and whose
-@iifinfo{n}th tail matches @varnplusone{P}; or
+@var{P} is an improper list @nt{(@r{@varI{P}} @r{@varII{P}}
+@value{defdots} @r{@varn{P}} . @r{@varnplusone{P}})} and @var{E} is a
+list or improper list of @var{n} or more elements that match @varI{P}
+through @varn{P}, respectively, and whose @iifinfo{n}th tail matches
+@varnplusone{P}; or
 
 @item
-@var{P} is of the form @t{(@r{@varI{P}} @value{defdots} @r{@vark{P}}
-@r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}} @value{defdots} @r{@varn{P}})}
-where @var{E} is a proper list of @iifinfo{n} elements, the first
-@iifinfo{k} of which match @varI{P} through @vark{P},
-re@value{shy}spect@value{shy}ively, whose next @iifinfo{m} @minus{}
-@iifinfo{k} elements each match @vare{P}, whose
-re@value{shy}main@value{shy}ing @iifinfo{n} @minus{} @iifinfo{m}
+@var{P} is of the form @nt{(@r{@varI{P}} @value{defdots} @r{@vark{P}}
+@r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}} @value{defdots}
+@r{@varn{P}})} where @var{E} is a proper list of @iifinfo{n} elements,
+the first @iifinfo{k} of which match @varI{P} through @vark{P},
+respectively, whose next @iifinfo{m} @minus{} @iifinfo{k} elements each
+match @vare{P}, whose remaining @nobr{@iifinfo{n} @minus{} @iifinfo{m}}
 elements match @varmplusone{P} through @varn{P}; or
 
 @item
-@var{P} is of the form @t{(@r{@varI{P}} @value{defdots} @r{@vark{P}}
-@r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}} @value{defdots} @r{@varn{P}}
-. @r{@varx{P}})} where @var{E} is a list or im@value{shy}proper list of
-@iifinfo{n} ele@value{shy}ments, the first @iifinfo{k} of which match
-@varI{P} through @vark{P}, whose next @iifinfo{m} @minus{} @iifinfo{k}
-ele@value{shy}ments each match @vare{P}, whose
-re@value{shy}main@value{shy}ing @iifinfo{n} @minus{} @iifinfo{m}
-ele@value{shy}ments match @varmplusone{P} through @varn{P}, and whose
-@iifinfo{n}th and final @t{cdr} matches @varx{P}; or
+@var{P} is of the form @nt{(@r{@varI{P}} @value{defdots} @r{@vark{P}}
+@r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}} @value{defdots}
+@r{@varn{P}} . @r{@varx{P}})} where @var{E} is a list or improper list
+of @iifinfo{n} elements, the first @iifinfo{k} of which match @varI{P}
+through @vark{P}, whose next @nobr{@iifinfo{m} @minus{} @iifinfo{k}}
+elements each match @vare{P}, whose remaining @iifinfo{n} @minus{}
+@iifinfo{m} elements match @varmplusone{P} through @varn{P}, and whose
+@iifinfo{n}th and final @nt{cdr} matches @varx{P}; or
 
 @item
-@var{P} is a vector of the form @t{@hashchar{}(@r{@varI{P}} @value{defdots}
-@r{@varn{P}})} and @var{E} is a vector of @iifinfo{n}
-ele@value{shy}ments that match @varI{P} through @varn{P}; or
+@var{P} is a vector of the form @nt{@hashchar{}(@r{@varI{P}}
+@value{defdots} @r{@varn{P}})} and @var{E} is a vector of @iifinfo{n}
+elements that match @varI{P} through @varn{P}; or
 
 @item
-@var{P} is of the form @t{@hashchar{}(@r{@varI{P}} @value{defdots}
-@r{@vark{P}} @r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}} @value{defdots}
-@r{@varn{P}})} where @var{E} is a vector of @iifinfo{n}
-ele@value{shy}ments the first @iifinfo{k} of which match @varI{P}
-through @vark{P}, whose next @iifinfo{m} @minus{} @iifinfo{k}
-ele@value{shy}ments each match @vare{P}, and whose
-re@value{shy}main@value{shy}ing @iifinfo{n} @minus{} @iifinfo{m}
-ele@value{shy}ments match @varmplusone{P} through @varn{P}; or
+@var{P} is of the form @nt{@hashchar{}(@r{@varI{P}} @value{defdots}
+@r{@vark{P}} @r{@vare{P}} @sv{ellipsis} @r{@varmplusone{P}}
+@value{defdots} @r{@varn{P}})} where @var{E} is a vector of @iifinfo{n}
+elements the first @iifinfo{k} of which match @varI{P} through @vark{P},
+whose next @nobr{@iifinfo{m} @minus{} @iifinfo{k}} elements each match
+@vare{P}, and whose remaining @nobr{@iifinfo{n} @minus{} @iifinfo{m}}
+elements match @varmplusone{P} through @varn{P}; or
 
 @item
 @var{P} is a constant and @var{E} is equal to @var{P} in the sense of
-the @code{equal?} pro@value{shy}cedure.
+the @nc{equal?} procedure.
 @end itemize
 
 It is an error to use a macro keyword, within the scope of its binding,
@@ -1763,28 +1716,28 @@ in an expression that does not match any of the patterns.
 When a macro use is transcribed according to the template of the
 matching @angle{syntax rule}, pattern variables that occur in the
 template are replaced by the elements they match in the input.  Pattern
-variables that occur in sub@value{shy}patterns followed by one or more
-instances of the identifier @angle{ellipsis} are al@value{shy}lowed only
-in sub@value{shy}templates that are followed by as many instances of
-@angle{ellipsis}.  They are replaced in the output by all of the
-elements they match in the input, distributed as indicated.  It is an
-error if the output cannot be built up as specified.
+variables that occur in subpatterns followed by one or more instances of
+the identifier @angle{ellipsis} are allowed only in subtemplates that
+are followed by as many instances of @angle{ellipsis}.  They are
+replaced in the output by all of the elements they match in the input,
+distributed as indicated.  It is an error if the output cannot be built
+up as specified.
 
 Identifiers that appear in the template but are not pattern variables or
 the identifier @angle{ellipsis} are inserted into the output as literal
 identifiers.  If a literal identifier is inserted as a free identifier
 then it refers to the binding of that identifier within whose scope the
-instance of @code{syntax-rules} appears.  If a literal identifier is
-inserted as a bound identifier then it is in effect re@value{shy}named
-to prevent inadvertent captures of free identifiers.
+instance of @nc{syntax-rules} appears.  If a literal identifier is
+inserted as a bound identifier then it is in effect renamed to prevent
+inadvertent captures of free identifiers.
 
-A template of the form @t{(@sv{ellipsis} @sv{template})} is identical to
-@angle{template}, ex@value{shy}cept that ellipses within the template
-have no special meaning.  That is, any ellipses contained within
+A template of the form @nt{(@sv{ellipsis} @sv{template})} is identical
+to @angle{template}, except that ellipses within the template have no
+special meaning.  That is, any ellipses contained within
 @angle{template} are treated as ordinary identifiers.  In particular,
-the template @t{(@sv{ellipsis} @sv{ellipsis})} produces a single
-@angle{ellipsis}.  This al@value{shy}lows syntactic abstractions to
-expand into code containing ellipses.
+the template @nt{(@sv{ellipsis} @sv{ellipsis})} produces a single
+@angle{ellipsis}.  This allows syntactic abstractions to expand into
+code containing ellipses.
 
 @lisp
 (define-syntax be-like-begin
@@ -1799,19 +1752,19 @@ expand into code containing ellipses.
 (sequence 1 2 3 4)              @ok{4}
 @end lisp
 
-As an example, if @code{let} and @code{cond} are defined as in section
-7.3 (@pxref{Derived expression types}), then they are hygienic (as
-required) and the following is not an error.
+As an example, if @nc{let} and @nc{cond} are defined as in section 7.3
+(@ref{Derived expression types}), then they are hygienic (as required)
+and the following is not an error.
 
 @lisp
 (let ((=> #f))
   (cond (#t @noadorn{=>} 'ok))            @ok{ok}
 @end lisp
 
-The macro transformer for @code{cond} recognizes @code{=>} as a local
+The macro transformer for @nc{cond} recognizes @nc{=>} as a local
 variable, and hence an expression, and not as the base identifier
-@code{=>}, which the macro trans@value{shy}former treats as a syntactic
-keyword.  Thus the example expands into
+@nc{=>}, which the macro transformer treats as a syntactic keyword.
+Thus the example expands into
 
 @lisp
 (let ((=> #f))
@@ -1831,19 +1784,17 @@ which would result in an invalid procedure call.
 
 @node Signaling errors in macro transformers
 @subsection Signaling errors in macro transformers
-
 @deftypefn syntax @/ syntax-error @sv{message} @sv{args} @value{defdots}
 
-@code{syntax-error} behaves similarly to @code{error}
-(@pxref{Exceptions}) except that implemen@value{shy}tations with an
-expansion pass separate from evaluation should signal an error as soon
-as @nobr{@code{syntax-error}} is expanded.  This can be used as a
-@nobr{@code{syntax-rules}} @angle{template} for a @angle{pattern} that
-is an invalid use of the macro, which can provide more descriptive error
-messages.  @angle{message} is a string literal, and @angle{args}
-arbitrary expressions providing additional information.  Applications
-cannot count on being able to catch syntax errors with
-excep@value{shy}tion handlers or guards.
+@nc{syntax-error} behaves similarly to @nc{error} (@pxref{Exceptions})
+except that implementations with an expansion pass separate from
+evaluation should signal an error as soon as @nc{syntax-error} is
+expanded.  This can be used as a @nc{syntax-rules} @angle{template} for
+a @angle{pattern} that is an invalid use of the macro, which can provide
+more descriptive error messages.  @angle{message} is a string literal,
+and @angle{args} arbitrary expressions providing additional information.
+Applications cannot count on being able to catch syntax errors with
+exception handlers or guards.
 
 @lisp
 (define-syntax simple-let

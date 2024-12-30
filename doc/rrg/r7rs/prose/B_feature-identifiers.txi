@@ -1,17 +1,16 @@
 @node Standard Feature Identifiers
 @appendix Standard Feature Identifiers
-
 An implementation may provide any or all of the feature identifiers
-listed below for use by @code{cond-expand} and features, but must not
+listed below for use by @nc{cond-expand} and features, but must not
 provide a feature identifier if it does not provide the corresponding
 feature.
 
 @table @asis
 @item @t{r7rs}
-All @value{R7RS} Scheme implementations have this feature.
+All @value{R7RSinitial} Scheme implementations have this feature.
 
 @item @t{exact-closed}
-The algebraic operations @code{+}, @code{-}, @code{*}, and @code{expt}
+The algebraic operations @code{+}, @code{-}, @code{*}, and @nc{expt}
 where the second argument is a non-negative integer produce exact values
 given exact inputs.
 

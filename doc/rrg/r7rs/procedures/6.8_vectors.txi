@@ -12,7 +12,7 @@ non-negative integers less than the length of the vector.  The first
 element in a vector is indexed by zero, and the last element is indexed
 by one less than the length of the vector.
 
-Vectors are written using the notation @code{@hashchar{}(@rv{obj}
+Vectors are written using the notation @ns{@hashchar{}(@rv{obj}
 @value{defdots})}.  For example, a vector of length 3 containing the
 number zero in element 0, the list @code{(2 2 2 2)} in element 1, and
 the string @code{"Anna"} in element 2 can be written as follows:
@@ -26,7 +26,7 @@ in programs.
 
 @deffn procedure vector? obj
 
-Returns @code{#t} if @var{obj} is a vector; otherwise returns @code{#f}.
+Returns @nc{#t} if @var{obj} is a vector; otherwise returns @nc{#f}.
 @end deffn
 
 @deffn procedure make-vector k
@@ -40,7 +40,7 @@ Otherwise the initial contents of each element is unspecified.
 @deffn procedure vector obj @value{defdots}
 
 Returns a newly allocated vector whose elements contain the given
-ar@value{shy}gu@value{shy}ments.  It is analogous to @code{list}.
+arguments.  It is analogous to @nc{list}.
 
 @lisp
 (vector 'a 'b 'c) @ok{#(a b c)}
@@ -56,8 +56,8 @@ Returns the number of elements in @var{vector} as an exact integer.
 
 It is an error if @var{k} is not a valid index of @var{vector}.
 
-The @code{vector-ref} procedure returns the contents of element @var{k}
-of @var{vector}.
+The @nc{vector-ref} procedure returns the contents of element @var{k} of
+@var{vector}.
 
 @lisp
 (vector-ref '#(1 1 2 3 5 8 13 21)
@@ -74,7 +74,7 @@ of @var{vector}.
 
 It is an error if @var{k} is not a valid index of @var{vector}.
 
-The @code{vector-set!} procedure stores @var{obj} in element @var{k} of
+The @nc{vector-set!} procedure stores @var{obj} in element @var{k} of
 @var{vector}.
 
 @lisp
@@ -93,11 +93,10 @@ The @code{vector-set!} procedure stores @var{obj} in element @var{k} of
 @deffnx procedure vector->list vector start end
 @deffnx procedure list->vector list
 
-The @code{vector->list} procedure returns a newly allocated list of the
+The @nc{vector->list} procedure returns a newly allocated list of the
 objects contained in the elements of @var{vector} between @var{start}
-and @var{end}.  The @code{list->vector} procedure returns a newly
-created vector initialized to the ele@value{shy}ments of the list
-@var{list}.
+and @var{end}.  The @nc{list->vector} procedure returns a newly created
+vector initialized to the elements of the list @var{list}.
 
 In both procedures, order is preserved.
 
@@ -119,12 +118,12 @@ In both procedures, order is preserved.
 @deffnx procedure string->vector string start end
 
 It is an error if any element of @var{vector} between @var{start} and
-@var{end} is not a char@value{shy}acter.
+@var{end} is not a character.
 
-The @code{vector->string} procedure returns a newly allocated string of
-the ob@value{shy}jects contained in the elements of @var{vector} between
-@var{start} and @var{end}.  The @code{string->vector} procedure returns
-a newly created vector initialized to the elements of the string
+The @nc{vector->string} procedure returns a newly allocated string of
+the objects contained in the elements of @var{vector} between
+@var{start} and @var{end}.  The @nc{string->vector} procedure returns a
+newly created vector initialized to the elements of the string
 @var{string} between @var{start} and @var{end}.
 
 In both procedures, order is preserved.
@@ -142,7 +141,7 @@ In both procedures, order is preserved.
 
 Returns a newly allocated copy of the elements of the given @var{vector}
 between @var{start} and @var{end}.  The elements of the new vector are
-the same (in the sense of @code{eqv?}) as the elements of the old.
+the same (in the sense of @nc{eqv?}) as the elements of the old.
 
 @lisp
 (define a #(1 8 2 8)) ; a may be immutable
@@ -159,8 +158,8 @@ c                             @ok{#(8 2)}
 @deffnx procedure vector-copy! to at from start end
 
 It is an error if @var{at} is less than zero or greater than the length
-of @var{to}.  It is also an error if @code{(- (vector-length @rv{t})
-at)} is less than @code{(- @rv{end} @rv{start})}.
+of @var{to}.  It is also an error if @nc{(- (vector-length @rv{t}) at)}
+is less than @nc{(- @rv{end} @rv{start})}.
 
 Copies the elements of vector @var{from} between @var{start} and
 @var{end} to vector @var{to}, starting at @var{at}.  The order in which
@@ -180,8 +179,8 @@ b                             @ok{#(10 1 2 40 50)}
 
 @deffn procedure vector-append vector @value{defdots}
 
-Returns a newly allocated vector whose elements are the concatenation
-of the elements of the given @var{vector}s.
+Returns a newly allocated vector whose elements are the concatenation of
+the elements of the given @var{vector}s.
 
 @lisp
 (vector-append #(a b c) #(d e f))
@@ -193,7 +192,7 @@ of the elements of the given @var{vector}s.
 @deffnx procedure vector-fill! vector fill start
 @deffnx procedure vector-fill! vector fill start end
 
-The @code{vector-fill!} procedure stores @var{fill} in the elements of
+The @nc{vector-fill!} procedure stores @var{fill} in the elements of
 @var{vector} between @var{start} and @var{end}.
 
 @lisp

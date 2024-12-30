@@ -9,9 +9,9 @@ dialect of the Lisp programming
 language@footnote{@value{refRecursiveFunctions}} invented by Guy Lewis
 Steele Jr.@: and Gerald Jay Sussman.  It was designed to have
 exceptionally clear and simple semantics and few different ways to form
-expressions.  A wide variety of pro@value{shy}gramming paradigms,
-including imperative, functional, and object-oriented styles, find
-convenient expression in Scheme.
+expressions.  A wide variety of programming paradigms, including
+imperative, functional, and object-oriented styles, find convenient
+expression in Scheme.
 
 The introduction offers a brief history of the language and of the
 report.
@@ -20,31 +20,32 @@ The first three chapters present the fundamental ideas of the language
 and describe the notational conventions used for describing the language
 and for writing programs in the language.
 
-Chapters 4 (@pxref{Expressions}) and 5 (@pxref{Program structure})
-describe the syntax and semantics of expressions,
-def@value{shy}ini@value{shy}tions, programs, and libraries.
+Chapters 4 (@ref{Expressions}) and 5 (@ref{Program structure}) describe
+the syntax and semantics of expressions, definitions, programs, and
+libraries.
 
-Chapter 6 (@pxref{Standard procedures}) describes Scheme's built-in
+Chapter 6 (@ref{Standard procedures}) describes Scheme's built-in
 procedures, which include all of the language's data manipulation and
 input/output primitives.
 
-Chapter 7 (@pxref{Formal syntax and semantics}) provides a formal syntax
+Chapter 7 (@ref{Formal syntax and semantics}) provides a formal syntax
 for Scheme written in extended @acronym{BNF,Backus-Naur form}, along
-with a formal denotational semantics.  An ex@value{shy}ample of the use
-of the lan@value{shy}guage follows the formal syntax and semantics.
+with a formal denotational semantics.  An example of the use of the
+language follows the formal syntax and semantics.
 
-Appendix A (@pxref{Standard Libraries}) provides a list of the standard
+Appendix A (@ref{Standard Libraries}) provides a list of the standard
 libraries and the identifiers that they export.
 
-Appendix B (@pxref{Standard Feature Identifiers}) provides a list of
-optional but standardized implementation fea@value{shy}ture names.
+Appendix B (@ref{Standard Feature Identifiers}) provides a list of
+optional but standardized implementation feature names.
 
 The report concludes with a list of references and an alphabetic index.
 
 @quotation
-@i{Note:} The editors of the @value{R5RS} and @value{R6RS} reports are
-listed as authors of this report in recognition of the substantial
-portions of this report that are copied directly from @value{R5RS} and
-@value{R6RS}.  There is no intended implication that those editors,
-individually or collectively, support or do not support this report.
+@i{Note:} The editors of the @value{R5RSinitial} and @value{R6RSinitial}
+reports are listed as authors of this report in recognition of the
+substantial portions of this report that are copied directly from
+@value{R5RS} and @value{R6RS}.  There is no intended implication that
+those editors, individually or collectively, support or do not support
+this report.
 @end quotation

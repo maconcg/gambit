@@ -12,28 +12,27 @@
 An identifier can name either a type of syntax or a location where a
 value can be stored.  An identifier that names a type of syntax is
 called a @define{syntactic keyword} and is said to be @define{bound} to
-a transformer for that syntax.  An iden@value{shy}ti@value{shy}fier that
-names a location is called a @define{variable} and is said to be
-@define{bound} to that location.  The set of all visible bindings in
-effect at some point in a program is known as the @define{environment}
-in effect at that point.  The value stored in the location to which a
-variable is bound is called the variable's value.  By abuse of
-terminology, the variable is sometimes said to name the value or to be
-bound to the value.  This is not quite accurate, but confusion rarely
-results from this practice.
+a transformer for that syntax.  An identifier that names a location is
+called a @define{variable} and is said to be @define{bound} to that
+location.  The set of all visible bindings in effect at some point in a
+program is known as the @define{environment} in effect at that point.
+The value stored in the location to which a variable is bound is called
+the variable's value.  By abuse of terminology, the variable is
+sometimes said to name the value or to be bound to the value.  This is
+not quite accurate, but confusion rarely results from this practice.
 
 Certain expression types are used to create new kinds of syntax and to
 bind syntactic keywords to those new syntaxes, while other expression
-types create new locations and bind variables to those locations. These
+types create new locations and bind variables to those locations.  These
 expression types are called @define{binding constructs}.  Those that
-bind syntactic keywords are listed in section 4.3 (@pxref{Macros}).  The
+bind syntactic keywords are listed in section 4.3 (@ref{Macros}).  The
 most fundamental of the variable binding constructs is the @code{lambda}
 expression (@pxref{Procedures}), because all other variable binding
-constructs (except top-level bindings) can be ex@value{shy}plained in
-terms of @t{lambda} expressions.  The other variable binding
-con@value{shy}structs are @code{let}, @code{let*}, @code{letrec},
-@code{letrec*}, @nobr{@code{let-values}}, @nobr{@code{let*-values}}, and
-@code{do} expressions (@pxref{Binding constructs}; @pxref{Iteration}).
+constructs (except top-level bindings) can be explained in terms of
+@nt{lambda} expressions.  The other variable binding constructs are
+@code{let}, @code{let*}, @code{letrec}, @code{letrec*}, @nc{let-values},
+@nc{let*-values}, and @code{do} expressions (@pxref{Binding constructs};
+@pxref{Iteration}).
 
 @cindex unbound identifier
 Scheme is a language with block structure.  To each place where an
@@ -41,11 +40,11 @@ identifier is bound in a program there corresponds a @define{region} of
 the program text within which the binding is visible.  The region is
 determined by the particular binding construct that establishes the
 binding; if the binding is established by a @code{lambda} expression,
-for example, then its region is the en@value{shy}tire @code{lambda}
-expression.  Every mention of an identifier refers to the binding of the
-identifier that established the innermost of the regions containing the
-use.  If there is no binding of the identifier whose region contains the
-use, then the use refers to the binding for the variable in the global
+for example, then its region is the entire @code{lambda} expression.
+Every mention of an identifier refers to the binding of the identifier
+that established the innermost of the regions containing the use.  If
+there is no binding of the identifier whose region contains the use,
+then the use refers to the binding for the variable in the global
 environment, if any (@pxref{Expressions}; @pxref{Standard procedures});
 if there is no binding for the identifier, it is said to be
 @define{unbound}.
@@ -76,8 +75,8 @@ and all record types.
 
 Although there is a separate boolean type, any Scheme value can be used
 as a boolean value for the purpose of a conditional test.  As explained
-in section 6.3 (@pxref{Booleans}), all values count as true in such a
-test except for @code{#f}.  This report uses the word @quotedbl{true} to
+in section 6.3 (@ref{Booleans}), all values count as true in such a test
+except for @code{#f}.  This report uses the word @quotedbl{true} to
 refer to any Scheme value except @code{#f}, and the word
 @quotedbl{false} to refer to @code{#f}.
 
@@ -87,67 +86,62 @@ refer to any Scheme value except @code{#f}, and the word
 @section External representations
 An important concept in Scheme (and Lisp) is that of the
 @define{external representation} of an object as a sequence of
-characters.  For example, an ex@value{shy}ternal representation of the
-integer 28 is the sequence of characters @quotedbl{@t{28}}, and an
-external representation of a list consisting of the integers 8 and 13 is
-the sequence of characters @quotedbl{@t{(8 13)}}.
+characters.  For example, an external representation of the integer 28
+is the sequence of characters @samp{28}, and an external representation
+of a list consisting of the integers 8 and 13 is the sequence of
+characters @samp{(8 13)}.
 
 @cindex external representation @subentry uniqueness of
 The external representation of an object is not necessarily unique.  The
-integer 28 also has representations @quotecode{#e28.000} and
-@quotecode{#x1c}, and the list in the previous paragraph also has the
-representations @quotecode{( 08 13 )} and @quotecode{(8 . (13 . ()))}
-(@pxref{Pairs and lists}).
+integer 28 also has representations @samp{#e28.000} and @samp{#x1c}, and
+the list in the previous paragraph also has the representations @samp{(
+08 13 )} and @samp{(8 . (13 . ()))} (@pxref{Pairs and lists}).
 
 Many objects have standard external representations, but some, such as
 procedures, do not have standard representations (although particular
-im@value{shy}ple@value{shy}men@value{shy}tations may define
-representations for them).
+implementations may define representations for them).
 
 An external representation can be written in a program to obtain the
-cor@value{shy}res@value{shy}ponding object (@pxref{Literal expressions}
-for a description of @code{quote}).
+corresponding object (@pxref{Literal expressions} for a description of
+@code{quote}).
 
 External representations can also be used for input and output.  The
-pro@value{shy}cedure @code{read} (@pxref{Input}) parses external
-representations, and the procedure @code{write} (@pxref{Output})
-generates them.  Together, they pro@value{shy}vide an elegant and
-powerful input/output facility.
+procedure @code{read} (@pxref{Input}) parses external representations,
+and the procedure @code{write} (@pxref{Output}) generates them.
+Together, they provide an elegant and powerful input/output facility.
 
-Note that the sequence of characters @quotedbl{@t{(+ 2 6)}} is
-@emph{not} an external rep@value{shy}re@value{shy}sen@value{shy}tation
-of the integer 8, even though it @emph{is} an expression evaluating to
-the integer 8; rather, it is an external representation of a
-three-element list, the elements of which are the symbol @code{+} and
-the integers @code{2} and @code{6}.  Scheme's syn@value{shy}tax has the
-property that any sequence of characters that is an expression is also
-the external representation of some object.  This can lead to confusion,
-since it is not always obvious out of context whether a given
-se@value{shy}quence of characters is intended to denote data or program,
-but it is also a source of power, since it facilitates writing programs
-such as interpreters and com@value{shy}pilers that treat programs as
-data (or vice versa).
+Note that the sequence of characters @samp{(+ 2 6)} is @emph{not} an
+external representation of the integer 8, even though it @emph{is} an
+expression evaluating to the integer 8; rather, it is an external
+representation of a three-element list, the elements of which are the
+symbol @code{+} and the integers @code{2} and @code{6}.  Scheme's syntax
+has the property that any sequence of characters that is an expression
+is also the external representation of some object.  This can lead to
+confusion, since it is not always obvious out of context whether a given
+sequence of characters is intended to denote data or program, but it is
+also a source of power, since it facilitates writing programs such as
+interpreters and compilers that treat programs as data (or vice versa).
 
 The syntax of external representations of various kinds of objects
-accom@value{shy}panies the description of the primitives for
-manipulating the objects in the appropriate sections of chapter 6
-(@pxref{Standard procedures}).
+accompanies the description of the primitives for manipulating the
+objects in the appropriate sections of chapter 6 (@ref{Standard
+procedures}).
 
 @node Storage model
 @cindex objects @subentry storage
 @cindex storage @subentry of objects
 @section Storage model
 Variables and objects such as pairs, strings, vectors, and bytevectors
-im@value{shy}plicitly denote locations or sequences of locations.  A
-string, for example, denotes as many locations as there are characters
-in the string.  A new value can be stored into one of these locations
-using the @code{string-set!} procedure, but the string continues to
-denote the same locations as before.
+implicitly denote locations or sequences of locations.  A string, for
+example, denotes as many locations as there are characters in the
+string.  A new value can be stored into one of these locations using the
+@nc{string-set!} procedure, but the string continues to denote the same
+locations as before.
 
 An object fetched from a location, by a variable reference or by a
-procedure such as @code{car}, @code{vector-ref}, or @code{string-ref},
-is equivalent in the sense of @code{eqv?} (@pxref{Equivalence
-predicates}) to the object last stored in the location before the fetch.
+procedure such as @code{car}, @nc{vector-ref}, or @nc{string-ref}, is
+equivalent in the sense of @code{eqv?} (@pxref{Equivalence predicates})
+to the object last stored in the location before the fetch.
 
 Every location is marked to show whether it is in use.  No variable or
 object ever refers to a location that is not in use.
@@ -158,22 +152,21 @@ object ever refers to a location that is not in use.
 Whenever this report speaks of storage being newly allocated for a
 variable or object, what is meant is that an appropriate number of
 locations are chosen from the set of locations that are not in use, and
-the chosen loca@value{shy}tions are marked to indicate that they are now
-in use before the variable or object is made to denote them.
-Notwithstanding this, it is understood that the empty list cannot be
-newly allocated, because it is a unique object.  It is also understood
-that empty strings, empty vectors, and empty bytevectors, which contain
-no locations, may or may not be newly allocated.
+the chosen locations are marked to indicate that they are now in use
+before the variable or object is made to denote them.  Notwithstanding
+this, it is understood that the empty list cannot be newly allocated,
+because it is a unique object.  It is also understood that empty
+strings, empty vectors, and empty bytevectors, which contain no
+locations, may or may not be newly allocated.
 
 @cindex objects @subentry mutability
 @cindex mutability of objects
 Every object that denotes locations is either mutable or immutable.
-Literal constants, the strings returned by @code{symbol->string}, and
-possibly the envi@value{shy}ronment returned by
-@code{scheme-report-environment} are immutable objects.  All objects
-created by the other procedures listed in this report are mutable.  It
-is an error to attempt to store a new value into a location that is
-denoted by an immutable object.
+Literal constants, the strings returned by @nc{symbol->string}, and
+possibly the environment returned by @nc{scheme-report-environment} are
+immutable objects.  All objects created by the other procedures listed
+in this report are mutable.  It is an error to attempt to store a new
+value into a location that is denoted by an immutable object.
 
 @cindex conceptual locations
 These locations are to be understood as conceptual, not physical.
@@ -197,33 +190,32 @@ contexts defined below are @define{tail calls}.  A Scheme implementation
 is properly tail-recursive if it supports an unbounded number of active
 tail calls.  A call is @define{active} if the called procedure might
 still return.  Note that this includes calls that might be returned from
-either by the current continuation or by continuations
-cap@value{shy}tured earlier by
-@nobr{@code{call-with-current-continuation}} that are later invoked.  In
-the absence of captured continuations, calls could return at most once
-and the active calls would be those that had not yet returned. A formal
+either by the current continuation or by continuations captured earlier
+by @nc{call-with-current-continuation} that are later invoked.  In the
+absence of captured continuations, calls could return at most once and
+the active calls would be those that had not yet returned.  A formal
 definition of proper tail recursion can be found in @cite{Proper Tail
 Recursion and Space
 Efficiency}@footnote{@value{refProperTailRecursion}}.
 
 @quotation
 @i{Rationale:} Intuitively, no space is needed for an active tail call
-be@value{shy}cause the continuation that is used in the tail call has
-the same semantics as the continuation passed to the procedure
-containing the call.  Although an improper implementation might use a
-new con@value{shy}tinuation in the call, a return to this new
-continuation would be followed immediately by a return to the
-continuation passed to the procedure.  A properly tail-recursive
-implementation returns to that continuation directly.
+because the continuation that is used in the tail call has the same
+semantics as the continuation passed to the procedure containing the
+call.  Although an improper implementation might use a new continuation
+in the call, a return to this new continuation would be followed
+immediately by a return to the continuation passed to the procedure.  A
+properly tail-recursive implementation returns to that continuation
+directly.
 
 @cindex proper tail recursion @subentry history
 Proper tail recursion was one of the central ideas in Steele and
-Sussman's original version of Scheme.  Their first Scheme
-inter@value{shy}preter implemented both functions and actors.  Control
-flow was ex@value{shy}pressed using actors, which differed from
-functions in that they passed their results on to another actor instead
-of returning to a caller.  In the termi@value{shy}nology of this
-section, each actor finished with a tail call to another actor.
+Sussman's original version of Scheme.  Their first Scheme interpreter
+implemented both functions and actors.  Control flow was expressed using
+actors, which differed from functions in that they passed their results
+on to another actor instead of returning to a caller.  In the
+terminology of this section, each actor finished with a tail call to
+another actor.
 
 Steele and Sussman later observed that in their interpreter the code for
 dealing with actors was identical to that for functions and thus there
@@ -234,14 +226,14 @@ was no need to include both in the language.
 @cindex tail context
 A @define{tail call} is a procedure call that occurs in a @define{tail
 context}.  Tail contexts are defined inductively.  Note that a tail
-context is always determined with re@value{shy}spect to a particular
-@t{lambda} expression.
+context is always determined with respect to a particular @nt{lambda}
+expression.
 
 @itemize @bullet
 @item
 The last expression within the body of a @code{lambda} expression, shown
 as @angle{tail expression} below, occurs in a tail context.  The same is
-true of all the bodies of @code{case-lambda} expressions.
+true of all the bodies of @nc{case-lambda} expressions.
 
 @example grammar
 (lambda @sv{formals}
@@ -252,12 +244,11 @@ true of all the bodies of @code{case-lambda} expressions.
 
 @item
 If one of the following expressions is in a tail context, then the
-sub@value{shy}expressions shown as @angle{tail expression} are in a tail
-context.  These were derived from rules in the grammar given in chapter
-7 by re@value{shy}placing some occurrences of @angle{body} with
-@angle{tail expression}, and some occurrences of @angle{sequence} with
-@angle{tail sequence}.  Only those rules that contain tail contexts are
-shown here.
+subexpressions shown as @angle{tail expression} are in a tail context.
+These were derived from rules in the grammar given in chapter 7 by
+replacing some occurrences of @angle{body} with @angle{tail expression},
+and some occurrences of @angle{sequence} with @angle{tail sequence}.
+Only those rules that contain tail contexts are shown here.
 
 @example grammar
 (if @sv{expression} @sv{tail expression} @sv{tail expression})
@@ -305,7 +296,7 @@ shown here.
 
 @item
 If a @code{cond} or @code{case} expression is in a tail context, and has
-a clause of the form @t{(@sv{@parI{expression}} =>
+a clause of the form @nt{(@sv{@parI{expression}} =>
 @sv{@parII{expression}})} then the (implied) call to the procedure that
 results from the evaluation of @angle{@parII{expression}} is in a tail
 context.  @angle{@parII{expression}} itself is not in a tail context.
@@ -314,9 +305,9 @@ context.  @angle{@parII{expression}} itself is not in a tail context.
 Certain procedures defined in this report are also required to perform
 tail calls.  The first argument passed to @code{apply} and to
 @code{call-with-current-continuation}, and the second argument passed to
-@code{call-with-values}, must be called via a tail call.  Similarly,
-@code{eval} must must evaluate its first ar@value{shy}gu@value{shy}ment
-as if it were in tail position within the @code{eval} procedure.
+@nc{call-with-values}, must be called via a tail call.  Similarly,
+@code{eval} must must evaluate its first argument as if it were in tail
+position within the @code{eval} procedure.
 
 In the following example the only tail call is the call to @code{f}.
 None of the calls to @code{g} or @code{h} are tail calls.  The reference

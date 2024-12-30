@@ -117,7 +117,7 @@ body {
 }
 
 code.code, code.t, pre.display-preformatted, pre.example-preformatted,
- pre.lisp-preformatted {
+ pre.lisp-preformatted, samp.samp {
     span.abbrev {color: <abbrev>}
     span.aux, span.aux-esc {color: <aux>}
     span.aux-abbrev {color: <aux-abbrev>}
@@ -162,7 +162,7 @@ END
 
 (define examples-noncolor-css #<<END
 code.code, code.t, pre.display-preformatted, pre.example-preformatted,
- pre.lisp-preformatted {
+ pre.lisp-preformatted, samp.samp {
     font-size: 1rem;
     span.and-prints, span.atmosphere, span.directive, span.dsssl, span.output {
         font-style: oblique;
@@ -209,13 +209,19 @@ dl.first-deffn, dl.first-deftp, dl.first-deffn, dl.first-defvr,
         }
     }
     dt.deftypefn, dt.deftypefnx, dt.deftypeline {
-        strong.def-name {
-            span.aux {
-                color: <aux>;
-            }
-            span.syntax {
-                color: <syntax>;
-            }
+        span.aux {
+            color: <aux>;
+        }
+        span.syntax {
+            color: <syntax>;
+        }
+    }
+    dt.deftypeline {
+        span.datum-label {
+            color: <datum-label>;
+        }
+        span.datum-ref {
+            color: <datum-ref>;
         }
     }
     dd {
@@ -307,7 +313,7 @@ dl.first-deffn, dl.first-deftp, dl.first-defvr, dl.first-deftypefn,
             span.r {
                 font-size: 1.06rem;
             }
-            code.code, code.t {
+            code.code, code.t, samp.samp {
                 font-size: 1.06rem;
                 span.r {
                     font-size: 1.06rem;
@@ -365,7 +371,7 @@ div.chapter-level-extent, div.unnumbered-level-extent,
         p {
             font-size: 0.94rem;
             width: 33rem;
-            code.code, code.t {
+            code.code, code.t, samp.samp {
                 font-size: 0.94rem;
             }
         }
@@ -405,6 +411,7 @@ div.top-level-extent, div.chapter-level-extent, div.appendix-level-extent,
     }
     .itemize {
         li {
+            hyphens: auto;
             line-height: 1.3;
             margin-top: 1rem;
             text-align: justify;
@@ -426,7 +433,7 @@ span.angle-bracket, sub, sup {
 div.chapter-level-extent, div.unnumbered-level-extent, 
  div.appendix-level-extent {
     dd p:not(.nav-panel p), p:not(.nav-panel p) {
-        hyphens: manual;
+        hyphens: auto;
         text-align: justify;
         span.angle-bracket {
             font-size: 1.12rem;

@@ -1,10 +1,11 @@
 @node Control features
+@nodedescription Controlling the flow of program execution.
 @section Control features
 This section describes various primitive procedures which control the
 flow of program execution in special ways.  Procedures in this section
 that invoke procedure arguments always do so in the same dynamic
 environment as the call of the original procedure.  The
-@code{procedure?} predicate is also described here.
+@nc{procedure?} predicate is also described here.
 
 @deffn procedure procedure? obj
 
@@ -23,7 +24,7 @@ Returns @code{#t} if @var{obj} is a procedure, otherwise returns
 @deffn procedure apply proc @parI{arg} @value{defdots} args
 
 The @code{apply} procedure calls @var{proc} with the elements of the
-list @code{(append (list @r{@varI{arg}} @value{defdots}) @rv{args})} as
+list @nc{(append (list @r{@varI{arg}} @value{defdots}) @rv{args})} as
 the actual arguments.
 
 @lisp
@@ -49,8 +50,8 @@ than one @var{list} is given and not all lists have the same length,
 @code{map} terminates when the shortest list runs out.  The @var{list}s
 can be circular, but it is an error if all of them are circular.  It is
 an error for @var{proc} to mutate any of the lists.  The dynamic order
-in which @var{proc} is ap@value{shy}plied to the elements of the
-@var{list}s is unspecified.  If multiple returns oc@value{shy}cur from
+in which @var{proc} is applied to the elements of the
+@var{list}s is unspecified.  If multiple returns occur from
 @code{map}, the values returned by earlier returns are not mutated.
 
 @lisp
@@ -74,13 +75,13 @@ in which @var{proc} is ap@value{shy}plied to the elements of the
 It is an error if @var{proc} does not accept as many arguments as there
 are @var{string}s and return a single character.
 
-The @code{string-map} procedure applies @var{proc} element-wise to the
+The @nc{string-map} procedure applies @var{proc} element-wise to the
 elements of the @var{string}s and returns a string of the results, in
 order.  If more than one @var{string} is given and not all strings have
-the same length, @code{string-map} terminates when the shortest string
-runs out.  The dynamic order in which @var{proc} is ap@value{shy}plied
+the same length, @nc{string-map} terminates when the shortest string
+runs out.  The dynamic order in which @var{proc} is applied
 to the elements of the @var{string}s is unspecified.  If multiple
-returns occur from @code{string-map}, the values returned by earlier
+returns occur from @nc{string-map}, the values returned by earlier
 returns are not mutated.
 
 @lisp
@@ -105,13 +106,13 @@ returns are not mutated.
 It is an error if @var{proc} does not accept as many arguments as there
 are @var{vector}s and return a single value.
 
-The @code{vector-map} procedure applies @var{proc} element-wise to the
+The @nc{vector-map} procedure applies @var{proc} element-wise to the
 elements of the @var{vector}s and returns a vector of the results, in
 order.  If more than one @var{vector} is given and not all vectors have
-the same length, @code{vector-map} terminates when the shortest vector
-runs out.  The dynamic order in which @var{proc} is ap@value{shy}plied
+the same length, @nc{vector-map} terminates when the shortest vector
+runs out.  The dynamic order in which @var{proc} is applied
 to the elements of the @var{vector}s is unspecified.  If multiple
-returns occur from @code{vector-map}, the values returned by earlier
+returns occur from @nc{vector-map}, the values returned by earlier
 returns are not mutated.
 
 @lisp
@@ -136,13 +137,13 @@ returns are not mutated.
 It is an error if @var{proc} does not accept as many arguments as there
 are @var{list}s.
 
-The arguments to @code{for-each} are like the arguments to @code{map},
-but @code{for-each} calls @var{proc} for its side effects rather than
-for its values.  Unlike @code{map}, @code{for-each} is guaranteed to
-call @var{proc} on the ele@value{shy}ments of the @var{list}s in order
+The arguments to @nc{for-each} are like the arguments to @code{map},
+but @nc{for-each} calls @var{proc} for its side effects rather than
+for its values.  Unlike @code{map}, @nc{for-each} is guaranteed to
+call @var{proc} on the elements of the @var{list}s in order
 from the first element(s) to the last, and the value returned by
-@code{for-each} is unspecified.  If more than one @var{list} is given
-and not all lists have the same length, @code{for-each} terminates when
+@nc{for-each} is unspecified.  If more than one @var{list} is given
+and not all lists have the same length, @nc{for-each} terminates when
 the shortest list runs out.  The @var{list}s can be circular, but it is
 an error if all of them are circular.
 
@@ -163,15 +164,15 @@ proc @parI{string} @parII{string} @value{defdots}
 It is an error if @var{proc} does not accept as many arguments as there
 are @var{string}s.
 
-The arguments to @code{string-for-each} are like the arguments to
-@code{string-map}, but @code{string-for-each} calls @var{proc} for its
-side effects rather than for its values.  Unlike @code{string-map},
-@code{string-for-each} is guaranteed to call @var{proc} on the
-ele@value{shy}ments of the @var{string}s in order from the first
-element(s) to the last, and the value returned by @code{string-for-each}
+The arguments to @nc{string-for-each} are like the arguments to
+@nc{string-map}, but @nc{string-for-each} calls @var{proc} for its
+side effects rather than for its values.  Unlike @nc{string-map},
+@nc{string-for-each} is guaranteed to call @var{proc} on the
+elements of the @var{string}s in order from the first
+element(s) to the last, and the value returned by @nc{string-for-each}
 is unspecified.  If more than one @var{string} is given and not all
-strings have the same length, @code{string-for-each}
-ter@value{shy}mi@value{shy}nates when the shortest string runs out.  It
+strings have the same length, @nc{string-for-each}
+terminates when the shortest string runs out.  It
 is an error for @var{proc} to mutate any of the strings.
 
 @lisp
@@ -189,15 +190,15 @@ proc @parI{vector} @parII{vector} @value{defdots}
 It is an error if @var{proc} does not accept as many arguments as there
 are @var{vector}s.
 
-The arguments to @code{vector-for-each} are like the arguments to
-@code{vector-map}, but @code{vector-for-each} calls @var{proc} for its
-side effects rather than for its values.  Unlike @code{vector-map},
-@code{vector-for-each} is guaranteed to call @var{proc} on the
-ele@value{shy}ments of the @var{vector}s in order from the first
-element(s) to the last, and the value returned by @code{vector-for-each}
+The arguments to @nc{vector-for-each} are like the arguments to
+@nc{vector-map}, but @nc{vector-for-each} calls @var{proc} for its
+side effects rather than for its values.  Unlike @nc{vector-map},
+@nc{vector-for-each} is guaranteed to call @var{proc} on the
+elements of the @var{vector}s in order from the first
+element(s) to the last, and the value returned by @nc{vector-for-each}
 is unspecified.  If more than one @var{vector} is given and not all
-vectors have the same length, @code{vector-for-each}
-ter@value{shy}mi@value{shy}nates when the shortest vector runs out.  It
+vectors have the same length, @nc{vector-for-each}
+terminates when the shortest vector runs out.  It
 is an error for @var{proc} to mutate any of the vectors.
 
 @lisp
@@ -216,36 +217,31 @@ It is an error if @var{proc} does not accept one
 argument.
 
 @cindex escape procedure
-
-The procedure @code{call-with-current-continuation} (or its equivalent
-ab@value{shy}brev@value{shy}iation @code{call/cc}) packages the current
-continuation (see the rationale below) as an @quotedbl{escape procedure}
-and passes it as an argument to @var{proc}.  The escape procedure is a
-Scheme procedure that, if it is later called, will aban@value{shy}don
-what@value{shy}ever continuation is in effect at that later time and
-will instead use the continuation that was in effect when the escape
-procedure was created.  Calling the escape procedure will cause the
-invocation of @var{before} and @var{after} thunks installed using
-@code{dynamic-wind}.
+The procedure @nc{call-with-current-continuation} (or its equivalent
+abbreviation @nc{call/cc}) packages the current continuation (see the
+rationale below) as an @quotedbl{escape procedure} and passes it as an
+argument to @var{proc}.  The escape procedure is a Scheme procedure
+that, if it is later called, will abandon whatever continuation is in
+effect at that later time and will instead use the continuation that was
+in effect when the escape procedure was created.  Calling the escape
+procedure will cause the invocation of @var{before} and @var{after}
+thunks installed using @nc{dynamic-wind}.
 
 The escape procedure accepts the same number of arguments as the
 continuation to the original call to
-@nobr{@code{call-with-current-continuation}}.  Most continuations take
-only one value.  Continuations created by the
-@nobr{@code{call-with-values}} procedure (including the initialization
-expressions of @code{define-values}, @code{let-values}, and
-@code{let*-values} expressions), take the number of values that the
-consumer expects.  The continuations of all non-final expressions within
-a sequence of expressions, such as in @code{lambda},
-@nobr{@code{case-lambda}}, @code{begin}, @code{let}, @code{let*},
-@code{letrec}, @code{letrec*}, @nobr{@code{let-values}},
-@nobr{@code{let*-values}}, @nobr{@code{let-syntax}},
-@nobr{@code{letrec-syntax}}, @code{parameterize}, @code{guard},
-@code{case}, @code{cond}, @code{when}, and @code{unless} expressions,
-take an arbitrary number of values because they discard the values
-passed to them in any event.  The effect of passing no values or more
-than one value to continuations that were not created in one of these
-ways is unspecified.
+@nc{call-with-current-continuation}.  Most continuations take only one
+value.  Continuations created by the @nc{call-with-values} procedure
+(including the initialization expressions of @nc{define-values},
+@nc{let-values}, and @nc{let*-values} expressions), take the number of
+values that the consumer expects.  The continuations of all non-final
+expressions within a sequence of expressions, such as in @nc{lambda},
+@nc{case-lambda}, @nc{begin}, @nc{let}, @nc{let*}, @nc{letrec},
+@nc{letrec*}, @nc{let-values}, @nc{let*-values}, @nc{let-syntax},
+@nc{letrec-syntax}, @nc{parameterize}, @nc{guard}, @nc{case}, @nc{cond},
+@nc{when}, and @nc{unless} expressions, take an arbitrary number of
+values because they discard the values passed to them in any event.  The
+effect of passing no values or more than one value to continuations that
+were not created in one of these ways is unspecified.
 
 The escape procedure that is passed to @var{proc} has unlimited extent
 just like any other procedure in Scheme.  It can be stored in variables
@@ -254,10 +250,9 @@ like the @code{raise} and @code{error} procedures, it never returns to
 its caller.
 
 The following examples show only the simplest ways in which
-@nobr{@code{call-with-current-continuation}} is used.  If all real uses
-were as simple as these ex@value{shy}amples, there would be no need for
-a procedure with the power of
-@nobr{@code{call-with-current-continuation}}.
+@nc{call-with-current-continuation} is used.  If all real uses were as
+simple as these examples, there would be no need for a procedure with
+the power of @nc{call-with-current-continuation}.
 
 @lisp
 (call-with-current-continuation
@@ -288,9 +283,9 @@ a procedure with the power of
 @quotation
 @cindex non-local exits
 @cindex non-local exits @subentry via @code{guard} @seeentry{non-local exits}
-@i{Rationale:} A common use of @code{call-with-current-continuation} is
+@i{Rationale:} A common use of @nc{call-with-current-continuation} is
 for structured, non-local exits from loops or procedure bodies, but in
-fact @code{call-with-current-continuation} is useful for implementing a
+fact @nc{call-with-current-continuation} is useful for implementing a
 wide variety of advanced control structures.  In fact, @code{raise} and
 @code{guard} provide a more structured mechanism for non-local exits.
 
@@ -307,10 +302,9 @@ in a local variable, add seven, and give the answer to the
 @acronym{REPL}'s continuation to be printed.  Normally these ubiquitous
 continuations are hidden behind the scenes and programmers do not think
 much about them.  On rare occasions, however, a programmer needs to deal
-with continuations explicitly.  The
-@code{call-with-current-continuation} procedure allows Scheme
-programmers to do that by creating a procedure that acts just like the
-current continuation.
+with continuations explicitly.  The @nc{call-with-current-continuation}
+procedure allows Scheme programmers to do that by creating a procedure
+that acts just like the current continuation.
 @end quotation
 @end deffn
 
@@ -331,8 +325,7 @@ procedure might be defined as follows:
 Calls its @var{producer} argument with no arguments and a continuation
 that, when passed some values, calls the @var{consumer} procedure with
 those values as arguments.  The continuation for the call to
-@var{consumer} is the continuation of the call to
-@code{call-with-values}.
+@var{consumer} is the continuation of the call to @nc{call-with-values}.
 
 @lisp
 (call-with-values (lambda () (values 4 5))
@@ -347,17 +340,16 @@ those values as arguments.  The continuation for the call to
 Calls @var{thunk} without arguments, returning the result(s) of this
 call.  @var{Before} and @var{after} are called, also without arguments,
 as required by the following rules.  Note that, in the absence of calls
-to continuations captured using
-@nobr{@code{call-with-current-continuation}}, the three arguments are
-called once each, in order.  @var{Before} is called whenever execution
-enters the dynamic extent of the call to @var{thunk} and @var{after} is
-called whenever it exits that dynamic extent.  The dynamic extent of a
-procedure call is the period between when the call is initiated and when
-it returns.  The @var{before} and @var{after} thunks are called in the
-same dynamic environment as the call to @code{dynamic-wind}.  In Scheme,
-because of @nobr{@code{call-with-current-continuation}}, the dynamic
-extent of a call is not always a single, connected time period.  It is
-defined as follows:
+to continuations captured using @nc{call-with-current-continuation}, the
+three arguments are called once each, in order.  @var{Before} is called
+whenever execution enters the dynamic extent of the call to @var{thunk}
+and @var{after} is called whenever it exits that dynamic extent.  The
+dynamic extent of a procedure call is the period between when the call
+is initiated and when it returns.  The @var{before} and @var{after}
+thunks are called in the same dynamic environment as the call to
+@nc{dynamic-wind}.  In Scheme, because of
+@nc{call-with-current-continuation}, the dynamic extent of a call is not
+always a single, connected time period.  It is defined as follows:
 
 @itemize @bullet
 
@@ -368,7 +360,7 @@ called procedure begins.
 @item
 The dynamic extent is also entered when execution is not within the
 dynamic extent and a continuation is invoked that was captured (using
-@nobr{@code{call-with-current-continuation}}) during the dynamic extent.
+@nc{call-with-current-continuation}) during the dynamic extent.
 
 @item
 It is exited when the called procedure returns.
@@ -379,26 +371,25 @@ continuation is invoked that was captured while not within the dynamic
 extent.
 @end itemize
 
-If a second call to @nobr{@code{dynamic-wind}} occurs within the dynamic
-extent of the call to @var{thunk} and then a continuation is invoked in
-such a way that the @var{after}s from these two invocations of
-@nobr{@code{dynamic-wind}} are both to be called, then the @var{after}
-associated with the second (inner) call to @nobr{@code{dynamic-wind}} is
-called first.
+If a second call to @nc{dynamic-wind} occurs within the dynamic extent
+of the call to @var{thunk} and then a continuation is invoked in such a
+way that the @var{after}s from these two invocations of
+@nc{dynamic-wind} are both to be called, then the @var{after} associated
+with the second (inner) call to @nc{dynamic-wind} is called first.
 
-If a second call to @code{dynamic-wind} occurs within the dynamic extent
+If a second call to @nc{dynamic-wind} occurs within the dynamic extent
 of the call to @var{thunk} and then a continuation is invoked in such a
 way that the @var{before}s from these two invocations of
-@nobr{@code{dynamic-wind}} are both to be called, then the @var{before}
-associated with the first (outer) call to @nobr{@code{dynamic-wind}} is
-called first.
+@nc{dynamic-wind} are both to be called, then the @var{before}
+associated with the first (outer) call to @nc{dynamic-wind} is called
+first.
 
 If invoking a continuation requires calling the @var{before} from one
-call to @nobr{@code{dynamic-wind}} and the @var{after} from another,
-then the @var{after} is called first.
+call to @nc{dynamic-wind} and the @var{after} from another, then the
+@var{after} is called first.
 
 The effect of using a captured continuation to enter or exit the dynamic
-ex@value{shy}tent of a call to @var{before} or @var{after} is
+extent of a call to @var{before} or @var{after} is
 unspecified.
 
 @lisp

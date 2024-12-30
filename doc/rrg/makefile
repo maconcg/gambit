@@ -9,7 +9,7 @@ SCM ?= toolshed/examples/gauntlet.scm
 
 html-common-deps = gambit.txi procedures/a/pairs-lists.txi \
  procedures/a/strings.txi toolshed/parenthesize-html.sed \
- toolshed/ellipsize-cxr-html.sed
+ toolshed/ellipsize-cxr-html.sed toolshed/annotate-syntax-html.sed
 
 src-lib = ../../lib
 lib-samples = _eval _io _kernel _module _nonstd _num _system _thread \
@@ -236,7 +236,8 @@ html-modules: ${html-common-deps} toolshed/gambit.css
 		texi2any -o $$tmp --html --css-include=toolshed/gambit.css\
 			gambit.txi &&\
 		for f in $$tmp/*.html; do\
-			sed -f toolshed/parenthesize-html.sed "$$f"\
+			sed -f toolshed/parenthesize-html.sed "$$f" |\
+				sed -f toolshed/annotate-syntax-html.sed\
 				> html-modules/"$${f##*/}";\
 		done;\
 	}
@@ -248,19 +249,22 @@ html-modules-cm: ${html-common-deps} toolshed/gambit.cm.css
 		texi2any -o $$tmp --html --css-include=toolshed/gambit.cm.css\
 			gambit.txi &&\
 		for f in $$tmp/*.html; do\
-			sed -f toolshed/parenthesize-html.sed "$$f"\
+			sed -f toolshed/parenthesize-html.sed "$$f" |\
+				sed -f toolshed/annotate-syntax-html.sed\
 				> html-modules-cm/"$${f##*/}";\
 		done;\
 	}
 
 gambit.html: ${html-common-deps} toolshed/gambit.css
 	texi2any -o - --html --no-split --css-include=toolshed/gambit.css\
-		gambit.txi | sed -f toolshed/parenthesize-html.sed\
+		gambit.txi | sed -f toolshed/parenthesize-html.sed |\
+			sed -f toolshed/annotate-syntax-html.sed\
 			-f toolshed/ellipsize-cxr-html.sed > $@
 
 gambit.cm.html: ${html-common-deps} toolshed/gambit.cm.css
 	texi2any -o - --html --no-split --css-include=toolshed/gambit.cm.css\
-		gambit.txi | sed -f toolshed/parenthesize-html.sed\
+		gambit.txi | sed -f toolshed/parenthesize-html.sed |\
+			sed -f toolshed/annotate-syntax-html.sed\
 			-f toolshed/ellipsize-cxr-html.sed > $@
 
 gambit.txi: gambit-pristine.txi procedures/a/pairs-lists.txi \
@@ -451,11 +455,12 @@ r7rs-modules: r7rs/r7rs.txi toolshed/gambit.css \
 	}
 
 r7rs.html: r7rs/r7rs.txi toolshed/gambit.css toolshed/parenthesize-html.sed \
- toolshed/ellipsize-cxr-html.sed
+ toolshed/ellipsize-cxr-html.sed toolshed/annotate-syntax-html.sed
 	cd r7rs &&\
 	texi2any -o - --html --no-split --css-include=../toolshed/gambit.css \
 		r7rs.txi | sed -f ../toolshed/parenthesize-html.sed \
-			-f ../toolshed/ellipsize-cxr-html.sed > ../$@
+			-f ../toolshed/ellipsize-cxr-html.sed |\
+			sed -f ../toolshed/annotate-syntax-html.sed > ../$@
 
 r7rs/r7rs-pristine.info: ${r7rs-deps}
 	cd r7rs &&\

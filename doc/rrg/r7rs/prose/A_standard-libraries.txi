@@ -1,29 +1,27 @@
 @node Standard Libraries
+@cindex standard libraries
 @appendix Standard Libraries
-
 This section lists the exports provided by the standard libraries.  The
 libraries are factored so as to separate features which might not be
-sup@value{shy}ported by all implementations, or which might be expensive
-to load.
+supported by all implementations, or which might be expensive to load.
 
 The @code{scheme} library prefix is used for all standard libraries, and
 is reserved for use by future standards.
 
 @node Base Library
+@pindex (scheme base) @sortas{scheme base}
 @appendixsec Base Library
-
 The @code{(scheme base)} library exports many of the procedures and
-syntax bind@value{shy}ings that are traditionally associated with
-Scheme.  The division between the base library and the other standard
-libraries is based on use, not on con@value{shy}struc@value{shy}tion.
-In particular, some facilities that are typically implemented as
-primitives by a compiler or the run-time system rather than in terms of
-other standard procedures or syntax are not part of the base library,
-but are defined in separate libraries.  By the same token, some exports
-of the base library are implementable in terms of other exports.  They
-are redundant in the strict sense of the word, but they capture common
-patterns of usage, and are therefore provided as convenient
-abbreviations.
+syntax bindings that are traditionally associated with Scheme.  The
+division between the base library and the other standard libraries is
+based on use, not on construction.  In particular, some facilities that
+are typically implemented as primitives by a compiler or the run-time
+system rather than in terms of other standard procedures or syntax are
+not part of the base library, but are defined in separate libraries.  By
+the same token, some exports of the base library are implementable in
+terms of other exports.  They are redundant in the strict sense of the
+word, but they capture common patterns of usage, and are therefore
+provided as convenient abbreviations.
 
 @indentedblock
 @multitable @columnfractions .45 .55
@@ -150,8 +148,8 @@ abbreviations.
 @end indentedblock
 
 @node Case-Lambda Library
+@pindex (scheme case-lambda) @sortas{scheme case-lambda}
 @appendixsec Case-Lambda Library
-
 The @code{(scheme case-lambda)} library exports the @code{case-lambda}
 syntax.
 
@@ -162,11 +160,11 @@ syntax.
 @end indentedblock
 
 @node Char Library
+@pindex (scheme char) @sortas{scheme char}
 @appendixsec Char Library
-
 The @code{(scheme char)} library provides the procedures for dealing
-with char@value{shy}ac@value{shy}ters that involve potentially large
-tables when supporting all of Unicode.
+with characters that involve potentially large tables when supporting
+all of Unicode.
 
 @indentedblock
 @multitable @columnfractions .45 .55
@@ -185,8 +183,8 @@ tables when supporting all of Unicode.
 @end indentedblock
 
 @node Complex Library
+@pindex (scheme complex) @sortas{scheme complex}
 @appendixsec Complex Library
-
 The @code{(scheme complex)} library exports procedures which are
 typically only useful with non-real numbers.
 
@@ -199,8 +197,8 @@ typically only useful with non-real numbers.
 @end indentedblock
 
 @node CxR Library
+@pindex (scheme cxr) @sortas{scheme cxr}
 @appendixsec CxR Library
-
 The @code{(scheme cxr)} library exports twenty-four procedures which are
 the compositions of from three to four @code{car} and @code{cdr}
 operations.  For example @code{caddar} could be defined by
@@ -232,8 +230,8 @@ and lists}.
 @end indentedblock
 
 @node Eval Library
+@pindex (scheme eval) @sortas{scheme eval}
 @appendixsec Eval Library
-
 The @code{(scheme eval)} library exports procedures for evaluating
 Scheme data as programs.
 
@@ -244,8 +242,8 @@ Scheme data as programs.
 @end indentedblock
 
 @node File Library
+@pindex (scheme file) @sortas{scheme file}
 @appendixsec File Library
-
 The @code{(scheme file)} library provides procedures for accessing
 files.
 
@@ -260,8 +258,8 @@ files.
 @end indentedblock
 
 @node Inexact Library
+@pindex (scheme inexact) @sortas{scheme inexact}
 @appendixsec Inexact Library
-
 The @code{(scheme inexact)} library exports procedures which are
 typically only useful with inexact values.
 
@@ -277,8 +275,8 @@ typically only useful with inexact values.
 @end indentedblock
 
 @node Lazy Library
+@pindex (scheme lazy) @sortas{scheme lazy}
 @appendixsec Lazy Library
-
 The @code{(scheme lazy)} library exports procedures and syntax keywords
 for lazy evaluation.
 
@@ -291,10 +289,10 @@ for lazy evaluation.
 @end indentedblock
 
 @node Load Library
+@pindex (scheme load) @sortas{scheme load}
 @appendixsec Load Library
-
 The @code{(scheme load)} library exports procedures for loading Scheme
-ex@value{shy}pres@value{shy}sions from files.
+expressions from files.
 
 @indentedblock
 @multitable @columnfractions .45 .55
@@ -303,8 +301,8 @@ ex@value{shy}pres@value{shy}sions from files.
 @end indentedblock
 
 @node Process-Context Library
+@pindex (scheme process-context) @sortas{scheme process-context}
 @appendixsec Process-Context Library
-
 The @code{(scheme process-context)} library exports procedures for
 accessing with the program's calling context.
 
@@ -317,10 +315,10 @@ accessing with the program's calling context.
 @end indentedblock
 
 @node Read Library
+@pindex (scheme read) @sortas{scheme read}
 @appendixsec Read Library
-
 The @code{(scheme read)} library provides procedures for reading Scheme
-ob@value{shy}jects.
+objects.
 
 @indentedblock
 @multitable @columnfractions .45 .55
@@ -329,10 +327,10 @@ ob@value{shy}jects.
 @end indentedblock
 
 @node Repl Library
+@pindex (scheme repl) @sortas{scheme repl}
 @appendixsec Repl Library
-
-The @code{(scheme repl)} library exports the interaction-environment
-procedure.
+The @code{(scheme repl)} library exports the
+@code{interaction-environment} procedure.
 
 @indentedblock
 @multitable @columnfractions .45 .55
@@ -341,8 +339,8 @@ procedure.
 @end indentedblock
 
 @node Time Library
+@pindex (scheme time) @sortas{scheme time}
 @appendixsec Time Library
-
 The @code{(scheme time)} library provides access to time-related
 values.
 
@@ -354,10 +352,10 @@ values.
 @end indentedblock
 
 @node Write Library
+@pindex (scheme write) @sortas{scheme write}
 @appendixsec Write Library
-
 The @code{(scheme write)} library provides procedures for writing Scheme
-ob@value{shy}jects.
+objects.
 
 @indentedblock
 @multitable @columnfractions .45 .55
@@ -367,16 +365,17 @@ ob@value{shy}jects.
 @end indentedblock
 
 @node R5RS Library
+@pindex (scheme r5rs) @sortas{scheme r5rs}
 @appendixsec R5RS Library
-
 The @code{(scheme r5rs)} library provides the identifiers defined by
-@value{R5RS}, except that @code{transcript-on} and @code{transcript-off}
-are not present.  Note that the @code{exact} and @code{inexact}
-procedures appear under their @value{R5RS} names
-@nobr{@code{inexact->exact}} and @nobr{@code{exact->inexact}}
-respectively.  However, if an im@value{shy}ple@value{shy}mentation does
-not provide a particular library such as the complex library, the
-corresponding identifiers will not appear in this library either.
+@value{R5RS}, except that @nobr{@code{transcript-on}} and
+@nobr{@code{transcript-off}} are not present.  Note that the
+@code{exact} and @code{inexact} procedures appear under their
+@value{R5RS} names @nobr{@code{inexact->exact}} and
+@nobr{@code{exact->inexact}} respectively.  However, if an
+implementation does not provide a particular library such as the complex
+library, the corresponding identifiers will not appear in this library
+either.
 
 @indentedblock
 @multitable @columnfractions .45 .55
