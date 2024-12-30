@@ -223,6 +223,11 @@
                            ",Revised@sup{" (string-downcase n)
                            "}}} "
                            "Report on the Algorithmic Language Scheme\n"))))
+        (write-RFCinitial
+         (lambda ()
+           (write-string
+            (string-append "@set RFCinitial "
+                           "@acronym{RFC,Request for Comments}\n"))))
         (write-RnRSinitial
          (lambda (n superscript)
            (write-string
@@ -325,6 +330,7 @@
       (write-IEEE-754-2008-initial)
       (write-longarrow)
       (write-newsigma)
+      (write-RFCinitial)
       (write-truishsigma)
       (write-unspecifiedsigma)
       (write-Revisedn "5" "@U{2075}")
@@ -697,21 +703,3 @@ EOF
                                "</span>},"
                                "@hashchar{}@sv{\\xx\\}@hashchar{}"
                                "}\n@end macro\n")))
-
-;; (define (write-prosedatumlabel-macro)
-;; (write-string #<<EOF
-;; @macro prosedatumlabel {n}
-;; @inlinefmtifelse{html,@inlineraw{html,<span class="nobr">@t{@hashchar{}@sv{n}=}</span>},@t{@hashchar{}@sv{n}=}}
-;; @end macro
-
-;; EOF
-;; ))
-
-;; (define (write-prosedatumref-macro)
-;; (write-string #<<EOF
-;; @macro prosedatumref {n}
-;; @inlinefmtifelse{html,@inlineraw{html,<span class="nobr">@t{@hashchar{}@sv{n}@hashchar{}}</span>},@t{@hashchar{}@sv{n}@hashchar{}}}
-;; @end macro
-
-;; EOF
-;; ))

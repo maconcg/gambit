@@ -12,8 +12,8 @@ non-negative integers less than the length of the vector.  The first
 element in a vector is indexed by zero, and the last element is indexed
 by one less than the length of the vector.
 
-Vectors are written using the notation @ns{@hashchar{}(@rv{obj}
-@value{defdots})}.  For example, a vector of length 3 containing the
+Vectors are written using the notation @ns{@hashchar{}(@rv{obj
+@value{defdots}})}.  For example, a vector of length 3 containing the
 number zero in element 0, the list @code{(2 2 2 2)} in element 1, and
 the string @code{"Anna"} in element 2 can be written as follows:
 

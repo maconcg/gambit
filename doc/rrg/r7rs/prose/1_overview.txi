@@ -215,10 +215,9 @@ Finally, the words and phrases @quotedbl{must}, @quotedbl{must not},
 @quotedbl{should not}, @quotedbl{may}, @quotedbl{required},
 @quotedbl{recommended}, and @quotedbl{optional}, although not
 capitalized in this report, are to be interpreted as described in
-@acronym{RFC 2119,Key words for use in @acronym{RFCs,Requests for
-Comments} to Indicate Requirement Levels}@footnote{@value{refRFC2119}}.
-They are used only with reference to implementer or implementation
-behavior, not with reference to programmer or program behavior.
+@value{RFCinitial} 2119@footnote{@value{refRFC2119}}.  They are used
+only with reference to implementer or implementation behavior, not with
+reference to programmer or program behavior.
 
 @node Entry format
 @subsection Entry format

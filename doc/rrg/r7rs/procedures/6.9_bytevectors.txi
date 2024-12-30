@@ -13,10 +13,10 @@ bytevector is created.  The @define{valid indexes} of a bytevector are
 the exact non-negative integers less than the length of the bytevector,
 starting at index zero as with vectors.
 
-Bytevectors are written using the notation @samp{@hashchar{}u8(@rv{byte}
-@value{defdots})}.  For example, a bytevector of length 3 containing the
-byte 0 in element 0, the byte 10 in element 1, and the byte 5 in element
-2 can be written as follows:
+Bytevectors are written using the notation @samp{@hashchar{}u8(@rv{byte
+@value{defdots}})}.  For example, a bytevector of length 3 containing
+the byte 0 in element 0, the byte 10 in element 1, and the byte 5 in
+element 2 can be written as follows:
 
 @lisp
 #u8(0 10 5)
