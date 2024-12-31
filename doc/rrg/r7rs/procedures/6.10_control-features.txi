@@ -162,17 +162,16 @@ It is an error for @var{proc} to mutate any of the lists.
 proc @parI{string} @parII{string} @value{defdots}
 
 It is an error if @var{proc} does not accept as many arguments as there
-are @var{string}s.
+are @var{strings}.
 
 The arguments to @nc{string-for-each} are like the arguments to
-@nc{string-map}, but @nc{string-for-each} calls @var{proc} for its
-side effects rather than for its values.  Unlike @nc{string-map},
-@nc{string-for-each} is guaranteed to call @var{proc} on the
-elements of the @var{string}s in order from the first
-element(s) to the last, and the value returned by @nc{string-for-each}
-is unspecified.  If more than one @var{string} is given and not all
-strings have the same length, @nc{string-for-each}
-terminates when the shortest string runs out.  It
+@nc{string-map}, but @nc{string-for-each} calls @var{proc} for its side
+effects rather than for its values.  Unlike @nc{string-map},
+@nc{string-for-each} is guaranteed to call @var{proc} on the elements of
+the @var{strings} in order from the first element(s) to the last, and
+the value returned by @nc{string-for-each} is unspecified.  If more than
+one @var{string} is given and not all strings have the same length,
+@nc{string-for-each} terminates when the shortest string runs out.  It
 is an error for @var{proc} to mutate any of the strings.
 
 @lisp
@@ -188,17 +187,16 @@ is an error for @var{proc} to mutate any of the strings.
 proc @parI{vector} @parII{vector} @value{defdots}
 
 It is an error if @var{proc} does not accept as many arguments as there
-are @var{vector}s.
+are @var{vectors}.
 
 The arguments to @nc{vector-for-each} are like the arguments to
-@nc{vector-map}, but @nc{vector-for-each} calls @var{proc} for its
-side effects rather than for its values.  Unlike @nc{vector-map},
-@nc{vector-for-each} is guaranteed to call @var{proc} on the
-elements of the @var{vector}s in order from the first
-element(s) to the last, and the value returned by @nc{vector-for-each}
-is unspecified.  If more than one @var{vector} is given and not all
-vectors have the same length, @nc{vector-for-each}
-terminates when the shortest vector runs out.  It
+@nc{vector-map}, but @nc{vector-for-each} calls @var{proc} for its side
+effects rather than for its values.  Unlike @nc{vector-map},
+@nc{vector-for-each} is guaranteed to call @var{proc} on the elements of
+the @var{vectors} in order from the first element(s) to the last, and
+the value returned by @nc{vector-for-each} is unspecified.  If more than
+one @var{vector} is given and not all vectors have the same length,
+@nc{vector-for-each} terminates when the shortest vector runs out.  It
 is an error for @var{proc} to mutate any of the vectors.
 
 @lisp

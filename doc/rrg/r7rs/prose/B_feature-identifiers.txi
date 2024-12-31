@@ -10,7 +10,7 @@ feature.
 All @value{R7RSinitial} Scheme implementations have this feature.
 
 @item @t{exact-closed}
-The algebraic operations @code{+}, @code{-}, @code{*}, and @nc{expt}
+The algebraic operations @code{+}, @code{-}, @code{*}, and @code{expt}
 where the second argument is a non-negative integer produce exact values
 given exact inputs.
 

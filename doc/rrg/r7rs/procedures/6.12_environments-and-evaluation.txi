@@ -26,9 +26,9 @@ is neither @code{5} nor another value supported by the implementation,
 an error is signaled.
 
 The effect of defining or assigning (through the use of @code{eval}) an
-identifier bound in a @nc{null-environment} (for example @code{car}) is
-unspecified.  Thus both the environment and the bindings it contains may
-be immutable.
+identifier bound in a @nc{scheme-report-environment} (for example
+@code{car}) is unspecified.  Thus both the environment and the bindings
+it contains may be immutable.
 @end deffn
 
 @deffn {r5rs library procedure} null-environment version
@@ -46,9 +46,9 @@ bindings corresponding to the specified version of the report.  If
 implementation, an error is signaled.
 
 The effect of defining or assigning (through the use of @code{eval}) an
-identifier bound in a @nc{scheme-report-environment} (for example
-@code{car}) is unspecified.  Thus both the environment and the bindings
-it contains may be immutable.
+identifier bound in a @nc{null-environment} (for example @code{car}) is
+unspecified.  Thus both the environment and the bindings it contains may
+be immutable.
 @end deffn
 
 @deffn {repl library procedure} interaction-environment
